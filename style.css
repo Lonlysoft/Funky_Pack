@@ -1,0 +1,156 @@
+:root{
+	--font-color: #430C00;
+	--bg-color: #FEA11E;
+	--positive-bg: #1AE4AA;
+	--negative-bg: #971E2F;
+	--negative-font: #FD7F44;
+}
+@font-face{
+	font-family: "kindSans";
+	src: local("Kind Sans Thin Regular"), local("Kind Sans Thin"), local("kindSans"), url("src/fonts/Kind_Sans_Thin.otf") format("opentype");
+}
+@keyframes pattern01Move{
+	from{
+		background-position: 0px 0px;
+	}
+	to{
+		background-position: 800px 800px;
+	}
+}
+.assets{
+	display: none;
+}
+.assets img{
+	display: none;
+}
+.glassy{
+	background: linear-gradient(135deg, #fff8 20%, #0046 80%);
+	box-shadow: 3px 3px 5px #000;
+	color: #fff;
+	border-top: 1px solid #fff;
+	border-left: 1px solid #fff;
+	border-radius: 25px;
+	backdrop-filter:blur(7px);
+	text-align: center;
+	z-index: 1;
+	font-family: "kindSans", sans-serif;
+	font-weight: 900;
+}
+.flat{
+	color: var(--font-color);
+	font-family: "kindSans", sans-serif;
+	font-weight: 900;
+	
+	box-shadow: 0.1em 0.1em 0 var(--font-color);
+	background: var(--bg-color);
+	border-radius: 1em;
+}
+.gradienty{
+	background: linear-gradient(0deg, var(--font-color) 20%, var(--bg-color) 90%);
+	border: 2px solid var(--font-color);
+	box-shadow: 0.1em 0.1em 0 var(--font-color);
+	border-radius: 1em;
+}
+
+
+.flex-row{
+	display: flex;
+	gap: 2em;
+	justify-content: center;
+	align-items: center;
+}
+@media only screen and (orientation: landscape){
+	.controles_cheroso {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 6;
+		max-width: 100%; /* Cobrir a largura da tela */
+		min-height: 100%; /* Cobrir a altura da tela */
+	}
+	body {
+		margin: 0;
+		background: #4A2A00;
+	}
+	.assets{
+		display: none;
+	}
+	.assets img{
+		display: none;
+	}
+	.gameScreen , .inGameUI{
+		position: absolute;
+		aspect-ratio: 1/1;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		max-width: 100%;
+		max-height: 100vh;
+	}
+	
+	#mainCanvas {
+		
+		z-index: 2;
+	}
+
+	#tra {
+		
+		z-index: 5;
+	}
+
+	#HUD {
+		z-index: 3;
+	}
+	.inGameUI{
+		z-index: 4;
+	}
+	.warning{
+		display: none;
+	}
+	#error{
+		display: none;
+	}
+}
+
+@media only screen and (orientation: portrait){
+	.inGameUI{
+		display: none;
+	}
+	.controles_cheroso {
+		display: none;
+	}
+	.gameScreen{
+		display: none;
+	}
+	body{
+		background-color: var(--font-color);
+		baclground-size: cover;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		animation: pattern01Move 10s linear infinite;
+		overflow: hidden;
+		width:100dvw;
+		height: 100dvh;
+	}
+	.warning{
+		padding: 1em;
+		height: 56%;
+		margin: 10%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items:center;
+		font-size: 2em;
+		font-family: "kindSans", sans-serif;
+		font-weight: 900;
+		text-align: center;
+		/*text-shadow: 3px 3px 5px #000;*/
+	}
+	
+	.instrucao{
+		width: 20vw;
+		height: 20vw;
+	}
+}
