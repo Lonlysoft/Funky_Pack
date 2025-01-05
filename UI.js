@@ -8,9 +8,11 @@ const UI = {
 		barDOM: document.querySelector(".charWin__HPbar"),
 		charName: document.querySelector(".charName")
 	},
-	pauseDOM: document.querySelector(".pause"),
+	pauseDOM: document.querySelector(".pauseMenu"),
 	pauseItems:{
-		
+		talkTo: document.querySelector(".pauseMenu__talkTo"),
+		item: document.querySelector(".pauseMenu__item"),
+		look: document.querySelector("pauseMenu__look")
 	},
 	jobTableDOM: document.querySelector(".schedule"),
 	waiterHud: 0,
