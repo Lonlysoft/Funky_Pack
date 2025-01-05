@@ -55,10 +55,3 @@ our wealthy badger - he's important for story
 - special partner $1,000,000
 
 - world saver - one way payment - 2,000,001
-
-
-# UI
-
-+-------------------------------------+ <br>
-|	12:35am SUNNY ~~~~~~~  $ • 00	| <br>
-+-------------------------------------+ <br>
