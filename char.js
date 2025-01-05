@@ -144,7 +144,7 @@ class Protagonist extends Being{
 			mirrorate(Game.ctx);
 		}
 	}
-	interact(){
+	interact(NPC__arr){
 		let box = [0, 0, TILE_SIZE, TILE_SIZE];
 		switch(this.dir){
 			case 'S': box[1] = GridToWorld(WorldToGrid(this.boxCol.x, TILE_SIZE), TILE_SIZE) - box[2]; box[1] = this.boxCol.z; break;
@@ -159,7 +159,7 @@ class Protagonist extends Being{
 		for(let i = 0; i < NPC__arr; i++){
 			if(onGround(this.WorldPos.y, NPC__arr[i].boxCol.y)){
 				if(col.AABB(box, this__box)){
-					UI.dialogBoxStart(NPC__arr[i].dialogs[NPC__arr[i].realtionshipLevelWithYou])
+					UI.dialogBoxStart(NPC__arr[i].dialogs[NPC__arr[i].realtionshipLevelWithYou]);
 				}
 			}
 		}

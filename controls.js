@@ -172,26 +172,9 @@ const Ctrl = {
 				if(Ctrl.Btns[13].active && Ctrl.state.start == false){
 					GameMoment = GameMomentSav;
 				}
-				if(Ctrl.Btns[0].active && Ctrl.state.east == false){ //↖⬆↗
-					UI.pauseItem[PauseMenu.opcaoSelecionada].classList.remove("selected");
-					PauseMenu.opcaoSelecionada--;
-					PauseMenu.opcaoSelecionada = PauseMenu.opcaoSelecionada%4;
-					UI.pauseItem[PauseMenu.opcaoSelecionada].classList.add("selected");
-				}
-				else if(Ctrl.Btns[2].active && Ctrl.state.west == false){ //↙⬇↘
-					UI.pauseItem[PauseMenu.opcaoSelecionada].classList.remove("selected");
-					PauseMenu.opcaoSelecionada++;
-					PauseMenu.opcaoSelecionada = PauseMenu.opcaoSelecionada%4;
-					UI.pauseItem[PauseMenu.opcaoSelecionada].classList.add("selected");
+				
+				if(Ctrl.Btns[2].active && !Ctrl.state.right){ //right
 					
-				}
-				else if(Ctrl.Btns[8].active && Ctrl.state.B == false){//B
-					gameFeature.camada--;
-					PauseMenu.regredirNaLayer();
-				}
-				else if(Ctrl.Btns[10].active && Ctrl.state.A == false){//A
-					gameFeature.camada++;
-					PauseMenu.avancarNaLayer();
 				}
 			break;
 			
@@ -276,16 +259,7 @@ const Ctrl = {
 					}
 				}
 				if(Ctrl.Btns[10].active && Ctrl.state.A == false && col.interagir(argumentEntity)){ //A interação
-					/*
-					if(interagivel === true){
-						//procurar personagem que fala ()
-						//abrir diálogo ()
-						//colocar o texto lá ()
-					}
-					else{
-						
-					}
-					*/
+					argumentEntity.interact(Game.NPCarr);
 				}
 				if(Ctrl.Btns[14].active && Ctrl.state.X == false){
 					if(argumentEntity.skills.includes("hold") && argumentEntity.skills.includes("release")){
@@ -302,8 +276,8 @@ const Ctrl = {
 					argumentEntity.mao = (mao+1)%argumentEntity.tail.length;
 				}
 				if(Ctrl.Btns[13].active && Ctrl.state.start == false){//start
-					gameFeature.pause = true
-					gameFeature.camada = 1
+					GameMomentSav = GameMoment;
+					GameMoment = 'pause';
 				}
 				
 			break;

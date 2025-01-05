@@ -128,3 +128,20 @@
 	gap: 1em;
 	padding: 1em;
 }
+
+/*pause menu*/
+
+.pauseMenu{
+	display: none;
+	jutify-content: flex-end;
+	align-items: center;
+	background: var(--bg-color);
+	width: 100%;
+	padding: 1em;
+	gap: 1em;
+}
+
+.pauseMenu div{
+	width: 2em; height: 2em;
+	background: var(--font-color);
+}
