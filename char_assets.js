@@ -8,11 +8,11 @@ const Characters = [
 		15,
 		40,
 		8,
-		TILE_SIZE+(TILE_SIZE*0.5),
+		TILE_SIZE,
 		TILE_SIZE*0.5,
 		TILE_SIZE*0.5,
 		["hold", "release", "hi-jump", "eatAnything"],
-		document.getElementById("DynnySpriteSheet")
+		"#dynnySpriteSheet"
 	),
 	new Protagonist(
 		"Nukko",
@@ -23,10 +23,10 @@ const Characters = [
 		20,
 		33,
 		8,
-		TILE_SIZE*2,
-		TILE_SIZE+4,
-		TILE_SIZE+4,
+		TILE_SIZE*2.5,
+		TILE_SIZE+6,
+		TILE_SIZE+6,
 		["objectTransformation", "bellyflop", "eatAnything"],
-		document.getElementById("NukkoSpriteSheet")
+		"#NukkoSpriteSheet"
 	)
 ]

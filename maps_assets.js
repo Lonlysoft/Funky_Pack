@@ -4,7 +4,7 @@ const MAPS = {
 	{
 	width: 9,
 	height: 7,
-	hasWater: true,
+	hasWater: false,
 	name: "amCity",
 	groundTileSet:
 	[
@@ -20,13 +20,7 @@ const MAPS = {
 	structureTileSet:
 	[
 		[
-			[8, 8, 8, 8, 8, 8, 8, 8, 8], 
-			[8, 8, 8, 8, 8, 8, 8, 8, 8], 
-			[8, 8, 8, 8, 8, 8, 8, 8, 8], 
-			[8, 8, 8, 8, 8, 8, 8, 8, 8], 
-			[8, 8, 8, 8, 8, 8, 8, 8, 8], 
-			[8, 8, 8, 8, 8, 8, 8, 8, 8], 
-			[8, 8, 8, 8, 8, 8, 8, 8, 8]
+			[]
 		]
 	],
 	
@@ -65,7 +59,7 @@ const MAPS = {
 		[0, 0, 0, 0, 0, 0, 0, 0, 0]
 	],
 	
-	teleportAndPlayerSpawnGrid:
+	beingGrid:
 	[
 	["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "00"],
 	["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],

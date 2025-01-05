@@ -1,4 +1,4 @@
-const TILE_SIZE = 32;
+const TILE_SIZE = 64;
 const MAGIC_OFFSET = 0.01;
 const GRAVITY_EARTH = 6;
 const GRAVITY_WATER = 1;
@@ -46,7 +46,7 @@ function limitateDown(variable, limit){
 	return variable;
 }
 
-function mirrorar(context){
+function mirrorate(context){
 	context.translate(canvas.width, 0);
 	context.scale(-1, 1);
 }
@@ -75,7 +75,12 @@ function drawShadow(context, entity, oppacity){
 	context.fillStyle = "#000"
 	context.globalAlpha = oppacity;
 	context.beginPath();
-	context.ellipse(entity.centralPoint[0], entity.centralPoint[1] + entity.WorldPos.y - mapaAtual.limites[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y, entity.boxCol.w*0.5, entity.boxCol.p*0.5, 0, 0, 2*Math.PI, true);
+	context.ellipse(
+		entity.centralPoint[0],
+		entity.centralPoint[1] + entity.WorldPos.y - Game.currentMap.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y,
+		entity.boxCol.w*0.5,
+		entity.boxCol.p*0.5,
+		0, 0, 2*Math.PI, true);
 	context.fill();
 	context.stroke();
 	context.closePath();

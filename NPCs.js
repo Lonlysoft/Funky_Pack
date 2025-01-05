@@ -23,6 +23,9 @@ class NonPlayableChar{
 			scriptedBehavior(this, this.behaviorArr);
 		}
 	}
+	draw(){
+		
+	}
 }
 
 const BehaviorList = {
@@ -49,6 +52,7 @@ const BehaviorList = {
 	goToZ: function(entity){
 		entity.andar("Z");
 	}
+	
 }
 
 //ele pega um array e checa se ele chegou. s

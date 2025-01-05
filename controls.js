@@ -115,18 +115,18 @@ const Ctrl = {
 		Ctrl.testBtns(event.targetTouches);
 	},
 	stateSave(){
-		this.state.up = Ctrl.Btns[1].active;
-		this.state.down = Ctrl.Btns[3].active;
-		this.state.east = Ctrl.Btns[0].active;
-		this.state.west = Ctrl.Btns[2].active;
-		this.state.A = Ctrl.Btns[10].active;
-		this.state.B = Ctrl.Btns[8].active;
-		this.state.Y = Ctrl.Btns[9].active;
-		this.state.start = Ctrl.Btns[13].active;
-		this.state.select = Ctrl.Btns[11].active;
-		this.state.zed = Ctrl.Btns[12].active;
-		this.state.L = Ctrl.Btns[15].active;
-		this.state.X = Ctrl.Btns[14].active;
+		Ctrl.state.up = Ctrl.Btns[1].active;
+		Ctrl.state.down = Ctrl.Btns[3].active;
+		Ctrl.state.east = Ctrl.Btns[0].active;
+		Ctrl.state.west = Ctrl.Btns[2].active;
+		Ctrl.state.A = Ctrl.Btns[10].active;
+		Ctrl.state.B = Ctrl.Btns[8].active;
+		Ctrl.state.Y = Ctrl.Btns[9].active;
+		Ctrl.state.start = Ctrl.Btns[13].active;
+		Ctrl.state.select = Ctrl.Btns[11].active;
+		Ctrl.state.zed = Ctrl.Btns[12].active;
+		Ctrl.state.L = Ctrl.Btns[15].active;
+		Ctrl.state.X = Ctrl.Btns[14].active;
 	},
 	action(argumentEntity, type){
 		let contanter = 0
@@ -142,7 +142,7 @@ const Ctrl = {
 					UI.title.selectedOption = 1;
 					UI.title.optionDOM[1].classList.add("selected");
 				}
-				if((Ctrl.Btns[13].active && this.state.start == false) || (Ctrl.Btns[10].active && this.state.A == false)){
+				if((Ctrl.Btns[13].active && Ctrl.state.start == false) || (Ctrl.Btns[10].active && Ctrl.state.A == false)){
 					Game.requestTransition = true;
 					Game.buffer = UI.title.options[UI.title.selectedOption];
 				}
@@ -159,37 +159,37 @@ const Ctrl = {
 					UI.loadGame.selectedOption = 1;
 					UI.loadGame.optionDOM[1].classList.add("selected");
 				}
-				if((Ctrl.Btns[13].active && this.state.start == false) || (Ctrl.Btns[10].active && this.state.A == false)){
+				if((Ctrl.Btns[13].active && Ctrl.state.start == false) || (Ctrl.Btns[10].active && Ctrl.state.A == false)){
 					Game.requestTransition = true;
 					Game.buffer = UI.loadGame.options[UI.title.selectedOption];
 				}
-				if(Ctrl.Btns[8].active && this.state.B == false){
+				if(Ctrl.Btns[8].active && Ctrl.state.B == false){
 					Game.requestTransition = true;
 					Game.buffer = GameMomentSav;
 				}
 			break;
 			case "pause":
-				if(Ctrl.Btns[13].active && this.state.start == false){
-					gameFeature.pause = false;
+				if(Ctrl.Btns[13].active && Ctrl.state.start == false){
+					GameMoment = GameMomentSav;
 				}
-				if(Ctrl.Btns[0].active && this.state.east == false){ //↖⬆↗
+				if(Ctrl.Btns[0].active && Ctrl.state.east == false){ //↖⬆↗
 					UI.pauseItem[PauseMenu.opcaoSelecionada].classList.remove("selected");
 					PauseMenu.opcaoSelecionada--;
 					PauseMenu.opcaoSelecionada = PauseMenu.opcaoSelecionada%4;
 					UI.pauseItem[PauseMenu.opcaoSelecionada].classList.add("selected");
 				}
-				else if(Ctrl.Btns[2].active && this.state.west == false){ //↙⬇↘
+				else if(Ctrl.Btns[2].active && Ctrl.state.west == false){ //↙⬇↘
 					UI.pauseItem[PauseMenu.opcaoSelecionada].classList.remove("selected");
 					PauseMenu.opcaoSelecionada++;
 					PauseMenu.opcaoSelecionada = PauseMenu.opcaoSelecionada%4;
 					UI.pauseItem[PauseMenu.opcaoSelecionada].classList.add("selected");
 					
 				}
-				else if(Ctrl.Btns[8].active && this.state.B == false){//B
+				else if(Ctrl.Btns[8].active && Ctrl.state.B == false){//B
 					gameFeature.camada--;
 					PauseMenu.regredirNaLayer();
 				}
-				else if(Ctrl.Btns[10].active && this.state.A == false){//A
+				else if(Ctrl.Btns[10].active && Ctrl.state.A == false){//A
 					gameFeature.camada++;
 					PauseMenu.avancarNaLayer();
 				}
@@ -198,72 +198,72 @@ const Ctrl = {
 			case "character":
 				if(Ctrl.Btns[0].active){//⬅
 					argumentEntity.pol = -1;
-					argumentEntity.andar("x");
-					argumentEntity.direction = "W";
+					argumentEntity.walk("x");
+					argumentEntity.dir = "W";
 				}
 				else if(Ctrl.Btns[1].active){//⬆
-					argumentEntity.direcao = "N";
+					argumentEntity.dir = "N";
 					argumentEntity.pol = -1;
-					argumentEntity.andar("z");
+					argumentEntity.walk("z");
 					
 				}
 				else if(Ctrl.Btns[2].active){ //➡
-					argumentEntity.direcao = "E"
+					argumentEntity.dir = "E"
 					argumentEntity.pol = 1;
-					argumentEntity.andar("x");
+					argumentEntity.walk("x");
 					
 				}
 				else if(Ctrl.Btns[3].active){//⬇
-					argumentEntity.direcao = "S"
+					argumentEntity.dir = "S"
 					argumentEntity.pol = 1;
-					argumentEntity.andar("z");
+					argumentEntity.walk("z");
 					
 				}
 				else if(Ctrl.Btns[4].active){ //↙
-					argumentEntity.direcao = "SW";
+					argumentEntity.dir = "SW";
 					argumentEntity.pol = -0.7;
-					argumentEntity.andar("x");
+					argumentEntity.walk("x");
 					argumentEntity.pol = 0.7;
-					argumentEntity.andar("z");
+					argumentEntity.walk("z");
 					
 				}
 				else if(Ctrl.Btns[5].active){ //↘
-					argumentEntity.direcao = "SE"
+					argumentEntity.dir = "SE"
 					argumentEntity.pol = 0.7;
-					argumentEntity.andar("x");
+					argumentEntity.walk("x");
 					argumentEntity.pol = 0.7;
-					argumentEntity.andar("z");
+					argumentEntity.walk("z");
 					
 				}
 				else if(Ctrl.Btns[6].active){ //↗
-					argumentEntity.direcao = "NE"
+					argumentEntity.dir = "NE"
 					argumentEntity.pol = 0.7;
-					argumentEntity.andar("x");
+					argumentEntity.walk("x");
 					argumentEntity.pol = -0.7;
-					argumentEntity.andar("z");
+					argumentEntity.walk("z");
 					
 				}
 				else if(Ctrl.Btns[7].active){ //↖
-					argumentEntity.direcao = "NW"
+					argumentEntity.dir = "NW"
 					argumentEntity.pol = -0.7;
-					argumentEntity.andar("x");
+					argumentEntity.walk("x");
 					argumentEntity.pol = -0.7;
-					argumentEntity.andar("z");
+					argumentEntity.walk("z");
 					
 				}
 				else{
-					argumentEntity.parar("x");
-					argumentEntity.parar("z");
+					argumentEntity.stop("x");
+					argumentEntity.stop("z");
 				}
 				
-				if(Ctrl.Btns[8].active && argumentEntity.onGround == true && this.state.B == false && !argumentEntity.isSwimming){//jumping
+				if(Ctrl.Btns[8].active && argumentEntity.onGround == true && Ctrl.state.B == false /*&& !argumentEntity.isSwimming*/){//jumping
 					argumentEntity.velocity.y += argumentEntity.JPOW;
 				}
-				else if(!Ctrl.Btns[8].active && !argumentEntity.onGround && !argumentEntity.pulando && this.state.B){//jump velocity basics
+				else if(!Ctrl.Btns[8].active && !argumentEntity.onGround && !argumentEntity.jumping && Ctrl.state.B){//jump velocity basics
 					argumentEntity.velocity.y = 0;
-					argumentEntity.pulando = true;
+					argumentEntity.jumping = true;
 				}
-				else if(Ctrl.Btns[8].active && this.state.B == false && argumentEntity.isSwimming){ //jumping on water
+				else if(Ctrl.Btns[8].active && Ctrl.state.B == false && argumentEntity.isSwimming){ //jumping on water
 					argumentEntity.velocity.y += argumentEntity.JPOW;
 				}
 				if(Ctrl.Btns[9].active){ //Y
@@ -275,7 +275,7 @@ const Ctrl = {
 						argumentEntity.atk();
 					}
 				}
-				if(Ctrl.Btns[10].active && this.state.A == false && col.interagir(argumentEntity)){ //A interação
+				if(Ctrl.Btns[10].active && Ctrl.state.A == false && col.interagir(argumentEntity)){ //A interação
 					/*
 					if(interagivel === true){
 						//procurar personagem que fala ()
@@ -287,21 +287,21 @@ const Ctrl = {
 					}
 					*/
 				}
-				if(Ctrl.Btns[14].active && this.state.X == false){
+				if(Ctrl.Btns[14].active && Ctrl.state.X == false){
 					if(argumentEntity.skills.includes("hold") && argumentEntity.skills.includes("release")){
 						argumentEntity.doSkill("hold");
 					}
 				}
-				if(Ctrl.Btns[15].active && this.state.L == false){
+				if(Ctrl.Btns[15].active && Ctrl.state.L == false){
 					if(!argumentEntity.onGround && argumentEntity.skills.includes("dashDive")){
 						argumentEntity.doSkill("dashDive");
 						argumentEntity.atk();
 					}
 				}
-				if(Ctrl.Btns[11].active && this.state.select == false){
+				if(Ctrl.Btns[11].active && Ctrl.state.select == false){
 					argumentEntity.mao = (mao+1)%argumentEntity.tail.length;
 				}
-				if(Ctrl.Btns[13].active && this.state.start == false){//start
+				if(Ctrl.Btns[13].active && Ctrl.state.start == false){//start
 					gameFeature.pause = true
 					gameFeature.camada = 1
 				}
@@ -309,9 +309,9 @@ const Ctrl = {
 			break;
 			case "wallCleaner":
 				if(Ctrl.Btns[0].active){//⬅
-					argumentEntity.direcao = "W"
+					argumentEntity.dir = "W"
 					argumentEntity.pol = -1;
-					argumentEntity.andar("x");
+					argumentEntity.walk("x");
 				}
 				else if(Ctrl.Btns[1].active){//⬆
 					if(!WallCleaner.isControllingStrolling){
@@ -323,9 +323,9 @@ const Ctrl = {
 					}
 				}
 				else if(Ctrl.Btns[2].active){ //➡
-					argumentEntity.direcao = "E"
+					argumentEntity.dir = "E"
 					argumentEntity.pol = 1;
-					argumentEntity.andar("x");
+					argumentEntity.walk("x");
 				}
 				else if(Ctrl.Btns[3].active){//⬇
 					if(!WallCleaner.isControllingStrolling){
@@ -337,10 +337,10 @@ const Ctrl = {
 					}
 				}
 				else{
-					argumentEntity.parar("x");
-					argumentEntity.parar("z");
+					argumentEntity.stop("x");
+					argumentEntity.stop("z");
 				}
-				if(Ctrl.Btns[10].active && this.state.A == false){ //A interação 
+				if(Ctrl.Btns[10].active && Ctrl.state.A == false){ //A interação 
 					if(argumentEntity.pol < 0 && WallCleaner.stroller.x == argumentEntity.boxCol.x){
 						WallCleaner.isControllingStroller = !WallCleaner.isControllingStroller;
 					}

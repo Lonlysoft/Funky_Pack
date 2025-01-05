@@ -1,4 +1,4 @@
-/*file to keep colisions out of things*/
+/*file to keep Colisions out of things*/
 
 function saveCoords(entityBoxCol){
 	entityBoxCol.oldX = entityBoxCol.x;
@@ -6,12 +6,6 @@ function saveCoords(entityBoxCol){
 	entityBoxCol.oldZ = entityBoxCol.z;
 }
 
-function handleOld(){
-	saveCoords(personagemAtual.boxCol);
-	for(let i = 0; i < arrayDeInimigos.length; i++){
-		saveCoords(arrayDeInimigos[i].boxCol);
-	}
-}
 
 const Col = {
 	AABB: function(retangulo1, retangulo2){
@@ -28,13 +22,13 @@ const Col = {
 		let bottomRight = Game.currentMap.shadowGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w+entity.velocity.x, TILE_SIZE)];
 		let maxValue = maxVal([topLeft, topRight, bottomLeft, bottomRight])
 		entity.layer = maxValue;
-		//inserir sublayer baseado na colisão de sombra do inimigo
+		//inserir sublayer baseado na Colisão de sombra do inimigo
 		for(let i = 0; i < arrayDeInimigos.length; i++){
 			if(i == num) continue;
 			this.handleShadowObjects(entity, arrayDeInimigos[i].shadow, arrayDeInimigos[i].layer, arrayDeInimigos[i].sublayer);
 		}
-		for(let i = 0; i < arrayDeItens.length; i++){
-			this.handleShadowObjects(entity, arrayDeItens[i].shadow, arrayDeItens[i].layer, arrayDeItens[i].sublayer);
+		for(let i = 0; i < Game.ItemArr.length; i++){
+			this.handleShadowObjects(entity, Game.ItemArr[i].shadow, Game.ItemArr[i].layer, Game.ItemArr[i].sublayer);
 		}
 	},
 	
@@ -137,7 +131,7 @@ const Col = {
 		cu.z = undefined;
 	},
 	
-	//types of collision material
+	//types of Collision material
 	solid: function(entity, cube){
 		this.top(entity, cube)
 		this.left(entity, cube)
@@ -189,10 +183,10 @@ const Col = {
 		return false;
 	},
 	
-	agua: function(entity, cube){
+	water: function(entity, cube){
 		if(entity.boxCol.y < cube.y && entity.boxCol.oldY >= cube.y){
 			//entity.velocity.y = 0;
-			entity.gravidade = GRAVIDADE_NA_AGUA;
+			entity.gravity = gravity_NA_AGUA;
 			return true;
 		}
 	},
@@ -253,7 +247,7 @@ const Col = {
 	ladder: function(){
 		
 	},
-	//isdo aqui é relativo ao colisionador de slopes
+	//isdo aqui é relativo ao Colisionador de slopes
 	slopeTop: function(entity, cube, slope, y_offset, axis){
 		let dimen = (axis == "x")? "w" : "p"
 		let originX = cube[axis];
@@ -282,30 +276,30 @@ const Col = {
 	
 	handleYcoords(entity){
 		//entity.pontoCentral[1] -= entity.velocity.y;
-		let top = Game.currentMap.limites[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)].y
-		let bottom = Game.currentMap.limites[WorldToGrid(entity.boxCol.z + entity.boxCol.p, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y;
-		let left = Game.currentMap.limites[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y;
-		let right = Game.currentMap.limites[WorldToGrid(entity.boxCol.z+entity.boxCol.p, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)].y;;
-		let currLim = Game.currentMap.limites[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.WorldPos.x, TILE_SIZE)].y;
+		let top = Game.currentMap.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)].y
+		let bottom = Game.currentMap.bounds[WorldToGrid(entity.boxCol.z + entity.boxCol.p, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y;
+		let left = Game.currentMap.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y;
+		let right = Game.currentMap.bounds[WorldToGrid(entity.boxCol.z+entity.boxCol.p, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)].y;;
+		let currLim = Game.currentMap.bounds[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.WorldPos.x, TILE_SIZE)].y;
 		//não é a melhor forma de fazer isso pois é 4*O(N) todos os frames.
 		let solidObjectArray = []
-		for(let i = 0; i < arrayDeItens.length; i++){
-			if(arrayDeItens[i].tipo == "solidObject"){
-				solidObjectArray.push(arrayDeItens[i]);
+		for(let i = 0; i < Game.ItemArr.length; i++){
+			if(Game.ItemArr[i].tipo == "solidObject"){
+				solidObjectArray.push(Game.ItemArr[i]);
 			}
 		}
 		if((!isOnGround(entity.WorldPos.y, top) && !isOnGround(entity.WorldPos.y, left) && !isOnGround(entity.WorldPos.y, right) && !isOnGround(entity.WorldPos.y, bottom))){
-			entity.velocity.y -= entity.gravidade;
+			entity.velocity.y -= entity.gravity;
 			entity.onGround = false;
 		}
 		else{
 			entity.velocity.y = 0;
 			entity.onGround = true;
-			entity.pulando = false
+			entity.jumping = false
 		}
 		if(isOnGround(entity.WorldPos.y, currLim) && entity.WorldPos.y < currLim){
 			entity.WorldPos.y = currLim;
-			entity.pontoCentral[1] = CentroDaTela[1];
+			entity.pontoCentral[1] = Game.SCREEN_CENTER[1];
 		}
 	},
 	
@@ -325,22 +319,23 @@ const Col = {
 			//aqui teria uma tela de game over porque ele tà out of bounds
 		}
 		
-		if(entity.WorldPos.x>=((Game.currentMap.largura)*TILE_SIZE)-entity.boxCol.w/2){
-			entity.WorldPos.x = ((Game.currentMap.largura)*TILE_SIZE)-entity.boxCol.w*0.5;
-			entity.boxCol.x = Game.currentMap.largura*TILE_SIZE-entity.boxCol.w-MAGIC_OFFSET;
+		if(entity.WorldPos.x>=((Game.currentMap.width)*TILE_SIZE)-entity.boxCol.w/2){
+			entity.WorldPos.x = ((Game.currentMap.width)*TILE_SIZE)-entity.boxCol.w*0.5;
+			entity.boxCol.x = Game.currentMap.width*TILE_SIZE-entity.boxCol.w-MAGIC_OFFSET;
 			entity.velocity.x = 0;
 		}
 		
-		if(entity.WorldPos.z>=((Game.currentMap.altura)*TILE_SIZE)-entity.boxCol.p*0.5){
-			entity.WorldPos.z = ((Game.currentMap.altura)*TILE_SIZE)-entity.boxCol.p*0.5;
-			entity.boxCol.z = Game.currentMap.altura*TILE_SIZE-entity.boxCol.p-MAGIC_OFFSET;
+		if(entity.WorldPos.z>=((Game.currentMap.height)*TILE_SIZE)-entity.boxCol.p*0.5){
+			entity.WorldPos.z = ((Game.currentMap.height)*TILE_SIZE)-entity.boxCol.p*0.5;
+			entity.boxCol.z = Game.currentMap.height*TILE_SIZE-entity.boxCol.p-MAGIC_OFFSET;
 			entity.velocity.z = 0;
 			
 			//aqui tbm
 		}
 		
-		entity.nadando = false;
-		entity.gravidade = GRAVIDADE_NA_TERRA;
+		
+		entity.isSwimming = false;
+		entity.gravity = GRAVITY_EARTH;
 		
 		let curLimStartZ = WorldToGrid(entity.WorldPos.z - entity.boxCol.p*0.5, TILE_SIZE);
 		let curLimEndZ = WorldToGrid(entity.WorldPos.z + entity.boxCol.p*0.5, TILE_SIZE);
@@ -352,7 +347,7 @@ const Col = {
 		let playerCubeCol = [entity.boxCol.x, entity.boxCol.z, entity.boxCol.w, entity.boxCol.p, entity.boxCol.y, entity.boxCol.h]
 		
 		
-		//começou as colisões em relação ao tileset
+		//começou as Colisões em relação ao tileset
 		let x_intro = Math.floor(Camera.x/TILE_SIZE);
 		let x_end = Math.floor((Camera.x+Camera.w)/TILE_SIZE);
 		let y_intro = Math.floor(Camera.y/TILE_SIZE);
@@ -360,37 +355,19 @@ const Col = {
 		
 		if(x_intro < 0) x_intro = 0;
 		if(y_intro < 0) y_intro = 0;
-		if(x_end > Game.currentMap.largura) x_end = Game.currentMap.largura;
-		if(y_end > Game.currentMap.altura) y_end = Game.currentMap.altura;
+		if(x_end > Game.currentMap.width) x_end = Game.currentMap.width;
+		if(y_end > Game.currentMap.height) y_end = Game.currentMap.height;
 		
 		let playerBoxCol = [entity.boxCol.x, entity.boxCol.z, entity.boxCol.w, entity.boxCol.p, entity.boxCol.y, entity.boxCol.h]
-		//comparar colisoes com os inimigos 
-		let enemiesBox;
-		for(let i = 0; i < arrayDeInimigos.length; i++){
-			enemiesBox = [arrayDeInimigos[i].boxCol.x, arrayDeInimigos[i].boxCol.z, arrayDeInimigos[i].boxCol.w, arrayDeInimigos[i].boxCol.p, arrayDeInimigos[i].boxCol.y, arrayDeInimigos[i].boxCol.h]
-			if(col.AABB(playerBoxCol, enemiesBox) && isOnGround(entity.WorldPos.y, arrayDeInimigos[i].boxCol.y) && num == -1 && !entity.invensibilidade){
-				entity.velocity.x = 0;
-				entity.velocity.z = 0;
-				entity.boxCol.x = arrayDeInimigos[i].boxCol.x + entity.boxCol.w;
-				entity.boxCol.z = arrayDeInimigos[i].boxCol.z + entity.boxCol.p;
-				entity.hp -= 10;
-				entity.invensibilidade = true;
-			}
-		}
-		
-		//colisionar com os NPCs 
-		
-		
-		
-		//comparar colisoes com os itens presentes
+		//comparar Colisoes com os itens presentes
 		if(num == -1){
 			let itensBox;
-			for(let i = 0; i < arrayDeItens.length; i++){
-				itensBox = [arrayDeItens[i].boxCol.x, arrayDeItens[i].boxCol.z, arrayDeItens[i].boxCol.w, arrayDeItens[i].boxCol.p];
-				if(col.AABB(playerBoxCol, itensBox) && isOnGround(entity.WorldPos.y, arrayDeItens[i].boxCol.y)){
-					col[arrayDeItens[i].tipo](entity, arrayDeItens[i]);
-					if(arrayDeItens[i].equivalente == "coletavelinstantaneo"){
-						arrayDeItens.splice(i, i);
+			for(let i = 0; i < Game.ItemArr.length; i++){
+				itensBox = [Game.ItemArr[i].boxCol.x, Game.ItemArr[i].boxCol.z, Game.ItemArr[i].boxCol.w, Game.ItemArr[i].boxCol.p];
+				if(Col.AABB(playerBoxCol, itensBox) && isOnGround(entity.WorldPos.y, Game.ItemArr[i].boxCol.y)){
+					Col[Game.ItemArr[i].tipo](entity, Game.ItemArr[i]);
+					if(Game.ItemArr[i].equivalente == "Coletavelinstantaneo"){
+						Game.ItemArr.splice(i, i);
 					}
 				}
 			}
@@ -401,29 +378,31 @@ const Col = {
 		
 		for(let j = x_intro; j < x_end; j++){
 			for(let i = y_intro; i < y_end; i++){
-				if(entity.WorldPos.y < Game.currentMap.limites[i][j].y){
-					mapBoxCol = [Game.currentMap.limites[i][j].x, Game.currentMap.limites[i][j].z, TILE_SIZE, TILE_SIZE];
-					if(col.AABB(playerBoxCol, mapBoxCol)){
-						col[Game.currentMap.limites[i][j].tipo](entity, Game.currentMap.limites[i][j])
+				if(entity.WorldPos.y < Game.currentMap.bounds[i][j].y){
+					mapBoxCol = [Game.currentMap.bounds[i][j].x, Game.currentMap.bounds[i][j].z, TILE_SIZE, TILE_SIZE];
+					if(Col.AABB(playerBoxCol, mapBoxCol)){
+						Col[Game.currentMap.bounds[i][j].tipo](entity, Game.currentMap.bounds[i][j]);
 					}
 				}
-				if(Game.currentMap.temAgua && entity.WorldPos.y < Game.currentMap.aguaLimites[i][j].y){
-					waterBoxCol = [Game.currentMap.aguaLimites[i][j].x, Game.currentMap.aguaLimites[i][j].z, TILE_SIZE, TILE_SIZE];
-					if(col.AABB(playerBoxCol, waterBoxCol)){
-						entity.nadando = true;
-						col[Game.currentMap.aguaLimites[i][j].tipo](entity, Game.currentMap.aguaLimites[i][j]);
+				if(Game.currentMap.hasWater && entity.WorldPos.y < Game.currentMap.waterBounds[i][j].y){
+					waterBoxCol = [Game.currentMap.waterBounds[i][j].x, Game.currentMap.waterBounds[i][j].z, TILE_SIZE, TILE_SIZE];
+					if(Col.AABB(playerBoxCol, waterBoxCol)){
+						entity.isSwimming = true;
+						Col[Game.currentMap.waterBounds[i][j].tipo](entity, Game.currentMap.waterBounds[i][j]);
 					}
 				}
 			}//fim for
-		}//fim for 
+		}//fim for
+		
 		entity.WorldPos.x = entity.boxCol.x + entity.boxCol.w/2;
 		entity.WorldPos.z = entity.boxCol.z + entity.boxCol.p/2;
 		entity.boxCol.y = entity.WorldPos.y + entity.boxCol.h;
+		this.handleYcoords(entity);
 	}
 }
 
 //num serve apenas pra ser compatível com os inimigos
-//fim colisionar
+//fim Colisionar
 function isOnGround(entitY, struturY){
 	return entitY <= struturY;
 }

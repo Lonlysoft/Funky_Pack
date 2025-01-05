@@ -8,7 +8,10 @@ const UI = {
 		barDOM: document.querySelector(".charWin__HPbar"),
 		charName: document.querySelector(".charName")
 	},
-	pauseDOM: 0,
+	pauseDOM: document.querySelector(".pause"),
+	pauseItems:{
+		
+	},
 	jobTableDOM: document.querySelector(".schedule"),
 	waiterHud: 0,
 	charWindowDOM: document.querySelector(".charWin"),
@@ -54,5 +57,11 @@ const UI = {
 	},
 	scheduleDismiss(){
 		this.scheduleDOM.style.display = "none";
+	},
+	pauseStart(){
+		this.pauseDOM.style.display = "flex";
+	},
+	pauseDismiss(){
+		this.pauseDOM.style.display = "none";
 	}
 }

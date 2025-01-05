@@ -6,7 +6,7 @@ const Scenery = {
 			MAPS[LevelNumber]["hasWater"], MAPS[LevelNumber]["groundTileSet"], 
 			MAPS[LevelNumber]["structureTileSet"], MAPS[LevelNumber]["shadowGrid"],
 			MAPS[LevelNumber]["ang"], MAPS[LevelNumber]["groundElevation"], 
-			MAPS[LevelNumber]["teleportAndPlayerSpawnGrid"], MAPS[LevelNumber]["itemsGrid"], MAPS[LevelNumber]["waterGrid"]
+			MAPS[LevelNumber]["beingGrid"], MAPS[LevelNumber]["itemsGrid"], MAPS[LevelNumber]["waterGrid"]
 		);
 		Game.currentMap.setBoundaries();
 		//Game.currentMap.setNPCs(NPCS);
@@ -33,7 +33,7 @@ const Scenery = {
 			for(let j = 0; j < layers[i].length; j++){
 				layers[i][j].draw();
 			}
-			currentMap.objectGridDraw(i);
+			Game.currentMap.objectGridDraw(i);
 		}
 	}
 }

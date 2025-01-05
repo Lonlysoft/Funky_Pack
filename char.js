@@ -28,23 +28,23 @@ class Being{
 		this.velocity = {x: 0, y: 0, z: 0};
 		this.friction = 0.4;
 		
-		this.direcao = 1;
+		this.direcao = "S";
 		this.grapho = document.querySelector(HTMLsrc);
 		this.layer = 0;
 		this.sublayer = 0;
-		this.sombra = {x: this.boxCol.x, z: this.boxCol.z-this.boxCol.h};
+		this.shadow = {x: this.boxCol.x, z: this.boxCol.z-this.boxCol.h};
 		this.centralPoint = [canvas.width/2, canvas.height/2];
-		this.pulando = false;
+		this.jumping = false;
 		this.sprite = {
 			w: 154,
 			h: 154
 		};
-		this.gravidade = GRAVITY_EARTH;
-		this.frameX;
-		this.frameY;
+		this.gravity = GRAVITY_EARTH;
+		this.frameX = 0;
+		this.frameY = 1;
 	}
 	
-	andar(axis){
+	walk(axis){
 		if(this.velocity[axis] >= this.VMAX){
 			this.velocity[axis] = Number.parseInt(this.VMAX * this.pol);
 		}
@@ -55,7 +55,7 @@ class Being{
 			this.velocity[axis] += Number.parseInt(this.ACL * this.pol);
 		}
 	}
-	parar(axis){
+	stop(axis){
 		this.velocity[axis] *= this.friction;
 		this.velocity[axis] = Number.parseInt(this.velocity[axis])
 	}
@@ -99,7 +99,7 @@ class Protagonist extends Being{
 		this.xp = 0;
 		this.oldDoing = "still"
 		this.invensibility = false;
-		//relacionado à ataques e coisas.
+		
 		this.ATKbox = {x: undefined, y: undefined, z: undefined, w: width, h: height, p: dept, type: "punch"};
 		this.skills = skills;
 		this.section = 0;
@@ -107,30 +107,73 @@ class Protagonist extends Being{
 	}
 	//important
 	update(){
+		saveCoords(this.boxCol)
+		this.onGround = false;
 		this.boxCol.x += this.velocity.x;
 		this.boxCol.z += this.velocity.z;
-		this.boxCol.y = this.WorldPos.y + this.boxCol.h;
+		this.WorldPos.y += this.velocity.y;
+		this.shadow.x = this.boxCol.x;
+		this.shadow.z = this.boxCol.z-this.boxCol.h;
 		if( checkCentralPoint(this.centralPoint[0], this.centralPoint[1]) == false ){
 			this.centralPoint[1]-=this.velocity.z;
 			this.centralPoint[0]-=this.velocity.x;
 		}
 	}
 	//graphics
-	desenhar(){
-		ctx.drawImage(this.grapho, this.frameX*this.sprite.w, this.frameY*this.sprite.h, this.sprite.w, this.sprite.h, this.centralPoint[0]-this.boxCol.h*0.5, this.centralPoint[1]-this.boxCol.h, this.boxCol.h, this.boxCol.h);
+	draw(){
 		drawShadow(ctx, this, 1);
+		let isMirrored = false;
+		let tailInFront = false;
+		switch(this.dir){
+			case 'S': this.frameY = 1; break;
+			case 'N': this.frameY = 2; tailInFront = true; break;
+			case "E": this.frameY = 3; break;
+			case "W": this.frameY = 3; mirrorate(Game.ctx); isMirrored = true; break;
+			case "SE": this.frameY = 4; break;
+			case "SW": this.frameY = 4; mirrorate(Game.ctx); isMirrored = true; break;
+			case "NW": this.frameY = 6.5; break;
+			case "NE": this.frameY = 6.5; mirrorate(Game.ctx); isMirrored = true; break;
+		}
+		
+		//frameX = displayAnim(this.doing, frameX);
+		Game.ctx.drawImage(this.grapho, this.frameX*this.sprite.w, this.frameY*this.sprite.h, this.sprite.w, this.sprite.h, this.centralPoint[0]-this.boxCol.h*0.5, this.centralPoint[1]-this.boxCol.h, this.boxCol.h, this.boxCol.h);
+		if(tailInFront){
+			Game.ctx.drawImage(this.grapho, 0*this.sprite.w, 5.5*this.sprite.h, this.sprite.w, this.sprite.h, this.centralPoint[0]-this.boxCol.h/2*0.5, this.centralPoint[1]-this.boxCol.h/2, this.boxCol.h/2, this.boxCol.h/2);
+		}
+		if(isMirrored){
+			mirrorate(Game.ctx);
+		}
 	}
-	
-	spawnInRelevo(x, y){
-		return mapaAtual.relevoGrid[y][x]*TILE_SIZE;
+	interact(){
+		let box = [0, 0, TILE_SIZE, TILE_SIZE];
+		switch(this.dir){
+			case 'S': box[1] = GridToWorld(WorldToGrid(this.boxCol.x, TILE_SIZE), TILE_SIZE) - box[2]; box[1] = this.boxCol.z; break;
+			case 'N': break;
+			case "E": this.frameY = 3; break;
+			case "W": this.frameY = 3; mirrorate(Game.ctx); isMirrored = true; break;
+			case "SE": this.frameY = 4; break;
+			case "SW": this.frameY = 4; mirrorate(Game.ctx); isMirrored = true; break;
+			case "NW": this.frameY = 6.5; break;
+			case "NE": this.frameY = 6.5; mirrorate(Game.ctx); isMirrored = true; break;
+		}
+		for(let i = 0; i < NPC__arr; i++){
+			if(onGround(this.WorldPos.y, NPC__arr[i].boxCol.y)){
+				if(col.AABB(box, this__box)){
+					UI.dialogBoxStart(NPC__arr[i].dialogs[NPC__arr[i].realtionshipLevelWithYou])
+				}
+			}
+		}
+	}
+	spawnInY(x, y){
+		return Game.currentMap.grndElGrid[y][x]*TILE_SIZE;
 	}
 	spawn(){
-		for(let i = 0; i < mapaAtual.height; i++){
-			for(let j = 0; j < mapaAtual.width; j++){
-				if(mapaAtual.beingGrid[i][j] == "p1"){
+		for(let i = 0; i < Game.currentMap.height; i++){
+			for(let j = 0; j < Game.currentMap.width; j++){
+				if(Game.currentMap.beingGrid[i][j] == "p1"){
 					this.boxCol.x = j*TILE_SIZE;
 					this.boxCol.z = i*TILE_SIZE;
-					this.WorldPos.y = this.spawnInRelevo(j,i);
+					this.WorldPos.y = this.spawnInY(j,i);
 					return true;
 				}
 			}

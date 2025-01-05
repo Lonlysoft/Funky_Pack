@@ -42,15 +42,15 @@ function tipify(num){
 
 //pessoas e NPCS
 class Level{
-	constructor(map__width, map__height, Name, hasWater, groundZero, structureTileSet, shadowGrid, ang, groundElevationGrid, teleportAndPlayerSpawnGrid, itemsGrid, waterGrid = []){
+	constructor(width, height, Name, hasWater, groundZero, structureTileSet, shadowGrid, ang, groundElevationGrid, teleportAndPlayerSpawnGrid, itemsGrid, waterGrid = []){
 		this.groundTileSet = groundZero;
 		this.objectGrid = structureTileSet;
 		this.shadowGrid = shadowGrid;
 		this.ang = ang;
 		this.grndElGrid = groundElevationGrid;
 		this.beingGrid = teleportAndPlayerSpawnGrid;
-		this.map__width = map__width;
-		this.map__height = map__height;
+		this.width = width;
+		this.height = height;
 		this.Name = Name;
 		this.bounds = [];
 		this.inims = [];
@@ -62,18 +62,18 @@ class Level{
 	}
 	
 	setBoundaries(){
-		for(let i = 0; i < this.map__height; i++){
+		for(let i = 0; i < this.height; i++){
 			this.bounds.push(new Array());
-			for(let j = 0; j < this.map__width; j++){
+			for(let j = 0; j < this.width; j++){
 				this.bounds[i].push(new Boundary(j * TILE_SIZE, this.grndElGrid[i][j] * TILE_SIZE, i * TILE_SIZE, tipify(this.ang[i][j])));
 			}
 		}
 	}
 	setWater(){
 		if(this.hasWater){
-			for(let i = 0; i < this.map__height; i++){
+			for(let i = 0; i < this.height; i++){
 				this.waterBounds.push(new Array());
-				for(let j = 0; j < this.map__width; j++){
+				for(let j = 0; j < this.width; j++){
 					this.waterBounds[i].push(new Boundary(j * TILE_SIZE, this.waterGrid[i][j] * TILE_SIZE, i * TILE_SIZE, "water"));
 				}
 			}
@@ -81,9 +81,9 @@ class Level{
 	}
 	
 	setItems(itemSource){
-		for(let i = 0; i < this.map__height; i++){
+		for(let i = 0; i < this.height; i++){
 			this.items.push(new Array());
-			for(let j = 0; j < this.map__width; j++){
+			for(let j = 0; j < this.width; j++){
 				if(this.itemGrid[i][j] > 0){
 					this.items[i].push(new Item(
 							itemSource[ this.itemGrid[i][j] ][0], itemSource[ this.itemGrid[i][j] ][1], 
@@ -108,11 +108,11 @@ class Level{
 			ctx.drawImage(this.groundTileSet, imgX, imgY, 520, 520, 0, 0, 520, 520);
 		}
 		else if(type == 2){
-			DRAW__Grid(ctx, Camera, this.groundTileSet, Game.tileSetGraphics, TILE_SIZE);
+			DRAW__Grid(ctx, Camera, this.groundTileSet, Game.tileSetGraphics, TILE_SIZE, 16);
 		}
 	}
 	
 	objectGridDraw(camada){
-		DRAW__Grid(ctx, Camera, this.objectGrid[camada], map_current_tiles, TILE_SIZE);
+		DRAW__Grid(ctx, Camera, this.objectGrid[camada], Game.tileSetGraphics, TILE_SIZE);
 	}//fim objectDraw
 }// fim Classe levelScenery

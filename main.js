@@ -55,7 +55,6 @@ const Game = {
 		wallCleaner: function(){
 			Game.CurrentCharacter = Characters[0];
 			WallCleaner.start(Game.CurrentCharacter);
-			debug();
 		},
 		newGame: function(){
 			GameMoment = "mainWorld";
@@ -69,24 +68,31 @@ const Game = {
 				}
 			}
 			UI.charWinStart();
-			if(!Scenery.hasDeclair){
+			if(!Scenery.hasDeclaired){
 				Scenery.declair("amCity");
-				CurrentChar = Characters[0];
+				Game.CurrentCharacter = Characters[0];
 				Scenery.hasDeclair = true;
+			}
+			if(!Game.CurrentCharacter.isSpawn && Scenery.hasDeclaired){
+				Game.CurrentCharacter.isSpawn = Game.CurrentCharacter.spawn();
 			}
 			if(Game.isPaused){
 				GameMomentSav = GameMoment;
 				GameMoment = "pause";
 			}
 			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
-			Ctrl.stateSave(); 
+			
 			Ctrl.action(Game.CurrentCharacter, "character");
-			Camera.moveTo(Game.CurrentChararcter.WorldPos.x, Game.CurrentChararcter.WorldPos.z, Game.CurrentChararcter.WorldPos.y);
+			Ctrl.stateSave(); 
+			Ctrl.draw(Ctrl.Btns, Ctrl.graph);
+			Game.CurrentCharacter.update();
 			Col.main(Game.CurrentCharacter, -1);
+			Camera.moveTo(Game.CurrentCharacter.WorldPos.x, Game.CurrentCharacter.WorldPos.z, Game.CurrentCharacter.WorldPos.y);
 			if(frame > fps){
 				Clock.passTime();
 				UI.charWinUpdate(Clock);
 			}
+			debug();
 		},
 		continueGame: function(){
 			if(Game.requestTransition && !Game.appearScreen){
@@ -98,8 +104,8 @@ const Game = {
 			}
 			UI.loadStart();
 			Ctrl.draw(Ctrl.Btns, Ctrl.graph);
-			Ctrl.action(null, "load");
 			Ctrl.stateSave();
+			Ctrl.action(null, "load");
 			Game.ctx.fillStyle = "#000"
 			Game.ctx.fillRect(0, 0, 800, 800);
 			if(Game.requestTransition && Game.appearScreen){
@@ -117,7 +123,7 @@ const Game = {
 }
 
 let GameMoment = 0;
-let GameMomentSav = 'title';
+let GameMomentSav = 'mainWorld';
 let frame = 0
 let frameaux = 0
 
