@@ -22,7 +22,13 @@ const Game = {
 			}
 		},
 		pause: function(){
-			
+			Ctrl.draw(Ctrl.Btns, Ctrl.graph);
+			Ctrl.action(Game.CurrentCharacter, "pause");
+			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			Ctrl.stateSave();
+			Game.ctx.globalAlpha = 0.5;
+			Game.ctx.fillRect(0, 0, Game.canvas.width, Game.canvas.height);
+			Game.ctx.globalAlpha = 1;
 		},
 		title:function(){
 			if(Game.requestTransition && !Game.appearScreen){
@@ -153,8 +159,9 @@ function GamePlay(){
 	if(GameMoment != 0 && Ctrl.canvas.width < Ctrl.canvas.height){
 		GameMomentSav = GameMoment;
 		GameMoment = 0;
+	} else {
+		Game.moment[GameMoment]();
 	}
-	Game.moment[GameMoment]();
 	if(frame > fps){
 		frame = 0;
 	}

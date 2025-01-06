@@ -32,10 +32,6 @@ const UI = {
 		option: ["cookie", "sendFile"],
 		optionDOM: [document.querySelector(".Cookies"), document.querySelector(".SendAFile")]
 	},
-	pause: {
-		selectedOption: 0,
-		option: ["stats", "items", "talk to", "check", "save"]
-	},
 	titleStart(){
 		this.titleDOM.style.display = "flex";
 	},
