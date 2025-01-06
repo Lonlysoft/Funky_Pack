@@ -170,6 +170,7 @@ const Ctrl = {
 			break;
 			case "pause":
 				if(Ctrl.Btns[13].active && Ctrl.state.start == false){
+					UI.pauseDismiss();
 					GameMoment = GameMomentSav;
 				}
 				
@@ -258,7 +259,7 @@ const Ctrl = {
 						argumentEntity.atk();
 					}
 				}
-				if(Ctrl.Btns[10].active && Ctrl.state.A == false && col.interagir(argumentEntity)){ //A interação
+				if(Ctrl.Btns[10].active && Ctrl.state.A == false){ //A interação
 					argumentEntity.interact(Game.NPCarr);
 				}
 				if(Ctrl.Btns[14].active && Ctrl.state.X == false){
@@ -276,6 +277,8 @@ const Ctrl = {
 					argumentEntity.mao = (mao+1)%argumentEntity.tail.length;
 				}
 				if(Ctrl.Btns[13].active && Ctrl.state.start == false){//start
+					UI.charWinDismiss();
+					UI.pauseStart();
 					GameMomentSav = GameMoment;
 					GameMoment = 'pause';
 				}
