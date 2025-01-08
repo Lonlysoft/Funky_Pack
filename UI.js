@@ -10,9 +10,10 @@ const UI = {
 	},
 	pauseDOM: document.querySelector(".pauseMenu"),
 	pauseItems:{
-		talkTo: document.querySelector(".pauseMenu__talkTo"),
-		item: document.querySelector(".pauseMenu__item"),
-		look: document.querySelector("pauseMenu__look")
+		0: document.querySelector(".pauseMenu__talkTo"),
+		1: document.querySelector(".pauseMenu__item"),
+		2: document.querySelector("pauseMenu__look"),
+		selectedOption: 0
 	},
 	jobTableDOM: document.querySelector(".schedule"),
 	waiterHud: 0,

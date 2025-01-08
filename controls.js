@@ -175,7 +175,15 @@ const Ctrl = {
 				}
 				
 				if(Ctrl.Btns[2].active && !Ctrl.state.right){ //right
+					UI.pauseItems[UI.pauseItem.selectedOption].classList.remove("selected");
+					UI.pauseItems.selectedOption++;
+					UI.pauseItems[UI.pauseItem.selectedOption].classList.add("selected");
+				}
+				if(Ctrl.Btns[0].active && !Ctrl.state.left){ //right
+					UI.pauseItems[UI.pauseItem.selectedOption].classList.remove("selected");
+					UI.pauseItems.selectedOption--;
 					
+					UI.pauseItems[UI.pauseItem.selectedOption].classList.add("selected");
 				}
 			break;
 			
