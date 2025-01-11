@@ -3,14 +3,13 @@ this project is an personal project made for:
 - Enhance my skills with frontend and game development
 - Give my characters of the Funky Pack an interactive environment
 - test my english skills
-- put this thing on my portfolio might be good
-- confirm the thesis that it's a media collection not static fetish art only
+- put this thing on my portfolio might be good, I don't know...
 
 # what is it?
 Funky Pack is a game inspired by farming simulators. We all have heard the story of a farming simulator before: <br>
 "There's this guy whose life is not good in the city and then he goes to a farm." <br>
-the only difference between a normal farming simulator and Funky Pack is that the guy here never goes to the farm. He needs to work on the city to then go to a farm to see his family. <br>
-The game takes place in american city. A city that is a mix of my U.S. beliefs. <br>
+the only difference between a normal farming simulator and Funky Pack is that the guy here never goes to the farm. He needs to work on the city.<br>
+The game takes place in American City. A city inspired by the american cartoon stereotype. <br>
 the game follows a structure of a weekly schedule. Dynny builds that schedule based on his jobs.
 
 Full schedule run
