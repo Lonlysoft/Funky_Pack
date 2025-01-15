@@ -174,16 +174,25 @@ const Ctrl = {
 					GameMoment = GameMomentSav;
 				}
 				
-				if(Ctrl.Btns[2].active && !Ctrl.state.right){ //right
-					UI.pauseItems[UI.pauseItem.selectedOption].classList.remove("selected");
+				if(Ctrl.Btns[2].active && !Ctrl.state.west){ //right
+					UI.pauseItems[UI.pauseItems.selectedOption].classList.remove("selected");
 					UI.pauseItems.selectedOption++;
-					UI.pauseItems[UI.pauseItem.selectedOption].classList.add("selected");
-				}
-				if(Ctrl.Btns[0].active && !Ctrl.state.left){ //right
-					UI.pauseItems[UI.pauseItem.selectedOption].classList.remove("selected");
-					UI.pauseItems.selectedOption--;
+					if(UI.pauseItems.selectedOption>UI.pauseItems.optionLength){
+						UI.pauseItems.selectedOption = 0;
+					}
+					UI.pauseItems.alt.innerHTML = UI.pauseItems.optionList[UI.pauseItems.selectedOption];
+					UI.pauseItems[UI.pauseItems.selectedOption].classList.add("selected");
 					
-					UI.pauseItems[UI.pauseItem.selectedOption].classList.add("selected");
+				}
+				if(Ctrl.Btns[0].active && !Ctrl.state.east){ //right
+					UI.pauseItems[UI.pauseItems.selectedOption].classList.remove("selected");
+					UI.pauseItems.selectedOption--;
+					if(UI.pauseItems.selectedOption<0){
+						UI.pauseItems.selectedOption = UI.pauseItems.optionLength;
+					}
+					UI.pauseItems.alt.innerHTML = UI.pauseItems.optionList[UI.pauseItems.selectedOption];
+					UI.pauseItems[UI.pauseItems.selectedOption].classList.add("selected");
+					
 				}
 			break;
 			

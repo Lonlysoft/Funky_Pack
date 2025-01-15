@@ -12,8 +12,12 @@ const UI = {
 	pauseItems:{
 		0: document.querySelector(".pauseMenu__talkTo"),
 		1: document.querySelector(".pauseMenu__item"),
-		2: document.querySelector("pauseMenu__look"),
-		selectedOption: 0
+		2: document.querySelector(".pauseMenu__look"),
+		3: document.querySelector(".pauseMenu__stats"),
+		alt: document.querySelector(".pauseMenu .description"),
+		optionList: ["talk to", "items", "look at", "stats"],
+		selectedOption: 0,
+		optionLength: 3
 	},
 	jobTableDOM: document.querySelector(".schedule"),
 	waiterHud: 0,

@@ -133,10 +133,10 @@
 
 .pauseMenu{
 	display: none;
-	jutify-content: flex-end;
+	justify-content: space-between;
 	align-items: center;
 	background: var(--bg-color);
-	margin-top: 4em;
+	margin-top: 9em;
 	max-width: 100%;
 	padding: 1em;
 	gap: 1em;
@@ -145,6 +145,12 @@
 .pauseMenu .it{
 	width: 2em; height: 2em;
 	background: var(--font-color);
+}
+
+.pauseMenu .description{
+	width: 75%;
+	text-align: right;
+	font-size: 2em;
 }
 
 .pauseMenu .it.selected{

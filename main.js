@@ -158,14 +158,7 @@ function GamePlay(){
 	clear(Game.ctx);
 	clear(BG.ctx);
 	clear(Ctrl.ctx);
-	if(Ctrl.canvas.width < Ctrl.canvas.height){
-		Ctrl.canvas.width = 400;
-		Ctrl.canvas.height = 800;
-	}
-	else{
-		Ctrl.canvas.width = 800;
-		Ctrl.canvas.height = 400;
-	}
+	
 	Game.moment[GameMoment]();
 	if(frame > fps){
 		frame = 0;
