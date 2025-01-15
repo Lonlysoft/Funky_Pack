@@ -23,9 +23,11 @@ const Game = {
 		},
 		pause: function(){
 			Ctrl.draw(Ctrl.Btns, Ctrl.graph);
+			
 			Ctrl.action(Game.CurrentCharacter, "pause");
-			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			Ctrl.stateSave();
+			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			
 			Game.ctx.globalAlpha = 0.5;
 			Game.ctx.fillRect(0, 0, Game.canvas.width, Game.canvas.height);
 			Game.ctx.globalAlpha = 1;

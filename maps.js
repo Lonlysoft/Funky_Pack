@@ -42,8 +42,10 @@ function tipify(num){
 
 //pessoas e NPCS
 class Level{
-	constructor(width, height, Name, hasWater, groundZero, structureTileSet, shadowGrid, ang, groundElevationGrid, teleportAndPlayerSpawnGrid, itemsGrid, waterGrid = []){
+	constructor(width, height, Name, hasWater, groundZero, structureTileSet, shadowGrid, ang, groundElevationGrid, teleportAndPlayerSpawnGrid, itemsGrid, triggerGrid, waterGrid = []){
 		this.groundTileSet = groundZero;
+		this.triggerGrid = triggerGrid;
+		this.triggers = [];
 		this.objectGrid = structureTileSet;
 		this.shadowGrid = shadowGrid;
 		this.ang = ang;
@@ -111,7 +113,23 @@ class Level{
 			DRAW__Grid(ctx, Camera, this.groundTileSet, Game.tileSetGraphics, TILE_SIZE, 16);
 		}
 	}
-	
+	setTriggers(){
+		for(let i = 0; i < this.height; i++){
+			this.items.push(new Array());
+			for(let j = 0; j < this.width; j++){
+				if(this.triggerGrid[i][j] > 0){
+					this.triggers[i].push(new Item(
+							TRIGGERS[ this.triggerGrid[i][j] ]["name"], TRIGGERS[ this.triggerGrid[i][j] ]["function"],
+							j*TILE_SIZE, i*TILE_SIZE, this.grndElGrid[i][j]*TILE_SIZE
+						)
+					);
+					
+				} else{
+					this.triggers[i].push(0);
+				}
+			}
+		}
+	}
 	objectGridDraw(camada){
 		DRAW__Grid(ctx, Camera, this.objectGrid[camada], Game.tileSetGraphics, TILE_SIZE);
 	}//fim objectDraw

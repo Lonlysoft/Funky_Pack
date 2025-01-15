@@ -6,7 +6,8 @@ const Scenery = {
 			MAPS[LevelNumber]["hasWater"], MAPS[LevelNumber]["groundTileSet"], 
 			MAPS[LevelNumber]["structureTileSet"], MAPS[LevelNumber]["shadowGrid"],
 			MAPS[LevelNumber]["ang"], MAPS[LevelNumber]["groundElevation"], 
-			MAPS[LevelNumber]["beingGrid"], MAPS[LevelNumber]["itemsGrid"], MAPS[LevelNumber]["waterGrid"]
+			MAPS[LevelNumber]["beingGrid"], MAPS[LevelNumber]["itemsGrid"],
+			MAPS[LevelNumber]["triggerGrid"], MAPS[LevelNumber]["waterGrid"]
 		);
 		Game.currentMap.setBoundaries();
 		//Game.currentMap.setNPCs(NPCS);
