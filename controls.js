@@ -130,6 +130,7 @@ const Ctrl = {
 	},
 	action(argumentEntity, type){
 		let contanter = 0
+		//pre-config
 		switch(type){
 			case "start":
 				if(Ctrl.Btns[0].active){
@@ -220,7 +221,13 @@ const Ctrl = {
 					argumentEntity.walk("z");
 					
 				}
-				else if(Ctrl.Btns[4].active){ //↙
+				
+				else{
+					argumentEntity.stop("x");
+					argumentEntity.stop("z");
+				}
+				if((Ctrl.Btns[0].active && Ctrl.Btns[3].active) || Ctrl.Btns[4].active){ //↙
+					Ctrl.Btns[0].active = Ctrl.Btns[3].active = true;
 					argumentEntity.dir = "SW";
 					argumentEntity.pol = -0.7;
 					argumentEntity.walk("x");
@@ -228,7 +235,8 @@ const Ctrl = {
 					argumentEntity.walk("z");
 					
 				}
-				else if(Ctrl.Btns[5].active){ //↘
+				else if((Ctrl.Btns[3].active && Ctrl.Btns[2].active) || Ctrl.Btns[5].active){ //↘
+					Ctrl.Btns[2].active = Ctrl.Btns[3].active = true;
 					argumentEntity.dir = "SE"
 					argumentEntity.pol = 0.7;
 					argumentEntity.walk("x");
@@ -236,7 +244,8 @@ const Ctrl = {
 					argumentEntity.walk("z");
 					
 				}
-				else if(Ctrl.Btns[6].active){ //↗
+				else if((Ctrl.Btns[1].active && Ctrl.Btns[2].active) || Ctrl.Btns[6].active){ //↗
+					Ctrl.Btns[1].active = Ctrl.Btns[2].active = true;
 					argumentEntity.dir = "NE"
 					argumentEntity.pol = 0.7;
 					argumentEntity.walk("x");
@@ -244,7 +253,8 @@ const Ctrl = {
 					argumentEntity.walk("z");
 					
 				}
-				else if(Ctrl.Btns[7].active){ //↖
+				else if((Ctrl.Btns[1].active && Ctrl.Btns[0].active) || Ctrl.Btns[7].active){ //↖
+					Ctrl.Btns[1].active = Ctrl.Btns[0].active = true;
 					argumentEntity.dir = "NW"
 					argumentEntity.pol = -0.7;
 					argumentEntity.walk("x");
@@ -252,10 +262,7 @@ const Ctrl = {
 					argumentEntity.walk("z");
 					
 				}
-				else{
-					argumentEntity.stop("x");
-					argumentEntity.stop("z");
-				}
+				
 				
 				if(Ctrl.Btns[8].active && argumentEntity.onGround == true && Ctrl.state.B == false /*&& !argumentEntity.isSwimming*/){//jumping
 					argumentEntity.velocity.y += argumentEntity.JPOW;

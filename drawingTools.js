@@ -1,12 +1,12 @@
 const canvas = document.getElementById("mainCanvas");
 const ctx = canvas.getContext("2d");
-canvas.width = 800; canvas.height = 600;
+canvas.width = 800; canvas.height = 800;
 const controls_canvas = document.getElementById("ctrl");
 const ctrl_ctx = controls_canvas.getContext("2d");
 controls_canvas.width = 800; controls_canvas.height = 400;
 const BG__canvas = document.getElementById("tra");
 const BG__ctx = BG__canvas.getContext("2d");
-BG__canvas.width = 800; BG__canvas.height = 600;
+BG__canvas.width = 800; BG__canvas.height = 800;
 
 function DRAW__Grid(context, cam, grid2Draw, gridImage, tileSize, tileImageSize = tileSize){
 	let x_grid = Math.floor((cam.x)/tileSize);

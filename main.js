@@ -158,7 +158,6 @@ function GamePlay(){
 	clear(Game.ctx);
 	clear(BG.ctx);
 	clear(Ctrl.ctx);
-	
 	Game.moment[GameMoment]();
 	if(frame > fps){
 		frame = 0;

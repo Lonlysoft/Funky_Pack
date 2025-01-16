@@ -1,5 +1,3 @@
-const itemArr = [];
-
 class Item{
 	constructor(ID, value, name, description, type, colType, w, h, p, x, z, y){
 		this.boxCol = new Box(x, y + h, z, w, h, p);
