@@ -56,10 +56,10 @@ const UI = {
 		this.charDOM.style.display = "none";
 	},
 	scheduleStart(){
-		this.scheduleDOM.style.display = "grid";
+		this.jobTableDOM.style.display = "grid";
 	},
 	scheduleDismiss(){
-		this.scheduleDOM.style.display = "none";
+		this.jobTableDOM.style.display = "none";
 	},
 	pauseStart(){
 		this.pauseDOM.style.display = "flex";
