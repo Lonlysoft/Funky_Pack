@@ -1,8 +1,8 @@
 # FUNKY PACK #
-this project is an personal project made for:
+It's a personal project made for:
 - Enhance my skills with frontend and game development
-- Give my characters of the Funky Pack an interactive environment
-- test my english skills
+- Give to my characters of the Funky Pack series an interactive environment
+- test my english skills with writing documentation and dialogs
 - put this thing on my portfolio might be good, I don't know...
 
 # what is it?
@@ -54,3 +54,8 @@ our wealthy badger - he's important for story
 - special partner $1,000,000
 
 - world saver - one way payment - 2,000,001
+
+Current State
+-
+Pause Menu: besides not being that important on most games, Funky Pack uses the pause menu to check Dynny's status and jobs, as well with the usage of items.
+The pause menu and other UI components are made with the HTML engine. That means that yes, it's not a canvas only game.
