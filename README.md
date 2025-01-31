@@ -32,30 +32,31 @@ Dynny needs to work to pay his debt. the work is made via mini games. and at the
 
 
 needs exclusive GameMoment with mechanics and graphics
-- box pusher: 9 - 17 or 7 - 14 $2500
-- office guy: 10 - 4 or 6 - 20 or 18 - 22 $3300
-- elevator technician: when requested. mostly it's a 22 - 23 or 12 - 13 $10000
-- I.T. tester: 7x0 hour decided. $1,000,000
+- box pusher: morning to afternoon $2500
+- office guy: morning, afternoon or night $3300
+- elevator technician: when requested. mostly it's in dawn or night $10000
+- I.T. tester: 7x0. hour randomized $1,000,000
 - trucker: paid by work and kilometree
-- factory worker: 7 - 19
-- caker
-- tree cutter: 8 - 12
+- factory worker: morning to night
+- caker: morning to afternoon
+- tree cutter: morning to evening
 - Who wants to be a milionaire!?
-- glass cleaner: 5x2 7-10
+- glass cleaner: 5x2 morning only
 
 the normal GameMoment covers
 - informant: when requested. paid by work. minimun of $500
-- newspaper delivery: 3x4 5 - 6 $2400
-- pizza deliverer: 6x1 18 - 22. $1,660
+- newspaper delivery: 3x4 early morning $2400
+- pizza deliverer: 6x1 night $1,660
 
 our wealthy badger - he's important for story
-- limo driver $30,000
+- limo driver: when requested. mostly night or morning $30,000
 - personal assistant $40,000
-- special partner $1,000,000
+- special partner: understands you $1,000,000
 
 - world saver - one way payment - 2,000,001
 
 Current State
 -
 Pause Menu: besides not being that important on most games, Funky Pack uses the pause menu to check Dynny's status and jobs, as well with the usage of items.
+The pause menu provides a way to manage your jobs. it's made with a table. The opportunities you collect will be shown in there
 The pause menu and other UI components are made with the HTML engine. That means that yes, it's not a canvas only game.
