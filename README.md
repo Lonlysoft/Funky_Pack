@@ -57,6 +57,12 @@ our wealthy badger - he's important for story
 
 Current State
 -
+Everything is as initial as you can guess. It's not a complicated game, but since it's my first time doing that. It just isn't gonna be easy for a beginner.
+
+Currently my main focus is
+
+Character animation: It's the logic of the character giving visual feedback to the player. This is made using a spritesheet. it's not a hard logic, it's needed three new methods for the being class,a string, a number and an array of animations also coming with a general function to return the number that will change the coordinates of the image acoording with the array postion. I think when a game is written with other programming languages they use methods similar to that with hash tables, or they just don't need to care about animation logic because they actually use an game engine to code their stuff;
+
 Pause Menu: besides not being that important on most games, Funky Pack uses the pause menu to check Dynny's status and jobs, as well with the usage of items.
 The pause menu provides a way to manage your jobs. it's made with a table. The opportunities you collect will be shown in there
 The pause menu and other UI components are made with the HTML engine. That means that yes, it's not a canvas only game.
