@@ -13,7 +13,7 @@ class Box{
 }
 
 class Being{
-	constructor(NOME, HP, ATK, DEF, ACL, VMAX, height, width, dept, HTMLsrc){
+	constructor(NOME, HP, ATK, DEF, ACL, VMAX, height, width, dept, HTMLsrc, animations){
 		this.Nome = NOME;
 		this.HP = HP; this.hp = HP;
 		this.ATK = ATK; this.DEF = DEF;
@@ -28,7 +28,13 @@ class Being{
 		this.velocity = {x: 0, y: 0, z: 0};
 		this.friction = 0.4;
 		
-		this.direcao = "S";
+		
+		this.dir = "S";
+		this.doing = "still";
+		this.oldDoing = "still";
+		this.animationIndex = 0;
+		this.anim = animations;
+		this.isMirrored = false;
 		this.grapho = document.querySelector(HTMLsrc);
 		this.layer = 0;
 		this.sublayer = 0;
@@ -45,6 +51,7 @@ class Being{
 	}
 	
 	walk(axis){
+		this.doing = this.dir == "S" || this.dir == "N"? "walk" : "walkDifferent"
 		if(this.velocity[axis] >= this.VMAX){
 			this.velocity[axis] = Number.parseInt(this.VMAX * this.pol);
 		}
@@ -56,6 +63,7 @@ class Being{
 		}
 	}
 	stop(axis){
+		this.doing = "still"
 		this.velocity[axis] *= this.friction;
 		this.velocity[axis] = Number.parseInt(this.velocity[axis])
 	}
@@ -84,9 +92,9 @@ class Being{
 }
 
 class Protagonist extends Being{
-	constructor(Nome, HP, ATK, DEF, VMIN, VMAX, JMAX, tail, height, width, dept, skills, HTMLsrc){
+	constructor(Nome, HP, ATK, DEF, VMIN, VMAX, JMAX, tail, height, width, dept, skills, HTMLsrc, animations){
 		//relacionado ao movimento
-		super(Nome, HP, ATK, DEF, VMIN, VMAX, height, width, dept, HTMLsrc);
+		super(Nome, HP, ATK, DEF, VMIN, VMAX, height, width, dept, HTMLsrc, animations);
 		this.STR = VMIN;
 		this.JPOW = JMAX;
 		this.onGround = true;
@@ -97,7 +105,6 @@ class Protagonist extends Being{
 		this.tailMaxLength = tail;
 		this.money = 0;
 		this.xp = 0;
-		this.oldDoing = "still"
 		this.invensibility = false;
 		
 		this.ATKbox = {x: undefined, y: undefined, z: undefined, w: width, h: height, p: dept, type: "punch"};
@@ -122,39 +129,62 @@ class Protagonist extends Being{
 	//graphics
 	draw(){
 		drawShadow(ctx, this, 1);
-		let isMirrored = false;
 		let tailInFront = false;
 		switch(this.dir){
 			case 'S': this.frameY = 1; break;
 			case 'N': this.frameY = 2; tailInFront = true; break;
 			case "E": this.frameY = 3; break;
-			case "W": this.frameY = 3; mirrorate(Game.ctx); isMirrored = true; break;
+			case "W": this.frameY = 3; mirrorate(Game.ctx); this.isMirrored = true; break;
 			case "SE": this.frameY = 4; break;
-			case "SW": this.frameY = 4; mirrorate(Game.ctx); isMirrored = true; break;
+			case "SW": this.frameY = 4; mirrorate(Game.ctx); this.isMirrored = true; break;
 			case "NW": this.frameY = 6.5; break;
-			case "NE": this.frameY = 6.5; mirrorate(Game.ctx); isMirrored = true; break;
+			case "NE": this.frameY = 6.5; mirrorate(Game.ctx); this.isMirrored = true; break;
 		}
 		
-		//frameX = displayAnim(this.doing, frameX);
+		this.frameX = displayAnim(this);
 		Game.ctx.drawImage(this.grapho, this.frameX*this.sprite.w, this.frameY*this.sprite.h, this.sprite.w, this.sprite.h, this.centralPoint[0]-this.boxCol.h*0.5, this.centralPoint[1]-this.boxCol.h, this.boxCol.h, this.boxCol.h);
 		if(tailInFront){
 			Game.ctx.drawImage(this.grapho, 0*this.sprite.w, 5.5*this.sprite.h, this.sprite.w, this.sprite.h, this.centralPoint[0]-this.boxCol.h/2*0.5, this.centralPoint[1]-this.boxCol.h/2, this.boxCol.h/2, this.boxCol.h/2);
 		}
-		if(isMirrored){
+		if(this.isMirrored){
 			mirrorate(Game.ctx);
 		}
 	}
 	interact(NPC__arr){
 		let box = [0, 0, TILE_SIZE, TILE_SIZE];
 		switch(this.dir){
-			case 'S': box[1] = GridToWorld(WorldToGrid(this.boxCol.x, TILE_SIZE), TILE_SIZE) - box[2]; box[1] = this.boxCol.z; break;
-			case 'N': break;
-			case "E": this.frameY = 3; break;
-			case "W": this.frameY = 3; mirrorate(Game.ctx); isMirrored = true; break;
-			case "SE": this.frameY = 4; break;
-			case "SW": this.frameY = 4; mirrorate(Game.ctx); isMirrored = true; break;
-			case "NW": this.frameY = 6.5; break;
-			case "NE": this.frameY = 6.5; mirrorate(Game.ctx); isMirrored = true; break;
+			case 'S':
+				box[0] = GridToWorld(WorldToGrid(this.boxCol.x, TILE_SIZE), TILE_SIZE);
+				box[1] = GridToWorld(WorldToGrid(this.boxCol.z + this.boxCol.p, TILE_SIZE), TILE_SIZE);
+				break;
+			case 'N':
+				box[0] = GridToWorld(WorldToGrid(this.boxCol.x, TILE_SIZE), TILE_SIZE);
+				box[1] = GridToWorld(WorldToGrid(this.boxCol.z - this.boxCol.p, TILE_SIZE), TILE_SIZE);
+				break;
+			case "E":
+				box[0] = GridToWorld(WorldToGrid(this.boxCol.x + this.boxCol.w, TILE_SIZE), TILE_SIZE);
+				box[1] = GridToWorld(WorldToGrid(this.boxCol.z, TILE_SIZE), TILE_SIZE);
+				break;
+			case "W":
+				box[0] = GridToWorld(WorldToGrid(this.boxCol.x - this.boxCol.w, TILE_SIZE), TILE_SIZE);
+				box[1] = GridToWorld(WorldToGrid(this.boxCol.z, TILE_SIZE), TILE_SIZE);
+				break;
+			case "SE":
+				box[0] = GridToWorld(WorldToGrid(this.boxCol.x + this.boxCol.w, TILE_SIZE), TILE_SIZE);
+				box[1] = GridToWorld(WorldToGrid(this.boxCol.z + this.boxCol.p, TILE_SIZE), TILE_SIZE);
+				break;
+			case "SW":
+				box[0] = GridToWorld(WorldToGrid(this.boxCol.x - this.boxCol.w, TILE_SIZE), TILE_SIZE);
+				box[1] = GridToWorld(WorldToGrid(this.boxCol.z + this.boxCol.p, TILE_SIZE), TILE_SIZE);
+				break;
+			case "NW":
+				box[0] = GridToWorld(WorldToGrid(this.boxCol.x - this.boxCol.w, TILE_SIZE), TILE_SIZE);
+				box[1] = GridToWorld(WorldToGrid(this.boxCol.z - this.boxCol.p, TILE_SIZE), TILE_SIZE);
+				break;
+			case "NE":
+				box[0] = GridToWorld(WorldToGrid(this.boxCol.x + this.boxCol.w, TILE_SIZE), TILE_SIZE);
+				box[1] = GridToWorld(WorldToGrid(this.boxCol.z - this.boxCol.p, TILE_SIZE), TILE_SIZE);
+				break;
 		}
 		for(let i = 0; i < NPC__arr; i++){
 			if(onGround(this.WorldPos.y, NPC__arr[i].boxCol.y)){

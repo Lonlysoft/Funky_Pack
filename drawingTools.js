@@ -33,3 +33,18 @@ function DRAW__Grid(context, cam, grid2Draw, gridImage, tileSize, tileImageSize 
 		}
 	}
 }
+
+function displayAnim(Character){
+	if(Character.animationIndex < Character.anim[Character.doing].length){
+		Character.animationIndex++;
+	}
+	else{
+		Character.animationIndex = 0;
+	}
+	if(Character.anim[Character.doing][Character.animationIndex] == "m"){
+		Character.mirrored = true;
+		Character.animationIndex++;
+	}
+	fr = Character.anim[Character.doing][Character.animationIndex];
+	return fr;
+}

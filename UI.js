@@ -17,15 +17,23 @@ const UI = {
 		alt: document.querySelector(".pauseMenu .description"),
 		optionList: ["talk to", "items", "look at", "stats"],
 		selectedOption: 0,
-		optionLength: 3
+		optionLength: 3,
+		layer: 0
 	},
 	jobTableDOM: document.querySelector(".schedule"),
+	statsBottomMenu: document.querySelector(".schedule_options"),
 	waiterHud: 0,
 	charWindowDOM: document.querySelector(".charWin"),
 	milionaire: 0,
 	wallCleanerHud: 0,
 	charWinUpdate: function(clock){
 		this.charWin.clockDOM.innerHTML = `${clock.monthList[clock.month]}, ${clock.day} - ${(clock.hour >= 10) ? clock.hour : "0" + (clock.hour +"")}:${(clock.minute >= 10) ? clock.minute : "0" + (clock.minute +"")}`;
+	},
+	jobTableDOM_options:
+	{
+		objs: document.querySelectorAll(".selectable"),
+		optionX: 0,
+		optionY: 0
 	},
 	title: {
 		selectedOption: 0,

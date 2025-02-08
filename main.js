@@ -15,16 +15,19 @@ const Game = {
 	appearScreen: false,
 	alpha: 1,
 	moment: {
-		
 		0: function(){
 			if(controls_canvas.width >= controls_canvas.height){
 				GameMoment = GameMomentSav;
 			}
 		},
 		pause: function(){
-			Ctrl.draw(Ctrl.Btns, Ctrl.graph);
-			
-			Ctrl.action(Game.CurrentCharacter, "pause");
+			//Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
+			switch(UI.pauseItems.layer){
+				case 0: Ctrl.action(Game.CurrentCharacter, "pause"); break;
+				case 1:
+					Ctrl.action(Game.CurrentCharacter, UI.pauseItems.optionList[UI.pauseItems.selectedOption]);
+				break;
+			}
 			Ctrl.stateSave();
 			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			
@@ -43,7 +46,7 @@ const Game = {
 			UI.titleStart();
 			Game.ctx.fillStyle = "#000"
 			Game.ctx.fillRect(0,0,800, 800);
-			Ctrl.draw(Ctrl.Btns, Ctrl.graph);
+			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Ctrl.action(null, "start");
 			Ctrl.stateSave();
 			if(Game.requestTransition && Game.appearScreen){
@@ -92,7 +95,7 @@ const Game = {
 			
 			Ctrl.action(Game.CurrentCharacter, "character");
 			Ctrl.stateSave(); 
-			Ctrl.draw(Ctrl.Btns, Ctrl.graph);
+			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Game.CurrentCharacter.update();
 			Col.main(Game.CurrentCharacter, -1);
 			Camera.moveTo(Game.CurrentCharacter.WorldPos.x, Game.CurrentCharacter.WorldPos.z, Game.CurrentCharacter.WorldPos.y);
@@ -111,7 +114,7 @@ const Game = {
 				}
 			}
 			UI.loadStart();
-			Ctrl.draw(Ctrl.Btns, Ctrl.graph);
+			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Ctrl.stateSave();
 			Ctrl.action(null, "load");
 			Game.ctx.fillStyle = "#000"
