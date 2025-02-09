@@ -51,7 +51,7 @@ class Being{
 	}
 	
 	walk(axis){
-		this.doing = this.dir == "S" || this.dir == "N"? "walk" : "walkDifferent"
+		this.doing = this.dir == "S" || this.dir == "N"? "walk" : "walkDifferent";
 		if(this.velocity[axis] >= this.VMAX){
 			this.velocity[axis] = Number.parseInt(this.VMAX * this.pol);
 		}
@@ -146,8 +146,9 @@ class Protagonist extends Being{
 		if(tailInFront){
 			Game.ctx.drawImage(this.grapho, 0*this.sprite.w, 5.5*this.sprite.h, this.sprite.w, this.sprite.h, this.centralPoint[0]-this.boxCol.h/2*0.5, this.centralPoint[1]-this.boxCol.h/2, this.boxCol.h/2, this.boxCol.h/2);
 		}
-		if(this.isMirrored){
+		if(this.isMirrored){//get back to normal state
 			mirrorate(Game.ctx);
+			this.isMirrored = false;
 		}
 	}
 	interact(NPC__arr){

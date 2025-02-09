@@ -35,14 +35,15 @@ function DRAW__Grid(context, cam, grid2Draw, gridImage, tileSize, tileImageSize 
 }
 
 function displayAnim(Character){
-	if(Character.animationIndex < Character.anim[Character.doing].length){
+	if(Character.animationIndex < Character.anim[Character.doing].length-1){
 		Character.animationIndex++;
 	}
 	else{
 		Character.animationIndex = 0;
 	}
 	if(Character.anim[Character.doing][Character.animationIndex] == "m"){
-		Character.mirrored = true;
+		Character.isMirrored = true;
+		mirrorate(Game.ctx);
 		Character.animationIndex++;
 	}
 	fr = Character.anim[Character.doing][Character.animationIndex];
