@@ -51,7 +51,9 @@ class Being{
 	}
 	
 	walk(axis){
-		this.doing = this.dir == "S" || this.dir == "N"? "walk" : "walkDifferent";
+		if(this.doing != "jump"){
+			this.doing = (this.dir == "S" || this.dir == "N") ? "walk" : "walkDifferent";
+		}
 		if(this.velocity[axis] >= this.VMAX){
 			this.velocity[axis] = Number.parseInt(this.VMAX * this.pol);
 		}
@@ -134,20 +136,29 @@ class Protagonist extends Being{
 			case 'S': this.frameY = 1; break;
 			case 'N': this.frameY = 2; tailInFront = true; break;
 			case "E": this.frameY = 3; break;
-			case "W": this.frameY = 3; mirrorate(Game.ctx); this.isMirrored = true; break;
+			case "W": this.frameY = 3; mirrorateToAPoint(Game.ctx, this.centralPoint[0], this.centralPoint[1]); this.isMirrored = true; break;
 			case "SE": this.frameY = 4; break;
-			case "SW": this.frameY = 4; mirrorate(Game.ctx); this.isMirrored = true; break;
+			case "SW": this.frameY = 4; mirrorateToAPoint(Game.ctx, this.centralPoint[0], this.centralPoint[1]); this.isMirrored = true; break;
 			case "NW": this.frameY = 6.5; break;
-			case "NE": this.frameY = 6.5; mirrorate(Game.ctx); this.isMirrored = true; break;
+			case "NE": this.frameY = 6.5; mirrorateToAPoint(Game.ctx, this.centralPoint[0], this.centralPoint[1]); this.isMirrored = true; break;
 		}
 		
 		this.frameX = displayAnim(this);
-		Game.ctx.drawImage(this.grapho, this.frameX*this.sprite.w, this.frameY*this.sprite.h, this.sprite.w, this.sprite.h, this.centralPoint[0]-this.boxCol.h*0.5, this.centralPoint[1]-this.boxCol.h, this.boxCol.h, this.boxCol.h);
+		
+		Game.ctx.drawImage(this.grapho,
+			this.frameX*this.sprite.w,
+			this.frameY*this.sprite.h,
+			this.sprite.w, this.sprite.h,
+			this.centralPoint[0]-this.boxCol.h*0.5,
+			this.centralPoint[1]-this.boxCol.h+this.boxCol.p*0.25,
+			this.boxCol.h, this.boxCol.h
+		);
+		
 		if(tailInFront){
 			Game.ctx.drawImage(this.grapho, 0*this.sprite.w, 5.5*this.sprite.h, this.sprite.w, this.sprite.h, this.centralPoint[0]-this.boxCol.h/2*0.5, this.centralPoint[1]-this.boxCol.h/2, this.boxCol.h/2, this.boxCol.h/2);
 		}
 		if(this.isMirrored){//get back to normal state
-			mirrorate(Game.ctx);
+			mirrorateToAPoint(Game.ctx, this.centralPoint[0], this.centralPoint[1]);
 			this.isMirrored = false;
 		}
 	}

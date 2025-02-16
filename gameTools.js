@@ -50,6 +50,11 @@ function mirrorate(context){
 	context.translate(canvas.width, 0);
 	context.scale(-1, 1);
 }
+function mirrorateToAPoint(context, x, y){
+	context.translate(x, y);
+	context.scale(-1, 1);
+	context.translate(-x, -y);
+}
 
 function zoomIn(context){
 	context.scale(2, 2)
@@ -80,7 +85,8 @@ function drawShadow(context, entity, oppacity){
 		entity.centralPoint[1] + entity.WorldPos.y - Game.currentMap.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y,
 		entity.boxCol.w*0.5,
 		entity.boxCol.p*0.5,
-		0, 0, 2*Math.PI, true);
+		0, 0, 2*Math.PI, true
+	);
 	context.fill();
 	context.stroke();
 	context.closePath();

@@ -209,22 +209,35 @@ const Ctrl = {
 			}
 		},
 		
+		dialogs: function(argumentEntity){
+			if(Ctrl.Btns.A.active && Ctrl.state.A == false){
+				Game.dialogBox.buffer++;
+				if(Game.dialogBox.buffer == undefined){
+					Game.dialogBox.buffer = 0;
+					Game.dialogBox.end();
+				}
+			}
+		},
+		
 		character: function(argumentEntity){
 			if(Ctrl.Btns.west.active){//⬅
+				argumentEntity.dir = "W";
 				argumentEntity.pol = -1;
 				argumentEntity.walk("x");
-				argumentEntity.dir = "W";
-			}
-			else if(Ctrl.Btns.up.active){//⬆
-				argumentEntity.dir = "N";
-				argumentEntity.pol = -1;
-				argumentEntity.walk("z");
-				
 			}
 			else if(Ctrl.Btns.east.active){ //➡
 				argumentEntity.dir = "E"
 				argumentEntity.pol = 1;
 				argumentEntity.walk("x");
+				
+			}
+			else{
+				argumentEntity.stop("x");
+			}
+			if(Ctrl.Btns.up.active){//⬆
+				argumentEntity.dir = "N";
+				argumentEntity.pol = -1;
+				argumentEntity.walk("z");
 				
 			}
 			else if(Ctrl.Btns.down.active){//⬇
@@ -234,7 +247,6 @@ const Ctrl = {
 				
 			}
 			else{
-				argumentEntity.stop("x");
 				argumentEntity.stop("z");
 			}
 			if((Ctrl.Btns.west.active && Ctrl.Btns.down.active) || Ctrl.Btns.southwest.active){ //↙
@@ -275,7 +287,8 @@ const Ctrl = {
 			}
 			
 			
-			if(Ctrl.Btns.B.active && argumentEntity.onGround == true && Ctrl.state.B == false /*&& !argumentEntity.isSwimming*/){//jumping
+			if(Ctrl.Btns.B.active && argumentEntity.onGround == true && Ctrl.state.B == false /*&& !argumentEntity.isSwimming*/){//jumping 
+				argumentEntity.doing = "jump";
 				argumentEntity.velocity.y += argumentEntity.JPOW;
 			}
 			else if(!Ctrl.Btns.B.active && !argumentEntity.onGround && !argumentEntity.jumping && Ctrl.state.B){//jump velocity basics

@@ -9,6 +9,9 @@ const Game = {
 	NPCarr: [],
 	tileSetGraphics: document.getElementById("tilemap"),
 	buffer: undefined,
+	onDialog: false,
+	dialogBox: new Dialog(),
+	currentDialogType: 'none',
 	isPaused: false,
 	placeBuffer: 0,
 	requestTransition: true,
@@ -92,8 +95,13 @@ const Game = {
 				GameMoment = "pause";
 			}
 			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
-			
-			Ctrl.action(Game.CurrentCharacter, "character");
+			if(!Game.onDialog){
+				Ctrl.action(Game.CurrentCharacter, "character");
+			}
+			else{
+				Ctrl.dialogBox.appear();
+				Ctrl.action(dialogBox, "dialogs");
+			}
 			Ctrl.stateSave(); 
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Game.CurrentCharacter.update();

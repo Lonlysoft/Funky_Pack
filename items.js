@@ -19,7 +19,10 @@ class Item{
 	}
 	desenhar(){
 		ctx.fillStyle = "#ff" + this.ID;
-		ctx.fillRect(this.pontoCentral[0], this.pontoCentral[1], this.boxCol.w, this.boxCol.p);
+		ctx.fillRect(this.pontoCentral[0],
+			this.pontoCentral[1],
+			this.boxCol.w, this.boxCol.p
+		);
 	}
 	update(){
 		col.handleShadowCoords(this);
@@ -81,6 +84,8 @@ const ITEMS = [
 	["peach", ""],
 	["kiwi", ""],
 	["pineapple", ""],
+	["orange", ""],
+	
 	//liquids
 	["bottled water", "clear and cold. the best drink. period."],
 	["super brite", "efervescent and sweet, all that goes nice with a well prepared popcorn"],
@@ -126,7 +131,11 @@ const ITEMS = [
 	["newspaper", ""],
 	
 	//tools 
-	["hammer", ""]
+	["hammer", ""],
+	["hoe", ""],
+	["axe", ""],
+	["bat", ""],
+	["stick", ""],
 	
 	//furniture
 	["closet", ""],
@@ -148,5 +157,5 @@ const ITEMS = [
 	[23455, "BUS", "", (TILE_SIZE*2)-10, TILE_SIZE*0.7, (TILE_SIZE*8)-10],
 	[3000000, "BLACK LIMO", "", (TILE_SIZE*2)-10, TILE_SIZE*0.7, (TILE_SIZE*10)-10],
 	[45499, "Ambulance", "", (TILE_SIZE*2)-10, (TILE_SIZE*2)-4, (TILE_SIZE*4)-10],
-	["food Truck", ""]
+	[4345445, "food Truck", "", "solidVehicle", (TILE_SIZE*2)-10, (TILE_SIZE*2)-4, (TILE_SIZE*6)-10]
 ]

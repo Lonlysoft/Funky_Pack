@@ -4,7 +4,7 @@ const Characters = [
 		200,
 		20,
 		20,
-		3,
+		2,
 		8,
 		40,
 		8,
@@ -14,10 +14,10 @@ const Characters = [
 		["hold", "release", "hi-jump", "eatAnything"],
 		"#dynnySpriteSheet",
 		{
-			walk: [1, 1, 1, 1, 1, 0, 0, 0, 0, "m", 1, "m", 1, "m", 1, "m", 1, "m", 1, 0, 0, 0, 0],
-			walkDifferent: [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2],
-			still: [0],
-			jump: [0, 1]
+			walk: ["infinite", 1, 1, 1, 1, 1, 0, 0, 0, 0, "m", 1, "m", 1, "m", 1, "m", 1, "m", 1, 0, 0, 0, 0],
+			walkDifferent: ["infinite", 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2],
+			still: ["infinite", 0],
+			jump: ["linear", 2, 2, 1, 1, 1, 1, 1]
 		}
 	),
 	new Protagonist(

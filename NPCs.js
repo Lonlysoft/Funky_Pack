@@ -2,8 +2,9 @@
 
 const arrayDeEntidade = [];
 
-class NonPlayableChar{
-	constructor(nome, altura, largura, profundidade, peso, coords, dialogs, pathArr){
+class NonPlayableChar extends Being{
+	constructor(name, age, height, width, dept, weight, coords, dialogs, pathArr, HTMLsrc, aniamations){
+		super(name, age*10, age/2, age/2, height, width, dept, HTMLsrc, animations);
 		this.dialog = dialogs;
 		this.dimensoes = {w: largura, h: altura, p: profundidade};
 		this.peso = peso;
@@ -47,10 +48,10 @@ const BehaviorList = {
 		
 	},
 	goToX: function(entity){
-		entity.andar("x");
+		entity.walk("x");
 	},
 	goToZ: function(entity){
-		entity.andar("Z");
+		entity.walk("Z");
 	}
 	
 }

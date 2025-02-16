@@ -39,7 +39,12 @@ function displayAnim(Character){
 		Character.animationIndex++;
 	}
 	else{
-		Character.animationIndex = 0;
+		if(Character.anim[Character.doing][0] == "infinite"){
+			Character.animationIndex = 1;
+		}
+		else{
+			Character.animationIndex = Character.anim[Character.doing].length-1;
+		}
 	}
 	if(Character.anim[Character.doing][Character.animationIndex] == "m"){
 		Character.isMirrored = true;
