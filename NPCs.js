@@ -1,10 +1,8 @@
 //codigo dos INIMIGOS E NPCs
 
-const arrayDeEntidade = [];
-
 class NonPlayableChar extends Being{
 	constructor(name, age, height, width, dept, weight, coords, dialogs, pathArr, HTMLsrc, aniamations){
-		super(name, age*10, age/2, age/2, height, width, dept, HTMLsrc, animations);
+		super(name, age, height, width, dept, HTMLsrc, animations);
 		this.dialog = dialogs;
 		this.dimensoes = {w: largura, h: altura, p: profundidade};
 		this.peso = peso;
@@ -13,7 +11,7 @@ class NonPlayableChar extends Being{
 		pol = 1;
 		this.behaviorArr = pathArr;
 	}
-	desenhar(){
+	draw(){
 		ctx.fillRect(this.pontoCentral[0], this.pontoCentral[1], this.boxCol.w , this.boxCol.h);
 	}
 	talk(){

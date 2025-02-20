@@ -13,12 +13,12 @@ class Box{
 }
 
 class Being{
-	constructor(NOME, HP, ATK, DEF, ACL, VMAX, height, width, dept, HTMLsrc, animations){
+	constructor(NOME, AGE, ACL, VMAX, height, width, dept, HTMLsrc, animations){
 		this.Nome = NOME;
-		this.HP = HP; this.hp = HP;
-		this.ATK = ATK; this.DEF = DEF;
+		this.HP = AGE*10; this.hp = AGE*10;
+		this.ATK = Math.floor(AGE/2); this.DEF = Math.ceil(AGE/2);
 		this.ACL = ACL; this.VMAX = VMAX;
-		this.constHP = HP;
+		this.constHP = AGE*10;
 		
 		this.isSpawn = false;
 		this.isAlive = true;
@@ -51,9 +51,9 @@ class Being{
 	}
 	
 	walk(axis){
-		if(this.doing != "jump"){
+		//if(this.doing != "jump"){
 			this.doing = (this.dir == "S" || this.dir == "N") ? "walk" : "walkDifferent";
-		}
+		//}
 		if(this.velocity[axis] >= this.VMAX){
 			this.velocity[axis] = Number.parseInt(this.VMAX * this.pol);
 		}
@@ -94,9 +94,8 @@ class Being{
 }
 
 class Protagonist extends Being{
-	constructor(Nome, HP, ATK, DEF, VMIN, VMAX, JMAX, tail, height, width, dept, skills, HTMLsrc, animations){
-		//relacionado ao movimento
-		super(Nome, HP, ATK, DEF, VMIN, VMAX, height, width, dept, HTMLsrc, animations);
+	constructor(Nome, age, VMIN, VMAX, JMAX, tail, height, width, dept, skills, HTMLsrc, animations){
+		super(Nome, age, VMIN, VMAX, height, width, dept, HTMLsrc, animations);
 		this.STR = VMIN;
 		this.JPOW = JMAX;
 		this.onGround = true;

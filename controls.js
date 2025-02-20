@@ -38,8 +38,8 @@ const Ctrl = {
 		let onOrOff = 0;
 		for (index = aditives.length - 1; index > -1; --index) {
 			button = buttons[aditives[index]]
-			if(buttons[aditives[index]].type === true){
-				if(buttons[aditives[index]].active === true){
+			if(buttons[aditives[index]].type){
+				if(buttons[aditives[index]].active){
 					onOrOff = 1;
 				}
 				else{
@@ -63,11 +63,12 @@ const Ctrl = {
 		B: new Btn(controls_canvas.width - 170,  controls_canvas.height-80, 80, 80 , true,6),//B 8
 		Y: new Btn(controls_canvas.width - 250,  controls_canvas.height-160, 80, 80,true, 4),//Y 9
 		A: new Btn(controls_canvas.width - 90,  controls_canvas.height-160 ,80, 80, true, 5),//A 10
+		X: new Btn(controls_canvas.width - 170, controls_canvas.height- 240, 80, 80, true, 7),//x 14
 		//triggers
 		select: new Btn(controls_canvas.width/2 - 90, 25, 80, 80, true, 11),//select 11
 		zed: new Btn(controls_canvas.width - 90, controls_canvas.height/10*0.5, 80, 80, true, 9),//z 12
 		start: new Btn(controls_canvas.width/2 + 10, controls_canvas.height/10*0.5, 80, 80, true, 10),//start 13
-		X: new Btn(controls_canvas.width - 170, controls_canvas.height- 240, 80, 80, true, 7),//x 14
+		
 		look: new Btn(16, controls_canvas.height/10*0.5, 80, 80, true, 8)//L 15
 	},
 	state: {
@@ -217,6 +218,7 @@ const Ctrl = {
 					Game.dialogBox.end();
 				}
 			}
+			
 		},
 		
 		character: function(argumentEntity){

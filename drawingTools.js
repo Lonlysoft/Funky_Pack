@@ -51,6 +51,5 @@ function displayAnim(Character){
 		mirrorate(Game.ctx);
 		Character.animationIndex++;
 	}
-	fr = Character.anim[Character.doing][Character.animationIndex];
-	return fr;
+	return Character.anim[Character.doing][Character.animationIndex];
 }

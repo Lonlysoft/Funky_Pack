@@ -9,6 +9,7 @@ class Dialog{
 	draw(text){
 		this.boxes.classList.add("dialogBox");
 		this.boxes.style.width = "90%";
+		this.boxes.style.display = "flex";
 		
 		if(this.bufferAnimation < text.length){
 			this.bufferAnimation++;
