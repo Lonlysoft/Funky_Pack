@@ -23,9 +23,9 @@ const Col = {
 		let maxValue = maxVal([topLeft, topRight, bottomLeft, bottomRight])
 		entity.layer = maxValue;
 		//inserir sublayer baseado na Colisão de sombra do inimigo
-		for(let i = 0; i < arrayDeInimigos.length; i++){
+		for(let i = 0; i < arr.length; i++){
 			if(i == num) continue;
-			this.handleShadowObjects(entity, arrayDeInimigos[i].shadow, arrayDeInimigos[i].layer, arrayDeInimigos[i].sublayer);
+			this.handleShadowObjects(entity, arr[i].shadow, arr[i].layer, arr[i].sublayer);
 		}
 		for(let i = 0; i < Game.ItemArr.length; i++){
 			this.handleShadowObjects(entity, Game.ItemArr[i].shadow, Game.ItemArr[i].layer, Game.ItemArr[i].sublayer);
@@ -41,52 +41,122 @@ const Col = {
 		}
 	},
 	
-	interact: function(entity, NPCarr){
+	loadEntities(whatIs, arr){
+		let x_grid = Math.floor((Camera.x)/60);
+		let x_endGrid = Math.floor((Camera.x+Camera.w)/60);
+		let y_grid = Math.floor((Camera.y)/60)-Math.floor((Camera.y)/60);
+		let y_endGrid = Math.floor((Camera.y+Camera.h)/60)-Math.floor((Camera.y)/60);
 		
-		for(let i = 0; i < NPCarr.length; i++){
-			
+		if(x_grid < 0) x_grid = 0;
+		if(y_grid < 0) y_grid = 0;
+		if(x_endGrid > Game.currentMap.width) x_endGrid = Game.currentMap.width;
+		if(y_endGrid > Game.currentMap.height) y_endGrid = Game.currentMap.height;
+		
+		for(let i = y_grid; i < y_endGrid; i++){
+			for(let j = x_grid; j < x_endGrid; j++){
+				if(Game.currentMap[whatIs][i][j] != 0 && !Game.currentMap[whatIs][i][j].isSpawn){
+					arr.push(Game.currentMap[whatIs][i][j]);
+					Game.currentMap[whatIs][i][j].isSpawn = arr[arr.length-1].spawn();
+				}
+			}
 		}
-		return false;
+	},
+	
+	checkEntities(arr){
+		let cameraRangeX = Camera.x - TILE_SIZE;
+		let cameraRangeY = Camera.y - TILE_SIZE;
+		let cameraRangeW = Camera.w + TILE_SIZE*2;
+		let cameraRangeH = Camera.h + TILE_SIZE*2;
+		for(let i = 0; i < arr.length; i++){
+			if((arr[i].boxCol.x < cameraRangeX - arr[i].boxCol.w ||
+				arr[i].boxCol.z < cameraRangeY - arr[i].boxCol.p ||
+				arr[i].boxCol.x > cameraRangeX + cameraRangeW ||
+				arr[i].boxCol.z > cameraRangeY + cameraRangeH) || arr[i].hp <=0){
+					arr[i].isSpawn = false;
+					arr[i].reset();
+					let swao = arr[arr.length-1];
+					arr[arr.length-1] = arr[i];
+					arr[i] = swao;
+					arr.pop();
+			}//fim if
+		}
+	},
+	addEntities(whatIs, arr){
+		let x_grid = Math.floor((Camera.x)/60);
+		let x_endGrid = Math.floor((Camera.x+Camera.w)/60);
+		let y_grid = Math.floor((Camera.y)/60)-Math.floor((Camera.y)/60);
+		let y_endGrid = Math.floor((Camera.y+Camera.h)/60)-Math.floor((Camera.y)/60);
+		
+		if(x_grid < 0) x_grid = 0;
+		if(y_grid < 0) y_grid = 0;
+		if(x_endGrid > Game.currentMap.width) x_endGrid = Game.currentMap.width;
+		if(y_endGrid > Game.currentMap.height) y_endGrid = Game.currentMap.height;
+		
+		
+		for(let i = x_grid; i < x_endGrid; i++){
+			if(y_grid-1 > 0 && Game.currentMap[whatIs][y_grid-1][i] != 0 && Game.currentMap[whatIs][y_grid][i].isAlive && !Game.currentMap[whatIs][y_grid][i].isSpawn){
+				arr.push(Game.currentMap[whatIs][y_grid][i]);
+				Game.currentMap[whatIs][y_grid][i].isSpawn = arr[arr.length-1].spawn();
+			}
+		}
+		for(let i = x_grid; i < x_endGrid; i++){
+			if(y_endGrid+1 < Game.currentMap.height && Game.currentMap[whatIs][y_endGrid-1][i] != 0 && Game.currentMap[whatIs][y_endGrid][i].isAlive && !Game.currentMap[whatIs][y_endGrid][i].isSpawn){
+				arr.push(Game.currentMap[whatIs][y_endGrid][i]);
+				Game.currentMap[whatIs][y_endGrid+1][i].isSpawn = arr[arr.length-1].spawn();
+			}
+		}
+		for(let i = y_grid; i < y_endGrid; i++){
+			if(x_grid-1 > 0 && Game.currentMap[whatIs][i][x_grid-1] != 0 && Game.currentMap[whatIs][i][x_grid-1].isAlive && !Game.currentMap[whatIs][i][x_grid-1].isSpawn){
+				arr.push(Game.currentMap[whatIs][i][x_grid-1]);
+				Game.currentMap[whatIs][i][x_grid-1].isSpawn = arr[arr.length-1].spawn();
+			}
+		}
+		for(let i = y_grid; i < y_endGrid; i++){
+			if(x_endGrid+1 < Game.currentMap.height && Game.currentMap[whatIs][i][x_endGrid-1] != 0 && Game.currentMap[whatIs][i][x_endGrid-1].isAlive && !Game.currentMap[whatIs][i][x_endGrid-1].isSpawn){
+				arr.push(Game.currentMap[whatIs][i][x_endGrid-1]);
+				Game.currentMap[whatIs][i][x_endGrid-1].isSpawn = arr[arr.length-1].spawn();
+			}
+		}
 	},
 	
 	createAtkBox: function(boxCol, atkBox, direcao){
 		switch(direcao){
-			case 1:
+			case "S":
 				atkBox.x = boxCol.x;
 				atkBox.z = boxCol.z + boxCol.p;
 				atkBox.y = boxCol.y + boxCol.h/3;
 			break;
-			case 2:
+			case "E":
 				atkBox.x = boxCol.x + boxCol.w;
 				atkBox.z = boxCol.z;
 				atkBox.y = boxCol.y + boxCol.h/3;
 			break;
-			case 3:
+			case "N":
 				atkBox.x = boxCol.x;
 				atkBox.z = boxCol.z - boxCol.p;
 				atkBox.y = boxCol.y + boxCol.h/3;
 			break;
-			case 4:
+			case "W":
 				atkBox.x = boxCol.x - boxCol.w;
 				atkBox.z = boxCol.z;
 				atkBox.y = boxCol.y + boxCol.h/3;
 			break;
-			case 5:
+			case "SE":
 				atkBox.x = boxCol.x + boxCol.w;
 				atkBox.z = boxCol.z + boxCol.p;
 				atkBox.y = boxCol.y + boxCol.h/3;
 			break;
-			case 6:
+			case "NE":
 				atkBox.x = boxCol.x + boxCol.w;
 				atkBox.z = boxCol.z - boxCol.p;
 				atkBox.y = boxCol.y + boxCol.h/3;
 			break;
-			case 7:
+			case "NW":
 				atkBox.x = boxCol.x - boxCol.w;
 				atkBox.z = boxCol.z - boxCol.p;
 				atkBox.y = boxCol.y + boxCol.h/3;
 			break;
-			case 8:
+			case "SW":
 				atkBox.x = boxCol.x - boxCol.w;
 				atkBox.z = boxCol.z + boxCol.p;
 				atkBox.y = boxCol.y + boxCol.h/3;
@@ -401,14 +471,11 @@ const Col = {
 	}
 }
 
-//num serve apenas pra ser compatível com os inimigos
-//fim Colisionar
 function isOnGround(entitY, struturY){
 	return entitY <= struturY;
 }
 
-
-//lembre-se de que esse contexto é especifico.
+//only for special occasions
 function isBellowGround(entitY, structurY){
 	return entitY >= structurY;
 }
