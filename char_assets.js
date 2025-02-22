@@ -1,8 +1,6 @@
 const Characters = [
 	new Protagonist(
 		"Dynny",
-		200,
-		20,
 		20,
 		2,
 		8,
@@ -22,8 +20,6 @@ const Characters = [
 	),
 	new Protagonist(
 		"Nukko",
-		260,
-		26,
 		26,
 		2,
 		20,

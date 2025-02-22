@@ -7,6 +7,7 @@ const Game = {
 	CurrentCharacter: null,
 	ItemArr: [],
 	NPCarr: [],
+	hasLoadedNPCs: false,
 	tileSetGraphics: document.getElementById("tilemap"),
 	buffer: undefined,
 	onDialog: false,
@@ -17,6 +18,16 @@ const Game = {
 	requestTransition: true,
 	appearScreen: false,
 	alpha: 1,
+	setAndUpdateNPCs(){
+		if(!this.hasLoadedNPCs){
+			Col.loadEntities("npcs", this.NPCarr);
+		}
+		Col.checkEntities(this.NPCarr);
+		Col.addEntities("npcs", this.NPCarr);
+		for(let i = 0; i < this.NPCarr.length; i++){
+			this.NPCarr[i].update();
+		}
+	},
 	moment: {
 		0: function(){
 			if(controls_canvas.width >= controls_canvas.height){
@@ -104,6 +115,7 @@ const Game = {
 			}
 			Ctrl.stateSave(); 
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
+			Game.setAndUpdateNPCs();
 			Game.CurrentCharacter.update();
 			Col.main(Game.CurrentCharacter, -1);
 			Camera.moveTo(Game.CurrentCharacter.WorldPos.x, Game.CurrentCharacter.WorldPos.z, Game.CurrentCharacter.WorldPos.y);

@@ -7,10 +7,10 @@ const Scenery = {
 			MAPS[LevelNumber]["structureTileSet"], MAPS[LevelNumber]["shadowGrid"],
 			MAPS[LevelNumber]["ang"], MAPS[LevelNumber]["groundElevation"], 
 			MAPS[LevelNumber]["beingGrid"], MAPS[LevelNumber]["itemsGrid"],
-			MAPS[LevelNumber]["triggerGrid"], MAPS[LevelNumber]["waterGrid"]
+			MAPS[LevelNumber]["triggerGrid"], MAPS[LevelNumber]["npcGrid"], MAPS[LevelNumber]["waterGrid"]
 		);
 		Game.currentMap.setBoundaries();
-		//Game.currentMap.setNPCs(NPCS);
+		Game.currentMap.setNPCs(NPCS);
 		Game.currentMap.setWater();
 		Game.currentMap.setItems(ITEMS);
 		this.hasDeclaired = true;

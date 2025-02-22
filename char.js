@@ -200,7 +200,7 @@ class Protagonist extends Being{
 		for(let i = 0; i < NPC__arr; i++){
 			if(onGround(this.WorldPos.y, NPC__arr[i].boxCol.y)){
 				if(Col.AABB(box, this__box)){
-					UI.dialogBoxStart(NPC__arr[i].dialogs[NPC__arr[i].realtionshipLevelWithYou]);
+					Game.dialogBox.draw(NPC__arr[i].dialogs[NPC__arr[i].realtionshipLevelWithYou]);
 				}
 			}
 		}

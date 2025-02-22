@@ -42,20 +42,21 @@ function tipify(num){
 
 //pessoas e NPCS
 class Level{
-	constructor(width, height, Name, hasWater, groundZero, structureTileSet, shadowGrid, ang, groundElevationGrid, teleportAndPlayerSpawnGrid, itemsGrid, triggerGrid, waterGrid = []){
+	constructor(width, height, Name, hasWater, groundZero, structureTileSet, shadowGrid, ang, groundElevationGrid, teleportAndPlayerSpawnGrid, itemsGrid, triggerGrid, npcGrid, waterGrid = []){
 		this.groundTileSet = groundZero;
 		this.triggerGrid = triggerGrid;
 		this.triggers = [];
 		this.objectGrid = structureTileSet;
 		this.shadowGrid = shadowGrid;
 		this.ang = ang;
+		this.npcGrid = npcGrid;
 		this.grndElGrid = groundElevationGrid;
 		this.beingGrid = teleportAndPlayerSpawnGrid;
 		this.width = width;
 		this.height = height;
 		this.Name = Name;
 		this.bounds = [];
-		this.inims = [];
+		this.npcs = [];
 		this.itemGrid = itemsGrid;
 		this.items = [];
 		this.hasWater = hasWater;
@@ -130,7 +131,39 @@ class Level{
 			}
 		}
 	}
+	setNPCs(nonPlayableCharacterList){
+		for(let i = 0; i < this.height; i++){
+			this.npcs.push(new Array());
+			for(let j = 0; j < this.width; j++){
+				if(this.npcGrid[i][j] > 0){
+					this.npcs[i].push(
+						new NonPlayableChar(
+							nonPlayableCharacterList[this.npcGrid[i][j]].name,
+							nonPlayableCharacterList[this.npcGrid[i][j]].age,
+							nonPlayableCharacterList[this.npcGrid[i][j]].height,
+							nonPlayableCharacterList[this.npcGrid[i][j]].width,
+							nonPlayableCharacterList[this.npcGrid[i][j]].dept,
+							nonPlayableCharacterList[this.npcGrid[i][j]].dialogs,
+							nonPlayableCharacterList[this.npcGrid[i][j]].dept,
+							//COORDINATES X, Y, Z;
+							[
+								GridToWorld(i, 60),
+								GridToWorld(this.grndElGrid[i][j], 60),
+								GridToWorld(j, 60),
+								
+							],
+							nonPlayableCharacterList[this.npcGrid[i][j]].HTMLsrc,
+							nonPlayableCharacterList[this.npcGrid[i][j]].pathArr,
+							nonPlayableCharacterList[this.npcGrid[i][j]].animations,
+						)
+					)
+				} else{
+					this.npcs[i].push(0);
+				}
+			}
+		}
+	}//
 	objectGridDraw(camada){
 		DRAW__Grid(ctx, Camera, this.objectGrid[camada], Game.tileSetGraphics, TILE_SIZE);
-	}//fim objectDraw
+	}//end objectDraw
 }// fim Classe levelScenery
