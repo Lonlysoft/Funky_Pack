@@ -89,11 +89,11 @@ class Level{
 			for(let j = 0; j < this.width; j++){
 				if(this.itemGrid[i][j] > 0){
 					this.items[i].push(new Item(
-							itemSource[ this.itemGrid[i][j] ][0], itemSource[ this.itemGrid[i][j] ][1], 
-							itemSource[ this.itemGrid[i][j] ][2], itemSource[ this.itemGrid[i][j] ][3], 
-							itemSource[ this.itemGrid[i][j] ][4], itemSource[ this.itemGrid[i][j] ][5], 
-							itemSource[ this.itemGrid[i][j] ][6], itemSource[ this.itemGrid[i][j] ][7], 
-							j*TILE_SIZE, i*TILE_SIZE, this.grndElGrid[i][j]*TILE_SIZE
+						itemSource[ this.itemGrid[i][j] ][0], itemSource[ this.itemGrid[i][j] ][1], 
+						itemSource[ this.itemGrid[i][j] ][2], itemSource[ this.itemGrid[i][j] ][3], 
+						itemSource[ this.itemGrid[i][j] ][4], itemSource[ this.itemGrid[i][j] ][5], 
+						itemSource[ this.itemGrid[i][j] ][6], itemSource[ this.itemGrid[i][j] ][7], 
+						j*TILE_SIZE, i*TILE_SIZE, this.grndElGrid[i][j]*TILE_SIZE
 						)
 					);
 					
@@ -143,17 +143,15 @@ class Level{
 							nonPlayableCharacterList[this.npcGrid[i][j]].height,
 							nonPlayableCharacterList[this.npcGrid[i][j]].width,
 							nonPlayableCharacterList[this.npcGrid[i][j]].dept,
-							nonPlayableCharacterList[this.npcGrid[i][j]].dialogs,
-							nonPlayableCharacterList[this.npcGrid[i][j]].dept,
 							//COORDINATES X, Y, Z;
 							[
-								GridToWorld(i, 60),
-								GridToWorld(this.grndElGrid[i][j], 60),
-								GridToWorld(j, 60),
-								
+								GridToWorld(i, TILE_SIZE),
+								GridToWorld(this.grndElGrid[i][j], TILE_SIZE),
+								GridToWorld(j, TILE_SIZE),
 							],
-							nonPlayableCharacterList[this.npcGrid[i][j]].HTMLsrc,
+							nonPlayableCharacterList[this.npcGrid[i][j]].dialogs,
 							nonPlayableCharacterList[this.npcGrid[i][j]].pathArr,
+							nonPlayableCharacterList[this.npcGrid[i][j]].HTMLsrc,
 							nonPlayableCharacterList[this.npcGrid[i][j]].animations,
 						)
 					)

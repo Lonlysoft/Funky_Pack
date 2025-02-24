@@ -2,15 +2,15 @@
 
 class NonPlayableChar extends Being{
 	constructor(name, age, height, width, dept, coords, dialogs, pathArr, HTMLsrc, animations){
-		super(name, age, height, width, dept, HTMLsrc, animations);
+		super(name, age, 4, 8, height, width, dept, HTMLsrc, animations);
 		this.dialog = dialogs;
 		this.realtionshipLevelWithYou = 0;
 		this.dimen = {w: width, h: height, p: dept};
 		this.visible = true;
-		this.SpawnPos = {x: coords[0], y: coords[2], z: coords[1]};
-		this.flagCoords = {x: coords[0], y: coords[2], z: coords[1]}
-		this.boxCol = new Box(coords[0], coords[2] + this.dimen.h, coords[1], this.dimen.w, this.dimen.h, this.dimen.p);
-		this.behaviorArr = pathArr;
+		this.SpawnPos = {x: coords[0], y: coords[1], z: coords[2]};
+		this.flagCoords = {x: coords[0], y: coords[1], z: coords[2]}
+		this.boxCol = new Box(coords[0], coords[1] + this.dimen.h, coords[2], this.dimen.w, this.dimen.h, this.dimen.p);
+		this.behaviorArr = {arr: pathArr, index: 0};
 	}
 	draw(){
 		ctx.fillRect(this.centralPoint[0], this.centralPoint[1], this.boxCol.w , this.boxCol.h);
