@@ -35,6 +35,19 @@ function DRAW__Grid(context, cam, grid2Draw, gridImage, tileSize, tileImageSize 
 }
 
 function displayAnim(Character){
+	if(Character.onGround){
+		Character.doing = "still";
+		if(Character.isWalking.x || Character.isWalking.z){
+			Character.doing = "walkDifferent"
+			if(Character.dir == "S" || Character.dir == "N"){
+				Character.doing = "walk"
+			}
+		}
+	}
+	else{
+		Character.doing = "jump";
+	}
+	
 	if(Character.animationIndex < Character.anim[Character.doing].length-1){
 		Character.animationIndex++;
 	}

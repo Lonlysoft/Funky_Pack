@@ -104,13 +104,13 @@ const Game = {
 			if(Game.isPaused){
 				GameMomentSav = GameMoment;
 				GameMoment = "pause";
-			}
+			}			
 			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			if(!Game.onDialog){
 				Ctrl.action(Game.CurrentCharacter, "character");
 			}
 			else{
-				Ctrl.dialogBox.appear();
+				Game.dialogBox.appear();
 				Ctrl.action(dialogBox, "dialogs");
 			}
 			Ctrl.stateSave(); 
@@ -174,7 +174,8 @@ function GameBonanza(){
 	//KeyBoardEvent();
 	window.addEventListener("resize", resize);
 	resize();
-	setInterval(GamePlay, timeFrequency);
+	//setInterval(GamePlay, timeFrequency);
+	GamePlayLoop();
 }
 
 function GamePlay(){
@@ -188,4 +189,9 @@ function GamePlay(){
 	else{
 		frame++;
 	}
+}
+
+function GamePlayLoop(){
+	GamePlay();
+	window.requestAnimationFrame(GamePlayLoop);
 }

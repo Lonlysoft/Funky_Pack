@@ -32,6 +32,8 @@ class Being{
 		this.dir = "S";
 		this.doing = "still";
 		this.oldDoing = "still";
+		this.isWalking = {x: false, z: false};
+		this.onGround = true;
 		this.animationIndex = 0;
 		this.anim = animations;
 		this.isMirrored = false;
@@ -51,9 +53,7 @@ class Being{
 	}
 	
 	walk(axis){
-		//if(this.doing != "jump"){
-			this.doing = (this.dir == "S" || this.dir == "N") ? "walk" : "walkDifferent";
-		//}
+		this.isWalking[axis] = true;
 		if(this.velocity[axis] >= this.VMAX){
 			this.velocity[axis] = Number.parseInt(this.VMAX * this.pol);
 		}
@@ -65,9 +65,9 @@ class Being{
 		}
 	}
 	stop(axis){
-		this.doing = "still"
+		this.isWalking[axis] = false;
 		this.velocity[axis] *= this.friction;
-		this.velocity[axis] = Number.parseInt(this.velocity[axis])
+		this.velocity[axis] = Number.parseInt(this.velocity[axis]);
 	}
 	reset(){
 		this.hp = this.constHP;
@@ -98,7 +98,6 @@ class Protagonist extends Being{
 		super(Nome, age, VMIN, VMAX, height, width, dept, HTMLsrc, animations);
 		this.STR = VMIN;
 		this.JPOW = JMAX;
-		this.onGround = true;
 		this.isSwimming = false;
 		this.canTakeDamage = true;
 		this.tail = [];
@@ -115,7 +114,7 @@ class Protagonist extends Being{
 	}
 	//important
 	update(){
-		saveCoords(this.boxCol)
+		saveCoords(this.boxCol);
 		this.onGround = false;
 		this.boxCol.x += this.velocity.x;
 		this.boxCol.z += this.velocity.z;

@@ -369,7 +369,7 @@ const Col = {
 		}
 		if(isOnGround(entity.WorldPos.y, currLim) && entity.WorldPos.y < currLim){
 			entity.WorldPos.y = currLim;
-			entity.pontoCentral[1] = Game.SCREEN_CENTER[1];
+			entity.centralPoint[1] = Game.SCREEN_CENTER[1];
 		}
 	},
 	

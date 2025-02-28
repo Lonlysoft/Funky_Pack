@@ -222,20 +222,7 @@ const Ctrl = {
 		},
 		
 		character: function(argumentEntity){
-			if(Ctrl.Btns.west.active){//⬅
-				argumentEntity.dir = "W";
-				argumentEntity.pol = -1;
-				argumentEntity.walk("x");
-			}
-			else if(Ctrl.Btns.east.active){ //➡
-				argumentEntity.dir = "E"
-				argumentEntity.pol = 1;
-				argumentEntity.walk("x");
-				
-			}
-			else{
-				argumentEntity.stop("x");
-			}
+			
 			if(Ctrl.Btns.up.active){//⬆
 				argumentEntity.dir = "N";
 				argumentEntity.pol = -1;
@@ -251,6 +238,22 @@ const Ctrl = {
 			else{
 				argumentEntity.stop("z");
 			}
+			
+			if(Ctrl.Btns.west.active){//⬅
+				argumentEntity.dir = "W";
+				argumentEntity.pol = -1;
+				argumentEntity.walk("x");
+			}
+			else if(Ctrl.Btns.east.active){ //➡
+				argumentEntity.dir = "E"
+				argumentEntity.pol = 1;
+				argumentEntity.walk("x");
+				
+			}
+			else{
+				argumentEntity.stop("x");				
+			}
+			
 			if((Ctrl.Btns.west.active && Ctrl.Btns.down.active) || Ctrl.Btns.southwest.active){ //↙
 				Ctrl.Btns.west.active = Ctrl.Btns.down.active = true;
 				argumentEntity.dir = "SW";
