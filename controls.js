@@ -293,7 +293,6 @@ const Ctrl = {
 			
 			
 			if(Ctrl.Btns.B.active && argumentEntity.onGround == true && Ctrl.state.B == false /*&& !argumentEntity.isSwimming*/){//jumping 
-				argumentEntity.doing = "jump";
 				argumentEntity.velocity.y += argumentEntity.JPOW;
 			}
 			else if(!Ctrl.Btns.B.active && !argumentEntity.onGround && !argumentEntity.jumping && Ctrl.state.B){//jump velocity basics
