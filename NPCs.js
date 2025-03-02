@@ -7,22 +7,27 @@ class NonPlayableChar extends Being{
 		this.realtionshipLevelWithYou = 0;
 		this.dimen = {w: width, h: height, p: dept};
 		this.visible = true;
-		this.SpawnPos = {x: coords[0], y: coords[1], z: coords[2]};
-		this.flagCoords = {x: coords[0], y: coords[1], z: coords[2]}
-		this.boxCol = new Box(coords[0], coords[1] + this.dimen.h, coords[2], this.dimen.w, this.dimen.h, this.dimen.p);
+		this.SpawnPos = {x: coords.x, y: coords.y, z: coords.z};
+		this.flagCoords = {x: coords.x, y: coords.y, z: coords.z}
+		this.boxCol = new Box(coords.x, coords.y + this.dimen.h, coords.z, this.dimen.w, this.dimen.h, this.dimen.p);
 		this.behaviorArr = {arr: pathArr, index: 0};
+		this.relationshipLevelWithYou = 0;
 	}
 	draw(){
 		ctx.fillRect(this.centralPoint[0], this.centralPoint[1], this.boxCol.w , this.boxCol.h);
 	}
 	update(){
+		scriptedBehavior(this, this.behaviorArr);
 		this.boxCol.x += this.velocity.x;
 		this.boxCol.z += this.velocity.z;
+		this.WorldPos.y += this.velocity.y;
+		this.WorldPos.x = this.boxCol.x + this.boxCol.w*0.5;
+		this.WorldPos.z = this.boxCol.z + this.boxCol.p*0.5;
+		this.boxCol.y = this.WorldPos.y + this.boxCol.h;
 		this.shadow.x = this.boxCol.x;
 		this.shadow.y = this.boxCol.z + this.boxCol.y;
 		this.centralPoint[0] = WorldToScreen1D(this.WorldPos.x, Camera.x, Camera.w/2 - Game.SCREEN_CENTER[0]);
 		this.centralPoint[1] = WorldToScreen1D(this.WorldPos.z-this.WorldPos.y, Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]);
-		scriptedBehavior(this, this.behaviorArr);
 	}
 	spawn(){
 		this.WorldPos.x = this.SpawnPos.x;
@@ -89,6 +94,7 @@ function scriptedBehavior(entity, objectBehav){
 				objectBehav.index++;
 			}
 		break;
+		default: break;
 	}
 }
 
@@ -105,7 +111,7 @@ const NPCS = [
 		width: TILE_SIZE,
 		dept: TILE_SIZE,
 		dialogs: ["serve pra fazer um negócio que eu não vou conseguir.", "disponível pra amanhã a noite"],
-		pathArr: [["goToX", 20], ["goToZ", 40], ["goToX", 30]],
+		pathArr: [["nothing", 20], ["nothing", 40], ["nothing", 30]],
 		HTMLsrc: "#ultraNPC",
 		animations: {
 			still: ["infinite", 0],

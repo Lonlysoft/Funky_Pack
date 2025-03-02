@@ -374,9 +374,7 @@ const Col = {
 	},
 	
 	main(entity, num = -1){
-		entity.WorldPos.x = entity.boxCol.x + entity.boxCol.w*0.5;
-		entity.WorldPos.z = entity.boxCol.z + entity.boxCol.p*0.5;
-		entity.boxCol.y = entity.WorldPos.y + entity.boxCol.h;
+		
 		if(entity.WorldPos.x<entity.boxCol.w*0.5){
 			entity.WorldPos.x = 30;
 			entity.boxCol.x = 0;

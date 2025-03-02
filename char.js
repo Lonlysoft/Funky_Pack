@@ -119,6 +119,9 @@ class Protagonist extends Being{
 		this.boxCol.x += this.velocity.x;
 		this.boxCol.z += this.velocity.z;
 		this.WorldPos.y += this.velocity.y;
+		this.WorldPos.x = this.boxCol.x + this.boxCol.w*0.5;
+		this.WorldPos.z = this.boxCol.z + this.boxCol.p*0.5;
+		this.boxCol.y = this.WorldPos.y + this.boxCol.h;
 		this.shadow.x = this.boxCol.x;
 		this.shadow.z = this.boxCol.z-this.boxCol.h;
 		if( checkCentralPoint(this.centralPoint[0], this.centralPoint[1]) == false ){
@@ -196,11 +199,14 @@ class Protagonist extends Being{
 				box[1] = GridToWorld(WorldToGrid(this.boxCol.z - this.boxCol.p, TILE_SIZE), TILE_SIZE);
 				break;
 		}
+		ctx.fillStyle = "green";
+		ctx.fillRect(WorldToScreen1D(box[0], Camera.x, Camera.w/2 - Game.SCREEN_CENTER[0]), WorldToScreen1D(box[1], Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]), TILE_SIZE, TILE_SIZE);
 		for(let i = 0; i < NPC__arr; i++){
-			if(onGround(this.WorldPos.y, NPC__arr[i].boxCol.y)){
-				if(Col.AABB(box, this__box)){
-					Game.dialogBox.draw(NPC__arr[i].dialogs[NPC__arr[i].realtionshipLevelWithYou]);
-				}
+			let this__box = [NPC__arr[i].boxCol.x, NPC__arr[i].boxCol.z, NPC__arr[i].boxCol.w, NPC__arr[i].boxCol.p];
+			if(/*onGround(this.WorldPos.y, NPC__arr[i].boxCol.y) &&*/ Col.AABB(box, this__box)){
+				console.log("3");
+				Game.onDialog = true;
+				Game.dialogBox.draw(NPC__arr[i].dialogs[NPC__arr[i].relationshipLevelWithYou]);
 			}
 		}
 	}

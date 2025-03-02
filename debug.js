@@ -1,7 +1,9 @@
 function debug(){
 	ctx.fillStyle = "#fff";
 	ctx.font = "32px sans-serif"
-	ctx.fillText(""+ Game.CurrentCharacter.dir, 134, 56);
-	ctx.fillText(""+ Game.CurrentCharacter.doing, 134, 73);
-	ctx.fillText(""+ Game.CurrentCharacter.WorldPos.y, 134, 98);
+	for(let i = 0; i < Game.NPCarr.length; i++){
+		ctx.fillText(Game.NPCarr[i].boxCol.x +"x", 20, 162+(32*i));
+		ctx.fillText(Game.NPCarr[i].boxCol.z +"z", 100, 162+(32*i));
+		ctx.fillText(Game.NPCarr[i].boxCol.w, 300, 162+(32*i));
+	}
 }

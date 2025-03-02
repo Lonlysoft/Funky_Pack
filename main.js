@@ -42,6 +42,7 @@ const Game = {
 					Ctrl.action(Game.CurrentCharacter, UI.pauseItems.optionList[UI.pauseItems.selectedOption]);
 				break;
 			}
+			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Ctrl.stateSave();
 			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			

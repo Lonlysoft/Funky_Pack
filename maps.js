@@ -144,11 +144,11 @@ class Level{
 							nonPlayableCharacterList[this.npcGrid[i][j]].width,
 							nonPlayableCharacterList[this.npcGrid[i][j]].dept,
 							//COORDINATES X, Y, Z;
-							[
-								GridToWorld(i, TILE_SIZE),
-								GridToWorld(this.grndElGrid[i][j], TILE_SIZE),
-								GridToWorld(j, TILE_SIZE),
-							],
+							{
+								z: GridToWorld(i, TILE_SIZE),
+								y: GridToWorld(this.grndElGrid[i][j], TILE_SIZE),
+								x: GridToWorld(j, TILE_SIZE),
+							},
 							nonPlayableCharacterList[this.npcGrid[i][j]].dialogs,
 							nonPlayableCharacterList[this.npcGrid[i][j]].pathArr,
 							nonPlayableCharacterList[this.npcGrid[i][j]].HTMLsrc,
