@@ -111,8 +111,7 @@ const Game = {
 				Ctrl.action(Game.CurrentCharacter, "character");
 			}
 			else{
-				Game.dialogBox.appear();
-				Ctrl.action(dialogBox, "dialogs");
+				Ctrl.action(Game.dialogBox, "dialogs");
 			}
 			Ctrl.stateSave(); 
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);

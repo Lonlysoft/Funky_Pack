@@ -32,6 +32,85 @@ function WorldToScreen1D(entCoord, camWCoord, offset) {
 	return screenCoord;
 }
 
+const directions = {
+	setFrameY:
+	{
+		S: function(entity){
+			return 1;
+		},
+		N: function(entity){
+			return 2;
+		},
+		E: function(entity){
+			return 3;
+		},
+		W: function(entity){
+			mirrorateToAPoint(Game.ctx, entity.centralPoint[0], entity.centralPoint[1]);
+			entity.isMirrored = true;
+			return 3;
+		},
+		NE: function(entity){
+			mirrorateToAPoint(Game.ctx, entity.centralPoint[0], entity.centralPoint[1]);
+			entity.isMirrored = true;
+			return 6.5;
+		},
+		NW: function(entity){
+			return 6.5;
+		},
+		SE: function(entity){
+			return 4;
+		},
+		SW: function(entity){
+			mirrorateToAPoint(Game.ctx, entity.centralPoint[0], entity.centralPoint[1]);
+			entity.isMirrored = true;
+			return 4;
+		}
+	},
+	setBox: {
+		S: function(entity){
+			const boxX = GridToWorld(WorldToGrid(entity.boxCol.x, TILE_SIZE), TILE_SIZE)
+			const boxY = GridToWorld(WorldToGrid(entity.boxCol.z + entity.boxCol.p, TILE_SIZE), TILE_SIZE);
+			return [boxX, boxY, TILE_SIZE, TILE_SIZE];
+		},
+		N: function(entity){
+			const boxX = GridToWorld(WorldToGrid(entity.boxCol.x, TILE_SIZE), TILE_SIZE);
+			const boxY = GridToWorld(WorldToGrid(entity.boxCol.z - entity.boxCol.p, TILE_SIZE), TILE_SIZE);
+			return [boxX, boxY, TILE_SIZE, TILE_SIZE];
+		},
+		E: function(entity){
+			const boxX = GridToWorld(WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE), TILE_SIZE);
+			const boxY = GridToWorld(WorldToGrid(entity.boxCol.z, TILE_SIZE), TILE_SIZE);
+			return [boxX, boxY, TILE_SIZE, TILE_SIZE];
+		},
+		W: function(entity){
+			const boxX = GridToWorld(WorldToGrid(entity.boxCol.x - entity.boxCol.w, TILE_SIZE), TILE_SIZE);
+			const boxY = GridToWorld(WorldToGrid(entity.boxCol.z, TILE_SIZE), TILE_SIZE);
+			return [boxX, boxY, TILE_SIZE, TILE_SIZE];
+		},
+		NE: function(entity){
+			const boxX = GridToWorld(WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE), TILE_SIZE);
+			const boxY = GridToWorld(WorldToGrid(entity.boxCol.z - entity.boxCol.p, TILE_SIZE), TILE_SIZE);
+			return [boxX, boxY, TILE_SIZE, TILE_SIZE];
+		},
+		NW: function(entity){
+			const boxX = GridToWorld(WorldToGrid(entity.boxCol.x - entity.boxCol.w, TILE_SIZE), TILE_SIZE);
+			const boxY = GridToWorld(WorldToGrid(entity.boxCol.z - entity.boxCol.p, TILE_SIZE), TILE_SIZE);
+			return [boxX, boxY, TILE_SIZE, TILE_SIZE];
+		},
+		SE: function(entity){
+			const boxX = GridToWorld(WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE), TILE_SIZE);
+			const boxY = GridToWorld(WorldToGrid(entity.boxCol.z + entity.boxCol.p, TILE_SIZE), TILE_SIZE);
+			return [boxX, boxY, TILE_SIZE, TILE_SIZE];
+		},
+		SW: function(entity){
+			const boxX = GridToWorld(WorldToGrid(entity.boxCol.x - entity.boxCol.w, TILE_SIZE), TILE_SIZE);
+			const boxY = GridToWorld(WorldToGrid(entity.boxCol.z + entity.boxCol.p, TILE_SIZE), TILE_SIZE);
+			return [boxX, boxY, TILE_SIZE, TILE_SIZE];
+		}
+	}
+	
+}
+
 function limitateUp(variable, limit){
 	if(variable > limit){
 		return limit;

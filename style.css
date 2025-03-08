@@ -28,6 +28,10 @@
 .assets img{
 	display: none;
 }
+
+.notHere{
+	display: none;
+}
 .glassy{
 	background: linear-gradient(135deg, #fff8 20%, #0046 80%);
 	box-shadow: 3px 3px 5px #000;

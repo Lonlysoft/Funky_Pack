@@ -177,3 +177,11 @@
 .pauseMenu .it.selected{
 	background: white;
 }
+
+
+.speaking{
+	margin: 0;
+	padding: 0;
+	color: #ffffff;
+	text-shadow:1px 1px 0 #000;
+}

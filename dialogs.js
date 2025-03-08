@@ -1,13 +1,12 @@
 class Dialog{
 	constructor(){
 		this.stackPair = 0
-		this.boxes = document.createElement("div");
-		this.boxes.style.display = 'none'
+		this.boxes = document.querySelector(".dialogs");
 		this.bufferAnimation = 0;
 	}
 	
 	draw(text){
-		this.boxes.classList.add("dialogBox");
+		this.boxes.classList.remove("notHere");
 		this.boxes.style.width = "90%";
 		this.boxes.style.display = "flex";
 		
@@ -22,6 +21,6 @@ class Dialog{
 		this.boxes.innerHTML = stringSplice;
 	}
 	end(){
-		this.boxes.style.display = "none";
+		this.boxes.classList.add("notHere");
 	}
 }
