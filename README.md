@@ -61,7 +61,7 @@ Everything is as initial as you can guess. It's not a complicated game, but sinc
 
 Currently my main focus is
 
-Character animation: It's the logic of the character giving visual feedback to the player. This is made using a spritesheet. it's not a hard logic, it's needed three new methods for the being class,a string, a number and an array of animations also coming with a general function to return the number that will change the coordinates of the image acoording with the array postion. I think when a game is written with other programming languages they use methods similar to that with hash tables, or they just don't need to care about animation logic because they actually use an game engine to code their stuff;
+Non Playable Character dialog: from the text appearing to relationship levels. These are almost scripted, but it's still quite work to do.
 
 Pause Menu: besides not being that important on most games, Funky Pack uses the pause menu to check Dynny's status and jobs, as well with the usage of items.
 The pause menu provides a way to manage your jobs. it's made with a table. The opportunities you collect will be shown in there
