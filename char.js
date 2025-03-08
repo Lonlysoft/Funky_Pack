@@ -133,17 +133,7 @@ class Protagonist extends Being{
 	draw(){
 		drawShadow(ctx, this, 1);
 		let tailInFront = false;
-		switch(this.dir){
-			case 'S': this.frameY = 1; break;
-			case 'N': this.frameY = 2; tailInFront = true; break;
-			case "E": this.frameY = 3; break;
-			case "W": this.frameY = 3; mirrorateToAPoint(Game.ctx, this.centralPoint[0], this.centralPoint[1]); this.isMirrored = true; break;
-			case "SE": this.frameY = 4; break;
-			case "SW": this.frameY = 4; mirrorateToAPoint(Game.ctx, this.centralPoint[0], this.centralPoint[1]); this.isMirrored = true; break;
-			case "NW": this.frameY = 6.5; break;
-			case "NE": this.frameY = 6.5; mirrorateToAPoint(Game.ctx, this.centralPoint[0], this.centralPoint[1]); this.isMirrored = true; break;
-		}
-		
+		this.frameY = directions.setFrameY[this.dir](this);
 		this.frameX = displayAnim(this);
 		
 		Game.ctx.drawImage(this.grapho,
@@ -154,59 +144,21 @@ class Protagonist extends Being{
 			this.centralPoint[1]-this.boxCol.h+this.boxCol.p*0.25,
 			this.boxCol.h, this.boxCol.h
 		);
-		
-		if(tailInFront){
-			Game.ctx.drawImage(this.grapho, 0*this.sprite.w, 5.5*this.sprite.h, this.sprite.w, this.sprite.h, this.centralPoint[0]-this.boxCol.h/2*0.5, this.centralPoint[1]-this.boxCol.h/2, this.boxCol.h/2, this.boxCol.h/2);
-		}
 		if(this.isMirrored){//get back to normal state
 			mirrorateToAPoint(Game.ctx, this.centralPoint[0], this.centralPoint[1]);
 			this.isMirrored = false;
 		}
 	}
 	interact(NPC__arr){
-		let box = [0, 0, TILE_SIZE, TILE_SIZE];
-		switch(this.dir){
-			case 'S':
-				box[0] = GridToWorld(WorldToGrid(this.boxCol.x, TILE_SIZE), TILE_SIZE);
-				box[1] = GridToWorld(WorldToGrid(this.boxCol.z + this.boxCol.p, TILE_SIZE), TILE_SIZE);
-				break;
-			case 'N':
-				box[0] = GridToWorld(WorldToGrid(this.boxCol.x, TILE_SIZE), TILE_SIZE);
-				box[1] = GridToWorld(WorldToGrid(this.boxCol.z - this.boxCol.p, TILE_SIZE), TILE_SIZE);
-				break;
-			case "E":
-				box[0] = GridToWorld(WorldToGrid(this.boxCol.x + this.boxCol.w, TILE_SIZE), TILE_SIZE);
-				box[1] = GridToWorld(WorldToGrid(this.boxCol.z, TILE_SIZE), TILE_SIZE);
-				break;
-			case "W":
-				box[0] = GridToWorld(WorldToGrid(this.boxCol.x - this.boxCol.w, TILE_SIZE), TILE_SIZE);
-				box[1] = GridToWorld(WorldToGrid(this.boxCol.z, TILE_SIZE), TILE_SIZE);
-				break;
-			case "SE":
-				box[0] = GridToWorld(WorldToGrid(this.boxCol.x + this.boxCol.w, TILE_SIZE), TILE_SIZE);
-				box[1] = GridToWorld(WorldToGrid(this.boxCol.z + this.boxCol.p, TILE_SIZE), TILE_SIZE);
-				break;
-			case "SW":
-				box[0] = GridToWorld(WorldToGrid(this.boxCol.x - this.boxCol.w, TILE_SIZE), TILE_SIZE);
-				box[1] = GridToWorld(WorldToGrid(this.boxCol.z + this.boxCol.p, TILE_SIZE), TILE_SIZE);
-				break;
-			case "NW":
-				box[0] = GridToWorld(WorldToGrid(this.boxCol.x - this.boxCol.w, TILE_SIZE), TILE_SIZE);
-				box[1] = GridToWorld(WorldToGrid(this.boxCol.z - this.boxCol.p, TILE_SIZE), TILE_SIZE);
-				break;
-			case "NE":
-				box[0] = GridToWorld(WorldToGrid(this.boxCol.x + this.boxCol.w, TILE_SIZE), TILE_SIZE);
-				box[1] = GridToWorld(WorldToGrid(this.boxCol.z - this.boxCol.p, TILE_SIZE), TILE_SIZE);
-				break;
-		}
+		let box = directions.setBox[this.dir](this);
 		ctx.fillStyle = "green";
 		ctx.fillRect(WorldToScreen1D(box[0], Camera.x, Camera.w/2 - Game.SCREEN_CENTER[0]), WorldToScreen1D(box[1], Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]), TILE_SIZE, TILE_SIZE);
-		for(let i = 0; i < NPC__arr; i++){
+		for(let i = 0; i < NPC__arr.length; i++){
+			console.table(NPC__arr[i].dialog)
 			let this__box = [NPC__arr[i].boxCol.x, NPC__arr[i].boxCol.z, NPC__arr[i].boxCol.w, NPC__arr[i].boxCol.p];
-			if(/*onGround(this.WorldPos.y, NPC__arr[i].boxCol.y) &&*/ Col.AABB(box, this__box)){
-				console.log("3");
+			if(isOnGround(this.WorldPos.y, NPC__arr[i].boxCol.y) && Col.AABB(box, this__box)){
 				Game.onDialog = true;
-				Game.dialogBox.draw(NPC__arr[i].dialogs[NPC__arr[i].relationshipLevelWithYou]);
+				Game.dialogBox.draw(NPC__arr[i].dialog[NPC__arr[i].relationshipLevelWithYou]);
 			}
 		}
 	}
