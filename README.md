@@ -61,7 +61,7 @@ Everything is as initial as you can guess. It's not a complicated game, but sinc
 
 Currently my main focus is
 
-Non Playable Character dialog: from the text appearing to relationship levels. These are almost scripted, but it's still quite work to do.
+Non Playable Character dialog: Going from the text appearing on the screen, woth its animations, to relationship levels. These are almost scripted, but it's still quite work to do.
 
 Pause Menu: besides not being that important on most games, Funky Pack uses the pause menu to check Dynny's status and jobs, as well with the usage of items.
 The pause menu provides a way to manage your jobs. it's made with a table. The opportunities you collect will be shown in there
