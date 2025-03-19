@@ -11,7 +11,6 @@ const Game = {
 	tileSetGraphics: document.getElementById("tilemap"),
 	buffer: undefined,
 	onDialog: false,
-	dialogBox: new Dialog(),
 	currentDialogType: 'none',
 	isPaused: false,
 	placeBuffer: 0,
@@ -28,7 +27,7 @@ const Game = {
 			this.NPCarr[i].update();
 		}
 	},
-	moment: {
+	moment:{
 		0: function(){
 			if(controls_canvas.width >= controls_canvas.height){
 				GameMoment = GameMomentSav;
@@ -107,13 +106,12 @@ const Game = {
 				GameMoment = "pause";
 			}			
 			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
-			if(!Game.onDialog){
-				Ctrl.action(Game.CurrentCharacter, "character");
+			if(Game.onDialog){
+				GameMomentSav = GameMoment;
+				GameMoment = "dialog"
 			}
-			else{
-				Ctrl.action(Game.dialogBox, "dialogs");
-			}
-			Ctrl.stateSave(); 
+			Ctrl.action(Game.CurrentCharacter, "character");
+			Ctrl.stateSave();
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Game.setAndUpdateNPCs();
 			Game.CurrentCharacter.update();
@@ -124,6 +122,13 @@ const Game = {
 				UI.charWinUpdate(Clock);
 			}
 			debug();
+		},
+		dialog: function(){
+			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			Ctrl.action(Game.dialogBox, "dialogs");
+			Ctrl.stateSave();
+			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
+			UI.dialogItems.writeText();
 		},
 		continueGame: function(){
 			if(Game.requestTransition && !Game.appearScreen){

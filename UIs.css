@@ -178,10 +178,17 @@
 	background: white;
 }
 
+.dialogs{
+	position: absolute;
+	display: none;
+	width: 70%;
+	height: 10%;
+	padding: 0.5em;
+	left: 5%;
+	bottom: 5%;
+}
 
 .speaking{
 	margin: 0;
 	padding: 0;
-	color: #ffffff;
-	text-shadow:1px 1px 0 #000;
 }

@@ -103,14 +103,13 @@ function scriptedBehavior(entity, objectBehav){
 //NPCs relevantes;
 const NPCS = [
 	"NPCS",
-	//nome, height, width, dept, dialogs, pathArr, coords
 	{
-		name: "bumb",
+		name: "JSON FOLF",
 		age: 8,
 		height: TILE_SIZE,
 		width: TILE_SIZE,
 		dept: TILE_SIZE,
-		dialogs: ["serve pra fazer um negócio que eu não vou conseguir.", "disponível pra amanhã a noite"],
+		dialogs: ["hey man", "hru doing?"],
 		pathArr: [["nothing", 20], ["nothing", 40], ["nothing", 30]],
 		HTMLsrc: "#ultraNPC",
 		animations: {

@@ -112,7 +112,7 @@ class Protagonist extends Being{
 		this.section = 0;
 		this.ID = 0;
 	}
-	//important
+	//important update function
 	update(){
 		saveCoords(this.boxCol);
 		this.onGround = false;
@@ -154,11 +154,12 @@ class Protagonist extends Being{
 		ctx.fillStyle = "green";
 		ctx.fillRect(WorldToScreen1D(box[0], Camera.x, Camera.w/2 - Game.SCREEN_CENTER[0]), WorldToScreen1D(box[1], Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]), TILE_SIZE, TILE_SIZE);
 		for(let i = 0; i < NPC__arr.length; i++){
-			console.table(NPC__arr[i].dialog)
 			let this__box = [NPC__arr[i].boxCol.x, NPC__arr[i].boxCol.z, NPC__arr[i].boxCol.w, NPC__arr[i].boxCol.p];
 			if(isOnGround(this.WorldPos.y, NPC__arr[i].boxCol.y) && Col.AABB(box, this__box)){
 				Game.onDialog = true;
-				Game.dialogBox.draw(NPC__arr[i].dialog[NPC__arr[i].relationshipLevelWithYou]);
+				UI.dialogItems.text = NPC__arr[i].dialog[NPC__arr[i].relationshipLevelWithYou]
+				UI.dialogItems.bufferAnimation = 0;
+				UI.dialogStart();
 			}
 		}
 	}

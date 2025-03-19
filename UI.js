@@ -21,6 +21,23 @@ const UI = {
 		layer: 0
 	},
 	jobTableDOM: document.querySelector(".schedule"),
+	dialogDOM: document.querySelector(".dialogs"),
+	dialogItems: {
+		stackPair: 0,
+		bufferAnimation: NaN,
+		text: null,
+		writeText(){
+			if(this.bufferAnimation < this.text.length){
+				this.bufferAnimation++;
+			}
+			let stringSplice = "<p class = 'speaking'>";
+			for(let i = 0; i < this.bufferAnimation; i++){
+				stringSplice += this.text[i];
+			}
+			stringSplice += "</p>"
+			UI.dialogDOM.innerHTML = stringSplice;
+		}
+	},
 	statsBottomMenu: document.querySelector(".schedule_options"),
 	waiterHud: 0,
 	charWindowDOM: document.querySelector(".charWin"),
@@ -68,6 +85,12 @@ const UI = {
 	},
 	scheduleDismiss(){
 		this.jobTableDOM.style.display = "none";
+	},
+	dialogStart(){
+		this.dialogDOM.style.display = "flex"
+	},
+	dialogDismiss(){
+		this.dialogDOM.style.display = "none"
 	},
 	pauseStart(){
 		this.pauseDOM.style.display = "flex";

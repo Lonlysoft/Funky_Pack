@@ -49,7 +49,6 @@
 	color: var(--font-color);
 	font-family: "kindSans", sans-serif;
 	font-weight: 900;
-	
 	box-shadow: 0.1em 0.1em 0 var(--font-color);
 	background: var(--bg-color);
 	border-radius: 1em;

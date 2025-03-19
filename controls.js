@@ -3,6 +3,7 @@ var client_height = Math.floor(document.documentElement.clientHeight);
 var boundingRect = undefined
 var aspectRatio = 1;
 
+//core issue
 class Btn{
 	constructor(x, y, w, h, show, ID = 14){
 		this.active = false;
@@ -45,7 +46,9 @@ const Ctrl = {
 				else{
 					onOrOff = 0;
 				}
+				this.ctx.globalAlpha = 0.5
 				this.ctx.drawImage(graphic, button.ID*button.w, onOrOff*button.h, 80, 80, button.x, button.y, button.w, button.h);
+				this.ctx.globalAlpha = 1;
 			}
 		}
 	},
@@ -212,11 +215,13 @@ const Ctrl = {
 		
 		dialogs: function(argumentEntity){
 			if(Ctrl.Btns.A.active && Ctrl.state.A == false){
-				Game.dialogBox.buffer++;
-				if(Game.dialogBox.buffer == undefined){
-					Game.dialogBox.buffer = 0;
-					Game.dialogBox.end();
-				}
+				//Game.dialogBox.buffer++;
+				//if(Game.dialogBox.buffer == undefined){
+					UI.dialogDismiss();
+					Game.onDialog = false;
+					UI.dialogItems.bufferAnimation = NaN;
+					GameMoment = GameMomentSav;
+				//}
 			}
 			
 		},
