@@ -66,4 +66,4 @@ in this latest version I implemented dialog window. I actually struggled with th
 
 Pause Menu: besides not being that important on most games, Funky Pack uses the pause menu to check Dynny's status and jobs, as well with the usage of items.
 The pause menu provides a way to manage your jobs. it's made with a table. The opportunities you collect will be shown in there
-The pause menu and other UI components are made with the HTML engine. That means that yes, it's not a canvas only game.
+The pause menu and other UI components are made with the HTML engine. That means that yes, it's not a canvas only game. this might get me with some issues, because the hud is dependable of the 
