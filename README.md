@@ -62,6 +62,7 @@ Everything is as initial as you can guess. It's not a complicated game, but sinc
 My main focus is currently on:
 
 Non Playable Character dialog: Going from the text appearing on the screen, with its animations, to relationship levels. These are almost scripted and the simplest way possible, but it's still quite work to do.
+in this latest version I implemented dialog window. I actually struggled with the style system since I used a class dedicated to that. Now a dialog is part of the UI object. which is actually something that disorganize and organize the code at the same time (since the dialog box is an UI element)
 
 Pause Menu: besides not being that important on most games, Funky Pack uses the pause menu to check Dynny's status and jobs, as well with the usage of items.
 The pause menu provides a way to manage your jobs. it's made with a table. The opportunities you collect will be shown in there
