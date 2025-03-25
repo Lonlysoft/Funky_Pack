@@ -64,6 +64,8 @@ My main focus is currently on:
 Non Playable Character dialog: Going from the text appearing on the screen, with its animations, to relationship levels. These are almost scripted and the simplest way possible, but it's still quite work to do.
 in this latest version I implemented dialog window. I actually struggled with the style system since I used a class dedicated to that. Now a dialog is part of the UI object. which is actually something that disorganize and organize the code at the same time (since the dialog box is an UI element)
 
-Pause Menu: besides not being that important on most games, Funky Pack uses the pause menu to check Dynny's status and jobs, as well with the usage of items.
+true pause: some people say that we must not implement complex stuff when pausing. by that I mean: pausing needs to be silent and just have something to make the game freeze and unfreeze at anytime.
+
+character Menu: besides not being that important on most games, Funky Pack needs to have a character menu to check Dynny's status and jobs, as well with the usage of items.
 The pause menu provides a way to manage your jobs. it's made with a table. The opportunities you collect will be shown in there
 The pause menu and other UI components are made with the HTML engine. That means that yes, it's not a canvas only game. this might get me with some issues, because the hud is dependable of a html renderer.
