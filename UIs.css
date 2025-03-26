@@ -150,9 +150,9 @@
 	padding: 1em;
 }
 
-/*pause menu*/
+/*character menu*/
 
-.pauseMenu{
+.characterMenu{
 	display: none;
 	justify-content: space-between;
 	align-items: center;
@@ -163,18 +163,18 @@
 	gap: 1em;
 }
 
-.pauseMenu .it{
+.characterMenu .it{
 	width: 2em; height: 2em;
 	background: var(--font-color);
 }
 
-.pauseMenu .description{
+.characterMenu .description{
 	width: 75%;
 	text-align: right;
 	font-size: 2em;
 }
 
-.pauseMenu .it.selected{
+.characterMenu .it.selected{
 	background: white;
 }
 

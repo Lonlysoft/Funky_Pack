@@ -8,18 +8,19 @@ const UI = {
 		barDOM: document.querySelector(".charWin__HPbar"),
 		charName: document.querySelector(".charName")
 	},
-	pauseDOM: document.querySelector(".pauseMenu"),
-	pauseItems:{
-		0: document.querySelector(".pauseMenu__talkTo"),
-		1: document.querySelector(".pauseMenu__item"),
-		2: document.querySelector(".pauseMenu__look"),
-		3: document.querySelector(".pauseMenu__stats"),
-		alt: document.querySelector(".pauseMenu .description"),
+	characterMenuDOM: document.querySelector(".characterMenu"),
+	characterMenuItems:{
+		0: document.querySelector(".characterMenu__talkTo"),
+		1: document.querySelector(".characterMenu__item"),
+		2: document.querySelector(".characterMenu__look"),
+		3: document.querySelector(".characterMenu__stats"),
+		alt: document.querySelector(".characterMenu .description"),
 		optionList: ["talk to", "items", "look at", "stats"],
 		selectedOption: 0,
 		optionLength: 3,
 		layer: 0
 	},
+	pauseDOM: document.querySelector(".pause"),
 	jobTableDOM: document.querySelector(".schedule"),
 	dialogDOM: document.querySelector(".dialogs"),
 	dialogItems: {
@@ -92,10 +93,10 @@ const UI = {
 	dialogDismiss(){
 		this.dialogDOM.style.display = "none"
 	},
-	pauseStart(){
-		this.pauseDOM.style.display = "flex";
+	characterMenuStart(){
+		this.characterMenuDOM.style.display = "flex";
 	},
-	pauseDismiss(){
-		this.pauseDOM.style.display = "none";
+	characterMenuDismiss(){
+		this.characterMenuDOM.style.display = "none";
 	}
 }

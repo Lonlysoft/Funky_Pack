@@ -2,19 +2,29 @@ const WallCleaner = {
 	score: 0,
 	salary: 2499,
 	glass: [],
+	glassState: [0, 1, 2, 3], //add ID from tileset when you have it.
+	
+	stageGrid: null,
 	cleaner: {x: undefined, y: undefined},
 	stroller: {x: 0, y: 0, w: TILE_SIZE*4, h: TILE_SIZE},
+	target: {x: 0, y: 0},
 	glassWidth: 50,
 	glassHeight: 50,
 	hasStarted: false,
 	hasWon: false,
 	tileGraph: document.getElementById("WallCleanerTileGraphic"),
 	bufferCoords: {x: 0, y: 0, z: 0}, // defined when setting up the game and the entity receives back its coordinates to spawn back in the map if the entity col grid goes wrong...
+	clean(){
+		
+			this.stageGrid[this.target.y][this.target.x] = 0
+	},
 	setGlass(){
 		for(let i = 0; i < this.glassHeight; i++){
-			this.glass.push(new Array());
+			
 			for(let j = 0; j < this.glassWidth; j++){
-				this.glass[i].push(1);
+				if(stageGrid[i][j] == 0 || stageGrid[i][j] == 1 || stageGrid[i][j] == 2){
+					glass[i].push([this.]);
+				}
 			}
 		}
 	},
@@ -35,8 +45,8 @@ const WallCleaner = {
 	start(entity){
 		if(!this.hasStarted){
 			this.setGlass();
-			entity.boxCol.x = GridToWorld(5, 64);
-			entity.boxCol.z = GridToWorld(5, 64);
+			entity.boxCol.x = GridToWorld(5, TILE_SIZE);
+			entity.boxCol.z = GridToWorld(5, TILE_SIZE);
 			this.hasStarted = true;
 		}
 		if(this.cleaner.x != undefined && this.cleaner.y != undefined){
