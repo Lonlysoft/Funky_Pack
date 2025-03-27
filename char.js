@@ -112,7 +112,7 @@ class Protagonist extends Being{
 		this.section = 0;
 		this.ID = 0;
 	}
-	//important update function
+	//important
 	update(){
 		saveCoords(this.boxCol);
 		this.onGround = false;

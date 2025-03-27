@@ -12,7 +12,7 @@ const Game = {
 	buffer: undefined,
 	onDialog: false,
 	currentDialogType: 'none',
-	isPaused: false,
+	ischaracterMenud: false,
 	placeBuffer: 0,
 	requestTransition: true,
 	appearScreen: false,
@@ -27,18 +27,18 @@ const Game = {
 			this.NPCarr[i].update();
 		}
 	},
-	moment:{
+	moment: {
 		0: function(){
 			if(controls_canvas.width >= controls_canvas.height){
 				GameMoment = GameMomentSav;
 			}
 		},
-		pause: function(){
+		characterMenu: function(){
 			//Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
-			switch(UI.pauseItems.layer){
-				case 0: Ctrl.action(Game.CurrentCharacter, "pause"); break;
+			switch(UI.characterMenuItems.layer){
+				case 0: Ctrl.action(Game.CurrentCharacter, "characterMenu"); break;
 				case 1:
-					Ctrl.action(Game.CurrentCharacter, UI.pauseItems.optionList[UI.pauseItems.selectedOption]);
+					Ctrl.action(Game.CurrentCharacter, UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption]);
 				break;
 			}
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
@@ -74,6 +74,16 @@ const Game = {
 				}
 			}
 		},
+		pause: function(){
+			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
+			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr)
+			Ctrl.action(null, "pause");
+			Ctrl.stateSave();
+			Game.ctx.globalAlpha = 0.3;
+			Game.ctx.fillStyle = "#000";
+			Game.ctx.fillRect(0, 0, Game.canvas.width, Game.canvas.height);
+			Game.ctx.globalAlpha = 1;
+		},
 		selectFunction: function(){
 			UI.scheduleStart();
 		},
@@ -101,9 +111,9 @@ const Game = {
 			if(!Game.CurrentCharacter.isSpawn && Scenery.hasDeclaired){
 				Game.CurrentCharacter.isSpawn = Game.CurrentCharacter.spawn();
 			}
-			if(Game.isPaused){
+			if(Game.ischaracterMenud){
 				GameMomentSav = GameMoment;
-				GameMoment = "pause";
+				GameMoment = "characterMenu";
 			}			
 			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			if(Game.onDialog){
@@ -140,15 +150,16 @@ const Game = {
 			}
 			UI.loadStart();
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
-			Ctrl.stateSave();
+			
 			Ctrl.action(null, "load");
+			Ctrl.stateSave();
 			Game.ctx.fillStyle = "#000"
 			Game.ctx.fillRect(0, 0, 800, 800);
 			if(Game.requestTransition && Game.appearScreen){
 				Game.alpha = BG.transition(Game.alpha, "going", 0.1);
 				if(Game.alpha >= 1){
 					Game.alpha = 1;
-					GameMomentSav = GameMoment;
+					GameMomentSav = "title";
 					GameMoment = Game.buffer;
 					Game.appearScreen = false;
 					UI.loadDismiss();
@@ -159,7 +170,7 @@ const Game = {
 }
 
 let GameMoment = 0;
-let GameMomentSav = 'mainWorld';
+let GameMomentSav = 'title';
 let frame = 0
 let frameaux = 0
 

@@ -3,7 +3,6 @@ var client_height = Math.floor(document.documentElement.clientHeight);
 var boundingRect = undefined
 var aspectRatio = 1;
 
-//core issue
 class Btn{
 	constructor(x, y, w, h, show, ID = 14){
 		this.active = false;
@@ -151,38 +150,38 @@ const Ctrl = {
 				Game.requestTransition = true;
 				Game.buffer = UI.loadGame.options[UI.title.selectedOption];
 			}
-			if(Ctrl.Btns.B.active && Ctrl.state.B == false){
+			if(Ctrl.Btns.B.active && !Ctrl.state.B){
 				Game.requestTransition = true;
 				Game.buffer = GameMomentSav;
 			}
 		},
-		pause: function(argumentEntity){
-			if(Ctrl.Btns.start.active && Ctrl.state.start == false){
-				UI.pauseDismiss();
+		characterMenu: function(argumentEntity){
+			if(Ctrl.Btns.select.active && Ctrl.state.select == false){
+				UI.characterMenuDismiss();
 				GameMoment = GameMomentSav;
 			}
 			
 			if(Ctrl.Btns.west.active && !Ctrl.state.west){ //right
-				UI.pauseItems[UI.pauseItems.selectedOption].classList.remove("selected");
-				UI.pauseItems.selectedOption++;
-				if(UI.pauseItems.selectedOption>UI.pauseItems.optionLength){
-					UI.pauseItems.selectedOption = 0;
+				UI.characterMenuItems[UI.characterMenuItems.selectedOption].classList.remove("selected");
+				UI.characterMenuItems.selectedOption++;
+				if(UI.characterMenuItems.selectedOption>UI.characterMenuItems.optionLength){
+					UI.characterMenuItems.selectedOption = 0;
 				}
-				UI.pauseItems.alt.innerHTML = UI.pauseItems.optionList[UI.pauseItems.selectedOption];
-				UI.pauseItems[UI.pauseItems.selectedOption].classList.add("selected");
+				UI.characterMenuItems.alt.innerHTML = UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption];
+				UI.characterMenuItems[UI.characterMenuItems.selectedOption].classList.add("selected");
 				
 			}
 			if(Ctrl.Btns.east.active && !Ctrl.state.east){ //right
-				UI.pauseItems[UI.pauseItems.selectedOption].classList.remove("selected");
-				UI.pauseItems.selectedOption--;
-				if(UI.pauseItems.selectedOption<0){
-					UI.pauseItems.selectedOption = UI.pauseItems.optionLength;
+				UI.characterMenuItems[UI.characterMenuItems.selectedOption].classList.remove("selected");
+				UI.characterMenuItems.selectedOption--;
+				if(UI.characterMenuItems.selectedOption<0){
+					UI.characterMenuItems.selectedOption = UI.characterMenuItems.optionLength;
 				}
-				UI.pauseItems.alt.innerHTML = UI.pauseItems.optionList[UI.pauseItems.selectedOption];
-				UI.pauseItems[UI.pauseItems.selectedOption].classList.add("selected");
+				UI.characterMenuItems.alt.innerHTML = UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption];
+				UI.characterMenuItems[UI.characterMenuItems.selectedOption].classList.add("selected");
 			}
 			if(Ctrl.Btns.A.active && Ctrl.state.A == false){
-				UI.pauseItems.layer++;
+				UI.characterMenuItems.layer++;
 				
 			}
 			if(Ctrl.Btns.A.active && Ctrl.state.B == false){
@@ -209,7 +208,7 @@ const Ctrl = {
 				
 			}
 			if(Ctrl.Btns.B.active && Ctrl.state.B == false){
-				UI.pauseItems.layer--;
+				UI.characterMenuItems.layer--;
 			}
 		},
 		
@@ -330,16 +329,22 @@ const Ctrl = {
 					argumentEntity.atk();
 				}
 			}
-			if(Ctrl.Btns.select.active && Ctrl.state.select == false){
-				argumentEntity.mao = (mao+1)%argumentEntity.tail.length;
+			if(Ctrl.Btns.select.active && !Ctrl.state.select){
+				UI.charWinDismiss();
+				UI.characterMenuStart();
+				GameMomentSav = GameMoment;
+				GameMoment = 'characterMenu';
 			}
 			if(Ctrl.Btns.start.active && Ctrl.state.start == false){//start
 				UI.charWinDismiss();
-				UI.pauseStart();
 				GameMomentSav = GameMoment;
 				GameMoment = 'pause';
 			}
-			
+		},
+		pause: function(){
+			if(Ctrl.Btns.start.active && !Ctrl.state.start){
+				GameMoment = GameMomentSav;
+			}
 		},
 		wallCleaner: function(argumentEntity){
 			if(Ctrl.Btns.west.active){//⬅

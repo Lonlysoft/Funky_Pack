@@ -261,6 +261,14 @@ const Col = {
 		}
 	},
 	
+	teleport: function(entity, cube){
+		if(isOnGround(entity.WorldPos.y, cube.y) && cube.conditionals()){
+			//cube.conditionals() are a function that means the stuff the player need to do or must have in order to activate them. (like... what a literal trigger works)...
+			Scenery.hasDeclaired = false;
+			Game.currentMap = cube.to;
+		}
+	},
+	
 	left: function(entity, cube){
 		if(entity.boxCol.x + entity.boxCol.w > cube.x && entity.boxCol.oldX + entity.boxCol.w <= cube.x){
 			entity.velocity.x = 0;
