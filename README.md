@@ -57,7 +57,7 @@ our wealthy badger - he's important for story
 
 Current State
 -
-Everything is as initial as you can guess. It's not a complicated game, but since it's my first time doing that. It just isn't gonna be easy for a beginner.
+Everything is as initial as you can guess. It's not a complicated game, but since it's my first time developing a big project such as a game is. It'll be hard to make.
 
 My main focus is currently on:
 
