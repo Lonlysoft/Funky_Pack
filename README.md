@@ -55,7 +55,7 @@ our wealthy badger - he's important for story
 
 - world saver - one way payment - 2,000,001
 
-Current State
+Current State:
 -
 Everything is as initial as you can guess. It's not a complicated game, but since it's my first time developing a big project such as a game is. It'll be hard to make.
 
