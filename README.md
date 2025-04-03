@@ -51,9 +51,6 @@ the normal GameMoment covers
 our wealthy badger - he's important for story
 - limo driver: when requested. mostly night or morning $30,000
 - personal assistant $40,000
-- special partner: understands you $1,000,000
-
-- world saver - one way payment - 2,000,001
 
 Current State:
 -
