@@ -7,6 +7,7 @@ const Game = {
 	CurrentCharacter: null,
 	ItemArr: [],
 	NPCarr: [],
+	TrigArr: [],
 	hasLoadedNPCs: false,
 	tileSetGraphics: document.getElementById("tilemap"),
 	buffer: undefined,
@@ -125,7 +126,7 @@ const Game = {
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Game.setAndUpdateNPCs();
 			Game.CurrentCharacter.update();
-			Col.main(Game.CurrentCharacter, -1);
+			Col.main(Game.CurrentCharacter, Game.currentMap, -1);
 			Camera.moveTo(Game.CurrentCharacter.WorldPos.x, Game.CurrentCharacter.WorldPos.z, Game.CurrentCharacter.WorldPos.y);
 			if(frame > fps){
 				Clock.passTime();
@@ -170,7 +171,7 @@ const Game = {
 }
 
 let GameMoment = 0;
-let GameMomentSav = 'title';
+let GameMomentSav = 'mainWorld';
 let frame = 0
 let frameaux = 0
 
@@ -193,6 +194,12 @@ function GameBonanza(){
 	//setInterval(GamePlay, timeFrequency);
 	GamePlayLoop();
 }
+
+document.addEventListener("DOMContentLoaded", function(){
+	const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+	if (!isMobile)
+		Ctrl.canvas.display = "none";
+})
 
 function GamePlay(){
 	clear(Game.ctx);

@@ -130,8 +130,9 @@ class Protagonist extends Being{
 		}
 	}
 	//graphics
-	draw(){
-		drawShadow(ctx, this, 1);
+	// We'll need the map.current because... Most mini-games require An special and different game map.
+	draw(currentMap = Game.currentMap){
+		drawShadow(ctx, this, currentMap, 1);
 		let tailInFront = false;
 		this.frameY = directions.setFrameY[this.dir](this);
 		this.frameX = displayAnim(this);

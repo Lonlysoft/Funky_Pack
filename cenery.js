@@ -1,14 +1,7 @@
 const Scenery = {
 	hasDeclaired: false,
 	declair: function(LevelNumber){
-		Game.currentMap = new Level(MAPS[LevelNumber]["width"],
-			MAPS[LevelNumber]["height"], MAPS[LevelNumber]["name"], 
-			MAPS[LevelNumber]["hasWater"], MAPS[LevelNumber]["groundTileSet"], 
-			MAPS[LevelNumber]["structureTileSet"], MAPS[LevelNumber]["shadowGrid"],
-			MAPS[LevelNumber]["ang"], MAPS[LevelNumber]["groundElevation"], 
-			MAPS[LevelNumber]["beingGrid"], MAPS[LevelNumber]["itemsGrid"],
-			MAPS[LevelNumber]["triggerGrid"], MAPS[LevelNumber]["npcGrid"], MAPS[LevelNumber]["waterGrid"]
-		);
+		Game.currentMap = new Level(MAPS[LevelNumber]);
 		Game.currentMap.setBoundaries();
 		Game.currentMap.setNPCs(NPCS);
 		Game.currentMap.setWater();

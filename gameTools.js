@@ -42,12 +42,12 @@ const directions = {
 			return 2;
 		},
 		E: function(entity){
-			return 3;
+			return 4;
 		},
 		W: function(entity){
 			mirrorateToAPoint(Game.ctx, entity.centralPoint[0], entity.centralPoint[1]);
 			entity.isMirrored = true;
-			return 3;
+			return 4;
 		},
 		NE: function(entity){
 			mirrorateToAPoint(Game.ctx, entity.centralPoint[0], entity.centralPoint[1]);
@@ -155,13 +155,13 @@ function random(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function drawShadow(context, entity, oppacity){
+function drawShadow(context, entity, map, oppacity){
 	context.fillStyle = "#000"
 	context.globalAlpha = oppacity;
 	context.beginPath();
 	context.ellipse(
 		entity.centralPoint[0],
-		entity.centralPoint[1] + entity.WorldPos.y - Game.currentMap.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y,
+		entity.centralPoint[1] + entity.WorldPos.y - map.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y,
 		entity.boxCol.w*0.5,
 		entity.boxCol.p*0.5,
 		0, 0, 2*Math.PI, true

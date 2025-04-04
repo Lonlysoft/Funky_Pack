@@ -42,25 +42,26 @@ function tipify(num){
 
 //pessoas e NPCS
 class Level{
-	constructor(width, height, Name, hasWater, groundZero, structureTileSet, shadowGrid, ang, groundElevationGrid, teleportAndPlayerSpawnGrid, itemsGrid, triggerGrid, npcGrid, waterGrid = []){
-		this.groundTileSet = groundZero;
-		this.triggerGrid = triggerGrid;
+	constructor(mapObject){
+		this.groundTileSet = mapObject.groundTileSet;
+		this.triggerGrid = mapObject.triggerGrid;
+		
+		this.objectGrid = mapObject.structureTileSet;
+		this.shadowGrid = mapObject.shadowGrid;
+		this.ang = mapObject.ang;
+		this.npcGrid = mapObject.npcGrid;
+		this.grndElGrid = mapObject.groundElevation;
+		this.beingGrid = mapObject.beingGrid;
+		this.width = mapObject.width;
+		this.height = mapObject.height;
+		this.Name = mapObject.name;
 		this.triggers = [];
-		this.objectGrid = structureTileSet;
-		this.shadowGrid = shadowGrid;
-		this.ang = ang;
-		this.npcGrid = npcGrid;
-		this.grndElGrid = groundElevationGrid;
-		this.beingGrid = teleportAndPlayerSpawnGrid;
-		this.width = width;
-		this.height = height;
-		this.Name = Name;
 		this.bounds = [];
 		this.npcs = [];
-		this.itemGrid = itemsGrid;
+		this.itemGrid = mapObject.itemsGrid;
 		this.items = [];
-		this.hasWater = hasWater;
-		this.waterGrid = waterGrid;
+		this.hasWater = mapObject.hasWater;
+		this.waterGrid = mapObject.waterGrid;
 		this.waterBounds = [];
 	}
 	
@@ -68,7 +69,8 @@ class Level{
 		for(let i = 0; i < this.height; i++){
 			this.bounds.push(new Array());
 			for(let j = 0; j < this.width; j++){
-				this.bounds[i].push(new Boundary(j * TILE_SIZE, this.grndElGrid[i][j] * TILE_SIZE, i * TILE_SIZE, tipify(this.ang[i][j])));
+				let angulation = (this.ang == null)? 0 : this.ang[i][j];
+				this.bounds[i].push(new Boundary(j * TILE_SIZE, this.grndElGrid[i][j] * TILE_SIZE, i * TILE_SIZE, tipify(angulation)));
 			}
 		}
 	}

@@ -16,10 +16,10 @@ const Col = {
 	},
 	
 	handleShadowCoords(entity, num = -1){
-		let topLeft = Game.currentMap.shadowGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)];
-		let topRight = Game.currentMap.shadowGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w, TILE_SIZE)];
-		let bottomLeft = Game.currentMap.shadowGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.velocity.x, TILE_SIZE)];
-		let bottomRight = Game.currentMap.shadowGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w+entity.velocity.x, TILE_SIZE)];
+		let topLeft = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)];
+		let topRight = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w, TILE_SIZE)];
+		let bottomLeft = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.velocity.x, TILE_SIZE)];
+		let bottomRight = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w+entity.velocity.x, TILE_SIZE)];
 		let maxValue = maxVal([topLeft, topRight, bottomLeft, bottomRight])
 		entity.layer = maxValue;
 		//inserir sublayer baseado na Colisão de sombra do inimigo
@@ -41,7 +41,7 @@ const Col = {
 		}
 	},
 	
-	loadEntities(whatIs, arr){
+	loadEntities(whatIs, arr, mapGrid = Game.currentMap){
 		let x_grid = Math.floor((Camera.x)/60);
 		let x_endGrid = Math.floor((Camera.x+Camera.w)/60);
 		let y_grid = Math.floor((Camera.y)/60)-Math.floor((Camera.y)/60);
@@ -49,14 +49,14 @@ const Col = {
 		
 		if(x_grid < 0) x_grid = 0;
 		if(y_grid < 0) y_grid = 0;
-		if(x_endGrid > Game.currentMap.width) x_endGrid = Game.currentMap.width;
-		if(y_endGrid > Game.currentMap.height) y_endGrid = Game.currentMap.height;
+		if(x_endGrid > mapGrid.width) x_endGrid = mapGrid.width;
+		if(y_endGrid > mapGrid.height) y_endGrid = mapGrid.height;
 		
 		for(let i = y_grid; i < y_endGrid; i++){
 			for(let j = x_grid; j < x_endGrid; j++){
-				if(Game.currentMap[whatIs][i][j] != 0 && !Game.currentMap[whatIs][i][j].isSpawn){
-					arr.push(Game.currentMap[whatIs][i][j]);
-					Game.currentMap[whatIs][i][j].isSpawn = arr[arr.length-1].spawn();
+				if(mapGrid[whatIs][i][j] != 0 && !mapGrid[whatIs][i][j].isSpawn){
+					arr.push(mapGrid[whatIs][i][j]);
+					mapGrid[whatIs][i][j].isSpawn = arr[arr.length-1].spawn();
 				}
 			}
 		}
@@ -81,7 +81,7 @@ const Col = {
 			}//fim if
 		}
 	},
-	addEntities(whatIs, arr){
+	addEntities(whatIs, arr, mapGrid = Game.currentMap){
 		let x_grid = Math.floor((Camera.x)/60);
 		let x_endGrid = Math.floor((Camera.x+Camera.w)/60);
 		let y_grid = Math.floor((Camera.y)/60)-Math.floor((Camera.y)/60);
@@ -89,32 +89,32 @@ const Col = {
 		
 		if(x_grid < 0) x_grid = 0;
 		if(y_grid < 0) y_grid = 0;
-		if(x_endGrid > Game.currentMap.width) x_endGrid = Game.currentMap.width;
-		if(y_endGrid > Game.currentMap.height) y_endGrid = Game.currentMap.height;
+		if(x_endGrid > mapGrid.width) x_endGrid = mapGrid.width;
+		if(y_endGrid > mapGrid.height) y_endGrid = mapGrid.height;
 		
 		
 		for(let i = x_grid; i < x_endGrid; i++){
-			if(y_grid-1 > 0 && Game.currentMap[whatIs][y_grid-1][i] != 0 && Game.currentMap[whatIs][y_grid][i].isAlive && !Game.currentMap[whatIs][y_grid][i].isSpawn){
-				arr.push(Game.currentMap[whatIs][y_grid][i]);
-				Game.currentMap[whatIs][y_grid][i].isSpawn = arr[arr.length-1].spawn();
+			if(y_grid-1 > 0 && mapGrid[whatIs][y_grid-1][i] != 0 && mapGrid[whatIs][y_grid][i].isAlive && !mapGrid[whatIs][y_grid][i].isSpawn){
+				arr.push(mapGrid[whatIs][y_grid][i]);
+				mapGrid[whatIs][y_grid][i].isSpawn = arr[arr.length-1].spawn();
 			}
 		}
 		for(let i = x_grid; i < x_endGrid; i++){
-			if(y_endGrid+1 < Game.currentMap.height && Game.currentMap[whatIs][y_endGrid-1][i] != 0 && Game.currentMap[whatIs][y_endGrid][i].isAlive && !Game.currentMap[whatIs][y_endGrid][i].isSpawn){
-				arr.push(Game.currentMap[whatIs][y_endGrid][i]);
-				Game.currentMap[whatIs][y_endGrid+1][i].isSpawn = arr[arr.length-1].spawn();
+			if(y_endGrid+1 < mapGrid.height && mapGrid[whatIs][y_endGrid-1][i] != 0 && mapGrid[whatIs][y_endGrid][i].isAlive && !mapGrid[whatIs][y_endGrid][i].isSpawn){
+				arr.push(mapGrid[whatIs][y_endGrid][i]);
+				mapGrid[whatIs][y_endGrid+1][i].isSpawn = arr[arr.length-1].spawn();
 			}
 		}
 		for(let i = y_grid; i < y_endGrid; i++){
-			if(x_grid-1 > 0 && Game.currentMap[whatIs][i][x_grid-1] != 0 && Game.currentMap[whatIs][i][x_grid-1].isAlive && !Game.currentMap[whatIs][i][x_grid-1].isSpawn){
-				arr.push(Game.currentMap[whatIs][i][x_grid-1]);
-				Game.currentMap[whatIs][i][x_grid-1].isSpawn = arr[arr.length-1].spawn();
+			if(x_grid-1 > 0 && mapGrid[whatIs][i][x_grid-1] != 0 && mapGrid[whatIs][i][x_grid-1].isAlive && !mapGrid[whatIs][i][x_grid-1].isSpawn){
+				arr.push(mapGrid[whatIs][i][x_grid-1]);
+				mapGrid[whatIs][i][x_grid-1].isSpawn = arr[arr.length-1].spawn();
 			}
 		}
 		for(let i = y_grid; i < y_endGrid; i++){
-			if(x_endGrid+1 < Game.currentMap.height && Game.currentMap[whatIs][i][x_endGrid-1] != 0 && Game.currentMap[whatIs][i][x_endGrid-1].isAlive && !Game.currentMap[whatIs][i][x_endGrid-1].isSpawn){
-				arr.push(Game.currentMap[whatIs][i][x_endGrid-1]);
-				Game.currentMap[whatIs][i][x_endGrid-1].isSpawn = arr[arr.length-1].spawn();
+			if(x_endGrid+1 < mapGrid.height && mapGrid[whatIs][i][x_endGrid-1] != 0 && mapGrid[whatIs][i][x_endGrid-1].isAlive && !mapGrid[whatIs][i][x_endGrid-1].isSpawn){
+				arr.push(mapGrid[whatIs][i][x_endGrid-1]);
+				mapGrid[whatIs][i][x_endGrid-1].isSpawn = arr[arr.length-1].spawn();
 			}
 		}
 	},
@@ -265,7 +265,7 @@ const Col = {
 		if(isOnGround(entity.WorldPos.y, cube.y) && cube.conditionals()){
 			//cube.conditionals() are a function that means the stuff the player need to do or must have in order to activate them. (like... what a literal trigger works)...
 			Scenery.hasDeclaired = false;
-			Game.currentMap = cube.to;
+			mapGrid = cube.to;
 		}
 	},
 	
@@ -352,13 +352,13 @@ const Col = {
 	},
 	
 	
-	handleYcoords(entity){
+	handleYcoords(entity, mapGrid){
 		//entity.pontoCentral[1] -= entity.velocity.y;
-		let top = Game.currentMap.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)].y
-		let bottom = Game.currentMap.bounds[WorldToGrid(entity.boxCol.z + entity.boxCol.p, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y;
-		let left = Game.currentMap.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y;
-		let right = Game.currentMap.bounds[WorldToGrid(entity.boxCol.z+entity.boxCol.p, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)].y;;
-		let currLim = Game.currentMap.bounds[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.WorldPos.x, TILE_SIZE)].y;
+		let top = mapGrid.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)].y
+		let bottom = mapGrid.bounds[WorldToGrid(entity.boxCol.z + entity.boxCol.p, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y;
+		let left = mapGrid.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y;
+		let right = mapGrid.bounds[WorldToGrid(entity.boxCol.z+entity.boxCol.p, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)].y;;
+		let currLim = mapGrid.bounds[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.WorldPos.x, TILE_SIZE)].y;
 		//não é a melhor forma de fazer isso pois é 4*O(N) todos os frames.
 		let solidObjectArray = []
 		for(let i = 0; i < Game.ItemArr.length; i++){
@@ -381,7 +381,7 @@ const Col = {
 		}
 	},
 	
-	main(entity, num = -1){
+	main(entity, mapGrid, num = -1){
 		
 		if(entity.WorldPos.x<entity.boxCol.w*0.5){
 			entity.WorldPos.x = 30;
@@ -395,15 +395,15 @@ const Col = {
 			//aqui teria uma tela de game over porque ele tà out of bounds
 		}
 		
-		if(entity.WorldPos.x>=((Game.currentMap.width)*TILE_SIZE)-entity.boxCol.w/2){
-			entity.WorldPos.x = ((Game.currentMap.width)*TILE_SIZE)-entity.boxCol.w*0.5;
-			entity.boxCol.x = Game.currentMap.width*TILE_SIZE-entity.boxCol.w-MAGIC_OFFSET;
+		if(entity.WorldPos.x>=((mapGrid.width)*TILE_SIZE)-entity.boxCol.w/2){
+			entity.WorldPos.x = ((mapGrid.width)*TILE_SIZE)-entity.boxCol.w*0.5;
+			entity.boxCol.x = mapGrid.width*TILE_SIZE-entity.boxCol.w-MAGIC_OFFSET;
 			entity.velocity.x = 0;
 		}
 		
-		if(entity.WorldPos.z>=((Game.currentMap.height)*TILE_SIZE)-entity.boxCol.p*0.5){
-			entity.WorldPos.z = ((Game.currentMap.height)*TILE_SIZE)-entity.boxCol.p*0.5;
-			entity.boxCol.z = Game.currentMap.height*TILE_SIZE-entity.boxCol.p-MAGIC_OFFSET;
+		if(entity.WorldPos.z>=((mapGrid.height)*TILE_SIZE)-entity.boxCol.p*0.5){
+			entity.WorldPos.z = ((mapGrid.height)*TILE_SIZE)-entity.boxCol.p*0.5;
+			entity.boxCol.z = mapGrid.height*TILE_SIZE-entity.boxCol.p-MAGIC_OFFSET;
 			entity.velocity.z = 0;
 			
 			//aqui tbm
@@ -431,8 +431,8 @@ const Col = {
 		
 		if(x_intro < 0) x_intro = 0;
 		if(y_intro < 0) y_intro = 0;
-		if(x_end > Game.currentMap.width) x_end = Game.currentMap.width;
-		if(y_end > Game.currentMap.height) y_end = Game.currentMap.height;
+		if(x_end > mapGrid.width) x_end = mapGrid.width;
+		if(y_end > mapGrid.height) y_end = mapGrid.height;
 		
 		let playerBoxCol = [entity.boxCol.x, entity.boxCol.z, entity.boxCol.w, entity.boxCol.p, entity.boxCol.y, entity.boxCol.h]
 		//comparar Colisoes com os itens presentes
@@ -454,17 +454,17 @@ const Col = {
 		
 		for(let j = x_intro; j < x_end; j++){
 			for(let i = y_intro; i < y_end; i++){
-				if(entity.WorldPos.y < Game.currentMap.bounds[i][j].y){
-					mapBoxCol = [Game.currentMap.bounds[i][j].x, Game.currentMap.bounds[i][j].z, TILE_SIZE, TILE_SIZE];
+				if(entity.WorldPos.y < mapGrid.bounds[i][j].y){
+					mapBoxCol = [mapGrid.bounds[i][j].x, mapGrid.bounds[i][j].z, TILE_SIZE, TILE_SIZE];
 					if(Col.AABB(playerBoxCol, mapBoxCol)){
-						Col[Game.currentMap.bounds[i][j].tipo](entity, Game.currentMap.bounds[i][j]);
+						Col[mapGrid.bounds[i][j].tipo](entity, mapGrid.bounds[i][j]);
 					}
 				}
-				if(Game.currentMap.hasWater && entity.WorldPos.y < Game.currentMap.waterBounds[i][j].y){
-					waterBoxCol = [Game.currentMap.waterBounds[i][j].x, Game.currentMap.waterBounds[i][j].z, TILE_SIZE, TILE_SIZE];
+				if(mapGrid.hasWater && entity.WorldPos.y < mapGrid.waterBounds[i][j].y){
+					waterBoxCol = [mapGrid.waterBounds[i][j].x, mapGrid.waterBounds[i][j].z, TILE_SIZE, TILE_SIZE];
 					if(Col.AABB(playerBoxCol, waterBoxCol)){
 						entity.isSwimming = true;
-						Col[Game.currentMap.waterBounds[i][j].tipo](entity, Game.currentMap.waterBounds[i][j]);
+						Col[mapGrid.waterBounds[i][j].tipo](entity, mapGrid.waterBounds[i][j]);
 					}
 				}
 			}//fim for
@@ -473,7 +473,7 @@ const Col = {
 		entity.WorldPos.x = entity.boxCol.x + entity.boxCol.w/2;
 		entity.WorldPos.z = entity.boxCol.z + entity.boxCol.p/2;
 		entity.boxCol.y = entity.WorldPos.y + entity.boxCol.h;
-		this.handleYcoords(entity);
+		this.handleYcoords(entity, mapGrid);
 	}
 }
 

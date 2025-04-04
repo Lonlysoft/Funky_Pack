@@ -366,7 +366,7 @@ const Ctrl = {
 				argumentEntity.pol = 1;
 				argumentEntity.walk("x");
 			}
-			else if(Ctrl.Btns.dowm.active){//⬇
+			else if(Ctrl.Btns.down.active){//⬇
 				if(!WallCleaner.isControllingStrolling){
 					argumentEntity.velocity.z = 10;
 					WallCleaner.stroller.y = argumentEntity.boxCol.z;
