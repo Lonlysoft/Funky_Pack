@@ -61,3 +61,5 @@ My main focus is currently on:
 the mini games:
 they are quite a huge part of the game. they actually are the reason why this game is called FunkyPack and not literally time to work or something like that.
 I'm starting by the Wall Cleaner mini-game. pretty easy because it uses the same engine of the main world, and it uses some very interesting optical illusions to make the game look like it's being played in the y-axis.
+
+later it'll be the waiter since it uses the same weird engine of the main world game moment
