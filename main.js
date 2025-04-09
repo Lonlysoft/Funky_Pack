@@ -121,13 +121,14 @@ const Game = {
 				GameMomentSav = GameMoment;
 				GameMoment = "dialog"
 			}
+			Camera.moveTo(Game.CurrentCharacter.WorldPos.x, Game.CurrentCharacter.WorldPos.z, Game.CurrentCharacter.WorldPos.y);
 			Ctrl.action(Game.CurrentCharacter, "character");
 			Ctrl.stateSave();
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Game.setAndUpdateNPCs();
 			Game.CurrentCharacter.update();
 			Col.main(Game.CurrentCharacter, Game.currentMap, -1);
-			Camera.moveTo(Game.CurrentCharacter.WorldPos.x, Game.CurrentCharacter.WorldPos.z, Game.CurrentCharacter.WorldPos.y);
+			
 			if(frame > fps){
 				Clock.passTime();
 				UI.charWinUpdate(Clock);
@@ -171,7 +172,7 @@ const Game = {
 }
 
 let GameMoment = 0;
-let GameMomentSav = 'mainWorld';
+let GameMomentSav = 'wallCleaner';
 let frame = 0
 let frameaux = 0
 
@@ -198,7 +199,7 @@ function GameBonanza(){
 document.addEventListener("DOMContentLoaded", function(){
 	const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 	if (!isMobile)
-		Ctrl.canvas.display = "none";
+		Ctrl.canvas.style.display = "none";
 })
 
 function GamePlay(){

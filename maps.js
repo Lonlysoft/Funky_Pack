@@ -1,5 +1,5 @@
 var Camera = {
-	x: 100, y: 100, z: 0, w: 800, h: 600,
+	x: 100, y: 100, z: 0, w: canvas.width, h: canvas.height,
 	moveTo: function(x, y, z){
 		this.x = x - this.w*0.5;
 		this.y = y - z - this.h*0.5;
@@ -105,7 +105,7 @@ class Level{
 			}
 		}
 	}
-	drawFloor(type){
+	drawFloor(type, tileGraphics = Game.tileSetGraphics){
 		//1 quer dizer imagem estática
 		//2 quer dizer botar os tilesets
 		if(type == 1){
@@ -113,7 +113,7 @@ class Level{
 			ctx.drawImage(this.groundTileSet, imgX, imgY, 520, 520, 0, 0, 520, 520);
 		}
 		else if(type == 2){
-			DRAW__Grid(ctx, Camera, this.groundTileSet, Game.tileSetGraphics, TILE_SIZE, 16);
+			DRAW__Grid(ctx, Camera, this.groundTileSet, tileGraphics, TILE_SIZE, 16);
 		}
 	}
 	setTriggers(){

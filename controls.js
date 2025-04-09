@@ -380,6 +380,7 @@ const Ctrl = {
 				argumentEntity.stop("z");
 			}
 			if(Ctrl.Btns.A.active && Ctrl.state.A == false){ //A interação 
+				WallCleaner.clean();
 				if(argumentEntity.pol < 0 && WallCleaner.stroller.x == argumentEntity.boxCol.x){
 					WallCleaner.isControllingStroller = !WallCleaner.isControllingStroller;
 				}

@@ -8,14 +8,13 @@ const WallCleaner = {
 	cleaner: {x: undefined, y: undefined},
 	stroller: {x: 0, y: 0, w: TILE_SIZE*4, h: TILE_SIZE},
 	target: {x: 0, y: 0},
-	glassWidth: 50,
-	glassHeight: 50,
 	hasStarted: false,
 	hasWon: false,
 	tileGraph: document.getElementById("WallCleanerTileGraphic"),
 	bufferCoords: {x: 0, y: 0, z: 0}, // defined when setting up the game and the entity receives back its coordinates to spawn back in the map if the entity col grid goes wrong...
 	clean(){
-		this.stageGrid[this.target.y][this.target.x] = 0
+		const box = directions.setBox['N'](this.currentCharacter);
+		this.stage.groundTileSet[WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] = 5;
 	},
 	setGlass(){
 		let stageGrid = this.stage.groundTileSet;
@@ -28,8 +27,8 @@ const WallCleaner = {
 			}
 		}
 	},
-	draw(p1){
-		DRAW__Grid(Game.ctx, Camera, this.stage.groundTileSet, this.tileGraph, TILE_SIZE, 48);
+	draw(){
+		this.stage.drawFloor(2, this.tileGraph)
 	},
 	checkWinning(){
 		for(let i = 0; i < this.glass.length; i++){
@@ -51,9 +50,7 @@ const WallCleaner = {
 			entity.WorldPos.y = 0;
 			this.stage.setBoundaries();
 			this.hasStarted = true;
-		}
-		if(this.cleaner.x != undefined && this.cleaner.y != undefined){
-			this.glass[this.cleaner.y][this.cleaner.x] = 0;
+			this.currentCharacter = entity;
 		}
 		Col.main(entity, this.stage)
 		entity.update();
