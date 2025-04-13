@@ -14,16 +14,17 @@ const WallCleaner = {
 	bufferCoords: {x: 0, y: 0, z: 0}, // defined when setting up the game and the entity receives back its coordinates to spawn back in the map if the entity col grid goes wrong...
 	clean(){
 		const box = directions.setBox['N'](this.currentCharacter);
-		this.stage.groundTileSet[WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] = 5;
+		if(this.stage.groundTileSet[WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] > 0 && this.stage.groundTileSet[WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] < 52)
+			this.stage.groundTileSet[WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] = 5;
 	},
 	setGlass(){
 		let stageGrid = this.stage.groundTileSet;
 		for(let i = 0; i < this.glassHeight; i++){
 			for(let j = 0; j < this.glassWidth; j++){
-				if(stageGrid[i][j] == 0 || stageGrid[i][j] == 1 || stageGrid[i][j] == 2){
-					stageGrid[i][j] = 2;
-					this.glass.push([i, j]);
-				}
+					if(this.stage.groundTileSet[i][j] > 0 && this.stage.groundTileSet[i][j] < 52){
+						this.stage.groundTileSet[i][j] = this.stage.groundTileSet[i][j]+16;
+						this.glass.push([i, j]);
+					}
 			}
 		}
 	},
