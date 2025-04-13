@@ -21,14 +21,14 @@ stats
 Dynny has stats like life, hunger, joy, stamina and solitude. <br>
 the player needs to watch out for those 5.
 
-life: it's mostly refered as HP. Dynny has 200 HP. if he reaches 0 HP. Game Over. you have 2 options. go to hospital that will append your debt, or reset game to the latest save. which is a reset. <br>
+life: it's mostly refered as HP. Dynny has 200 HP. if he reaches 0 HP. Game Over. go to hospital that will append your debt. <br>
 HUNGER: Dynny gotta eat. if he doesn't, he might faint and eat the holding object to satisfy his hunger. <br>
 JOY: How dynny feels. Joy is given by spending time with nukko, playing games or doing leisure activities. <br>
 solitude: a special bar that decreases by the years that you're away from Nukko. Dynny doesn't understand that, but Nukko is important to him. And not having him around for too long might get his life empty. if this bar goes to 0. objects like trees and stores might close and Dynny will notice a decrease in water levels.
 
 Jobs
 -
-Dynny needs to work to pay his debt. the work is made via mini games. and at the end of the month you get his wage.
+Dynny needs to work to pay his debt. the work is made via mini games. and at the end of the month you get a wage for a well done job.
 
 
 needs exclusive GameMoment with mechanics and graphics
@@ -43,10 +43,10 @@ needs exclusive GameMoment with mechanics and graphics
 - Who wants to be a milionaire!?
 - glass cleaner: 5x2 morning only
 
-the normal GameMoment covers
+average game moment covers, but the triggers are different
 - informant: when requested. paid by work. minimun of $500
-- newspaper delivery: 3x4 early morning $2400
-- pizza deliverer: 6x1 night $1,660...
+- newspaper deliverer
+- pizza deliverer
 
 our wealthy badger - he's important for story
 - limo driver: when requested. mostly night or morning $30,000
