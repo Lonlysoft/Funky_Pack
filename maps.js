@@ -113,7 +113,7 @@ class Level{
 			ctx.drawImage(this.groundTileSet, imgX, imgY, 520, 520, 0, 0, 520, 520);
 		}
 		else if(type == 2){
-			DRAW__Grid(ctx, Camera, this.groundTileSet, tileGraphics, TILE_SIZE, 16);
+			DRAW__Grid(ctx, Camera, this.groundTileSet, tileGraphics, TILE_SIZE, 48);
 		}
 	}
 	setTriggers(){
