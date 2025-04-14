@@ -21,10 +21,11 @@ const WallCleaner = {
 		let stageGrid = this.stage.groundTileSet;
 		for(let i = 0; i < this.glassHeight; i++){
 			for(let j = 0; j < this.glassWidth; j++){
-					if(this.stage.groundTileSet[i][j] > 0 && this.stage.groundTileSet[i][j] < 52){
-						this.stage.groundTileSet[i][j] = this.stage.groundTileSet[i][j]+16;
-						this.glass.push([i, j]);
-					}
+				//stink up the glass
+				if(this.stage.groundTileSet[i][j] > 0 && this.stage.groundTileSet[i][j] < 52){
+						
+					this.glass.push([i, j]);
+				}
 			}
 		}
 	},
@@ -33,7 +34,7 @@ const WallCleaner = {
 	},
 	checkWinning(){
 		for(let i = 0; i < this.glass.length; i++){
-			if([this.glass[i][0]][this.glass[i][1]] == 0){
+			if(this.stage.groundTileSet[this.glass[i][0]][this.glass[i][1]] == 0){
 				return false;
 			}
 		}
