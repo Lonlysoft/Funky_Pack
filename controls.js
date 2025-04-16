@@ -73,6 +73,7 @@ const Ctrl = {
 		
 		look: new Btn(16, controls_canvas.height/10*0.5, 80, 80, true, 8)//L 15
 	},
+	ListProps4WallCleaner: ["eastNwest", "upNdown", "A"],
 	state: {
 		A: false,
 		B: false,
@@ -117,6 +118,59 @@ const Ctrl = {
     touchstart:function(event) {
 		event.preventDefault();
 		Ctrl.testBtns(event.targetTouches);
+	},
+	
+	Bonanza: {
+		wallCleaner: {
+			eastNwest: function(argumentEntity){
+				if(Ctrl.Btns.west.active){//⬅
+					argumentEntity.dir = "NW"
+					argumentEntity.pol = -1;
+					argumentEntity.walk("x");
+				}
+				else if(Ctrl.Btns.east.active){ //➡
+					argumentEntity.dir = "NE"
+					argumentEntity.pol = 1;
+					argumentEntity.walk("x");
+				}
+				else{
+					argumentEntity.stop("x");
+				}
+			},
+			upNdown: function(argumentEntity){
+				if(Ctrl.Btns.up.active){//⬆
+					if(!WallCleaner.isControllingStrolling){
+						argumentEntity.velocity.z = -10;
+						WallCleaner.stroller.y = argumentEntity.boxCol.z;
+					}
+					else{
+						
+					}
+				}
+				else if(Ctrl.Btns.down.active){//⬇
+					if(!WallCleaner.isControllingStrolling){
+						argumentEntity.velocity.z = 10;
+						WallCleaner.stroller.y = argumentEntity.boxCol.z;
+					}
+					else{
+					
+					}
+				}
+				else{ argumentEntity.stop("z"); }
+			},
+			A: function(argumentEntity){
+				if(Ctrl.Btns.A.active && Ctrl.state.A == false){ //A interação 
+					WallCleaner.clean();
+					if(argumentEntity.pol < 0 && WallCleaner.stroller.x == argumentEntity.boxCol.x){
+						WallCleaner.isControllingStroller = !WallCleaner.isControllingStroller;
+					}
+					else{
+						WallCleaner.cleaner.x = WorldToGrid(argumentEntity.WorldPos.x, TILE_SIZE);
+						WallCleaner.cleaner.y = WorldToGrid(argumentEntity.WorldPos.z - TILE_SIZE, TILE_SIZE);
+					}
+				}
+			},
+		}
 	},
 	Moment: {
 		start: function(argumentEntity){
@@ -345,51 +399,12 @@ const Ctrl = {
 			if(Ctrl.Btns.start.active && !Ctrl.state.start){
 				GameMoment = GameMomentSav;
 			}
-		},
+		},//pause action End
 		wallCleaner: function(argumentEntity){
-			if(Ctrl.Btns.west.active){//⬅
-				argumentEntity.dir = "W"
-				argumentEntity.pol = -1;
-				argumentEntity.walk("x");
+			for(let i = 0; i < Ctrl.ListProps4WallCleaner.length; i++){
+				Ctrl.Bonanza["wallCleaner"][Ctrl.ListProps4WallCleaner[i]](argumentEntity);
 			}
-			else if(Ctrl.Btns.up.active){//⬆
-				if(!WallCleaner.isControllingStrolling){
-					argumentEntity.velocity.z = -10;
-					WallCleaner.stroller.y = argumentEntity.boxCol.z;
-				}
-				else{
-					
-				}
-			}
-			else if(Ctrl.Btns.east.active){ //➡
-				argumentEntity.dir = "E"
-				argumentEntity.pol = 1;
-				argumentEntity.walk("x");
-			}
-			else if(Ctrl.Btns.down.active){//⬇
-				if(!WallCleaner.isControllingStrolling){
-					argumentEntity.velocity.z = 10;
-					WallCleaner.stroller.y = argumentEntity.boxCol.z;
-				}
-				else{
-					
-				}
-			}
-			else{
-				argumentEntity.stop("x");
-				argumentEntity.stop("z");
-			}
-			if(Ctrl.Btns.A.active && Ctrl.state.A == false){ //A interação 
-				WallCleaner.clean();
-				if(argumentEntity.pol < 0 && WallCleaner.stroller.x == argumentEntity.boxCol.x){
-					WallCleaner.isControllingStroller = !WallCleaner.isControllingStroller;
-				}
-				else{
-					WallCleaner.cleaner.x = WorldToGrid(argumentEntity.WorldPos.x, TILE_SIZE);
-					WallCleaner.cleaner.y = WorldToGrid(argumentEntity.WorldPos.z - TILE_SIZE, TILE_SIZE);
-				}
-			}
-		}//fim wallcleaner action
+		}//wallcleaner action end
 	},
 	stateSave(){
 		Ctrl.state.up = Ctrl.Btns.up.active;

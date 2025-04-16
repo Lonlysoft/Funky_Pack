@@ -1,4 +1,4 @@
-const NPCS = [
+var NPCS = [
 	"NPCS",
 	{
 		name: "JSON FOLF",
