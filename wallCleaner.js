@@ -15,15 +15,15 @@ const WallCleaner = {
 	clean(){
 		const box = directions.setBox['N'](this.currentCharacter);
 		if(this.stage.groundTileSet[WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] > 0 && this.stage.groundTileSet[WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] < 52)
-			this.stage.groundTileSet[WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] = 5;
+			this.stage.groundTileSet[WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] = 0;
 	},
 	setGlass(){
 		let stageGrid = this.stage.groundTileSet;
 		for(let i = 0; i < this.glassHeight; i++){
 			for(let j = 0; j < this.glassWidth; j++){
-				//stink up the glass
-				if(this.stage.groundTileSet[i][j] > 0 && this.stage.groundTileSet[i][j] < 52){
-						
+				//dirt up the glass
+				if(this.stage.groundTileSet[i][j] >= 0 && this.stage.groundTileSet[i][j] < 52){
+					this.stage.groundTileSet[WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] += 16;
 					this.glass.push([i, j]);
 				}
 			}
@@ -40,6 +40,12 @@ const WallCleaner = {
 		}
 		return true;
 	},
+	randomHappeningList: ["summonSeagull", "weatherChange", "pieFall"],
+	randomHappening:{
+		summonSeagull: () => {
+			
+		}
+	},
 	start(entity){
 		if(!this.hasStarted){
 			//declair the grid 
@@ -54,18 +60,18 @@ const WallCleaner = {
 			this.hasStarted = true;
 			this.currentCharacter = entity;
 		}
-		Col.main(entity, this.stage)
 		entity.update();
 		Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 		Ctrl.action(entity, "wallCleaner");
+		//this.randomHappening[this.randomHappeningList[random(0, this.randomHappeningList.length)]]();
 		this.draw();
 		entity.draw(this.stage);
 		Camera.moveTo(entity.WorldPos.x, entity.WorldPos.z, 0);
-		this.hasWon = this.checkWinning();
+		Col.main(entity, this.stage);
+		this.hasWon = this.checkWinning(); 
 		if(this.hasWon){
 			entity.money += this.salary;
-			
-			GameMoment = GameMomentSav;
+			//GameMoment = "resultScreen";
 		}
 	}
 }
