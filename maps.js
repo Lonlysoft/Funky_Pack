@@ -43,25 +43,25 @@ function tipify(num){
 //pessoas e NPCS
 class Level{
 	constructor(mapObject){
-		this.groundTileSet = mapObject.groundTileSet;
-		this.triggerGrid = mapObject.triggerGrid;
+		this.groundTileSet = mapObject.grids.floor;
+		this.triggerGrid = mapObject.grids.triggers;
 		
-		this.objectGrid = mapObject.structureTileSet;
-		this.shadowGrid = mapObject.shadowGrid;
-		this.ang = mapObject.ang;
-		this.npcGrid = mapObject.npcGrid;
-		this.grndElGrid = mapObject.groundElevation;
-		this.beingGrid = mapObject.beingGrid;
+		this.objectGrid = mapObject.grids.objects;
+		this.shadowGrid = mapObject.grids.shadow;
+		this.ang = mapObject.grids.ang;
+		this.npcGrid = mapObject.grids.npcs;
+		this.grndElGrid = mapObject.grids.ground;
+		this.beingGrid = mapObject.grids.beings;
 		this.width = mapObject.width;
 		this.height = mapObject.height;
 		this.Name = mapObject.name;
 		this.triggers = [];
 		this.bounds = [];
 		this.npcs = [];
-		this.itemGrid = mapObject.itemsGrid;
+		this.itemGrid = mapObject.grids.items;
 		this.items = [];
 		this.hasWater = mapObject.hasWater;
-		this.waterGrid = mapObject.waterGrid;
+		this.waterGrid = mapObject.grids.water;
 		this.waterBounds = [];
 	}
 	

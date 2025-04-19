@@ -42,14 +42,14 @@ class NonPlayableChar extends Being{
 
 const BehaviorList = {
 	linearX: function(entity){
-		entity.andar("x");
+		entity.walk("x");
 		entity.rayCast = (entity.pol == -1) ? entity.boxCol.x : entity.boxCol.x + entity.boxCol.w;
 		if(Game.currentMap.relevoGrid[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.rayCast, TILE_SIZE)] != Game.currentMap.relevoGrid[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.WorldPos.x, TILE_SIZE)]){
 			entity.pol *= -1;
 		}
 	},
 	linearZ: function(entity){
-		entity.andar("z");
+		entity.walk("z");
 		entity.rayCast = (entity.pol == 1) ? entity.boxCol.z : entity.boxCol.z+entity.boxCol.p;
 		if(Game.currentMap.relevoGrid[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.rayCast, TILE_SIZE)] != Game.currentMap.relevoGrid[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.WorldPos.x, TILE_SIZE)]){
 			entity.pol *= -1;
@@ -97,9 +97,3 @@ function scriptedBehavior(entity, objectBehav){
 		default: break;
 	}
 }
-
-//INIMIGOS DESSE JOGO, usando um array para carregá-los na classe posteriormente
-
-//NPCs relevantes;
-
-//NPCs irrelevantes;
