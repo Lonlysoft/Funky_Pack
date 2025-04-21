@@ -49,8 +49,8 @@ average game moment covers, but the triggers are different
 - pizza deliverer
 
 our wealthy badger - he's important for story
-- limo driver: when requested. mostly night or morning $30,000
-- personal assistant $40,000
+- limo driver: when requested. mostly night or morning
+- personal assistant
 
 Current State:
 -
