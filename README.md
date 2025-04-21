@@ -32,9 +32,9 @@ Dynny needs to work to pay his debt. the work is made via mini games. and at the
 
 
 needs exclusive GameMoment with mechanics and graphics
-- box pusher: morning to afternoon $2500
-- office guy: morning, afternoon or night $3300
-- elevator technician: when requested. mostly it's in dawn or night $10000
+- box pusher: morning to afternoon;
+- office guy: morning, afternoon or night;
+- elevator technician: when requested. mostly it's in dawn or night;
 - I.T. tester: 7x0. hour randomized $1,000,000
 - trucker: paid by work and kilometree
 - factory worker: morning to night
