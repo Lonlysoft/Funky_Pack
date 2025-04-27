@@ -55,9 +55,13 @@ our wealthy badger - he's important for story
 Current State:
 -
 Everything is as initial as you can guess. It's not a complicated game, but since it's my first time developing a big project such as a game is. It'll be hard to make.
+I need to make the triggers
 
 My main focus is currently on:
 
 the mini games:
 they are a huge part of the game. they actually are the reason why this game is called Funky pack.
-I'm starting by the Wall Cleaner mini-game. pretty easy because it uses the same engine of the main world, and it uses some very interesting optical illusions to make the game look like it's being played in the y-axis.
+I'm starting by the Wall Cleaner mini-game. It's pretty easy because it uses the same engine of the main world.
+
+current changelog
+Controls.js updated. now the buttons receive object as an argument and I'll make separated versions of the landscape and portrait controls. Making the controls not stretch in the portrait version.
