@@ -172,7 +172,7 @@ const Game = {
 }
 
 let GameMoment = 0;
-let GameMomentSav = 'mainWorld';
+let GameMomentSav = 'wallCleaner';
 let frame = 0
 let frameaux = 0
 

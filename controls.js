@@ -4,14 +4,14 @@ var boundingRect = undefined
 var aspectRatio = 1;
 
 class Btn{
-	constructor(x, y, w, h, show, ID = 14){
+	constructor(constructObj){
 		this.active = false;
-		this.h = h;
-		this.w = w;
-		this.x = x;
-		this.y = y;
-		this.ID = ID;
-		this.type = show;
+		this.h = constructObj.h;
+		this.w = constructObj.w;
+		this.x = constructObj.x;
+		this.y = constructObj.y;
+		this.ID = constructObj.ID;
+		this.type = constructObj.show;
 		
 	}
 	hasPoint(x,y){
@@ -28,6 +28,95 @@ function resize(){
 	boundingRect = controls_canvas.getBoundingClientRect();
 	aspectRatio = controls_canvas.width/client_width;
 	aspectRatioHeight = controls_canvas.height/client_height;
+}
+
+const ControlsButtons = {
+	buttonsLandscapeParameters: {
+		west: {
+			x: 10,
+			y: controls_canvas.height - 160,
+			w: 80,
+			h: 80,
+			show: true,
+			ID: 3
+		},//⬅
+		up: {
+			x: 90,
+			y: controls_canvas.height- 240,
+			w: 80,
+			h: 80,
+			show: true,
+			ID: 0
+		},//⬆
+		east: {
+			x: 170,
+			y: controls_canvas.height - 160,
+			w: 80,
+			h: 80,
+			show: true,
+			ID: 1
+		},//➡ 2
+		down: {
+			x: 90, y: controls_canvas.height - 80, w: 80, h: 80, show: true, ID: 2
+		},//⬇ 3
+		
+		southwest: {
+			x: 10, y: controls_canvas.height - 80, w: 80, h: 80, show: false
+		},//↙ 4
+		southeast: {
+			x: 170, y: controls_canvas.height - 80, w: 80, h: 80, show: false
+		},//↘ 5
+		northeast: {
+			x: 170, y: controls_canvas.height - 240, w: 80, h: 80,
+			show: false
+		},//↗ 6
+		northwest: {
+			x: 10, y: controls_canvas.height - 240, w: 80, h: 80, show: false
+		},//↖ 7
+		//botao
+		B: {
+			x: controls_canvas.width - 170,
+			y: controls_canvas.height-80,
+			w: 80, h: 80, show: true, ID: 6
+		},//B 8
+		Y: {
+			x:controls_canvas.width - 250,
+			y: controls_canvas.height-160,
+			w: 80, h: 80, show: true, ID: 4
+		},//Y 9
+		A: {
+			x:controls_canvas.width - 90,
+			y: controls_canvas.height-160,
+			w: 80, h: 80, show: true, ID: 5
+		},//A 10
+		X: {
+			x:controls_canvas.width - 170,
+			y: controls_canvas.height- 240, 
+			w: 80, h: 80, show: true, ID: 7
+		},//x 14
+		//triggers
+		select: {
+			x:controls_canvas.width/2 - 90,
+			y: 25, w: 80, h: 80, show: true, ID: 11
+		},//select 11
+		zed: {
+			x:controls_canvas.width - 90,
+			y: controls_canvas.height/10*0.5,
+			w: 80, h: 80, show: true, ID: 9
+		},//z 12
+		start: {
+			x:controls_canvas.width/2 + 10,
+			y: controls_canvas.height/10*0.5,
+			w: 80, h: 80, show: true, ID: 10},//start 13
+		
+		look: {
+			x: 16, y: controls_canvas.height/10*0.5,
+			w: 80, h: 80, show: true, ID: 8
+		}//L 15
+	},
+	buttonsPortraitParameters: {
+		
+	}
 }
 
 const Ctrl = {
@@ -53,25 +142,25 @@ const Ctrl = {
 	},
 	ListProps: ["west", "up", "east", "down", "southwest", "southeast", "northeast", "northwest", "B", "Y", "A", "select", "zed", "start", "X", "look"],
 	Btns: {
-		west: new Btn(10,  controls_canvas.height - 160, 80, 80, true, 3),//⬅ 0
-		up: new Btn(90,  controls_canvas.height- 240, 80, 80, true, 0),//⬆ 1
-		east: new Btn(170,  controls_canvas.height - 160, 80, 80, true, 1),//➡ 2
-		down: new Btn(90,  controls_canvas.height - 80, 80, 80, true, 2),//⬇ 3
-		southwest: new Btn(10,  controls_canvas.height - 80, 80, 80, false),//↙ 4
-		southeast: new Btn(170,  controls_canvas.height - 80, 80, 80, false),//↘ 5
-		northeast: new Btn(170,  controls_canvas.height - 240, 80, 80, false),//↗ 6
-		northwest: new Btn(10,  controls_canvas.height - 240, 80, 80, false),//↖ 7
+		west: new Btn(ControlsButtons.buttonsLandscapeParameters.west),//⬅ 0
+		up: new Btn(ControlsButtons.buttonsLandscapeParameters.up),//⬆ 1
+		east: new Btn(ControlsButtons.buttonsLandscapeParameters.east),//➡ 2
+		down: new Btn(ControlsButtons.buttonsLandscapeParameters.down),//⬇ 3
+		southwest: new Btn(ControlsButtons.buttonsLandscapeParameters.southwest),//↙ 4
+		southeast: new Btn(ControlsButtons.buttonsLandscapeParameters.southeast),//↘ 5
+		northeast: new Btn(ControlsButtons.buttonsLandscapeParameters.northeast),//↗ 6
+		northwest: new Btn(ControlsButtons.buttonsLandscapeParameters.northwest),//↖ 7
 		//botao
-		B: new Btn(controls_canvas.width - 170,  controls_canvas.height-80, 80, 80 , true,6),//B 8
-		Y: new Btn(controls_canvas.width - 250,  controls_canvas.height-160, 80, 80,true, 4),//Y 9
-		A: new Btn(controls_canvas.width - 90,  controls_canvas.height-160 ,80, 80, true, 5),//A 10
-		X: new Btn(controls_canvas.width - 170, controls_canvas.height- 240, 80, 80, true, 7),//x 14
+		B: new Btn(ControlsButtons.buttonsLandscapeParameters.B),//B 8
+		Y: new Btn(ControlsButtons.buttonsLandscapeParameters.Y),//Y 9
+		A: new Btn(ControlsButtons.buttonsLandscapeParameters.A),//A 10
+		X: new Btn(ControlsButtons.buttonsLandscapeParameters.X),//x 14
 		//triggers
-		select: new Btn(controls_canvas.width/2 - 90, 25, 80, 80, true, 11),//select 11
-		zed: new Btn(controls_canvas.width - 90, controls_canvas.height/10*0.5, 80, 80, true, 9),//z 12
-		start: new Btn(controls_canvas.width/2 + 10, controls_canvas.height/10*0.5, 80, 80, true, 10),//start 13
+		select: new Btn(ControlsButtons.buttonsLandscapeParameters.select),//select 11
+		zed: new Btn(ControlsButtons.buttonsLandscapeParameters.zed),//z 12
+		start: new Btn(ControlsButtons.buttonsLandscapeParameters.start),//start 13
 		
-		look: new Btn(16, controls_canvas.height/10*0.5, 80, 80, true, 8)//L 15
+		look: new Btn(ControlsButtons.buttonsLandscapeParameters.look)//L 15
 	},
 	ListProps4WallCleaner: ["eastNwest", "upNdown", "A"],
 	state: {

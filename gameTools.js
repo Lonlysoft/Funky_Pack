@@ -27,6 +27,14 @@ function minVal(arr){
 	return o;
 }
 
+function createMatrixWithSomething(width, height, arg){
+	let matrix = new Array(height);
+	for(let i = 0; i < height; i++){
+		matrix[i] = new Array(width);
+	}
+	return matrix;
+}
+
 function WorldToScreen1D(entCoord, camWCoord, offset) {
 	let screenCoord = entCoord - camWCoord - offset;
 	return screenCoord;

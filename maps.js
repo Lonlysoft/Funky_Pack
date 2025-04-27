@@ -163,7 +163,7 @@ class Level{
 			}
 		}
 	}//
-	objectGridDraw(camada){
-		DRAW__Grid(ctx, Camera, this.objectGrid[camada], Game.tileSetGraphics, TILE_SIZE);
+	objectGridDraw(camada, tileSet = Game.tileSetGraphics){
+		DRAW__Grid(ctx, Camera, this.objectGrid[camada], tileSet, TILE_SIZE);
 	}//end objectDraw
 }// fim Classe levelScenery
