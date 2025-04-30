@@ -10,6 +10,7 @@ const WallCleaner = {
 	target: {x: 0, y: 0},
 	hasStarted: false,
 	hasWon: false,
+	cleanerGraph: document.getElementById("WallCleanerPlatform"),
 	tileGraph: document.getElementById("WallCleanerTileGraphic"),
 	bufferCoords: {x: 0, y: 0, z: 0}, // defined when setting up the game and the entity receives back its coordinates to spawn back in the map if the entity col grid goes wrong...
 	clean(){
@@ -19,18 +20,22 @@ const WallCleaner = {
 	},
 	setGlass(){
 		let stageGrid = this.stage.groundTileSet;
-		for(let i = 0; i < this.glassHeight; i++){
-			for(let j = 0; j < this.glassWidth; j++){
+		for(let i = 0; i < this.stage.height; i++){
+			for(let j = 0; j < this.stage.width; j++){
 				//dirt up the glass
 				if(this.stage.groundTileSet[i][j] >= 0 && this.stage.groundTileSet[i][j] < 52){
-					this.stage.groundTileSet[WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] += 16;
 					this.glass.push([i, j]);
+					this.stage.objectGrid[0][this.glass[this.glass.length-1][1]][this.glass[this.glass.length-1][0]] = this.glassState[random(0, 2)];
 				}
 			}
 		}
 	},
-	draw(){
-		this.stage.drawFloor(2, this.tileGraph)
+	draw(entity){
+		this.stage.drawFloor(2, this.tileGraph);
+		this.stage.objectGridDraw(0);
+		Game.ctx.drawImage(this.cleanerGraph, 0, 0, 64*3, 128, entity.centralPoint[0] - TILE_SIZE, entity.centralPoint[1] - TILE_SIZE *0.5, TILE_SIZE*3, TILE_SIZE * 1.5);
+		entity.draw(this.stage);
+		Game.ctx.drawImage(this.cleanerGraph, 0, 0, 64*3, 32, entity.centralPoint[0] - TILE_SIZE, entity.centralPoint[1], TILE_SIZE*3, TILE_SIZE *0.5);
 	},
 	checkWinning(){
 		for(let i = 0; i < this.glass.length; i++){
@@ -64,8 +69,7 @@ const WallCleaner = {
 		Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 		Ctrl.action(entity, "wallCleaner");
 		//this.randomHappening[this.randomHappeningList[random(0, this.randomHappeningList.length)]]();
-		this.draw();
-		entity.draw(this.stage);
+		this.draw(entity);
 		Camera.moveTo(entity.WorldPos.x, entity.WorldPos.z, 0);
 		Col.main(entity, this.stage);
 		this.hasWon = this.checkWinning(); 

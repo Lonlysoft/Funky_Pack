@@ -2,6 +2,8 @@ var client_width = Math.floor(document.documentElement.clientWidth);
 var client_height = Math.floor(document.documentElement.clientHeight);
 var boundingRect = undefined
 var aspectRatio = 1;
+const CONTROLS_LAND_HEIGHT = 80;
+const CONTROLS_PORT_HEIGHT = 40;
 
 class Btn{
 	constructor(constructObj){
@@ -28,6 +30,7 @@ function resize(){
 	boundingRect = controls_canvas.getBoundingClientRect();
 	aspectRatio = controls_canvas.width/client_width;
 	aspectRatioHeight = controls_canvas.height/client_height;
+	Ctrl.resize();
 }
 
 const ControlsButtons = {
@@ -36,7 +39,7 @@ const ControlsButtons = {
 			x: 10,
 			y: controls_canvas.height - 160,
 			w: 80,
-			h: 80,
+			h: CONTROLS_LAND_HEIGHT,
 			show: true,
 			ID: 3
 		},//⬅
@@ -44,7 +47,7 @@ const ControlsButtons = {
 			x: 90,
 			y: controls_canvas.height- 240,
 			w: 80,
-			h: 80,
+			h: CONTROLS_LAND_HEIGHT,
 			show: true,
 			ID: 0
 		},//⬆
@@ -52,70 +55,150 @@ const ControlsButtons = {
 			x: 170,
 			y: controls_canvas.height - 160,
 			w: 80,
-			h: 80,
+			h: CONTROLS_LAND_HEIGHT,
 			show: true,
 			ID: 1
 		},//➡ 2
 		down: {
-			x: 90, y: controls_canvas.height - 80, w: 80, h: 80, show: true, ID: 2
+			x: 90, y: controls_canvas.height - 80, w: 80, h: CONTROLS_LAND_HEIGHT, show: true, ID: 2
 		},//⬇ 3
 		
 		southwest: {
-			x: 10, y: controls_canvas.height - 80, w: 80, h: 80, show: false
+			x: 10, y: controls_canvas.height - 80, w: 80, h: CONTROLS_LAND_HEIGHT, show: false
 		},//↙ 4
 		southeast: {
-			x: 170, y: controls_canvas.height - 80, w: 80, h: 80, show: false
+			x: 170, y: controls_canvas.height - 80, w: 80, h: CONTROLS_LAND_HEIGHT, show: false
 		},//↘ 5
 		northeast: {
-			x: 170, y: controls_canvas.height - 240, w: 80, h: 80,
+			x: 170, y: controls_canvas.height - 240, w: 80, h: CONTROLS_LAND_HEIGHT,
 			show: false
 		},//↗ 6
 		northwest: {
-			x: 10, y: controls_canvas.height - 240, w: 80, h: 80, show: false
+			x: 10, y: controls_canvas.height - 240, w: 80, h: CONTROLS_LAND_HEIGHT, show: false
 		},//↖ 7
 		//botao
 		B: {
 			x: controls_canvas.width - 170,
 			y: controls_canvas.height-80,
-			w: 80, h: 80, show: true, ID: 6
+			w: 80, h: CONTROLS_LAND_HEIGHT, show: true, ID: 6
 		},//B 8
 		Y: {
 			x:controls_canvas.width - 250,
 			y: controls_canvas.height-160,
-			w: 80, h: 80, show: true, ID: 4
+			w: 80, h: CONTROLS_LAND_HEIGHT, show: true, ID: 4
 		},//Y 9
 		A: {
 			x:controls_canvas.width - 90,
 			y: controls_canvas.height-160,
-			w: 80, h: 80, show: true, ID: 5
+			w: 80, h: CONTROLS_LAND_HEIGHT, show: true, ID: 5
 		},//A 10
 		X: {
 			x:controls_canvas.width - 170,
 			y: controls_canvas.height- 240, 
-			w: 80, h: 80, show: true, ID: 7
+			w: 80, h: CONTROLS_LAND_HEIGHT, show: true, ID: 7
 		},//x 14
 		//triggers
 		select: {
 			x:controls_canvas.width/2 - 90,
-			y: 25, w: 80, h: 80, show: true, ID: 11
+			y: 25, w: CONTROLS_LAND_HEIGHT, h: 80, show: true, ID: 11
 		},//select 11
 		zed: {
 			x:controls_canvas.width - 90,
 			y: controls_canvas.height/10*0.5,
-			w: 80, h: 80, show: true, ID: 9
+			w: 80, h: CONTROLS_LAND_HEIGHT, show: true, ID: 9
 		},//z 12
 		start: {
 			x:controls_canvas.width/2 + 10,
 			y: controls_canvas.height/10*0.5,
-			w: 80, h: 80, show: true, ID: 10},//start 13
+			w: 80, h: CONTROLS_LAND_HEIGHT, show: true, ID: 10},//start 13
 		
 		look: {
 			x: 16, y: controls_canvas.height/10*0.5,
-			w: 80, h: 80, show: true, ID: 8
+			w: 80, h: CONTROLS_LAND_HEIGHT, show: true, ID: 8
 		}//L 15
 	},
 	buttonsPortraitParameters: {
+		west: {
+			x: 10,
+			y: controls_canvas.height - 160,
+			w: 80,
+			h: CONTROLS_PORT_HEIGHT,
+			show: true,
+			ID: 3
+		},//⬅
+		up: {
+			x: 90,
+			y: controls_canvas.height- 240,
+			w: 80,
+			h: CONTROLS_PORT_HEIGHT,
+			show: true,
+			ID: 0
+		},//⬆
+		east: {
+			x: 170,
+			y: controls_canvas.height - 160,
+			w: 80,
+			h: CONTROLS_PORT_HEIGHT,
+			show: true,
+			ID: 1
+		},//➡ 2
+		down: {
+			x: 90, y: controls_canvas.height - 80, w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 2
+		},//⬇ 3
 		
+		southwest: {
+			x: 10, y: controls_canvas.height - 80, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
+		},//↙ 4
+		southeast: {
+			x: 170, y: controls_canvas.height - 80, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
+		},//↘ 5
+		northeast: {
+			x: 170, y: controls_canvas.height - 240, w: 80, h: CONTROLS_PORT_HEIGHT,
+			show: false
+		},//↗ 6
+		northwest: {
+			x: 10, y: controls_canvas.height - 240, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
+		},//↖ 7
+		//botao
+		B: {
+			x: controls_canvas.width - 170,
+			y: controls_canvas.height - 80,
+			w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 6
+		},//B 8
+		Y: {
+			x:controls_canvas.width - 250,
+			y: controls_canvas.height-160,
+			w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 4
+		},//Y 9
+		A: {
+			x:controls_canvas.width - 90,
+			y: controls_canvas.height-160,
+			w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 5
+		},//A 10
+		X: {
+			x:controls_canvas.width - 170,
+			y: controls_canvas.height- 240, 
+			w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 7
+		},//x 14
+		//triggers
+		select: {
+			x:controls_canvas.width/2 - 90,
+			y: 25, w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 11
+		},//select 11
+		zed: {
+			x:controls_canvas.width - 90,
+			y: controls_canvas.height/10*0.5,
+			w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 9
+		},//z 12
+		start: {
+			x:controls_canvas.width/2 + 10,
+			y: controls_canvas.height/10*0.5,
+			w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 10},//start 13
+		
+		look: {
+			x: 16, y: controls_canvas.height/10*0.5,
+			w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 8
+		}//L 15
 	}
 }
 
@@ -135,13 +218,13 @@ const Ctrl = {
 					onOrOff = 0;
 				}
 				this.ctx.globalAlpha = 0.5
-				this.ctx.drawImage(graphic, button.ID*button.w, onOrOff*button.h, 80, 80, button.x, button.y, button.w, button.h);
+				this.ctx.drawImage(graphic, button.ID*button.w, onOrOff*button.w, 80, 80, button.x, button.y, button.w, button.h);
 				this.ctx.globalAlpha = 1;
 			}
 		}
 	},
 	ListProps: ["west", "up", "east", "down", "southwest", "southeast", "northeast", "northwest", "B", "Y", "A", "select", "zed", "start", "X", "look"],
-	Btns: {
+	BtnsLandscape: {
 		west: new Btn(ControlsButtons.buttonsLandscapeParameters.west),//⬅ 0
 		up: new Btn(ControlsButtons.buttonsLandscapeParameters.up),//⬆ 1
 		east: new Btn(ControlsButtons.buttonsLandscapeParameters.east),//➡ 2
@@ -162,6 +245,48 @@ const Ctrl = {
 		
 		look: new Btn(ControlsButtons.buttonsLandscapeParameters.look)//L 15
 	},
+	BtnsPortrait: {
+		west: new Btn(ControlsButtons.buttonsPortraitParameters.west),//⬅ 0
+		up: new Btn(ControlsButtons.buttonsPortraitParameters.up),//⬆ 1
+		east: new Btn(ControlsButtons.buttonsPortraitParameters.east),//➡ 2
+		down: new Btn(ControlsButtons.buttonsPortraitParameters.down),//⬇ 3
+		southwest: new Btn(ControlsButtons.buttonsPortraitParameters.southwest),//↙ 4
+		southeast: new Btn(ControlsButtons.buttonsPortraitParameters.southeast),//↘ 5
+		northeast: new Btn(ControlsButtons.buttonsPortraitParameters.northeast),//↗ 6
+		northwest: new Btn(ControlsButtons.buttonsPortraitParameters.northwest),//↖ 7
+		//botao
+		B: new Btn(ControlsButtons.buttonsPortraitParameters.B),//B 8
+		Y: new Btn(ControlsButtons.buttonsPortraitParameters.Y),//Y 9
+		A: new Btn(ControlsButtons.buttonsPortraitParameters.A),//A 10
+		X: new Btn(ControlsButtons.buttonsPortraitParameters.X),//x 14
+		//triggers
+		select: new Btn(ControlsButtons.buttonsPortraitParameters.select),//select 11
+		zed: new Btn(ControlsButtons.buttonsPortraitParameters.zed),//z 12
+		start: new Btn(ControlsButtons.buttonsPortraitParameters.start),//start 13
+		
+		look: new Btn(ControlsButtons.buttonsPortraitParameters.look)//L 15
+	},
+	Btns: undefined,
+	//turn every input false
+	falsify(){
+		if(this.Btns == undefined){
+			return;
+		}
+		for(let i = 0; i < this.ListProps.length; i++){
+			this.Btns[this.ListProps[i]].active = false;
+		}
+	},
+	resize(){
+		if(client_width < client_height){
+			this.falsify();
+			this.Btns = this.BtnsPortrait;
+		}
+		else{
+			this.falsify();
+			this.Btns = this.BtnsLandscape;
+		}
+	},
+	
 	ListProps4WallCleaner: ["eastNwest", "upNdown", "A"],
 	state: {
 		A: false,

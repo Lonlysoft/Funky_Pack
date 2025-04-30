@@ -64,4 +64,4 @@ they are a huge part of the game. they actually are the reason why this game is 
 I'm starting by the Wall Cleaner mini-game. It's pretty easy because it uses the same engine of the main world.
 
 current changelog
-Controls.js updated. now the buttons receive object as an argument and I'll make separated versions of the landscape and portrait controls. Making the controls not stretch in the portrait version.
+Controls.js updated. now the buttons receive object as an argument and I'll make separated versions of the landscape and portrait controls. Making the controls not stretch in the portrait version. the controls in portrait version need to be updated in positions
