@@ -120,7 +120,7 @@ const ControlsButtons = {
 	buttonsPortraitParameters: {
 		west: {
 			x: 10,
-			y: controls_canvas.height - 160,
+			y: controls_canvas.height - CONTROLS_PORT_HEIGHT*2,
 			w: 80,
 			h: CONTROLS_PORT_HEIGHT,
 			show: true,
@@ -128,7 +128,7 @@ const ControlsButtons = {
 		},//⬅
 		up: {
 			x: 90,
-			y: controls_canvas.height- 240,
+			y: controls_canvas.height- CONTROLS_PORT_HEIGHT*3,
 			w: 80,
 			h: CONTROLS_PORT_HEIGHT,
 			show: true,
@@ -136,28 +136,28 @@ const ControlsButtons = {
 		},//⬆
 		east: {
 			x: 170,
-			y: controls_canvas.height - 160,
+			y: controls_canvas.height - CONTROLS_PORT_HEIGHT*2,
 			w: 80,
 			h: CONTROLS_PORT_HEIGHT,
 			show: true,
 			ID: 1
 		},//➡ 2
 		down: {
-			x: 90, y: controls_canvas.height - 80, w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 2
+			x: 90, y: controls_canvas.height - CONTROLS_PORT_HEIGHT - 20, w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 2
 		},//⬇ 3
 		
 		southwest: {
-			x: 10, y: controls_canvas.height - 80, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
+			x: 10, y: controls_canvas.height - CONTROLS_PORT_HEIGHT, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
 		},//↙ 4
 		southeast: {
-			x: 170, y: controls_canvas.height - 80, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
+			x: 170, y: controls_canvas.height - CONTROLS_PORT_HEIGHT, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
 		},//↘ 5
 		northeast: {
-			x: 170, y: controls_canvas.height - 240, w: 80, h: CONTROLS_PORT_HEIGHT,
+			x: 170, y: controls_canvas.height - CONTROLS_PORT_HEIGHT*3, w: 80, h: CONTROLS_PORT_HEIGHT,
 			show: false
 		},//↗ 6
 		northwest: {
-			x: 10, y: controls_canvas.height - 240, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
+			x: 10, y: controls_canvas.height - CONTROLS_PORT_HEIGHT*3, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
 		},//↖ 7
 		//botao
 		B: {
@@ -287,7 +287,7 @@ const Ctrl = {
 		}
 	},
 	
-	ListProps4WallCleaner: ["eastNwest", "upNdown", "A"],
+	ListProps4WallCleaner: ["eastNwest", "upNdown", "A", "B", "start"],
 	state: {
 		A: false,
 		B: false,
@@ -348,7 +348,7 @@ const Ctrl = {
 					argumentEntity.walk("x");
 				}
 				else{
-					argumentEntity.stop("x");
+					argumentEntity.stopAbsolute("x");
 				}
 			},
 			upNdown: function(argumentEntity){
@@ -370,11 +370,10 @@ const Ctrl = {
 					
 					}
 				}
-				else{ argumentEntity.stop("z"); }
+				else{ argumentEntity.stopAbsolute("z"); }
 			},
 			A: function(argumentEntity){
 				if(Ctrl.Btns.A.active && Ctrl.state.A == false){ //A interação 
-					WallCleaner.clean();
 					if(argumentEntity.pol < 0 && WallCleaner.stroller.x == argumentEntity.boxCol.x){
 						WallCleaner.isControllingStroller = !WallCleaner.isControllingStroller;
 					}
@@ -384,6 +383,18 @@ const Ctrl = {
 					}
 				}
 			},
+			B: function(){
+				if(Ctrl.Btns.B.active && Ctrl.state.B == false){ //A interação 
+					WallCleaner.clean();
+				}
+			},
+			start: function(){
+				if(Ctrl.Btns.start.active && Ctrl.state.start == false){//start
+					UI.charWinDismiss();
+					GameMomentSav = GameMoment;
+					GameMoment = 'pause';
+				}
+			}
 		}
 	},
 	Moment: {

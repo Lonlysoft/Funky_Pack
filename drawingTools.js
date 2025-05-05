@@ -35,6 +35,11 @@ function DRAW__Grid(context, cam, grid2Draw, gridImage, tileSize, tileImageSize 
 	}
 }
 
+function setUsingTools = {
+	mainWorld: "use",
+	wallCleaner: "clean"
+}
+
 function displayAnim(Character){
 	if(Character.onGround){
 		Character.doing = "still";
@@ -47,6 +52,10 @@ function displayAnim(Character){
 	}
 	else{
 		Character.doing = "jump";
+	}
+	
+	if(Character.isUsingTools){
+		Character.doing = setUsingTools[GameMoment];
 	}
 	
 	if(Character.animationIndex < Character.anim[Character.doing].length-1){

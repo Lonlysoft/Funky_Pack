@@ -12,11 +12,13 @@ const WallCleaner = {
 	hasWon: false,
 	cleanerGraph: document.getElementById("WallCleanerPlatform"),
 	tileGraph: document.getElementById("WallCleanerTileGraphic"),
+	glassStateImg: document.getElementById("glassStates"),
 	bufferCoords: {x: 0, y: 0, z: 0}, // defined when setting up the game and the entity receives back its coordinates to spawn back in the map if the entity col grid goes wrong...
 	clean(){
 		const box = directions.setBox['N'](this.currentCharacter);
-		if(this.stage.groundTileSet[WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] > 0 && this.stage.groundTileSet[WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] < 52)
-			this.stage.groundTileSet[WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] = 0;
+		if(this.stage.objectGrid[0][WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] > 0 && this.stage.objectGrid[0][WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] < 4)
+			
+			this.stage.objectGrid[0][WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] = -1;
 	},
 	setGlass(){
 		let stageGrid = this.stage.groundTileSet;
@@ -31,8 +33,8 @@ const WallCleaner = {
 		}
 	},
 	draw(entity){
-		this.stage.drawFloor(2, this.tileGraph);
-		this.stage.objectGridDraw(0);
+		this.stage.drawFloor( this.tileGraph);
+		this.stage.objectGridDraw(0, this.glassStateImg);
 		Game.ctx.drawImage(this.cleanerGraph, 0, 0, 64*3, 128, entity.centralPoint[0] - TILE_SIZE, entity.centralPoint[1] - TILE_SIZE *0.5, TILE_SIZE*3, TILE_SIZE * 1.5);
 		entity.draw(this.stage);
 		Game.ctx.drawImage(this.cleanerGraph, 0, 0, 64*3, 32, entity.centralPoint[0] - TILE_SIZE, entity.centralPoint[1], TILE_SIZE*3, TILE_SIZE *0.5);
@@ -60,7 +62,7 @@ const WallCleaner = {
 			entity.boxCol.z = GridToWorld(5, TILE_SIZE);
 			entity.WorldPos.x = GridToWorld(5, TILE_SIZE);
 			entity.WorldPos.z = GridToWorld(5, TILE_SIZE);
-			entity.WorldPos.y = 0;
+			entity.WorldPos.y = -56;
 			this.stage.setBoundaries();
 			this.hasStarted = true;
 			this.currentCharacter = entity;

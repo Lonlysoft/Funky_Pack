@@ -362,7 +362,7 @@ const Col = {
 		//não é a melhor forma de fazer isso pois é 4*O(N) todos os frames.
 		let solidObjectArray = []
 		for(let i = 0; i < Game.ItemArr.length; i++){
-			if(Game.ItemArr[i].tipo == "solidObject"){
+			if(Game.ItemArr[i].type == "solidObject"){
 				solidObjectArray.push(Game.ItemArr[i]);
 			}
 		}

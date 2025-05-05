@@ -19,7 +19,7 @@ const Scenery = {
 		for(let i = 0; i < items.length; i++){
 			layers[items[i].layer].push(items[i]);
 		}
-		Game.currentMap.drawFloor(2);
+		Game.currentMap.drawFloor();
 		layers[currChar.layer].push(currChar);
 		
 		//this.rearrangeSubInlayer(); //feito pro player também se mover atrás dos inimigos 

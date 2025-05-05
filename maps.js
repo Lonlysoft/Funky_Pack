@@ -105,16 +105,11 @@ class Level{
 			}
 		}
 	}
-	drawFloor(type, tileGraphics = Game.tileSetGraphics){
-		//1 quer dizer imagem estática
-		//2 quer dizer botar os tilesets
-		if(type == 1){
-			let imgX = CurrentCharacter.WorldPos.x - 260, imgY = CurrentCharacter.WorldPos.z - 260;
-			ctx.drawImage(this.groundTileSet, imgX, imgY, 520, 520, 0, 0, 520, 520);
-		}
-		else if(type == 2){
-			DRAW__Grid(ctx, Camera, this.groundTileSet, tileGraphics, TILE_SIZE, 48);
-		}
+	drawFloor(tileGraphics = Game.tileSetGraphics){
+		DRAW__Grid(ctx, Camera, this.groundTileSet, tileGraphics, TILE_SIZE, 48);
+	}
+	objectGridDraw(layer, tileSet = Game.tileSetGraphics){
+		DRAW__Grid(ctx, Camera, this.objectGrid[layer], tileSet, TILE_SIZE);
 	}
 	setTriggers(){
 		for(let i = 0; i < this.height; i++){
@@ -163,7 +158,4 @@ class Level{
 			}
 		}
 	}//
-	objectGridDraw(camada, tileSet = Game.tileSetGraphics){
-		DRAW__Grid(ctx, Camera, this.objectGrid[camada], tileSet, TILE_SIZE);
-	}//end objectDraw
 }// fim Classe levelScenery

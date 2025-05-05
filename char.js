@@ -66,6 +66,13 @@ class Being{
 	}
 	stop(axis){
 		this.isWalking[axis] = false;
+		if(this.onGround){
+			this.velocity[axis] *= this.friction;
+			this.velocity[axis] = Number.parseInt(this.velocity[axis]);
+		}
+	}
+	stopAbsolute(axis){
+		this.isWalking[axis] = false;
 		this.velocity[axis] *= this.friction;
 		this.velocity[axis] = Number.parseInt(this.velocity[axis]);
 	}

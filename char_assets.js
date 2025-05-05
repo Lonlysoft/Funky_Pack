@@ -15,7 +15,8 @@ const Characters = [
 			walk: ["infinite", 1, 1, 1, 1, 1, 0, 0, 0, 0, "m", 1, "m", 1, "m", 1, "m", 1, "m", 1, 0, 0, 0, 0],
 			walkDifferent: ["infinite", 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2],
 			still: ["infinite", 0],
-			jump: ["linear", 2, 2, 1, 1, 1, 1, 1]
+			jump: ["linear", 2, 2, 1, 1, 1, 1, 1],
+			clean: ["linear", 3, 3, 3, 3, 4, 4, 4, 4]
 		}
 	),
 	new Protagonist(
