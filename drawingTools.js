@@ -35,7 +35,7 @@ function DRAW__Grid(context, cam, grid2Draw, gridImage, tileSize, tileImageSize 
 	}
 }
 
-function setUsingTools = {
+const setUsingTools = {
 	mainWorld: "use",
 	wallCleaner: "clean"
 }
