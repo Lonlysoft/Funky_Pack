@@ -31,6 +31,7 @@ function DRAW__Grid(context, cam, grid2Draw, gridImage, tileSize, tileImageSize 
 				renderPlusX, renderPlusY,
 				tileSize, tileSize
 			);
+			context.fillText(grid2Draw[j][i], renderPlusX, renderPlusY);
 		}
 	}
 }
@@ -44,7 +45,7 @@ function displayAnim(Character){
 	if(Character.onGround){
 		Character.doing = "still";
 		if(Character.isWalking.x || Character.isWalking.z){
-			Character.doing = "walkDifferent"
+			Character.doing = "walkDifferent";
 			if(Character.dir == "S" || Character.dir == "N"){
 				Character.doing = "walk"
 			}

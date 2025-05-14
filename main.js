@@ -4,6 +4,8 @@ const Game = {
 	ctx: ctx,
 	SCREEN_CENTER: [canvas.width*0.5, canvas.height*0.5],
 	currentMap: null,
+	levelName: "amCity",
+	LocationsProps: [null, undefined, "amCity", "Qmart", "nukkoHouse", "houseVariation"],
 	CurrentCharacter: null,
 	ItemArr: [],
 	NPCarr: [],
@@ -18,6 +20,12 @@ const Game = {
 	requestTransition: true,
 	appearScreen: false,
 	alpha: 1,
+	setAndUpdateTriggers(){
+		if(!this.hasLoadedTriggers){
+			Col.loadEntities("triggers", this.TrigArr);
+		}
+		Col.checkEntities(this.TrigArr);
+	},
 	setAndUpdateNPCs(){
 		if(!this.hasLoadedNPCs){
 			Col.loadEntities("npcs", this.NPCarr);
@@ -77,7 +85,7 @@ const Game = {
 		},
 		pause: function(){
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
-			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr)
+			Scenery.draw(Game.CurrentCharacter, Game.currentMap, Game.ItemArr, Game.NPCarr)
 			Ctrl.action(null, "pause");
 			Ctrl.stateSave();
 			Game.ctx.globalAlpha = 0.3;
@@ -105,7 +113,7 @@ const Game = {
 			}
 			UI.charWinStart();
 			if(!Scenery.hasDeclaired){
-				Scenery.declair("amCity");
+				Scenery.declair(Game.levelName);
 				Game.CurrentCharacter = Characters[0];
 				Scenery.hasDeclair = true;
 			}
@@ -172,7 +180,7 @@ const Game = {
 }
 
 let GameMoment = 0;
-let GameMomentSav = 'wallCleaner';
+let GameMomentSav = 'title';
 let frame = 0
 let frameaux = 0
 

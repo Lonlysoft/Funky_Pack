@@ -1,5 +1,5 @@
 class Item{
-	constructor(ID, value, name, description, type, colType, w, h, p, x, z, y){
+	constructor(itemSourceConstructor, x, z, y){
 		this.boxCol = new Box(x, y + h, z, w, h, p);
 		this.ID = ID;
 		this.isCollected = false;

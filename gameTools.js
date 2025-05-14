@@ -35,6 +35,12 @@ function createMatrixWithSomething(width, height, arg){
 	return matrix;
 }
 
+function preventStacking(arr){
+	for(let i = 0; i< arr.length; i++){
+		arr.pop();
+	}
+}
+
 function WorldToScreen1D(entCoord, camWCoord, offset) {
 	let screenCoord = entCoord - camWCoord - offset;
 	return screenCoord;

@@ -15,7 +15,7 @@ const Col = {
 				retangulo1[1] <= retangulo2[1] + retangulo2[3];
 	},
 	
-	handleShadowCoords(entity, num = -1){
+	handleShadowCoords(entity, mapGrid = Game.currentMap, num = -1){
 		let topLeft = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)];
 		let topRight = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w, TILE_SIZE)];
 		let bottomLeft = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.velocity.x, TILE_SIZE)];
@@ -38,6 +38,26 @@ const Col = {
 		if(this.AABB(entityBox, shadowBox)){
 			entity.subLayer = shadowSubLayer-1;
 			entity.layer = shadowLayer;
+		}
+	},
+	
+	teleportTo: function(entity, placeName){
+		//trigger transition
+		preventStacking(Game.NPCarr);
+		Scenery.hasDeclaired = false;
+		Game.levelName = placeName;
+		Game.requestTransition = true;
+		entity.isSpawn = false;
+	},
+	
+	handleExitsAndTeleporters(entity, mapGrid){
+		let topLeft = mapGrid.beingGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)];
+		let topRight = mapGrid.beingGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w, TILE_SIZE)];
+		let bottomLeft = mapGrid.beingGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.velocity.x, TILE_SIZE)];
+		let bottomRight = mapGrid.beingGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w+entity.velocity.x, TILE_SIZE)];
+		let maxValue = maxVal([topLeft, topRight, bottomLeft, bottomRight])
+		if(maxValue > 1){
+			this.teleportTo(entity, Game.LocationsProps[maxValue]);
 		}
 	},
 	
@@ -474,6 +494,7 @@ const Col = {
 		entity.WorldPos.z = entity.boxCol.z + entity.boxCol.p/2;
 		entity.boxCol.y = entity.WorldPos.y + entity.boxCol.h;
 		this.handleYcoords(entity, mapGrid);
+		this.handleExitsAndTeleporters(entity, mapGrid);
 	}
 }
 

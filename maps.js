@@ -5,8 +5,8 @@ var Camera = {
 		this.y = y - z - this.h*0.5;
 		this.z = z;
 		
-//		this.x += (x - this.x - this.w*0.5)*0.9; 
-		//this.y += (y - this.y - this.h*0.5)*0.9 - z;
+		this.x += (x - this.x - this.w*0.5)*0.9; 
+		this.y += (y - this.y - this.h*0.5)*0.9 - z;
 		
 	}
 };
@@ -55,7 +55,7 @@ class Level{
 		this.width = mapObject.width;
 		this.height = mapObject.height;
 		this.Name = mapObject.name;
-		this.triggers = [];
+		this.triggerList = [];
 		this.bounds = [];
 		this.npcs = [];
 		this.itemGrid = mapObject.grids.items;
@@ -90,40 +90,26 @@ class Level{
 			this.items.push(new Array());
 			for(let j = 0; j < this.width; j++){
 				if(this.itemGrid[i][j] > 0){
-					this.items[i].push(new Item(
-						itemSource[ this.itemGrid[i][j] ][0], itemSource[ this.itemGrid[i][j] ][1], 
-						itemSource[ this.itemGrid[i][j] ][2], itemSource[ this.itemGrid[i][j] ][3], 
-						itemSource[ this.itemGrid[i][j] ][4], itemSource[ this.itemGrid[i][j] ][5], 
-						itemSource[ this.itemGrid[i][j] ][6], itemSource[ this.itemGrid[i][j] ][7], 
-						j*TILE_SIZE, i*TILE_SIZE, this.grndElGrid[i][j]*TILE_SIZE
-						)
-					);
+					//this.items[i].push(new Item( itemSource[this.itemGrid[i][j]], j*TILE_SIZE, i*TILE_SIZE, this.grndElGrid[i][j]*TILE_SIZE));
 					
 				} else{
-					this.items[i].push(0);
+					//this.items[i].push(0);
 				}
 			}
 		}
 	}
 	drawFloor(tileGraphics = Game.tileSetGraphics){
-		DRAW__Grid(ctx, Camera, this.groundTileSet, tileGraphics, TILE_SIZE, 48);
+		DRAW__Grid(ctx, Camera, this.groundTileSet, tileGraphics, TILE_SIZE, 64);
 	}
 	objectGridDraw(layer, tileSet = Game.tileSetGraphics){
 		DRAW__Grid(ctx, Camera, this.objectGrid[layer], tileSet, TILE_SIZE);
 	}
 	setTriggers(){
 		for(let i = 0; i < this.height; i++){
-			this.items.push(new Array());
+			this.triggers.push(new Array());
 			for(let j = 0; j < this.width; j++){
 				if(this.triggerGrid[i][j] > 0){
-					this.triggers[i].push(new Item(
-							TRIGGERS[ this.triggerGrid[i][j] ]["name"], TRIGGERS[ this.triggerGrid[i][j] ]["function"],
-							j*TILE_SIZE, i*TILE_SIZE, this.grndElGrid[i][j]*TILE_SIZE
-						)
-					);
-					
-				} else{
-					this.triggers[i].push(0);
+					this.triggers[i].push(new Trigger(TRIGGERS[ this.triggerGrid[i][j] ]));
 				}
 			}
 		}
