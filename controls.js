@@ -120,7 +120,7 @@ const ControlsButtons = {
 	buttonsPortraitParameters: {
 		west: {
 			x: 10,
-			y: controls_canvas.height - CONTROLS_PORT_HEIGHT*2,
+			y: controls_canvas.height - CONTROLS_PORT_HEIGHT*2 -20,
 			w: 80,
 			h: CONTROLS_PORT_HEIGHT,
 			show: true,
@@ -128,7 +128,7 @@ const ControlsButtons = {
 		},//⬅
 		up: {
 			x: 90,
-			y: controls_canvas.height- CONTROLS_PORT_HEIGHT*3,
+			y: controls_canvas.height- CONTROLS_PORT_HEIGHT*3 -20,
 			w: 80,
 			h: CONTROLS_PORT_HEIGHT,
 			show: true,
@@ -136,7 +136,7 @@ const ControlsButtons = {
 		},//⬆
 		east: {
 			x: 170,
-			y: controls_canvas.height - CONTROLS_PORT_HEIGHT*2,
+			y: controls_canvas.height - CONTROLS_PORT_HEIGHT*2 -20,
 			w: 80,
 			h: CONTROLS_PORT_HEIGHT,
 			show: true,
@@ -147,37 +147,37 @@ const ControlsButtons = {
 		},//⬇ 3
 		
 		southwest: {
-			x: 10, y: controls_canvas.height - CONTROLS_PORT_HEIGHT, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
+			x: 10, y: controls_canvas.height - CONTROLS_PORT_HEIGHT -20, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
 		},//↙ 4
 		southeast: {
-			x: 170, y: controls_canvas.height - CONTROLS_PORT_HEIGHT, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
+			x: 170, y: controls_canvas.height - CONTROLS_PORT_HEIGHT -20, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
 		},//↘ 5
 		northeast: {
-			x: 170, y: controls_canvas.height - CONTROLS_PORT_HEIGHT*3, w: 80, h: CONTROLS_PORT_HEIGHT,
+			x: 170, y: controls_canvas.height - CONTROLS_PORT_HEIGHT*3 -20, w: 80, h: CONTROLS_PORT_HEIGHT,
 			show: false
 		},//↗ 6
 		northwest: {
-			x: 10, y: controls_canvas.height - CONTROLS_PORT_HEIGHT*3, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
+			x: 10, y: controls_canvas.height - CONTROLS_PORT_HEIGHT*3 -20, w: 80, h: CONTROLS_PORT_HEIGHT, show: false
 		},//↖ 7
 		//botao
 		B: {
 			x: controls_canvas.width - 170,
-			y: controls_canvas.height - 80,
+			y: controls_canvas.height - CONTROLS_PORT_HEIGHT -20,
 			w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 6
 		},//B 8
 		Y: {
 			x:controls_canvas.width - 250,
-			y: controls_canvas.height-160,
+			y: controls_canvas.height- CONTROLS_PORT_HEIGHT*2 -20,
 			w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 4
 		},//Y 9
 		A: {
 			x:controls_canvas.width - 90,
-			y: controls_canvas.height-160,
+			y: controls_canvas.height- CONTROLS_PORT_HEIGHT*2 -20,
 			w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 5
 		},//A 10
 		X: {
 			x:controls_canvas.width - 170,
-			y: controls_canvas.height- 240, 
+			y: controls_canvas.height- CONTROLS_PORT_HEIGHT*3 -20, 
 			w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 7
 		},//x 14
 		//triggers
@@ -288,6 +288,7 @@ const Ctrl = {
 	},
 	
 	ListProps4WallCleaner: ["eastNwest", "upNdown", "A", "B", "start"],
+	ListPropsMainWorld: ["eastWest", "upDown", "diagonals", "B", "A", "Y", "X", "crouch", "select", "start"],
 	state: {
 		A: false,
 		B: false,
@@ -389,6 +390,131 @@ const Ctrl = {
 				}
 			},
 			start: function(){
+				if(Ctrl.Btns.start.active && Ctrl.state.start == false){//start
+					UI.charWinDismiss();
+					GameMomentSav = GameMoment;
+					GameMoment = 'pause';
+				}
+			}
+		},
+		character: {
+			eastWest(argumentEntity){
+				if(Ctrl.Btns.west.active){//⬅
+					argumentEntity.dir = "W";
+					argumentEntity.pol = -1;
+					argumentEntity.walk("x");
+				}
+				else if(Ctrl.Btns.east.active){ //➡
+					argumentEntity.dir = "E"
+					argumentEntity.pol = 1;
+					argumentEntity.walk("x");
+					
+				}
+				else{
+					argumentEntity.stop("x");				
+				}
+			},
+			upDown: function(argumentEntity){
+				if(Ctrl.Btns.up.active){//⬆
+					argumentEntity.dir = "N";
+					argumentEntity.pol = -1;
+					argumentEntity.walk("z");
+				}
+				else if(Ctrl.Btns.down.active){//⬇
+					argumentEntity.dir = "S"
+					argumentEntity.pol = 1;
+					argumentEntity.walk("z");
+				}
+				else{
+					argumentEntity.stop("z");
+				}
+			},
+			diagonals(argumentEntity){
+				if((Ctrl.Btns.west.active && Ctrl.Btns.down.active) || Ctrl.Btns.southwest.active){ //↙
+					Ctrl.Btns.west.active = Ctrl.Btns.down.active = true;
+					argumentEntity.dir = "SW";
+					argumentEntity.pol = -0.7;
+					argumentEntity.walk("x");
+					argumentEntity.pol = 0.7;
+					argumentEntity.walk("z");
+				}
+				else if((Ctrl.Btns.down.active && Ctrl.Btns.east.active) || Ctrl.Btns.southeast.active){ //↘
+					Ctrl.Btns.east.active = Ctrl.Btns.down.active = true;
+					argumentEntity.dir = "SE"
+					argumentEntity.pol = 0.7;
+					argumentEntity.walk("x");
+					argumentEntity.pol = 0.7;
+					argumentEntity.walk("z");
+				}
+				else if((Ctrl.Btns.up.active && Ctrl.Btns.east.active) || Ctrl.Btns.northeast.active){ //↗
+					Ctrl.Btns.up.active = Ctrl.Btns.east.active = true;
+					argumentEntity.dir = "NE"
+					argumentEntity.pol = 0.7;
+					argumentEntity.walk("x");
+					argumentEntity.pol = -0.7;
+					argumentEntity.walk("z");
+				}
+				else if((Ctrl.Btns.up.active && Ctrl.Btns.west.active) || Ctrl.Btns.northwest.active){ //↖
+					Ctrl.Btns.up.active = Ctrl.Btns.west.active = true;
+					argumentEntity.dir = "NW"
+					argumentEntity.pol = -0.7;
+					argumentEntity.walk("x");
+					argumentEntity.pol = -0.7;
+					argumentEntity.walk("z");
+				}
+			},
+			B(argumentEntity){
+				if(Ctrl.Btns.B.active && argumentEntity.onGround == true && Ctrl.state.B == false /*&& !argumentEntity.isSwimming*/){//jumping 
+					argumentEntity.velocity.y += argumentEntity.JPOW;
+				}
+				else if(!Ctrl.Btns.B.active && !argumentEntity.onGround && !argumentEntity.jumping && Ctrl.state.B){//jump velocity basics
+					argumentEntity.velocity.y = 0;
+					argumentEntity.jumping = true;
+				}
+				else if(Ctrl.Btns.B.active && Ctrl.state.B == false && argumentEntity.isSwimming){ //jumping on water
+					argumentEntity.velocity.y += argumentEntity.JPOW;
+				}
+			},
+			A(argumentEntity){
+				if(Ctrl.Btns.A.active && Ctrl.state.A == false){ //A interação
+					argumentEntity.interact(Game.NPCarr);
+				}
+			},
+			Y(argumentEntity){
+				if(Ctrl.Btns.Y.active){ //Y
+					if(!argumentEntity.onGround && argumentEntity.skills.includes("dashDive")){
+						argumentEntity.doSkill("dashDive");
+						argumentEntity.atk();
+					}
+					else{
+						argumentEntity.atk();
+					}
+				}
+			},
+			X(argumentEntity){
+				if(Ctrl.Btns.X.active && Ctrl.state.X == false){
+					if(argumentEntity.skills.includes("hold") && argumentEntity.skills.includes("release")){
+						argumentEntity.doSkill("hold");
+					}
+				}
+			},
+			crouch(argumentEntity){
+				if(Ctrl.Btns.look.active && Ctrl.state.L == false){
+					if(!argumentEntity.onGround && argumentEntity.skills.includes("dashDive")){
+						argumentEntity.doSkill("dashDive");
+						argumentEntity.atk();
+					}
+				}
+			},
+			select(argumentEntity){
+				if(Ctrl.Btns.select.active && !Ctrl.state.select){
+					UI.charWinDismiss();
+					UI.characterMenuStart();
+					GameMomentSav = GameMoment;
+					GameMoment = 'characterMenu';
+				}
+			},
+			start(argumentEntity){
 				if(Ctrl.Btns.start.active && Ctrl.state.start == false){//start
 					UI.charWinDismiss();
 					GameMomentSav = GameMoment;
@@ -505,119 +631,8 @@ const Ctrl = {
 		},
 		
 		character: function(argumentEntity){
-			
-			if(Ctrl.Btns.up.active){//⬆
-				argumentEntity.dir = "N";
-				argumentEntity.pol = -1;
-				argumentEntity.walk("z");
-				
-			}
-			else if(Ctrl.Btns.down.active){//⬇
-				argumentEntity.dir = "S"
-				argumentEntity.pol = 1;
-				argumentEntity.walk("z");
-				
-			}
-			else{
-				argumentEntity.stop("z");
-			}
-			
-			if(Ctrl.Btns.west.active){//⬅
-				argumentEntity.dir = "W";
-				argumentEntity.pol = -1;
-				argumentEntity.walk("x");
-			}
-			else if(Ctrl.Btns.east.active){ //➡
-				argumentEntity.dir = "E"
-				argumentEntity.pol = 1;
-				argumentEntity.walk("x");
-				
-			}
-			else{
-				argumentEntity.stop("x");				
-			}
-			
-			if((Ctrl.Btns.west.active && Ctrl.Btns.down.active) || Ctrl.Btns.southwest.active){ //↙
-				Ctrl.Btns.west.active = Ctrl.Btns.down.active = true;
-				argumentEntity.dir = "SW";
-				argumentEntity.pol = -0.7;
-				argumentEntity.walk("x");
-				argumentEntity.pol = 0.7;
-				argumentEntity.walk("z");
-				
-			}
-			else if((Ctrl.Btns.down.active && Ctrl.Btns.east.active) || Ctrl.Btns.southeast.active){ //↘
-				Ctrl.Btns.east.active = Ctrl.Btns.down.active = true;
-				argumentEntity.dir = "SE"
-				argumentEntity.pol = 0.7;
-				argumentEntity.walk("x");
-				argumentEntity.pol = 0.7;
-				argumentEntity.walk("z");
-				
-			}
-			else if((Ctrl.Btns.up.active && Ctrl.Btns.east.active) || Ctrl.Btns.northeast.active){ //↗
-				Ctrl.Btns.up.active = Ctrl.Btns.east.active = true;
-				argumentEntity.dir = "NE"
-				argumentEntity.pol = 0.7;
-				argumentEntity.walk("x");
-				argumentEntity.pol = -0.7;
-				argumentEntity.walk("z");
-				
-			}
-			else if((Ctrl.Btns.up.active && Ctrl.Btns.west.active) || Ctrl.Btns.northwest.active){ //↖
-				Ctrl.Btns.up.active = Ctrl.Btns.west.active = true;
-				argumentEntity.dir = "NW"
-				argumentEntity.pol = -0.7;
-				argumentEntity.walk("x");
-				argumentEntity.pol = -0.7;
-				argumentEntity.walk("z");
-				
-			}
-			
-			
-			if(Ctrl.Btns.B.active && argumentEntity.onGround == true && Ctrl.state.B == false /*&& !argumentEntity.isSwimming*/){//jumping 
-				argumentEntity.velocity.y += argumentEntity.JPOW;
-			}
-			else if(!Ctrl.Btns.B.active && !argumentEntity.onGround && !argumentEntity.jumping && Ctrl.state.B){//jump velocity basics
-				argumentEntity.velocity.y = 0;
-				argumentEntity.jumping = true;
-			}
-			else if(Ctrl.Btns.B.active && Ctrl.state.B == false && argumentEntity.isSwimming){ //jumping on water
-				argumentEntity.velocity.y += argumentEntity.JPOW;
-			}
-			if(Ctrl.Btns.Y.active){ //Y
-				if(!argumentEntity.onGround && argumentEntity.skills.includes("dashDive")){
-					argumentEntity.doSkill("dashDive");
-					argumentEntity.atk();
-				}
-				else{
-					argumentEntity.atk();
-				}
-			}
-			if(Ctrl.Btns.A.active && Ctrl.state.A == false){ //A interação
-				argumentEntity.interact(Game.NPCarr);
-			}
-			if(Ctrl.Btns.X.active && Ctrl.state.X == false){
-				if(argumentEntity.skills.includes("hold") && argumentEntity.skills.includes("release")){
-					argumentEntity.doSkill("hold");
-				}
-			}
-			if(Ctrl.Btns.look.active && Ctrl.state.L == false){
-				if(!argumentEntity.onGround && argumentEntity.skills.includes("dashDive")){
-					argumentEntity.doSkill("dashDive");
-					argumentEntity.atk();
-				}
-			}
-			if(Ctrl.Btns.select.active && !Ctrl.state.select){
-				UI.charWinDismiss();
-				UI.characterMenuStart();
-				GameMomentSav = GameMoment;
-				GameMoment = 'characterMenu';
-			}
-			if(Ctrl.Btns.start.active && Ctrl.state.start == false){//start
-				UI.charWinDismiss();
-				GameMomentSav = GameMoment;
-				GameMoment = 'pause';
+			for(let i = 0; i < Ctrl.ListPropsMainWorld.length; i++){
+				Ctrl.Bonanza["character"][Ctrl.ListPropsMainWorld[i]](argumentEntity);
 			}
 		},
 		pause: function(){

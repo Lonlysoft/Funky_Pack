@@ -13,8 +13,8 @@ class Box{
 }
 
 class Being{
-	constructor(NOME, AGE, ACL, VMAX, height, width, dept, HTMLsrc, animations){
-		this.Nome = NOME;
+	constructor(name, AGE, ACL, VMAX, height, width, dept, HTMLsrc, animations){
+		this.name = name;
 		this.HP = AGE*10; this.hp = AGE*10;
 		this.ATK = Math.floor(AGE/2); this.DEF = Math.ceil(AGE/2);
 		this.ACL = ACL; this.VMAX = VMAX;
@@ -101,8 +101,8 @@ class Being{
 }
 
 class Protagonist extends Being{
-	constructor(Nome, age, VMIN, VMAX, JMAX, tail, height, width, dept, skills, HTMLsrc, animations){
-		super(Nome, age, VMIN, VMAX, height, width, dept, HTMLsrc, animations);
+	constructor(name, age, VMIN, VMAX, JMAX, tail, height, width, dept, skills, HTMLsrc, animations){
+		super(name, age, VMIN, VMAX, height, width, dept, HTMLsrc, animations);
 		this.STR = VMIN;
 		this.JPOW = JMAX;
 		this.isSwimming = false;
@@ -110,7 +110,7 @@ class Protagonist extends Being{
 		this.tail = [];
 		this.hand = 0;
 		this.tailMaxLength = tail;
-		this.money = 0;
+		this.money = {cents: 0, unit: 0};
 		this.xp = 0;
 		this.invensibility = false;
 		

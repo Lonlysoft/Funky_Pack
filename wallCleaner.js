@@ -57,6 +57,7 @@ const WallCleaner = {
 		if(!this.hasStarted){
 			//declair the grid 
 			this.stage = new Level(WallCleanerMaps[this.currentLevelName]);
+			Game.currentMap = this.stage,
 			this.setGlass();
 			entity.boxCol.x = GridToWorld(5, TILE_SIZE);
 			entity.boxCol.z = GridToWorld(5, TILE_SIZE);

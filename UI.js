@@ -6,7 +6,8 @@ const UI = {
 		clockDOM: document.querySelector(".GameDate"),
 		weatherDOM: document.querySelector(".weather_icon"),
 		barDOM: document.querySelector(".charWin__HPbar"),
-		charName: document.querySelector(".charName")
+		charName: document.querySelector(".charName"),
+		moneyDOM: document.querySelector(".money")
 	},
 	characterMenuDOM: document.querySelector(".characterMenu"),
 	characterMenuItems:{
@@ -26,6 +27,7 @@ const UI = {
 	dialogItems: {
 		stackPair: 0,
 		bufferAnimation: NaN,
+		hasOption: false,
 		text: null,
 		writeText(){
 			if(this.bufferAnimation < this.text.length){
@@ -33,9 +35,17 @@ const UI = {
 			}
 			let stringSplice = "<p class = 'speaking'>";
 			for(let i = 0; i < this.bufferAnimation; i++){
-				stringSplice += this.text[i];
+				if(this.text[i] == "¶"){//yes, no option
+					this.hasOption = true;
+					break;
+				}else{
+					stringSplice += this.text[i];
+				}
 			}
 			stringSplice += "</p>"
+			if(this.hasOption){
+				stringSplice += "<div class = 'option flex-column'><div class = 'option selected'>yes</div><div class = option>no</div></div>";
+			}
 			UI.dialogDOM.innerHTML = stringSplice;
 		}
 	},
@@ -46,6 +56,7 @@ const UI = {
 	wallCleanerHud: 0,
 	charWinUpdate: function(clock){
 		this.charWin.clockDOM.innerHTML = `${clock.monthList[clock.month]}, ${clock.day} - ${(clock.hour >= 10) ? clock.hour : "0" + (clock.hour +"")}:${(clock.minute >= 10) ? clock.minute : "0" + (clock.minute +"")}`;
+		this.charWin.moneyDOM.innerHTML = "US$" + Game.CurrentCharacter.money.unit + "." + Game.CurrentCharacter.money.cents;
 	},
 	jobTableDOM_options:
 	{

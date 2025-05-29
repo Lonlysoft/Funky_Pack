@@ -192,3 +192,12 @@
 	margin: 0;
 	padding: 0;
 }
+
+.option.selected::after{
+	position: absolute;
+	content: '';
+	left: 0;
+	top: 0;
+	width:1em; height: 1em;
+	background: #000;
+}

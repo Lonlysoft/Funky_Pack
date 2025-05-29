@@ -21,7 +21,6 @@ const Scenery = {
 		}
 		Game.currentMap.drawFloor();
 		layers[currChar.layer].push(currChar);
-		
 		//this.rearrangeSubInlayer(); //feito pro player também se mover atrás dos inimigos 
 		for(let i = 0; i < layers.length; i++){
 			for(let j = 0; j < layers[i].length; j++){
@@ -29,5 +28,6 @@ const Scenery = {
 			}
 			Game.currentMap.objectGridDraw(i);
 		}
+		
 	}
 }

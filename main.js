@@ -10,6 +10,7 @@ const Game = {
 	ItemArr: [],
 	NPCarr: [],
 	TrigArr: [],
+	hasLoadedITEMs: false,
 	hasLoadedNPCs: false,
 	tileSetGraphics: document.getElementById("tilemap"),
 	buffer: undefined,
@@ -26,12 +27,16 @@ const Game = {
 		}
 		Col.checkEntities(this.TrigArr);
 	},
-	setAndUpdateNPCs(){
-		if(!this.hasLoadedNPCs){
-			Col.loadEntities("npcs", this.NPCarr);
+	setAndUpdateItems(){
+		this.currentMap.cleanupItems(Camera);
+		this.currentMap.updateVisibleItems(Camera);
+		for(let i = 0; i < this.ItemArr.length; i++){
+			this.ItemArr[i].update();
 		}
-		Col.checkEntities(this.NPCarr);
-		Col.addEntities("npcs", this.NPCarr);
+	},
+	setAndUpdateNPCs(){
+		this.currentMap.cleanupNPCs(Camera, this.NPCarr);
+		this.currentMap.updateNPCs(Camera);
 		for(let i = 0; i < this.NPCarr.length; i++){
 			this.NPCarr[i].update();
 		}
@@ -123,7 +128,9 @@ const Game = {
 			if(Game.ischaracterMenud){
 				GameMomentSav = GameMoment;
 				GameMoment = "characterMenu";
-			}			
+			}
+			Game.setAndUpdateNPCs();
+			Game.setAndUpdateItems();
 			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			if(Game.onDialog){
 				GameMomentSav = GameMoment;
@@ -133,7 +140,6 @@ const Game = {
 			Ctrl.action(Game.CurrentCharacter, "character");
 			Ctrl.stateSave();
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
-			Game.setAndUpdateNPCs();
 			Game.CurrentCharacter.update();
 			Col.main(Game.CurrentCharacter, Game.currentMap, -1);
 			
@@ -180,7 +186,7 @@ const Game = {
 }
 
 let GameMoment = 0;
-let GameMomentSav = 'title';
+let GameMomentSav = 'mainWorld';
 let frame = 0
 let frameaux = 0
 

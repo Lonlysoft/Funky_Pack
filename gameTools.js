@@ -121,6 +121,48 @@ const directions = {
 			const boxY = GridToWorld(WorldToGrid(entity.boxCol.z + entity.boxCol.p, TILE_SIZE), TILE_SIZE);
 			return [boxX, boxY, TILE_SIZE, TILE_SIZE];
 		}
+	},
+	setCube: {
+		S(boxCol, atkBox){
+			atkBox.x = boxCol.x;
+			atkBox.z = boxCol.z + boxCol.p;
+			atkBox.y = boxCol.y + boxCol.h/3;
+		},
+		E(boxCol, atkBox){
+			atkBox.x = boxCol.x + boxCol.w;
+			atkBox.z = boxCol.z;
+			atkBox.y = boxCol.y + boxCol.h/3;
+		},
+		N(boxCol, atkBox){
+			atkBox.x = boxCol.x;
+			atkBox.z = boxCol.z - boxCol.p;
+			atkBox.y = boxCol.y + boxCol.h/3;
+		},
+		W(boxCol, atkBox){
+			atkBox.x = boxCol.x - boxCol.w;
+			atkBox.z = boxCol.z;
+			atkBox.y = boxCol.y + boxCol.h/3;
+		},
+		SE(boxCol, atkBox){
+			atkBox.x = boxCol.x + boxCol.w;
+			atkBox.z = boxCol.z + boxCol.p;
+			atkBox.y = boxCol.y + boxCol.h/3;
+		},
+		NE(boxCol, atkBox){
+			atkBox.x = boxCol.x + boxCol.w;
+			atkBox.z = boxCol.z - boxCol.p;
+			atkBox.y = boxCol.y + boxCol.h/3;
+		},
+		NW(boxCol, atkBox){
+			atkBox.x = boxCol.x - boxCol.w;
+			atkBox.z = boxCol.z - boxCol.p;
+			atkBox.y = boxCol.y + boxCol.h/3;
+		},
+		SW(boxCol, atkBox){
+			atkBox.x = boxCol.x - boxCol.w;
+			atkBox.z = boxCol.z + boxCol.p;
+			atkBox.y = boxCol.y + boxCol.h/3;
+		}
 	}
 	
 }

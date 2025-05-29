@@ -45,7 +45,6 @@ class Level{
 	constructor(mapObject){
 		this.groundTileSet = mapObject.grids.floor;
 		this.triggerGrid = mapObject.grids.triggers;
-		
 		this.objectGrid = mapObject.grids.objects;
 		this.shadowGrid = mapObject.grids.shadow;
 		this.ang = mapObject.grids.ang;
@@ -86,23 +85,97 @@ class Level{
 	}
 	
 	setItems(itemSource){
+		if(this.itemGrid == undefined){
+			return;
+		}
 		for(let i = 0; i < this.height; i++){
 			this.items.push(new Array());
 			for(let j = 0; j < this.width; j++){
 				if(this.itemGrid[i][j] > 0){
-					//this.items[i].push(new Item( itemSource[this.itemGrid[i][j]], j*TILE_SIZE, i*TILE_SIZE, this.grndElGrid[i][j]*TILE_SIZE));
+					this.items[i].push(new Item( itemSource[this.itemGrid[i][j]], j*TILE_SIZE, i*TILE_SIZE, this.grndElGrid[i][j]*TILE_SIZE));
 					
 				} else{
-					//this.items[i].push(0);
+					this.items[i].push(0);
 				}
 			}
 		}
 	}
+	
+	updateVisibleItems(camera) {
+		//cleans the array and restart you got it.
+		Game.ItemArr = [];
+		const visibleItems = Game.ItemArr;
+		
+		const startCol = Math.max(0, Math.floor(camera.x / TILE_SIZE));
+		const endCol = Math.min(this.width - 1, Math.floor((camera.x + camera.w) / TILE_SIZE));
+		
+		const startRow = Math.max(0, Math.floor(camera.y / TILE_SIZE));
+		const endRow = Math.min(this.height - 1, Math.floor((camera.y + camera.h) / TILE_SIZE));
+		
+		for (let i = startRow; i <= endRow; i++) {
+			for (let j = startCol; j <= endCol; j++) {
+				if (this.items[i][j] !== 0 && !this.items[i][j].isCollected) {
+					Game.ItemArr.push(this.items[i][j]);
+					this.items[i][j].visible = true;
+				}
+			}
+		}
+	}
+	
+	cleanupItems(camera) {
+		Game.ItemArr = Game.ItemArr.filter(item => {
+			if (item.isCollected) return false;
+			
+			const itemRight = item.boxCol.x + TILE_SIZE;
+			const itemBottom = item.boxCol.y + TILE_SIZE;
+			
+			return (
+				itemRight > camera.x &&
+				item.boxCol.x < camera.x + camera.w &&
+				itemBottom > camera.y &&
+				item.boxCol.y < camera.y + camera.h
+			);
+		});
+	}
+	
+	updateNPCs(camera){
+		
+		const newArr = [];
+		
+		const x_grid = Math.max(0, Math.floor(camera.x / TILE_SIZE));
+		const x_endGrid = Math.min(this.width - 1, Math.floor((camera.x + camera.w) / TILE_SIZE));
+		
+		const y_grid = Math.max(0, Math.floor(camera.y / TILE_SIZE));
+		const y_endGrid = Math.min(this.height - 1, Math.floor((camera.y + camera.h) / TILE_SIZE));
+		
+		for (let i = y_grid; i <= y_endGrid; i++) {
+			for (let j = x_grid; j <= x_endGrid; j++) {
+				if (this.npcs[i][j] !== 0) {
+					newArr.push(this.npcs[i][j]);
+					this.npcs[i][j].isSpawn = this.npcs[i][j].spawn();
+				}
+			}
+		}
+		
+		Game.NPCarr = newArr;
+	}
+	
+	cleanupNPCs(camera, arr){
+		arr = arr.filter( i => {
+			if(!i.isAlive) return false;
+			
+			const cameraBox = [camera.x, camera.y, camera.w, camera.h];
+			const iBox = [i.boxCol.x, i.boxCol.z, i.boxCol.w, i.boxCol.p];
+			
+			return (Col.AABB(cameraBox, iBox));
+		});
+	}
+	
 	drawFloor(tileGraphics = Game.tileSetGraphics){
-		DRAW__Grid(ctx, Camera, this.groundTileSet, tileGraphics, TILE_SIZE, 64);
+		DRAW__Grid(ctx, Camera, this.groundTileSet, tileGraphics, TILE_SIZE, 48);
 	}
 	objectGridDraw(layer, tileSet = Game.tileSetGraphics){
-		DRAW__Grid(ctx, Camera, this.objectGrid[layer], tileSet, TILE_SIZE);
+		DRAW__Grid(ctx, Camera, this.objectGrid[layer], tileSet, TILE_SIZE, 48);
 	}
 	setTriggers(){
 		for(let i = 0; i < this.height; i++){
@@ -115,6 +188,9 @@ class Level{
 		}
 	}
 	setNPCs(nonPlayableCharacterList){
+		if(this.npcGrid == undefined){
+			return;
+		}
 		for(let i = 0; i < this.height; i++){
 			this.npcs.push(new Array());
 			for(let j = 0; j < this.width; j++){

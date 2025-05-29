@@ -25,13 +25,12 @@ function DRAW__Grid(context, cam, grid2Draw, gridImage, tileSize, tileImageSize 
 			let renderPlusY = j * tileSize - cam.y + Game.canvas.height*0.5 - cam.h*0.5;
 			context.drawImage(
 				gridImage, grid2Draw[j][i]*tileImageSize % gridImage.width,
-				Math.floor(grid2Draw[j][i]/WorldToGrid(gridImage.width, tileImageSize) * tileImageSize),
+				Number.parseInt(grid2Draw[j][i]/WorldToGrid(gridImage.width, tileImageSize))* tileImageSize,
 				tileImageSize, tileImageSize,
 				
 				renderPlusX, renderPlusY,
 				tileSize, tileSize
 			);
-			context.fillText(grid2Draw[j][i], renderPlusX, renderPlusY);
 		}
 	}
 }

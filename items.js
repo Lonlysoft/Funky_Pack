@@ -1,33 +1,38 @@
 class Item{
 	constructor(itemSourceConstructor, x, z, y){
-		this.boxCol = new Box(x, y + h, z, w, h, p);
-		this.ID = ID;
-		this.isCollected = false;
-		this.pontoCentral = new Array(2)
+		this.boxCol = new Box(x, y + itemSourceConstructor.h, z, itemSourceConstructor.w, itemSourceConstructor.h, itemSourceConstructor.p);
+		this.SpawnPos = {x: x, y: y, z: z};
+		this.name = itemSourceConstructor.name;
+		this.ID = itemSourceConstructor.ID;
+		this.centralPoint = new Array(2)
 		this.velocity = {x: 0, y: 0, z: 0};
 		this.friction = 0.9;
-		this.equiv = colType;
+		this.usage = itemSourceConstructor.usage;
+		this.ColType = itemSourceConstructor.ColType;
 		this.layer = 0;
 		this.sublayer = 0;
-		this.type = type;
-		this.value = value;
-		this.isSpawn = true;
-		this.visivel = false;
+		this.type = itemSourceConstructor.type;
+		this.value = itemSourceConstructor.value;
+		this.visible = false;
+		this.isCollected = false;
 		this.shadow = {
-			x: x, y: y+z, w: w, h: p+h
+			x: x, y: y+z, w: itemSourceConstructor.w, h: itemSourceConstructor.p+itemSourceConstructor.h
 		};
 	}
-	desenhar(){
+	use(entity){
+		itemCategories[this.category](entity);
+	}
+	draw(){
 		ctx.fillStyle = "#ff" + this.ID;
-		ctx.fillRect(this.pontoCentral[0],
-			this.pontoCentral[1],
+		ctx.fillRect(this.centralPoint[0],
+			this.centralPoint[1],
 			this.boxCol.w, this.boxCol.p
 		);
 	}
 	update(){
-		col.handleShadowCoords(this);
-		this.pontoCentral[0] = WorldToScreen1D(this.boxCol.x, Camera.x, Camera.w/2 - CentroDaTela[0]);
-		this.pontoCentral[1] = WorldToScreen1D(this.boxCol.z - this.boxCol.y, Camera.y, Camera.h/2 - CentroDaTela[1]);
+		//Col.handleShadowCoords(this);
+		this.centralPoint[0] = WorldToScreen1D(this.boxCol.x, Camera.x, Camera.w/2 - Game.SCREEN_CENTER[0]);
+		this.centralPoint[1] = WorldToScreen1D(this.boxCol.z - this.boxCol.y, Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]);
 		this.boxCol.x += this.velocity.x;
 		this.boxCol.z += this.velocity.z;
 		this.shadow.x = this.boxCol.x;
@@ -37,65 +42,52 @@ class Item{
 	}
 }
 
-function handleItems(itemArray){
-	let estruturasBox;
-	let trocador;
-	let cameraBox = [Camera.x, Camera.y, Camera.w, Camera.h];
-	for(let i = 0; i < itemArray.length; i++){
-		if(itemArray[i] == undefined){
-			itemArray[i].splice(i, i);
+const itemCategories = {
+	centMoney: function(entity, item){
+		entity.money.cents += item.value;
+		if(entity.money.cents >= 100){
+			entity.money.unit++;
+			entity.money.cents = 0;
 		}
-		itemArray[i].update();
-		estruturasBox = [itemArray[i].shadow.x, itemArray[i].shadow.y, itemArray[i].shadow.w, itemArray[i].shadow.h]
-		if(!col.AABB(estruturasBox, cameraBox) || itemArray[i].visivel == false){
-			itemArray[i].visivel = false;
-			trocador = itemArray[itemArray.length-1];
-			itemArray[itemArray.length-1] = itemArray[i];
-			itemArray[i] = trocador;
-			itemArray.pop();
-		}
-	}
-	let x_grid = Math.floor((Camera.x)/60);
-	let x_endGrid = Math.floor((Camera.x+Camera.w)/60);
-	let y_grid = Math.floor((Camera.y)/60)-Math.floor((Camera.y)/60);
-	let y_endGrid = Math.floor((Camera.y+Camera.h)/60)-Math.floor((Camera.y)/60);
+		item.isCollected = true;
+	},
+	money: function(entity, item){
+		entity.money.unit += item.value;
+		item.isCollected = true;
+	},
+	food: function(entity, item){
+		entity.hp += item.value;
+	},
 	
-	if(x_grid < 0) x_grid = 0;
-	if(y_grid < 0) y_grid = 0;
-	if(x_endGrid > Game.currentMap.largura) x_endGrid = Game.currentMap.largura;
-	if(y_endGrid > Game.currentMap.altura) y_endGrid = Game.currentMap.altura;
-	
-	for(let i = y_grid; i < y_endGrid; i++){
-		for(let j = x_grid; j < x_endGrid; j++){
-			if(Game.currentMap.items[i][j] != 0 && !Game.currentMap.items[i][j].visivel && !Game.currentMap.items[i][j].isCollected){
-				itemArray.push(Game.currentMap.items[i][j]);
-				Game.currentMap.items[i][j].visivel = true;
-			}
-		}
-	}
 }
-
 
 //constant for assets
 const ITEMS = [
+	{name: "clearItem", description: "enableCredits", value: 0, type: "creditsScene"},
+	{ID: 5, name: "penny", description: "a singular monetary solution costs $0.01", value: 1, type: "centMoney", usage: "CollectAndUse", ColType: "use", w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/6)},
+	{ID: 2, name: "coin", description: "a centural monetary solution costs $1.00", value: 1, type: "money", usage: "CollectAndUse", ColType: "use" , w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/6)},
 	//fruits
-	["apple", ""],
-	["banana", ""],
+	{ID: 9, name:"apple", description: "freah as ever give us the best", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: Number.parseInt(TILE_SIZE/2),p: Number.parseInt(TILE_SIZE/2), h: Number.parseInt(TILE_SIZE/2)},
+	{ID: 8, name:"block", description: "completely solid object. I think you can only carry this if you're Nukko", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: TILE_SIZE, h: TILE_SIZE, p: TILE_SIZE},
+	
+]
+/*
+	{"banana", ""},
 	["peach", ""],
 	["kiwi", ""],
 	["pineapple", ""],
 	["orange", ""],
 	
 	//liquids
-	["bottled water", "clear and cold. the best drink. period."],
+	["bottled water", "clear and Cold. the best drink. period."],
 	["super brite", "efervescent and sweet, all that goes nice with a well prepared popcorn"],
 	["sparkling water", "effervescent and bold, literally water soda."],
 	["tea", "fancy and finest as always"],
-	["coffee", ""],
+	["coffee", "lights your energy, smells unique and gurgly if your stomach's empty"],
 	["energetic", "boosts energy, soda coffee, but with other taste"],
-	["hot cocoa", "natural fudge for your tummy. good for the cold days of holidays"],
+	["hot cocoa", "natural fudge for your tummy. good for the Cold days of holidays"],
 	["tonic", "for the wealthy ones. 5 stars with a taste of alcohol"],
-	["wine", ""],
+	["wine", "fancy for all people, don't exaggerate."],
 	["SECUENDARRY RUSTY BRASS", "made with real rust. ALLERGICS: may contain dark mold, extrats of metal, gluten and milk"]
 	
 	//healthies
@@ -127,7 +119,7 @@ const ITEMS = [
 	["laptop", ""],
 	["gramophone", ""],
 	["Dennis Folff disk", ""],
-	["sex toy", ""],
+	["??? toy", "not that he minds"],
 	["newspaper", ""],
 	
 	//tools 
@@ -159,3 +151,4 @@ const ITEMS = [
 	[45499, "Ambulance", "", (TILE_SIZE*2)-10, (TILE_SIZE*2)-4, (TILE_SIZE*4)-10],
 	[4345445, "food Truck", "", "solidVehicle", (TILE_SIZE*2)-10, (TILE_SIZE*2)-4, (TILE_SIZE*6)-10]
 ]
+*/
