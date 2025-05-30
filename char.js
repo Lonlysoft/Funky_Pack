@@ -98,6 +98,7 @@ class Being{
 		this.boxCol.x = x - this.boxCol.w - MAGIC_OFFSET;
 	}
 	
+	
 }
 
 class Protagonist extends Being{
@@ -115,7 +116,7 @@ class Protagonist extends Being{
 		this.invensibility = false;
 		
 		this.ATKbox = {x: undefined, y: undefined, z: undefined, w: width, h: height, p: dept, type: "punch"};
-		this.skills = skills;
+		this.skillList = skills;
 		this.section = 0;
 		this.ID = 0;
 	}
@@ -186,4 +187,66 @@ class Protagonist extends Being{
 			}
 		}
 	}
+	
+	learnSkill(skillName){
+		if(!this.skillList.includes(skillName))this.skillList.push(skillName);
+	}
+	
+	doSkill(skillName){
+		if(this.skillList.includes(skillName))skillSet[skillName](this);
+	}
+}
+
+const skillSet = {
+	hold: function(entity){
+		entity.mao = Col.receiveItem({x: entity.boxCol.x+entity.boxCol.w, y: entity.boxCol.y, z: entity.boxCol.z+entity.boxCol.p, w: entity.boxCol.w, h: entity.boxCol.h, p: entity.boxCol.p}, Game.ItemArr);
+		if(entity.mao != 0){
+			entity.holdingObject = true;
+		}
+		else{
+			entity.holdingObject = false;
+		}
+	},
+	hover: function(entity){
+		entity.velocity.y = 0;
+	},
+	dashDive: function(entity){
+		if(!entity.onGround){
+			switch(entity.dir){
+				case "S":
+					entity.velocity.z += 10;
+				break;
+				case "E":
+					entity.velocity.x += 10;
+				break;
+				case "N":
+					entity.velocity.z -= 10;
+				break;
+				case "W":
+					entity.velocity.x -= 10;
+				break;
+				case "SE":
+					entity.velocity.x += 10;
+					entity.velocity.z += 10;
+				break;
+				case "NE":
+					entity.velocity.z -= 10;
+					entity.velocity.x += 10;
+				break;
+				case "SW":
+					entity.velocity.z -= 10;
+					entity.velocity.x -= 10;
+				break;
+				case "NW":
+					entity.velocity.z += 10;
+					entity.velocity.x -= 10;
+				break;
+			}
+		}
+	},
+	eatAnything: function(entity){
+		//entity.belly.push(entity.hand); //vore flerting
+		entity.hand = 0;
+	}
+	
 }

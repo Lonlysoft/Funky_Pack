@@ -9,7 +9,7 @@ const Characters = [
 		TILE_SIZE,
 		TILE_SIZE*0.5,
 		TILE_SIZE*0.5,
-		["hold", "release", "hi-jump", "eatAnything"],
+		["hold", "release", "hi-jump", "dashDive", "eatAnything"],
 		"#dynnySpriteSheet",
 		{
 			walk: ["infinite", 1, 1, 1, 1, 1, 0, 0, 0, 0, "m", 1, "m", 1, "m", 1, "m", 1, "m", 1, 0, 0, 0, 0],
