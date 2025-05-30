@@ -482,18 +482,18 @@ const Ctrl = {
 			},
 			Y(argumentEntity){
 				if(Ctrl.Btns.Y.active){ //Y
-					if(!argumentEntity.onGround && argumentEntity.skills.includes("dashDive")){
+					if(!argumentEntity.onGround && argumentEntity.skillList.includes("dashDive")){
 						argumentEntity.doSkill("dashDive");
-						argumentEntity.atk();
+						//argumentEntity.atk();
 					}
 					else{
-						argumentEntity.atk();
+						//argumentEntity.atk();
 					}
 				}
 			},
 			X(argumentEntity){
 				if(Ctrl.Btns.X.active && Ctrl.state.X == false){
-					if(argumentEntity.skills.includes("hold") && argumentEntity.skills.includes("release")){
+					if(argumentEntity.skillList.includes("hold") && argumentEntity.skillList.includes("release")){
 						argumentEntity.doSkill("hold");
 					}
 				}

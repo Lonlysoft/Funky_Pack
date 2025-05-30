@@ -14,6 +14,12 @@ const Col = {
 				retangulo1[1] + retangulo1[3] >= retangulo2[1] &&
 				retangulo1[1] <= retangulo2[1] + retangulo2[3];
 	},
+	AABB_JSON: function(retangulo1, retangulo2){
+		return retangulo1.x + retangulo1.w >= retangulo2.x &&
+				retangulo1.x <= retangulo2.x + retangulo2.w &&
+				retangulo1.z + retangulo1.p >= retangulo2.z &&
+				retangulo1.z <= retangulo2.z + retangulo2.p;
+	},
 	
 	handleShadowCoords(entity, mapGrid = Game.currentMap, num = -1){
 		let topLeft = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)];
@@ -300,9 +306,9 @@ const Col = {
 		let right = mapGrid.bounds[WorldToGrid(entity.boxCol.z+entity.boxCol.p, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)].y;;
 		let currLim = mapGrid.bounds[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.WorldPos.x, TILE_SIZE)].y;
 		//não é a melhor forma de fazer isso pois é 4*O(N) todos os frames.
-		let solidObjectArray = []
+		const solidObjectArray = []
 		for(let i = 0; i < Game.ItemArr.length; i++){
-			if(Game.ItemArr[i].type == "solidObject"){
+			if(Game.ItemArr[i].ColType == "solidObject"){
 				solidObjectArray.push(Game.ItemArr[i].boxCol);
 			}
 		}
@@ -315,6 +321,18 @@ const Col = {
 			entity.velocity.y = 0;
 			entity.onGround = true;
 			entity.jumping = false
+		}
+		for(let i = 0; i < solidObjectArray.length; i++){
+			if(this.AABB_JSON(entity.boxCol, solidObjectArray[i])){
+				
+				if(isOnGround(entity.WorldPos.y, solidObjectArray[i].y)){
+					
+					entity.velocity.y = 0;
+					entity.onGround = true;
+					entity.jumping = false;
+					currLim = solidObjectArray[i].y;
+				}
+			}
 		}
 		if(isOnGround(entity.WorldPos.y, currLim) && entity.WorldPos.y < currLim){
 			entity.WorldPos.y = currLim;

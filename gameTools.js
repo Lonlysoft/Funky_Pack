@@ -163,8 +163,10 @@ const directions = {
 			atkBox.z = boxCol.z + boxCol.p;
 			atkBox.y = boxCol.y + boxCol.h/3;
 		}
+	},
+	frontDash: {
+		
 	}
-	
 }
 
 function limitateUp(variable, limit){
