@@ -6,7 +6,7 @@ var NPCS = [
 		height: TILE_SIZE,
 		width: TILE_SIZE,
 		dept: TILE_SIZE,
-		dialogs: ["hey man¶", "hru doing?"],
+		dialogs: Dialogs["JSON_FOLF"],
 		pathArr: [["nothing", 20], ["nothing", 40], ["nothing", 30]],
 		HTMLsrc: "#ultraNPC",
 		animations: {

@@ -108,6 +108,10 @@ const Game = {
 		newGame: function(){
 			GameMoment = "mainWorld";
 		},
+		resultsScreen: function(){
+			UI.results[GameMomentSav].start();
+			Ctrl.action(Null, "accept");
+		},
 		mainWorld: function(){
 			if(Game.requestTransition && !Game.appearScreen){
 				Game.alpha = BG.transition(Game.alpha, "coming", 0.1);
@@ -118,7 +122,7 @@ const Game = {
 			}
 			UI.charWinStart();
 			if(!Scenery.hasDeclaired){
-				Scenery.declair(Game.levelName);
+				Scenery.declair(Game, Game.levelName, MAPS);
 				Game.CurrentCharacter = Characters[0];
 				Scenery.hasDeclair = true;
 			}
@@ -203,7 +207,7 @@ function zero(context){
 
 function GameBonanza(){
 	TouchEvent();
-	//KeyBoardEvent();
+	//
 	window.addEventListener("resize", resize);
 	resize();
 	//setInterval(GamePlay, timeFrequency);
@@ -214,6 +218,7 @@ document.addEventListener("DOMContentLoaded", function(){
 	const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 	if (!isMobile)
 		Ctrl.canvas.style.display = "none";
+		//KeyBoardEvent();
 })
 
 function GamePlay(){

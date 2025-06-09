@@ -627,6 +627,26 @@ const Ctrl = {
 					GameMoment = GameMomentSav;
 				//}
 			}
+			if(Ctrl.Btns.up.active && !Ctrl.state.up && UI.dialogItems.hasOption){
+				const possibleOptions = document.querySelectorAll(".option");
+				console.log(UI.dialogItems.selectedOption);
+				possibleOptions[UI.dialogItems.selectedOption].classList.remove("selected");
+				UI.dialogItems.selectedOption--;
+				if(UI.dialogItems.selectedOption < 0){
+					UI.dialogItems.selectedOption = possibleOptions.length - 1;
+				}
+				possibleOptions[UI.dialogItems.selectedOption].classList.add("selected");
+			}
+			if(Ctrl.Btns.down.active && !Ctrl.state.down && UI.dialogItems.hasOption){
+				const possibleOptions = document.querySelectorAll(".option");
+				console.log(UI.dialogItems.selectedOption);
+				possibleOptions[UI.dialogItems.selectedOption].classList.remove("selected");
+				UI.dialogItems.selectedOption++;
+				if(UI.dialogItems.selectedOption > possibleOptions.length-1){
+					UI.dialogItems.selectedOption = 0;
+				}
+				possibleOptions[UI.dialogItems.selectedOption].classList.add("selected");
+			}
 			
 		},
 		

@@ -4,7 +4,7 @@ const WallCleaner = {
 	glass: [],
 	glassState: [0, 1, 2, 3], //add ID from tileset when you have it.
 	currentLevelName: "level1",
-	stage: null,
+	currentMap: null,
 	cleaner: {x: undefined, y: undefined},
 	stroller: {x: 0, y: 0, w: TILE_SIZE*4, h: TILE_SIZE},
 	target: {x: 0, y: 0},
@@ -56,17 +56,19 @@ const WallCleaner = {
 	start(entity){
 		if(!this.hasStarted){
 			//declair the grid 
-			this.stage = new Level(WallCleanerMaps[this.currentLevelName]);
+			if(!Scenery.hasDeclaired){
+				Scenery.declair(Game, Game.levelName, MAPS);
+				this.currentCharacter = entity;
+				Scenery.hasDeclair = true;
+			}
 			Game.currentMap = this.stage,
 			this.setGlass();
 			entity.boxCol.x = GridToWorld(5, TILE_SIZE);
 			entity.boxCol.z = GridToWorld(5, TILE_SIZE);
 			entity.WorldPos.x = GridToWorld(5, TILE_SIZE);
 			entity.WorldPos.z = GridToWorld(5, TILE_SIZE);
-			entity.WorldPos.y = -56;
-			this.stage.setBoundaries();
+			entity.WorldPos.y = -1;
 			this.hasStarted = true;
-			this.currentCharacter = entity;
 		}
 		entity.update();
 		Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
@@ -77,8 +79,8 @@ const WallCleaner = {
 		Col.main(entity, this.stage);
 		this.hasWon = this.checkWinning(); 
 		if(this.hasWon){
-			entity.money += this.salary;
-			//GameMoment = "resultScreen";
+			entity.money.unit += this.salary;
+			GameMoment = "resultScreen";
 		}
 	}
 }

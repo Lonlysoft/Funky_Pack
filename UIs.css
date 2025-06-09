@@ -193,7 +193,12 @@
 	padding: 0;
 }
 
-.option.selected::after{
+.option.selected{
+	border: 1px dashed #000;
+}
+
+/*
+.option.selected::before{
 	position: absolute;
 	content: '';
 	left: 0;
@@ -201,3 +206,4 @@
 	width:1em; height: 1em;
 	background: #000;
 }
+*/

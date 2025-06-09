@@ -119,6 +119,7 @@ class Protagonist extends Being{
 		this.skillList = skills;
 		this.section = 0;
 		this.ID = 0;
+		this.holdingObject = false;
 	}
 	//important
 	update(){
@@ -157,6 +158,9 @@ class Protagonist extends Being{
 			mirrorateToAPoint(Game.ctx, this.centralPoint[0], this.centralPoint[1]);
 			this.isMirrored = false;
 		}
+		if(this.hand != 0){
+			this.hand.draw();
+		}
 	}
 	interact(NPC__arr){
 		let box = directions.setBox[this.dir](this);
@@ -166,7 +170,7 @@ class Protagonist extends Being{
 			let this__box = [NPC__arr[i].boxCol.x, NPC__arr[i].boxCol.z, NPC__arr[i].boxCol.w, NPC__arr[i].boxCol.p];
 			if(isOnGround(this.WorldPos.y, NPC__arr[i].boxCol.y) && Col.AABB(box, this__box)){
 				Game.onDialog = true;
-				UI.dialogItems.text = NPC__arr[i].dialog[NPC__arr[i].relationshipLevelWithYou]
+				UI.dialogItems.text = NPC__arr[i].dialog[NPC__arr[i].relationshipLevelWithYou][Clock.lateness].text
 				UI.dialogItems.bufferAnimation = 0;
 				UI.dialogStart();
 			}
@@ -199,8 +203,8 @@ class Protagonist extends Being{
 
 const skillSet = {
 	hold: function(entity){
-		entity.mao = Col.receiveItem({x: entity.boxCol.x+entity.boxCol.w, y: entity.boxCol.y, z: entity.boxCol.z+entity.boxCol.p, w: entity.boxCol.w, h: entity.boxCol.h, p: entity.boxCol.p}, Game.ItemArr);
-		if(entity.mao != 0){
+		entity.hand = Col.receiveItem(entity, Game.ItemArr);
+		if(entity.hand != 0){
 			entity.holdingObject = true;
 		}
 		else{
@@ -210,38 +214,17 @@ const skillSet = {
 	hover: function(entity){
 		entity.velocity.y = 0;
 	},
+	release: function(entity){
+		if(entity.hand != 0){
+			entity.holdingObject = false;
+			Game.ItemArr.push(entity.hand);
+			//TODO: DO THE ITEM GRID THING. EITHER RELEASE THE ITEM AS AN OBJECT THERE OR DO BOTH: ADD 
+			entity.hand = 0;
+		}
+	},
 	dashDive: function(entity){
 		if(!entity.onGround){
-			switch(entity.dir){
-				case "S":
-					entity.velocity.z += 10;
-				break;
-				case "E":
-					entity.velocity.x += 10;
-				break;
-				case "N":
-					entity.velocity.z -= 10;
-				break;
-				case "W":
-					entity.velocity.x -= 10;
-				break;
-				case "SE":
-					entity.velocity.x += 10;
-					entity.velocity.z += 10;
-				break;
-				case "NE":
-					entity.velocity.z -= 10;
-					entity.velocity.x += 10;
-				break;
-				case "SW":
-					entity.velocity.z -= 10;
-					entity.velocity.x -= 10;
-				break;
-				case "NW":
-					entity.velocity.z += 10;
-					entity.velocity.x -= 10;
-				break;
-			}
+			directions.frontDash[entity.dir](entity, 20);
 		}
 	},
 	eatAnything: function(entity){

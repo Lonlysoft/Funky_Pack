@@ -14,6 +14,7 @@ const Clock = {
 		}
 		if(this.hour >= 24){
 			this.day++;
+			this.updateWeather();
 			this.setUpcomingWeather();
 			this.hour = 0;
 		}
@@ -50,7 +51,7 @@ const Clock = {
 	setForecast: function(){
 		this.upcomingWeather = weatherList[random(0, weatherList.length-1)]
 	},
-	setWeather: function(){
+	updateWeather: function(){
 		this.currentWeather = this.upcomingWeather;
 	},
 	convertToHourAndMinute: function(timonthtr){

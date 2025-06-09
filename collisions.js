@@ -93,12 +93,13 @@ const Col = {
 		directions.setCube[direction](boxCol, atkBox);
 	},
 	
-	receiveItem(entityCol, itemArr){
-		let arrayCol = [entityCol.x, entityCol.z, entityCol.w, entityCol.p];
+	receiveItem(entity, itemArr){
+		let arrayCol = directions.setBox[entity.dir](entity);
 		let switcher;
 		for(let i = 0; i < itemArr.length; i++){
 			let arrayColItens = [itemArr[i].boxCol.x, itemArr[i].boxCol.z, itemArr[i].boxCol.w, itemArr[i].boxCol.p]
 			if(this.AABB(arrayCol, arrayColItens)){
+				itemArr[i].isCollected = true;
 				switcher = itemArr[i];
 				itemArr[i] = itemArr[itemArr.length-1]
 				itemArr[itemArr.length-1] = switcher;

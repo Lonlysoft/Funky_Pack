@@ -2,26 +2,27 @@ const Waiter = {
 	player: null,
 	day: 0,
 	isPlayerThere: false,
+	bonusTips: {
+		unit: 0, cents: 0
+	},
 	tablesCoords: [],
 	map: null,
 	start: function(entity){
 		if(!isPlayerThere){
 			player = entity;
-			this.setTableID();
-			
+			this.setTablesID();
 		}
 	},
 	end: function(){
-		if(day % 28 == 0){
+		if(Clock.day % 28 == 0){
 			this.player.money += this.salary;
 		}
-		this.player.money += this.bonusTips;
+		this.player.money.unit += this.bonusTips.unit;
 		this.bonusTips = 0;
 		GameMoment = "mainWorld"
 	},
 	gamePlay(){
 		this.map[this.tablesCoords[randomNumber(0, this.tablesCoords.length)][0]] = 2;
-		
 		Col.main(player);
 	},
 	setTableID(){

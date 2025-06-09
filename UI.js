@@ -29,23 +29,16 @@ const UI = {
 		bufferAnimation: NaN,
 		hasOption: false,
 		text: null,
+		selectedOption: 0,
 		writeText(){
 			if(this.bufferAnimation < this.text.length){
 				this.bufferAnimation++;
 			}
 			let stringSplice = "<p class = 'speaking'>";
 			for(let i = 0; i < this.bufferAnimation; i++){
-				if(this.text[i] == "¶"){//yes, no option
-					this.hasOption = true;
-					break;
-				}else{
-					stringSplice += this.text[i];
-				}
+				stringSplice += this.text[i];
 			}
 			stringSplice += "</p>"
-			if(this.hasOption){
-				stringSplice += "<div class = 'option flex-column'><div class = 'option selected'>yes</div><div class = option>no</div></div>";
-			}
 			UI.dialogDOM.innerHTML = stringSplice;
 		}
 	},
