@@ -63,7 +63,13 @@ the mini games:
 they are a huge part of the game. they actually are the reason why this game is called Funky pack.
 I'm starting by the Wall Cleaner mini-game. It's pretty easy because it uses the same engine of the main world.
 
+NPC behavior system:
+they have lots of behaviors, but most of them is to spawn, move, wait and arrive at certain locations.
+it's just important because you needthe NPCs to look like they have lives inside the game.
+
 current changelog:
+dialogs.js readded. the dialog type is now quite better than the first version. I now need to do all the NPCs variations aswell their option system that can change relationship levels.
+
 Item and its collisions updated. Now the player can stand on top of the items. The next step is make it use and keep them in his inventory.
 
 Issues with pages' lexical erros is still not resolved...
