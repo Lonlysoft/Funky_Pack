@@ -70,6 +70,6 @@ it's just important because you needthe NPCs to look like they have lives inside
 current changelog:
 dialogs.js readded. the dialog type is now quite better than the first version. I now need to do all the NPCs variations aswell their option system that can change relationship levels.
 
-Item and its collisions updated. Now the player can stand on top of the items. The next step is make it use and keep them in his inventory.
+Item and its collisions updated. Now the player can stand on top of the items, and also collect and put them in their inventory. The next step is make them acessible and usable in the Character Menu.
 
 Issues with pages' lexical erros is still not resolved...
