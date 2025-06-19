@@ -36,7 +36,7 @@ const Game = {
 	},
 	setAndUpdateNPCs(){
 		this.currentMap.cleanupNPCs(Camera, this.NPCarr);
-		this.currentMap.updateNPCs(Camera);
+		//this.currentMap.updateNPCs(Camera);
 		for(let i = 0; i < this.NPCarr.length; i++){
 			this.NPCarr[i].update();
 		}
