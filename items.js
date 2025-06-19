@@ -1,7 +1,10 @@
+const itemGraphics = document.getElementById("items");
+
 class Item{
 	constructor(itemSourceConstructor, x, z, y){
 		this.boxCol = new Box(x, y + itemSourceConstructor.h, z, itemSourceConstructor.w, itemSourceConstructor.h, itemSourceConstructor.p);
 		this.SpawnPos = {x: x, y: y, z: z};
+		this.WorldPos = {x: undefined, y: undefined, z: undefined};
 		this.name = itemSourceConstructor.name;
 		this.ID = itemSourceConstructor.ID;
 		this.centralPoint = new Array(2)
@@ -23,18 +26,20 @@ class Item{
 		itemCategories[this.category](entity);
 	}
 	draw(){
-		ctx.fillStyle = "#ff" + this.ID;
-		ctx.fillRect(this.centralPoint[0],
-			this.centralPoint[1],
-			this.boxCol.w, this.boxCol.p
+		ctx.drawImage(itemGraphics, this.ID*96, 0, 96, 96, this.centralPoint[0] - this.boxCol.w*0.5,
+			this.centralPoint[1] - this.boxCol.w*0.5,
+			this.boxCol.w, this.boxCol.w
 		);
 	}
 	update(){
 		//Col.handleShadowCoords(this);
-		this.centralPoint[0] = WorldToScreen1D(this.boxCol.x, Camera.x, Camera.w/2 - Game.SCREEN_CENTER[0]);
-		this.centralPoint[1] = WorldToScreen1D(this.boxCol.z - this.boxCol.y, Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]);
+		this.centralPoint[0] = WorldToScreen1D(this.WorldPos.x, Camera.x, Camera.w/2 - Game.SCREEN_CENTER[0]);
+		this.centralPoint[1] = WorldToScreen1D(this.WorldPos.z, Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]);
 		this.boxCol.x += this.velocity.x;
 		this.boxCol.z += this.velocity.z;
+		this.WorldPos.y += this.velocity.y;
+		this.WorldPos.x = this.boxCol.x + this.boxCol.w*0.5;
+		this.WorldPos.z = this.boxCol.z + this.boxCol.p*0.5;
 		this.shadow.x = this.boxCol.x;
 		this.shadow.y = this.boxCol.z + this.boxCol.y;
 		//this.velocity.z *= this.friction;
@@ -56,6 +61,7 @@ const itemCategories = {
 		item.isCollected = true;
 	},
 	food: function(entity, item){
+		entity.hunger += item.value;
 		entity.hp += item.value;
 	},
 	
@@ -64,13 +70,12 @@ const itemCategories = {
 //constant for assets
 const ITEMS = [
 	{name: "clearItem", description: "enableCredits", value: 0, type: "creditsScene"},
-	{ID: 5, name: "penny", description: "a singular monetary solution costs $0.01", value: 1, type: "centMoney", usage: "CollectAndUse", ColType: "use", w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/6)},
-	{ID: 2, name: "coin", description: "a centural monetary solution costs $1.00", value: 1, type: "money", usage: "CollectAndUse", ColType: "use" , w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/6)},
+	{ID: 1, name: "penny", description: "a singular monetary solution costs $0.01", value: 1, type: "centMoney", usage: "CollectAndUse", ColType: "use", w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/4)},
+	{ID: 3, name: "coin", description: "a centural monetary solution costs $1.00", value: 1, type: "money", usage: "CollectAndUse", ColType: "use" , w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/6)},
 	//fruits
-	{ID: 9, name:"apple", description: "freah as ever give us the best", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: Number.parseInt(TILE_SIZE/2),p: Number.parseInt(TILE_SIZE/2), h: Number.parseInt(TILE_SIZE/2)},
-	{ID: 8, name:"block", description: "completely solid object. I think you can only carry this if you're Nukko", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: TILE_SIZE, h: TILE_SIZE, p: TILE_SIZE},
-	
-]
+	{ID: 2, name:"apple", description: "freah as ever give us the best", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: Number.parseInt(TILE_SIZE/2),p: Number.parseInt(TILE_SIZE/2), h: Number.parseInt(TILE_SIZE/4)},
+	{ID: 4, name:"block", description: "completely solid object. I think you can only carry this if you're Nukko", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: TILE_SIZE, h: TILE_SIZE, p: TILE_SIZE},
+];
 /*
 	{"banana", ""},
 	["peach", ""],

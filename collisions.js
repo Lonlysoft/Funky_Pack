@@ -382,7 +382,6 @@ const Col = {
 		
 		let playerCubeCol = [entity.boxCol.x, entity.boxCol.z, entity.boxCol.w, entity.boxCol.p, entity.boxCol.y, entity.boxCol.h]
 		
-		
 		//começou as Colisões em relação ao tileset
 		let x_intro = Math.floor(Camera.x/TILE_SIZE);
 		let x_end = Math.floor((Camera.x+Camera.w)/TILE_SIZE);

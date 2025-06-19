@@ -107,6 +107,8 @@ class Protagonist extends Being{
 		this.STR = VMIN;
 		this.JPOW = JMAX;
 		this.isSwimming = false;
+		this.isSpecialSkilling = false;
+		this.isCrouching = false;
 		this.canTakeDamage = true;
 		this.tail = [];
 		this.hand = 0;
@@ -124,6 +126,9 @@ class Protagonist extends Being{
 	//important
 	update(){
 		saveCoords(this.boxCol);
+		if(this.onGround && this.isSpecialSkilling){
+			this.isSpecialSkilling = false;
+		}
 		this.onGround = false;
 		this.boxCol.x += this.velocity.x;
 		this.boxCol.z += this.velocity.z;
@@ -136,6 +141,11 @@ class Protagonist extends Being{
 		if( checkCentralPoint(this.centralPoint[0], this.centralPoint[1]) == false ){
 			this.centralPoint[1]-=this.velocity.z;
 			this.centralPoint[0]-=this.velocity.x;
+		}
+		if(this.holdingObject && this.hand !== 0){
+			this.hand.centralPoint[0] = this.centralPoint[0];
+			this.hand.centralPoint[1] = this.centralPoint[1] - this.boxCol.h*0.95;
+	//		this.hand.update();
 		}
 	}
 	//graphics
@@ -211,14 +221,25 @@ const skillSet = {
 			entity.holdingObject = false;
 		}
 	},
+	putAway: function(entity){
+		if(entity.tail.length < entity.tailMaxLength){
+			entity.tail.push(entity.hand);
+			entity.hand = 0;
+			entity.holdingObject = false;
+		}
+	},
 	hover: function(entity){
 		entity.velocity.y = 0;
 	},
 	release: function(entity){
 		if(entity.hand != 0){
 			entity.holdingObject = false;
-			Game.ItemArr.push(entity.hand);
-			//TODO: DO THE ITEM GRID THING. EITHER RELEASE THE ITEM AS AN OBJECT THERE OR DO BOTH: ADD 
+			const box = directions.setBox[entity.dir](entity);
+			entity.hand.isCollected = false;
+			entity.hand.boxCol.x = box[0];
+			entity.hand.boxCol.z = box[1];
+			entity.hand.boxCol.y = Game.currentMap.bounds[WorldToGrid(box[1], TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)].y
+			Game.currentMap.items[WorldToGrid(box[1], TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] = entity.hand;
 			entity.hand = 0;
 		}
 	},

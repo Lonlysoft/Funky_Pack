@@ -55,9 +55,7 @@ const BehaviorList = {
 			entity.pol *= -1;
 		}
 	},
-	nothing: function(){
-		
-	},
+	nothing: function(){},
 	goToX: function(entity){
 		entity.walk("x");
 	},

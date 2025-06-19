@@ -58,6 +58,14 @@ function displayAnim(Character){
 		Character.doing = setUsingTools[GameMoment];
 	}
 	
+	if(Character.holdingObject){
+		Character.doing += "Hold"
+	}
+	
+	if(Character.isSpecialSkilling){
+		Character.doing = "diving"
+	}
+	
 	if(Character.animationIndex < Character.anim[Character.doing].length-1){
 		Character.animationIndex++;
 	}

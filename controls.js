@@ -481,28 +481,43 @@ const Ctrl = {
 				}
 			},
 			Y(argumentEntity){
-				if(Ctrl.Btns.Y.active){ //Y
+				if(Ctrl.Btns.Y.active && !Ctrl.state.Y){ //Y
 					if(!argumentEntity.onGround && argumentEntity.skillList.includes("dashDive")){
 						argumentEntity.doSkill("dashDive");
 						//argumentEntity.atk();
+						argumentEntity.isSpecialSkilling = true;
 					}
 					else{
 						//argumentEntity.atk();
 					}
 				}
+				if(Ctrl.Btns.Y.active && !Ctrl.state.Y && argumentEntity.holdingObject){
+					argumentEntity.doSkill("putAway");
+				}
 			},
 			X(argumentEntity){
 				if(Ctrl.Btns.X.active && Ctrl.state.X == false){
-					if(argumentEntity.skillList.includes("hold") && argumentEntity.skillList.includes("release")){
+					if(argumentEntity.skillList.includes("hold") && argumentEntity.skillList.includes("release") && !argumentEntity.holdingObject){
 						argumentEntity.doSkill("hold");
+					}
+					else if(argumentEntity.holdingObject){
+						argumentEntity.doSkill("release");
 					}
 				}
 			},
 			crouch(argumentEntity){
 				if(Ctrl.Btns.look.active && Ctrl.state.L == false){
-					if(!argumentEntity.onGround && argumentEntity.skills.includes("dashDive")){
+					if(!argumentEntity.onGround && argumentEntity.skillList.includes("dashDive")){
 						argumentEntity.doSkill("dashDive");
-						argumentEntity.atk();
+						//argumentEntity.atk();
+					}
+					else{
+						argumentEntity.isCrouching = true;
+					}
+				}
+				if(Ctrl.Btns.look.active){
+					if(argumentEntity.onGround && argumentEntity.skillList.includes("feralMode")){
+						argumentEntity.feralMode = true;
 					}
 				}
 			},
@@ -596,8 +611,7 @@ const Ctrl = {
 		},
 		
 		stats: function(argumentEntity){
-			UI.scheduleStart();
-			if(Ctrl.Btns.west.active && !Ctrl.state.west){ //right
+			if(Ctrl.Btns.west.active && !Ctrl.state.west){ //left
 				
 			}
 			else if(Ctrl.Btns.up.active && !Ctrl.state.up){//⬆
@@ -606,15 +620,40 @@ const Ctrl = {
 			else if(Ctrl.Btns.down.active && !Ctrl.state.down){//⬇
 				
 			}
-			if(Ctrl.Btns.west.active && !Ctrl.state.east){ //left
+			if(Ctrl.Btns.west.active && !Ctrl.state.east){ //right
 				
 			}
 			if(Ctrl.Btns.A.active && Ctrl.state.A == false){
 				
 			}
 			if(Ctrl.Btns.B.active && Ctrl.state.B == false){
+				UI.scheduleDismiss();
 				UI.characterMenuItems.layer--;
 			}
+		},
+		
+		"talk to": function(argumentEntity){
+			if(Ctrl.state.A == false){
+				if(argumentEntity.party == undefined){
+					Game.onDialog = true;
+					UI.dialogItems.text = Dialogs.party_not_present[0].text;
+					UI.dialogItems.bufferAnimation = 0;
+					UI.dialogStart();
+				}
+			}
+			if(Ctrl.Btns.A.active && Ctrl.state.A == false){
+				//Game.dialogBox.buffer++;
+				//if(Game.dialogBox.buffer == undefined){
+					UI.dialogDismiss();
+					Game.onDialog = false;
+					UI.dialogItems.bufferAnimation = NaN;
+					UI.characterMenuItems.layer--;
+				//}
+			}
+		},
+		
+		items: function(argumentEntity){
+			
 		},
 		
 		dialogs: function(argumentEntity){

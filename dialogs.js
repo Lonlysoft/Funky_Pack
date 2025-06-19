@@ -1,4 +1,9 @@
 const Dialogs = {
+	party_not_present: [
+		{
+			text: "You don't have any party members now to talk to"
+		}
+	],
 	JSON_FOLF: [
 		{
 			day: {

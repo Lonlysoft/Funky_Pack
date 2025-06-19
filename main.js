@@ -53,6 +53,7 @@ const Game = {
 				case 0: Ctrl.action(Game.CurrentCharacter, "characterMenu"); break;
 				case 1:
 					Ctrl.action(Game.CurrentCharacter, UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption]);
+					UI.characterMenuSubmenus["start" + UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption] + ""](Game.CurrentCharacter);
 				break;
 			}
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
@@ -146,10 +147,9 @@ const Game = {
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Game.CurrentCharacter.update();
 			Col.main(Game.CurrentCharacter, Game.currentMap, -1);
-			
+			UI.charWinUpdate(Clock);
 			if(frame > fps){
 				Clock.passTime();
-				UI.charWinUpdate(Clock);
 			}
 			debug();
 		},

@@ -21,6 +21,28 @@ const UI = {
 		optionLength: 3,
 		layer: 0
 	},
+	characterMenuSubmenus: {
+		statsDOM: document.querySelector(".extraStats"),
+		itemsDOM: document.querySelector(".bags"),
+		startitems(entity){
+			this.itemsDOM.classList.remove("notHere");
+			this.itemsDOM.innerHTML = "";
+			let finalString = "";
+			for(let i = 0; i < entity.tailMaxLength; i++){
+				if(entity.tail[i] != undefined)
+					finalString += entity.tail[i].name + "<br/>";
+				else 
+					finalString += "-- <br/>"
+			}
+			this.itemsDOM.innerHTML = finalString;
+		},
+		startstats(entity){
+			UI.scheduleStart();
+		},
+		"starttalk to": function(entity){
+			return null;
+		}
+	},
 	pauseDOM: document.querySelector(".pause"),
 	jobTableDOM: document.querySelector(".schedule"),
 	dialogDOM: document.querySelector(".dialogs"),
@@ -49,7 +71,7 @@ const UI = {
 	wallCleanerHud: 0,
 	charWinUpdate: function(clock){
 		this.charWin.clockDOM.innerHTML = `${clock.monthList[clock.month]}, ${clock.day} - ${(clock.hour >= 10) ? clock.hour : "0" + (clock.hour +"")}:${(clock.minute >= 10) ? clock.minute : "0" + (clock.minute +"")}`;
-		this.charWin.moneyDOM.innerHTML = "US$" + Game.CurrentCharacter.money.unit + "." + Game.CurrentCharacter.money.cents;
+		this.charWin.moneyDOM.innerHTML = "US$" + Game.CurrentCharacter.money.unit + "." + ((Game.CurrentCharacter.money.cents>= 10)? Game.CurrentCharacter.money.cents : "0" + (Game.CurrentCharacter.money.cents + ""));
 	},
 	jobTableDOM_options:
 	{
