@@ -29,7 +29,7 @@ const Game = {
 	},
 	setAndUpdateItems(){
 		this.currentMap.cleanupItems(Camera);
-		this.currentMap.updateVisibleItems(Camera);
+		//this.currentMap.updateVisibleItems(Camera);
 		for(let i = 0; i < this.ItemArr.length; i++){
 			this.ItemArr[i].update();
 		}
