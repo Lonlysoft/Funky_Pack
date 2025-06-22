@@ -5,6 +5,9 @@ It's a personal project made for:
 - test my english skills with writing documentation and dialogs
 - put this thing on my portfolio might be good, I don't know...
 
+#Playtest
+<a href = "https://lonlysoft.github.io/Funky_Pack" > here! </a> Please bear in mind that it's not done yet, but you can test the controls performance on mobile or PC. it's pretty important because I don't have a keyboard so I can't test it.
+
 # what is it?
 Funky Pack is a game inspired by farming simulators. We all have heard the story of a farming simulator before: <br>
 "There's this guy whose life is not good in the city and then he goes to a farm." <br>
@@ -65,11 +68,11 @@ I'm starting by the Wall Cleaner mini-game. It's pretty easy because it uses the
 
 NPC behavior system:
 they have lots of behaviors, but most of them is to spawn, move, wait and arrive at certain locations.
-it's just important because you needthe NPCs to look like they have lives inside the game.
+it's just important because you need the NPCs to look like they have an actual life inside the game.
 
 current changelog:
 dialogs.js readded. the dialog type is now quite better than the first version. I now need to do all the NPCs variations aswell their option system that can change relationship levels.
 
 Item and its collisions updated. Now the player can stand on top of the items, and also collect and put them in their inventory. The next step is make them acessible and usable in the Character Menu.
 
-Issues with pages' lexical erros is still not resolved...
+Issues with pages' lexical erros is resolved. I discovered that my IDE isn't case sensitive.
