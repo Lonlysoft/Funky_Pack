@@ -5,7 +5,8 @@ It's a personal project made for:
 - test my english skills with writing documentation and dialogs
 - put this thing on my portfolio might be good, I don't know...
 
-#Playtest
+# Playtest
+
 <a href = "https://lonlysoft.github.io/Funky_Pack" > here! </a> Please bear in mind that it's not done yet, but you can test the controls performance on mobile or PC. it's pretty important because I don't have a keyboard so I can't test it.
 
 # what is it?
