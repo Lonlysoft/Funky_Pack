@@ -491,6 +491,10 @@ const Ctrl = {
 						//argumentEntity.atk();
 					}
 				}
+				if((Ctrl.Btns.look.active && !Ctrl.state.L) && (Ctrl.Btns.Y.active && !Ctrl.state.Y) && argumentEntity.holdingObject){
+					argumentEntity.doSkill("eatAnything");
+					console.log("youre eating");
+				}
 				if(Ctrl.Btns.Y.active && !Ctrl.state.Y && argumentEntity.holdingObject){
 					argumentEntity.doSkill("putAway");
 				}
@@ -535,7 +539,7 @@ const Ctrl = {
 					GameMomentSav = GameMoment;
 					GameMoment = 'pause';
 				}
-			}
+			},
 		}
 	},
 	Moment: {
@@ -658,13 +662,16 @@ const Ctrl = {
 		
 		dialogs: function(argumentEntity){
 			if(Ctrl.Btns.A.active && Ctrl.state.A == false){
-				//Game.dialogBox.buffer++;
-				//if(Game.dialogBox.buffer == undefined){
+				if(UI.dialogItems.object.next == undefined){
 					UI.dialogDismiss();
 					Game.onDialog = false;
 					UI.dialogItems.bufferAnimation = NaN;
 					GameMoment = GameMomentSav;
-				//}
+				}
+				else{
+					UI.dialogItems.bufferAnimation = 0;
+					UI.dialogItems.object = Dialogs[UI.dialogItems.object.ID][UI.dialogItems.object.relationshipLevel][UI.dialogItems.object.next];
+				}
 			}
 			if(Ctrl.Btns.up.active && !Ctrl.state.up && UI.dialogItems.hasOption){
 				const possibleOptions = document.querySelectorAll(".option");

@@ -22,7 +22,8 @@ const Characters = [
 			walkDifferentHold: ["infinite", 5, 5, 5, 5, 5, 4, 4, 4, 4, 6, 6, 6, 6, 6, 4, 4, 4, 4],
 			jumpHold: ["linear", 5],
 			diving: ["linear", 9],
-			crouch: ["linear", 9]
+			crouch: ["linear", 9],
+			eating: ["linear", 8, 8, 8, 8, 8, 8, 8, 8, 0]
 		}
 	),
 	new Protagonist(

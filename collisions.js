@@ -1,4 +1,4 @@
-/*file to keep Colisions out of things*/
+/*file to keep Colisions out of things*/ 
 
 function saveCoords(entityBoxCol){
 	entityBoxCol.oldX = entityBoxCol.x;

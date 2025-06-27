@@ -50,15 +50,15 @@ const UI = {
 		stackPair: 0,
 		bufferAnimation: NaN,
 		hasOption: false,
-		text: null,
+		object: null,
 		selectedOption: 0,
 		writeText(){
-			if(this.bufferAnimation < this.text.length){
+			if(this.bufferAnimation < this.object.text.length){
 				this.bufferAnimation++;
 			}
 			let stringSplice = "<p class = 'speaking'>";
 			for(let i = 0; i < this.bufferAnimation; i++){
-				stringSplice += this.text[i];
+				stringSplice += this.object.text[i];
 			}
 			stringSplice += "</p>"
 			UI.dialogDOM.innerHTML = stringSplice;

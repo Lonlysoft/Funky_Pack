@@ -64,6 +64,10 @@
 	position: relative;
 }
 
+.absolute{
+	position: absolute;
+}
+
 .flex-row{
 	display: flex;
 	gap: 2em;
@@ -126,6 +130,18 @@
 	#error{
 		display: none;
 	}
+}
+
+table td{
+	border-left: 1px solid var(--font-color);
+	border-bottom: 1px solid var(--font-color);
+	background: var(--bg-color);
+	padding: 0.5em;
+	text-align: center;
+}
+
+table td:nth-child(1){
+	background: #9A1E1A;
 }
 
 @media only screen and (orientation: portrait){

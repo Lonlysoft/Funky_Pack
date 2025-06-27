@@ -7,11 +7,15 @@ const Dialogs = {
 	JSON_FOLF: [
 		{
 			day: {
+				name: "Jason Folf",
+				ID: "JSON_FOLF",
 				text: "hey there",
 				condition: {time: "day", weather: "sunny"},
 				next: "dayAlt"
 			},
 			dayAlt: {
+				name: "Jason Folf",
+				ID: "JSON_FOLF",
 				text: "Do you need anything?"
 			},
 			dayRainy: {
@@ -20,11 +24,15 @@ const Dialogs = {
 				next: "dialogDayAlt"
 			},
 			night: {
+				name: "Jason Folf",
+				ID: "JSON_FOLF",
 				text: "Oi! Starry Night huh?.",
 				condition: {time: "night", weather: "sunny"},
-				next: "dialogDayAlt"
+				next: "dayAlt"
 			},
 			dawn: {
+				name: "Jason Folf",
+				ID: "JSON_FOLF",
 				text: "I'm too tired of plucking up my sleep schedule. Better catch some sleep while it's time...good Night!",
 				condition: {time: "dawn"},
 			}

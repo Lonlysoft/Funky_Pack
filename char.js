@@ -16,6 +16,14 @@ class Being{
 	constructor(name, AGE, ACL, VMAX, height, width, dept, HTMLsrc, animations){
 		this.name = name;
 		this.HP = AGE*10; this.hp = AGE*10;
+		this.maxHunger = AGE*15;
+		this.maxStamina = AGE*10;
+		this.stamina = AGE*10;
+		this.solitude = 100;
+		this.maxSolitude = 1000;
+		this.maxJoy = 100;
+		this.joy = 50;
+		this.hunger = 0
 		this.ATK = Math.floor(AGE/2); this.DEF = Math.ceil(AGE/2);
 		this.ACL = ACL; this.VMAX = VMAX;
 		this.constHP = AGE*10;
@@ -180,7 +188,8 @@ class Protagonist extends Being{
 			let this__box = [NPC__arr[i].boxCol.x, NPC__arr[i].boxCol.z, NPC__arr[i].boxCol.w, NPC__arr[i].boxCol.p];
 			if(isOnGround(this.WorldPos.y, NPC__arr[i].boxCol.y) && Col.AABB(box, this__box)){
 				Game.onDialog = true;
-				UI.dialogItems.text = NPC__arr[i].dialog[NPC__arr[i].relationshipLevelWithYou][Clock.lateness].text
+				UI.dialogItems.object = NPC__arr[i].dialog[NPC__arr[i].relationshipLevelWithYou][Clock.lateness]
+				UI.dialogItems.object.relationshipLevel = NPC__arr[i].relationshipLevelWithYou
 				UI.dialogItems.bufferAnimation = 0;
 				UI.dialogStart();
 			}
@@ -249,7 +258,8 @@ const skillSet = {
 		}
 	},
 	eatAnything: function(entity){
-		//entity.belly.push(entity.hand); //vore flerting
+		//entity.belly.push(entity.hand); //vore flerting 
+		entity.hunger = limitateDown(entity.hunger-25, 0);
 		entity.hand = 0;
 	}
 	

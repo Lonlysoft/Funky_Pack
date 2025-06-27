@@ -64,6 +64,9 @@ const Game = {
 			Game.ctx.fillRect(0, 0, Game.canvas.width, Game.canvas.height);
 			Game.ctx.globalAlpha = 1;
 		},
+		preTile: function(){
+			
+		},
 		title:function(){
 			if(Game.requestTransition && !Game.appearScreen){
 				Game.alpha = BG.transition(Game.alpha, "coming", 0.1);
@@ -190,7 +193,7 @@ const Game = {
 }
 
 let GameMoment = 0;
-let GameMomentSav = 'mainWorld';
+let GameMomentSav = 'title';
 let frame = 0
 let frameaux = 0
 

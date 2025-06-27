@@ -27,7 +27,7 @@ class Item{
 	}
 	draw(){
 		ctx.drawImage(itemGraphics, this.ID*96, 0, 96, 96, this.centralPoint[0] - this.boxCol.w*0.5,
-			this.centralPoint[1] - this.boxCol.w*0.5,
+			this.centralPoint[1] - this.boxCol.h,
 			this.boxCol.w, this.boxCol.w
 		);
 	}
@@ -73,7 +73,7 @@ const ITEMS = [
 	{ID: 1, name: "penny", description: "a singular monetary solution costs $0.01", value: 1, type: "centMoney", usage: "CollectAndUse", ColType: "use", w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/4)},
 	{ID: 3, name: "coin", description: "a centural monetary solution costs $1.00", value: 1, type: "money", usage: "CollectAndUse", ColType: "use" , w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/6)},
 	//fruits
-	{ID: 2, name:"apple", description: "freah as ever give us the best", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: Number.parseInt(TILE_SIZE/2),p: Number.parseInt(TILE_SIZE/2), h: Number.parseInt(TILE_SIZE/4)},
+	{ID: 2, name:"apple", description: "freah as ever give us the best", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: Number.parseInt(TILE_SIZE/2),p: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4)},
 	{ID: 4, name:"block", description: "completely solid object. I think you can only carry this if you're Nukko", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: TILE_SIZE, h: TILE_SIZE, p: TILE_SIZE},
 ];
 /*
