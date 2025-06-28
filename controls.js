@@ -288,7 +288,7 @@ const Ctrl = {
 	},
 	
 	ListProps4WallCleaner: ["eastNwest", "upNdown", "A", "B", "start"],
-	ListPropsMainWorld: ["eastWest", "upDown", "diagonals", "B", "A", "Y", "X", "crouch", "select", "start"],
+	ListPropsMainWorld: ["eastWest", "upDown", "diagonals", "B", "A", "Y", "X", "crouch", "select", "start", "zed"],
 	state: {
 		A: false,
 		B: false,
@@ -480,6 +480,9 @@ const Ctrl = {
 					argumentEntity.interact(Game.NPCarr);
 				}
 			},
+			zed(argumentEntity){
+				
+			},
 			Y(argumentEntity){
 				if(Ctrl.Btns.Y.active && !Ctrl.state.Y){ //Y
 					if(!argumentEntity.onGround && argumentEntity.skillList.includes("dashDive")){
@@ -491,7 +494,7 @@ const Ctrl = {
 						//argumentEntity.atk();
 					}
 				}
-				if((Ctrl.Btns.look.active && !Ctrl.state.L) && (Ctrl.Btns.Y.active && !Ctrl.state.Y) && argumentEntity.holdingObject){
+				if((Ctrl.Btns.look.active /*!Ctrl.state.L*/) && (Ctrl.Btns.Y.active && !Ctrl.state.Y) && argumentEntity.holdingObject){
 					argumentEntity.doSkill("eatAnything");
 					console.log("youre eating");
 				}

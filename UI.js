@@ -9,6 +9,11 @@ const UI = {
 		charName: document.querySelector(".charName"),
 		moneyDOM: document.querySelector(".money")
 	},
+	characterQuickInfoDOM: {
+		hpDOM: document.querySelector(".HUD__lifeBar"),
+		solitudeDOM: document.querySelector(".HUD__solitude"),
+		staminaDOM: document.querySelector(".HUD__staminaBar"),
+	},
 	characterMenuDOM: document.querySelector(".characterMenu"),
 	characterMenuItems:{
 		0: document.querySelector(".characterMenu__talkTo"),

@@ -23,6 +23,7 @@ const Scenery = {
 		layers[currChar.layer].push(currChar);
 		//this.rearrangeSubInlayer(); //feito pro player também se mover atrás dos inimigos 
 		for(let i = 0; i < layers.length; i++){
+			layers[i] = mergeSort(layers[i]);
 			for(let j = 0; j < layers[i].length; j++){
 				layers[i][j].draw();
 			}

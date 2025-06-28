@@ -138,16 +138,20 @@
 
 .charWin{
 	display: none;
-	position: absolute;
-	bottom: 4%;
-	left: 4%;
 }
 .quickstats{
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	top: 4%;
+	right: 4%;
 	gap: 1em;
 	padding: 1em;
+}
+
+.characterQuickInfo{
+	bottom: 4%;
+	left: 4%;
 }
 
 /*character menu*/
@@ -207,6 +211,32 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+}
+
+.icon-pic{
+	width: 2em;
+	height: 2em;
+	border-radius: 50%;
+	border: 1px solid #000;
+}
+
+.circularBar{
+	padding: 0.4em;
+	background: conic-gradient(from -90deg, red -90deg 78deg, blue 0deg 180deg);
+}
+
+.vertical-bar{
+	padding: 0.1em;
+	background: var(--font-color);
+	width: 1em;
+	height: 5em;
+}
+
+.horizontal-bar{
+	padding: 0.1em;
+	background: var(--font-color);
+	width: 5em;
+	height: 1em;
 }
 
 /*

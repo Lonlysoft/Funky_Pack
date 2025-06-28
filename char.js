@@ -260,6 +260,7 @@ const skillSet = {
 	eatAnything: function(entity){
 		//entity.belly.push(entity.hand); //vore flerting 
 		entity.hunger = limitateDown(entity.hunger-25, 0);
+		entity.holdingObject = false;
 		entity.hand = 0;
 	}
 	
