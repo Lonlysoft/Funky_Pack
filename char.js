@@ -23,7 +23,7 @@ class Being{
 		this.maxSolitude = 1000;
 		this.maxJoy = 100;
 		this.joy = 50;
-		this.hunger = 0
+		this.hunger = 45;
 		this.ATK = Math.floor(AGE/2); this.DEF = Math.ceil(AGE/2);
 		this.ACL = ACL; this.VMAX = VMAX;
 		this.constHP = AGE*10;
@@ -155,6 +155,8 @@ class Protagonist extends Being{
 			this.hand.centralPoint[1] = this.centralPoint[1] - this.boxCol.h*0.95;
 	//		this.hand.update();
 		}
+		this.hp = limitateUp(this.hp, this.HP);
+		this.hunger = limitateUp(this.hunger, this.maxHunger);
 	}
 	//graphics
 	// We'll need the map.current because... Most mini-games require An special and different game map.

@@ -222,7 +222,8 @@
 
 .circularBar{
 	padding: 0.4em;
-	background: conic-gradient(from -90deg, red -90deg 78deg, blue 0deg 180deg);
+	background: conic-gradient(from 0deg, red 0deg 80deg, blue 0deg 360deg);
+	transition: background 2s;
 }
 
 .vertical-bar{
@@ -232,11 +233,21 @@
 	height: 5em;
 }
 
+.vertical-bar div{
+	width: 100%;
+	background: var(--bg-color);
+}
+
 .horizontal-bar{
 	padding: 0.1em;
 	background: var(--font-color);
 	width: 5em;
 	height: 1em;
+}
+
+.horizontal-bar div{
+	background: var(--font-color);
+	height: 100%;
 }
 
 /*

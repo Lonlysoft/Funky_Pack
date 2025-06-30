@@ -8,6 +8,14 @@ const BG__canvas = document.getElementById("tra");
 const BG__ctx = BG__canvas.getContext("2d");
 BG__canvas.width = 800; BG__canvas.height = 800;
 
+function transformIntoBar(current, max){
+	return (current*100)/max;
+}
+
+function transformIntoCircularBar(current, max){
+	return (current*360)/max;
+}
+
 function DRAW__Grid(context, cam, grid2Draw, gridImage, tileSize, tileImageSize = tileSize){
 	let x_grid = Math.floor((cam.x)/tileSize);
 	let x_endGrid = Math.ceil((cam.x+cam.w)/tileSize);

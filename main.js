@@ -150,9 +150,10 @@ const Game = {
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Game.CurrentCharacter.update();
 			Col.main(Game.CurrentCharacter, Game.currentMap, -1);
-			UI.charWinUpdate(Clock);
+			UI.charWinUpdate(Clock, Game.CurrentCharacter);
 			if(frame > fps){
 				Clock.passTime();
+				Game.CurrentCharacter.hunger+=1;
 			}
 			debug();
 		},

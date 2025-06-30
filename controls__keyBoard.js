@@ -1,6 +1,12 @@
 const keyBoardControls = {
-	touchEquiv: ["west", "up", "east", "down", "B", "Y", "A", "select", "zed", "start", "X", "look"],
-	keyboardID: ["39", "38", "37", "40", "87", "67", "90", "32", "89", "13", "83", "82"]
+	touchEquiv: [
+		"west", "west", "up", "up", "east", "east", "down", "down",
+		"B", "Y", "A", "select", "zed", "start", "X", "look"
+	],
+	keyboardID: [
+		"37", "65", "87", "38", "39", "68", "83", "40",
+		"32", "81", "69", "51", "20", "13", "50", "16"
+	]
 }
 
 function KeyBoardEvent(){

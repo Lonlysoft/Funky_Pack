@@ -13,6 +13,12 @@ const UI = {
 		hpDOM: document.querySelector(".HUD__lifeBar"),
 		solitudeDOM: document.querySelector(".HUD__solitude"),
 		staminaDOM: document.querySelector(".HUD__staminaBar"),
+		update(entity){
+			this.hpDOM.style.height = ("" + transformIntoBar(entity.hp, entity.HP)) + "%";
+			this.staminaDOM.style.width = ("" + transformIntoBar(entity.hunger, entity.maxHunger)) + "%";
+			
+			this.solitudeDOM.style.background = "conic-gradient(from 0deg, red 0deg " + transformIntoCircularBar(entity.hunger, entity.maxHunger) + "deg, blue 0deg 360deg)";
+		}
 	},
 	characterMenuDOM: document.querySelector(".characterMenu"),
 	characterMenuItems:{
@@ -74,9 +80,10 @@ const UI = {
 	charWindowDOM: document.querySelector(".charWin"),
 	milionaire: 0,
 	wallCleanerHud: 0,
-	charWinUpdate: function(clock){
+	charWinUpdate: function(clock, entity){
 		this.charWin.clockDOM.innerHTML = `${clock.monthList[clock.month]}, ${clock.day} - ${(clock.hour >= 10) ? clock.hour : "0" + (clock.hour +"")}:${(clock.minute >= 10) ? clock.minute : "0" + (clock.minute +"")}`;
-		this.charWin.moneyDOM.innerHTML = "US$" + Game.CurrentCharacter.money.unit + "." + ((Game.CurrentCharacter.money.cents>= 10)? Game.CurrentCharacter.money.cents : "0" + (Game.CurrentCharacter.money.cents + ""));
+		this.charWin.moneyDOM.innerHTML = "US$" + entity.money.unit + "." + ((entity.money.cents>= 10)? entity.money.cents : "0" + (entity.money.cents + ""));
+		this.characterQuickInfoDOM.update(entity);
 	},
 	jobTableDOM_options:
 	{
