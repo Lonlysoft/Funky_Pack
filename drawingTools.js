@@ -13,7 +13,7 @@ function transformIntoBar(current, max){
 }
 
 function transformIntoCircularBar(current, max){
-	return (current*360)/max;
+	return Number.parseInt((current*360)/max);
 }
 
 function DRAW__Grid(context, cam, grid2Draw, gridImage, tileSize, tileImageSize = tileSize){
@@ -41,6 +41,14 @@ function DRAW__Grid(context, cam, grid2Draw, gridImage, tileSize, tileImageSize 
 			);
 		}
 	}
+}
+
+function clear(screen, context){
+	context.clearRect(0, 0, screen.width, screen.height)
+}
+function zero(screen, context){
+	context.fillStyle = "#000"
+	context.fillRect(0, 0, screen.width, screen.height);
 }
 
 const setUsingTools = {

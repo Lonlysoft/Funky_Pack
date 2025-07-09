@@ -6,7 +6,8 @@ function debug(){
 	for(let i = 0; i < Game.NPCarr.length; i++){
 		ctx.fillText(Game.NPCarr[i].name, 300, 162+(32*i));
 	}
-	ctx.fillText(UI.characterMenuItems.selectedOption, 360, 162);
+	let entity = Game.CurrentCharacter;
+	ctx.fillText(transformIntoBar(entity.hunger, entity.maxHunger) , 360, 162);
 	for(let i = 0; i < Game.CurrentCharacter.tail.length; i++){
 		ctx.fillText(Game.CurrentCharacter.tail[i].name, 200, 162+(32*i));
 	}

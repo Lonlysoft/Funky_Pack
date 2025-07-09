@@ -103,9 +103,9 @@ const ControlsButtons = {
 			y: 25, w: CONTROLS_LAND_HEIGHT, h: 80, show: true, ID: 11
 		},//select 11
 		zed: {
-			x:controls_canvas.width - 90,
+			x:controls_canvas.width - 180,
 			y: controls_canvas.height/10*0.5,
-			w: 80, h: CONTROLS_LAND_HEIGHT, show: true, ID: 9
+			w: 80, h: CONTROLS_LAND_HEIGHT, show: true, ID: 14
 		},//z 12
 		start: {
 			x:controls_canvas.width/2 + 10,
@@ -115,7 +115,14 @@ const ControlsButtons = {
 		look: {
 			x: 16, y: controls_canvas.height/10*0.5,
 			w: 80, h: CONTROLS_LAND_HEIGHT, show: true, ID: 8
-		}//L 15
+		}, //L 15
+		
+		run: {
+			ID: 14,
+			y: controls_canvas.height/10*0.5,
+			x:controls_canvas.width - 90,
+			w: 80, h: CONTROLS_LAND_HEIGHT, show: true
+		},
 	},
 	buttonsPortraitParameters: {
 		west: {
@@ -186,14 +193,21 @@ const ControlsButtons = {
 			y: 25, w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 11
 		},//select 11
 		zed: {
-			x:controls_canvas.width - 90,
+			x:controls_canvas.width - 180,
 			y: controls_canvas.height/10*0.5,
-			w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 9
+			w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 12
 		},//z 12
 		start: {
 			x:controls_canvas.width/2 + 10,
 			y: controls_canvas.height/10*0.5,
 			w: 80, h: CONTROLS_PORT_HEIGHT, show: true, ID: 10},//start 13
+		
+		run: {
+			ID: 9,
+			y: controls_canvas.height/10*0.5,
+			x: controls_canvas.width - 90,
+			w: 80, h: CONTROLS_PORT_HEIGHT, show:true
+		},
 		
 		look: {
 			x: 16, y: controls_canvas.height/10*0.5,
@@ -223,7 +237,7 @@ const Ctrl = {
 			}
 		}
 	},
-	ListProps: ["west", "up", "east", "down", "southwest", "southeast", "northeast", "northwest", "B", "Y", "A", "select", "zed", "start", "X", "look"],
+	ListProps: ["west", "up", "east", "down", "southwest", "southeast", "northeast", "northwest", "B", "Y", "A", "select", "zed", "start", "X", "look", "run"],
 	BtnsLandscape: {
 		west: new Btn(ControlsButtons.buttonsLandscapeParameters.west),//⬅ 0
 		up: new Btn(ControlsButtons.buttonsLandscapeParameters.up),//⬆ 1
@@ -243,7 +257,8 @@ const Ctrl = {
 		zed: new Btn(ControlsButtons.buttonsLandscapeParameters.zed),//z 12
 		start: new Btn(ControlsButtons.buttonsLandscapeParameters.start),//start 13
 		
-		look: new Btn(ControlsButtons.buttonsLandscapeParameters.look)//L 15
+		look: new Btn(ControlsButtons.buttonsLandscapeParameters.look),//L 15
+		run: new Btn(ControlsButtons.buttonsPortraitParameters.run)
 	},
 	BtnsPortrait: {
 		west: new Btn(ControlsButtons.buttonsPortraitParameters.west),//⬅ 0
@@ -264,7 +279,8 @@ const Ctrl = {
 		zed: new Btn(ControlsButtons.buttonsPortraitParameters.zed),//z 12
 		start: new Btn(ControlsButtons.buttonsPortraitParameters.start),//start 13
 		
-		look: new Btn(ControlsButtons.buttonsPortraitParameters.look)//L 15
+		look: new Btn(ControlsButtons.buttonsPortraitParameters.look),//L 15
+		run: new Btn(ControlsButtons.buttonsPortraitParameters.run)
 	},
 	Btns: undefined,
 	//turn every input false
@@ -288,7 +304,9 @@ const Ctrl = {
 	},
 	
 	ListProps4WallCleaner: ["eastNwest", "upNdown", "A", "B", "start"],
-	ListPropsMainWorld: ["eastWest", "upDown", "diagonals", "B", "A", "Y", "X", "crouch", "select", "start", "zed"],
+	ListPropsMainWorld: ["eastWest", "upDown", "diagonals", "B", "A", "Y", "X", "crouch", "run", "select", "start", "zed"],
+	ListPropsItemMenu: ["up", "down", "east", "A", "B"],
+	
 	state: {
 		A: false,
 		B: false,
@@ -297,6 +315,7 @@ const Ctrl = {
 		start: false,
 		select: false,
 		zed: false,
+		run: false,
 		up: false,
 		down: false,
 		east: false,
@@ -335,7 +354,7 @@ const Ctrl = {
 		Ctrl.testBtns(event.targetTouches);
 	},
 	
-	Bonanza: {
+	BonanzaMiniGames: {
 		wallCleaner: {
 			eastNwest: function(argumentEntity){
 				if(Ctrl.Btns.west.active){//⬅
@@ -396,7 +415,9 @@ const Ctrl = {
 					GameMoment = 'pause';
 				}
 			}
-		},
+		}
+	},
+	Bonanza: {
 		character: {
 			eastWest(argumentEntity){
 				if(Ctrl.Btns.west.active){//⬅
@@ -483,6 +504,9 @@ const Ctrl = {
 			zed(argumentEntity){
 				
 			},
+			run(argumentEntity){
+				
+			},
 			Y(argumentEntity){
 				if(Ctrl.Btns.Y.active && !Ctrl.state.Y){ //Y
 					if(!argumentEntity.onGround && argumentEntity.skillList.includes("dashDive")){
@@ -494,7 +518,7 @@ const Ctrl = {
 						//argumentEntity.atk();
 					}
 				}
-				if((Ctrl.Btns.look.active /*!Ctrl.state.L*/) && (Ctrl.Btns.Y.active && !Ctrl.state.Y) && argumentEntity.holdingObject){
+				if((Ctrl.Btns.zed.active /*!Ctrl.state.L*/) && (Ctrl.Btns.Y.active && !Ctrl.state.Y) && argumentEntity.holdingObject){
 					argumentEntity.doSkill("eatAnything");
 					console.log("youre eating");
 				}
@@ -545,6 +569,27 @@ const Ctrl = {
 			},
 		}
 	},
+	
+	BonanzaMenu: {
+		itemMenu: {
+			up(entity){
+				
+			},
+			down(entity){
+				
+			},
+			east(entity){
+				
+			},
+			A(entity){
+				
+			},
+			B(entity){
+				
+			}
+		}
+	},
+	
 	Moment: {
 		start: function(argumentEntity){
 			if(Ctrl.Btns["west"].active){
@@ -590,6 +635,16 @@ const Ctrl = {
 			
 			if(Ctrl.Btns.west.active && !Ctrl.state.west){ //right
 				UI.characterMenuItems[UI.characterMenuItems.selectedOption].classList.remove("selected");
+				UI.characterMenuItems.selectedOption--;
+				if(UI.characterMenuItems.selectedOption<0){
+					UI.characterMenuItems.selectedOption = UI.characterMenuItems.optionLength;
+				}
+				UI.characterMenuItems.alt.innerHTML = UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption];
+				UI.characterMenuItems[UI.characterMenuItems.selectedOption].classList.add("selected");
+			}
+			if(Ctrl.Btns.east.active && !Ctrl.state.east){ //right
+				
+				UI.characterMenuItems[UI.characterMenuItems.selectedOption].classList.remove("selected");
 				UI.characterMenuItems.selectedOption++;
 				if(UI.characterMenuItems.selectedOption>UI.characterMenuItems.optionLength){
 					UI.characterMenuItems.selectedOption = 0;
@@ -597,15 +652,6 @@ const Ctrl = {
 				UI.characterMenuItems.alt.innerHTML = UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption];
 				UI.characterMenuItems[UI.characterMenuItems.selectedOption].classList.add("selected");
 				
-			}
-			if(Ctrl.Btns.east.active && !Ctrl.state.east){ //right
-				UI.characterMenuItems[UI.characterMenuItems.selectedOption].classList.remove("selected");
-				UI.characterMenuItems.selectedOption--;
-				if(UI.characterMenuItems.selectedOption<0){
-					UI.characterMenuItems.selectedOption = UI.characterMenuItems.optionLength;
-				}
-				UI.characterMenuItems.alt.innerHTML = UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption];
-				UI.characterMenuItems[UI.characterMenuItems.selectedOption].classList.add("selected");
 			}
 			if(Ctrl.Btns.A.active && Ctrl.state.A == false){
 				UI.characterMenuItems.layer++;
@@ -660,7 +706,9 @@ const Ctrl = {
 		},
 		
 		items: function(argumentEntity){
-			
+			for(let i = 0; i < Ctrl.ListPropsItemMenu.length; i++){
+				Ctrl.BonanzaMenu["itemMenu"][Ctrl.ListPropsItemMenu[i]](argumentEntity);
+			}
 		},
 		
 		dialogs: function(argumentEntity){
@@ -711,7 +759,7 @@ const Ctrl = {
 		},//pause action End
 		wallCleaner: function(argumentEntity){
 			for(let i = 0; i < Ctrl.ListProps4WallCleaner.length; i++){
-				Ctrl.Bonanza["wallCleaner"][Ctrl.ListProps4WallCleaner[i]](argumentEntity);
+				Ctrl.BonanzaMiniGames["wallCleaner"][Ctrl.ListProps4WallCleaner[i]](argumentEntity);
 			}
 		}//wallcleaner action end
 	},

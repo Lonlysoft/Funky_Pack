@@ -89,7 +89,7 @@
 		top: 50%;
 		transform: translate(-50%, -50%);
 		z-index: 6;
-		max-width: 100%; /* Cobrir a largura da tela */
+		width: 100%; /* Cobrir a largura da tela */
 		min-height: 100%; /* Cobrir a altura da tela */
 	}
 	body {

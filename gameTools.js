@@ -216,31 +216,39 @@ const directions = {
 	},
 	frontDash: {
 		S: function(entity, speed){
+			entity.velocity.y += 10
 			entity.velocity.z += speed;
 		},
 		E: function(entity, speed){
+			entity.velocity.y += 10
 			entity.velocity.x += speed;
 		},
 		N: function(entity, speed){
+			entity.velocity.y += 10
 			entity.velocity.z -= speed;
 		},
 		W: function(entity, speed){
+			entity.velocity.y += 10
 			entity.velocity.x -= speed;
 		},
 		SE: function(entity, speed){
+			entity.velocity.y += 10
 			entity.velocity.x += speed;
 			entity.velocity.z += speed;
 		},
 		NE: function(entity, speed){
+			entity.velocity.y += 10
 			entity.velocity.z -= speed;
 			entity.velocity.x += speed;
 		},
 		SW: function(entity, speed){
-			entity.velocity.z -= speed;
+			entity.velocity.y += 10
+			entity.velocity.z += speed;
 			entity.velocity.x -= speed;
 		},
 		NW: function(entity, speed){
-			entity.velocity.z += speed;
+			entity.velocity.y += 10
+			entity.velocity.z -= speed;
 			entity.velocity.x -= speed;
 		}
 	}

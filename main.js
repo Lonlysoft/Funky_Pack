@@ -77,7 +77,7 @@ const Game = {
 			}
 			UI.titleStart();
 			Game.ctx.fillStyle = "#000"
-			Game.ctx.fillRect(0,0,800, 800);
+			Game.ctx.fillRect(0,0,Game.canvas.width, Game.canvas.height);
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Ctrl.action(null, "start");
 			Ctrl.stateSave();
@@ -200,15 +200,6 @@ let frameaux = 0
 
 const fps = 60, timeFrequency = 1000/fps;
 
-
-function clear(context){
-	context.clearRect(0, 0, 1000, 1000)
-}
-function zero(context){
-	context.fillStyle = "#000"
-	context.fillRect(-1000, -1000, 2000, 2000);
-}
-
 function GameBonanza(){
 	TouchEvent();
 	//
@@ -226,9 +217,9 @@ document.addEventListener("DOMContentLoaded", function(){
 })
 
 function GamePlay(){
-	clear(Game.ctx);
-	clear(BG.ctx);
-	clear(Ctrl.ctx);
+	clear(Game.canvas, Game.ctx);
+	clear(BG.canvas, BG.ctx);
+	clear(Ctrl.canvas, Ctrl.ctx);
 	Game.moment[GameMoment]();
 	if(frame > fps){
 		frame = 0;

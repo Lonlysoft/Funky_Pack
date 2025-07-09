@@ -1,7 +1,7 @@
 //WARNING: gamepads weren't tested throughout the development of this game. if you experience any button misarrangement or input fail, please send a feedback.
 
 const gamepadControls = {
-	touchEquiv: [],
+	touchEquiv: ["east", "west", "up", "down", "interact", "jump", "hold", "zed", "shift", "start", "select", "run"],
 	buttonsID: [],
 	
 	update(){

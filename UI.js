@@ -17,7 +17,7 @@ const UI = {
 			this.hpDOM.style.height = ("" + transformIntoBar(entity.hp, entity.HP)) + "%";
 			this.staminaDOM.style.width = ("" + transformIntoBar(entity.hunger, entity.maxHunger)) + "%";
 			
-			this.solitudeDOM.style.background = "conic-gradient(from 0deg, red 0deg " + transformIntoCircularBar(entity.hunger, entity.maxHunger) + "deg, blue 0deg 360deg)";
+			this.solitudeDOM.style.background = "conic-gradient(from 0deg, var(--bg-color) 0deg " + transformIntoCircularBar(entity.hunger, entity.maxHunger) + "deg, var(--font-color) 0deg 360deg)";
 		}
 	},
 	characterMenuDOM: document.querySelector(".characterMenu"),
@@ -41,9 +41,9 @@ const UI = {
 			let finalString = "";
 			for(let i = 0; i < entity.tailMaxLength; i++){
 				if(entity.tail[i] != undefined)
-					finalString += entity.tail[i].name + "<br/>";
+					finalString += "<div>" + entity.tail[i].name + "</div>";
 				else 
-					finalString += "-- <br/>"
+					finalString += "<div> -- </div>"
 			}
 			this.itemsDOM.innerHTML = finalString;
 		},

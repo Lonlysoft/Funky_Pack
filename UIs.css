@@ -221,8 +221,8 @@
 }
 
 .circularBar{
-	padding: 0.4em;
-	background: conic-gradient(from 0deg, red 0deg 80deg, blue 0deg 360deg);
+	padding: 0.2em;
+	background: conic-gradient(from 0deg, var(--bg-color) 0deg 80deg, var(--font-color) 0deg 360deg);
 	transition: background 2s;
 }
 
