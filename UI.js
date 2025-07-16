@@ -35,17 +35,32 @@ const UI = {
 	characterMenuSubmenus: {
 		statsDOM: document.querySelector(".extraStats"),
 		itemsDOM: document.querySelector(".bags"),
+		isVisible: false,
+		inventoryEach: null,
+		selectedInventoryIndex: 0,
 		startitems(entity){
-			this.itemsDOM.classList.remove("notHere");
+			this.itemsDOM.style.display = "flex"
 			this.itemsDOM.innerHTML = "";
 			let finalString = "";
-			for(let i = 0; i < entity.tailMaxLength; i++){
+			for(let i = 0; i < entity.tail.length; i++){
 				if(entity.tail[i] != undefined)
-					finalString += "<div>" + entity.tail[i].name + "</div>";
+					finalString += "<div class = 'bags__item'>" + entity.tail[i].name + "</div>";
 				else 
-					finalString += "<div> -- </div>"
+					finalString += "<div class = 'bags__item'> -- </div>";
 			}
 			this.itemsDOM.innerHTML = finalString;
+			this.inventoryEach = this.itemsDOM.querySelectorAll(".bags__item");
+			this.inventoryEach[this.selectedInventoryIndex].classList.add("selected");
+		},
+		updateItems(oldIndex){
+			if(this.inventoryEach != null){
+				this.inventoryEach[oldIndex].classList.remove("selected");
+				this.inventoryEach[this.selectedInventoryIndex].classList.add("selected");
+			}
+		},
+		dismissitems(){
+			this.itemsDOM.innerHTML = "";
+			this.itemsDOM.style.display = "none";
 		},
 		startstats(entity){
 			UI.scheduleStart();

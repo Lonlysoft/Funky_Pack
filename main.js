@@ -202,6 +202,7 @@ const fps = 60, timeFrequency = 1000/fps;
 
 function GameBonanza(){
 	TouchEvent();
+	GamePadEvent();
 	//
 	window.addEventListener("resize", resize);
 	resize();
@@ -213,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function(){
 	const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 	if (!isMobile)
 		Ctrl.canvas.style.display = "none";
-		//KeyBoardEvent();
+		KeyBoardEvent();
 })
 
 function GamePlay(){

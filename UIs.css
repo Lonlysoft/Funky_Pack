@@ -206,6 +206,21 @@
 	padding: 2vh;
 }
 
+.bags__item{
+	position: relative;
+	padding-left: 1.5em;
+}
+
+.bags__item.selected::after{
+	content: '';
+	width: 1em;
+	height: 1em;
+	background: var(--font-color);
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
 .calendar{
 	width: 50%;
 	top: 50%;

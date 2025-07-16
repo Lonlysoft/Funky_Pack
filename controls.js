@@ -520,7 +520,6 @@ const Ctrl = {
 				}
 				if((Ctrl.Btns.zed.active /*!Ctrl.state.L*/) && (Ctrl.Btns.Y.active && !Ctrl.state.Y) && argumentEntity.holdingObject){
 					argumentEntity.doSkill("eatAnything");
-					console.log("youre eating");
 				}
 				if(Ctrl.Btns.Y.active && !Ctrl.state.Y && argumentEntity.holdingObject){
 					argumentEntity.doSkill("putAway");
@@ -573,19 +572,34 @@ const Ctrl = {
 	BonanzaMenu: {
 		itemMenu: {
 			up(entity){
-				
+				if(Ctrl.Btns.up.active && !Ctrl.state.up){//⬆
+					if(UI.characterMenuSubmenus.selectedInventoryIndex > 0){
+						UI.characterMenuSubmenus.updateItems(UI.characterMenuSubmenus.selectedInventoryIndex);
+						UI.characterMenuSubmenus.selectedInventoryIndex--;
+					}
+				}
 			},
 			down(entity){
-				
+				if(Ctrl.Btns.down.active && !Ctrl.state.down){
+					UI.characterMenuSubmenus.updateItems(UI.characterMenuSubmenus.selectedInventoryIndex);
+					if(UI.characterMenuSubmenus.selectedInventoryIndex < entity.tail.length-1){
+						UI.characterMenuSubmenus.selectedInventoryIndex++;
+					}
+				}
 			},
 			east(entity){
 				
 			},
 			A(entity){
-				
+				if(Ctrl.Btns.A.active && !Ctrl.state.A){
+					entity.tail[UI.characterMenuSubmenus.selectedInventoryIndex].use(entity)
+				}
 			},
 			B(entity){
-				
+				if(Ctrl.Btns.B.active && !Ctrl.state.B){
+					UI.characterMenuSubmenus.dismissitems();
+					UI.characterMenuItems.layer--;
+				}
 			}
 		}
 	},
