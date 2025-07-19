@@ -59,7 +59,6 @@ our wealthy badger - he's important for story
 Current State:
 -
 Everything is as initial as you can guess. It's not a complicated game, but since it's my first time developing a big project such as a game is. It'll be hard to make.
-I need to make the triggers
 
 My main focus is currently on:
 
@@ -76,4 +75,4 @@ dialogs.js readded. the dialog type is now quite better than the first version. 
 
 Item and its collisions updated. Now the player can stand on top of the items, and also collect and put them in their inventory. The next step is make them acessible and usable in the Character Menu.
 
-Issues with pages' lexical erros is resolved. I discovered that my IDE isn't case sensitive.
+Issues with pages' lexical erros is resolved. I discovered that my IDE isn't case sensitive. And I'll for sure forget that this is a thing and I'll be wondering why the game isn't running on the pages for more weeks... y'know, the basics...
