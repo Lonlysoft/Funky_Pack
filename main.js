@@ -50,7 +50,9 @@ const Game = {
 		characterMenu: function(){
 			//Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			switch(UI.characterMenuItems.layer){
-				case 0: Ctrl.action(Game.CurrentCharacter, "characterMenu"); break;
+				case 0: Ctrl.action(Game.CurrentCharacter, "characterMenu");
+				UI.characterMenuSubmenus["dismiss" + UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption] + ""](Game.CurrentCharacter);
+					break;
 				case 1:
 					Ctrl.action(Game.CurrentCharacter, UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption]);
 					UI.characterMenuSubmenus["start" + UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption] + ""](Game.CurrentCharacter);

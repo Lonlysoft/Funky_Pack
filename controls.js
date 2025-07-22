@@ -592,12 +592,15 @@ const Ctrl = {
 			},
 			A(entity){
 				if(Ctrl.Btns.A.active && !Ctrl.state.A){
-					entity.tail[UI.characterMenuSubmenus.selectedInventoryIndex].use(entity)
+					entity.tail[UI.characterMenuSubmenus.selectedInventoryIndex].use(entity);
+					let item = entity.tail[UI.characterMenuSubmenus.selectedInventoryIndex];
+					entity.tail[UI.characterMenuSubmenus.selectedInventoryIndex] = entity.tail[entity.tail.length-1];
+					entity.tail[entity.tail.length-1] = item;
+					entity.tail.pop();
 				}
 			},
 			B(entity){
 				if(Ctrl.Btns.B.active && !Ctrl.state.B){
-					UI.characterMenuSubmenus.dismissitems();
 					UI.characterMenuItems.layer--;
 				}
 			}

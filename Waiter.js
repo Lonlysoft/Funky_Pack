@@ -7,10 +7,15 @@ const Waiter = {
 	},
 	tablesCoords: [],
 	map: null,
+	orders: [],
+	FOODS: ["small meal", "large meal", "water", "large water", "fish meal", "barbecue", "salt"],
+	requestTable: function(){
+		this.orders.push({id: random_number(0, this.tablesCoords.length), food: random_number(0, this.FOODS.length), tolerance: random_number(32, 512)});
+	},
 	start: function(entity){
 		if(!isPlayerThere){
 			player = entity;
-			this.setTablesID();
+			this.setTableID();
 		}
 	},
 	end: function(){
@@ -28,7 +33,7 @@ const Waiter = {
 	setTableID(){
 		for(let i = 0; i < waiter.map.length; i++){
 			for(let j = 0; j < waiter.map[i].length; j++){
-				if(Waiter.map[i][j] == 1){
+				if(this.map[i][j] == 1){
 					tablesCoords.push([i, j]);
 				}
 			}

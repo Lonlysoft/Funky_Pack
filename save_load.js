@@ -34,17 +34,14 @@ function saveCookies(characterName, inventory, coords, levelName, currentMoment)
 		finalString += "" + inventory.ID + (i < inventory.length - 1)? ", " : "";
 	}
 	finalString += "]"
-	
 	finalString += "}"
-	
 	finalString = encrypt(finalString);
-	
 	document.cookies = finalString;
 }
 
 function loadCookies(){
 	let data = decrypt(document.cookies);
-	injectData(Game, data.parseJSON());
+	injectData(Game, JSON.parse(data));
 }
 
 function injectData(game, dataParsed){ 
@@ -53,7 +50,7 @@ function injectData(game, dataParsed){
 	game.currentCharacter.hunger = dataParsed.character.hunger;
 	game.currentCharacter.joy = dataParsed.characterInfo.joy;
 	game.currentCharacter.tail = dataParsed.characterInfo.tail;
-	
+	game.storyMoment = dataParsed.storyMoment;
 	
 	Clock.month = dataParse.clock.month;
 	Clock.day = dataParse.clock.day;

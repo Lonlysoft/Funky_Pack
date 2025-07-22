@@ -50,7 +50,9 @@ const UI = {
 			}
 			this.itemsDOM.innerHTML = finalString;
 			this.inventoryEach = this.itemsDOM.querySelectorAll(".bags__item");
-			this.inventoryEach[this.selectedInventoryIndex].classList.add("selected");
+			if(entity.tail.length > 0){
+				this.inventoryEach[this.selectedInventoryIndex].classList.add("selected");
+			}
 		},
 		updateItems(oldIndex){
 			if(this.inventoryEach != null){
@@ -66,7 +68,19 @@ const UI = {
 			UI.scheduleStart();
 		},
 		"starttalk to": function(entity){
-			return null;
+			return;
+		},
+		"dismisstalk to": function(entity){
+			return;
+		},
+		"startlook at": function (entity){
+			return;
+		},
+		"dismisslook at": function(entity){
+			return;
+		},
+		dismissstats(entity){
+			UI.scheduleDismiss();
 		}
 	},
 	pauseDOM: document.querySelector(".pause"),

@@ -23,7 +23,7 @@ class Item{
 		};
 	}
 	use(entity){
-		itemCategories[this.category](entity);
+		itemCategories[this.type](entity, this);
 	}
 	draw(){
 		ctx.drawImage(itemGraphics, this.ID*96, 0, 96, 96, this.centralPoint[0] - this.boxCol.w*0.5,
@@ -75,6 +75,8 @@ const ITEMS = [
 	//fruits
 	{ID: 2, name:"apple", description: "freah as ever give us the best", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: Number.parseInt(TILE_SIZE/2),p: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4)},
 	{ID: 4, name:"block", description: "completely solid object. I think you can only carry this if you're Nukko", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: TILE_SIZE, h: TILE_SIZE, p: TILE_SIZE},
+	{ID: 5, name: ""},
+	{ID: 50, name: "oven", description: "get cooking with this one", usage: "interact", ColType: "solidObject", w: TILE_SIZE, h: TILE_SIZE, p: TILE_SIZE},
 ];
 /*
 	{"banana", ""},
