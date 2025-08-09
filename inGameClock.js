@@ -2,10 +2,9 @@ const Clock = {
 	hour: 0, minute: 0,
 	year: 1, day: 28, month: 1,
 	monthList: ["yearMonth", "spring", "summer", "autumn", "winter"],
-	lateness: "dawn",
-	currentWeather: "sunny",
-	weatherList: ["sunny", "rain", "storm", "snow", "snowstorm", "fog", "special_weather_statement_statement"],
-	upcomingWeather: "sunny",
+	currentWeather: "clear",
+	weatherList: ["clear", "rain", "storm", "snow", "snowstorm", "fog", "special_weather_statement_statement"],
+	upcomingWeather: "rain",
 	passTime: function(){
 		this.minute++;
 		if(this.minute >= 60){
@@ -29,27 +28,24 @@ const Clock = {
 		if(this.month == 0 && this.hour >= 24){
 			this.month++;
 		}
-		this.setDayLateness();
 	},
-	setDayLateness: function(){
+	getDayLateness: function(){
 		if(this.hour > 0 && this.hour < 5){
-			this.lateness = "dawn";
+			return "dawn";
 		}
 		else if(this.hour >= 5 && this.hour < 10){
-			this.lateness = "morning";
+			return "morning";
 		}
 		else if(this.hour >= 10 && this.hour < 17){
-			this.lateness = "day";
+			return "day";
 		}
 		else if(this.hour == 17){
-			this.lateness = "evening";
+			return "evening";
 		}
-		else{
-			this.lateness = "night";
-		}
+		return "night";
 	},
-	setForecast: function(){
-		this.upcomingWeather = weatherList[random(0, weatherList.length-1)]
+	setUpcomingWeather: function(){
+		this.upcomingWeather = this.weatherList[random(0, this.weatherList.length-1)];
 	},
 	updateWeather: function(){
 		this.currentWeather = this.upcomingWeather;
@@ -58,5 +54,21 @@ const Clock = {
 		let hourStr = timonthtr[0] + timonthtr[1];
 		let minuteStr = timonthtr[3] + timonthtr[4];
 		return {hour: Number(hourStr), minute: Number(minuteStr)}
+	},
+	getBinaryLateness(){
+		if(this.hour > 6 && this.hour < 19){
+			return "day";
+		}
+		return "night";
+	},
+	getHour24HourSet(){
+		
+	},
+	getHourSummerSystem(){
+		if(this.getDayLateness() == "morning" || this.getDayLateness() == "dawn"){
+			return {hour: this.hour%13, minute: this.minute, late: "AM"};
+		} else{
+			return {hour: this.hour%13, minute: this.minute, late: "PM"};
+		}
 	}
 }

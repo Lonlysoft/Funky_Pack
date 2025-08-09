@@ -16,32 +16,32 @@ const WallCleaner = {
 	bufferCoords: {x: 0, y: 0, z: 0}, // defined when setting up the game and the entity receives back its coordinates to spawn back in the map if the entity col grid goes wrong...
 	clean(){
 		const box = directions.setBox['N'](this.currentCharacter);
-		if(this.stage.objectGrid[0][WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] > 0 && this.stage.objectGrid[0][WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] < 4)
+		if(this.currentMap.objectGrid[0][WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] > 0 && this.currentMap.objectGrid[0][WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] < 4)
 			
-			this.stage.objectGrid[0][WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] = -1;
+			this.currentMap.objectGrid[0][WorldToGrid(box[1],TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] = -1;
 	},
 	setGlass(){
-		let stageGrid = this.stage.groundTileSet;
-		for(let i = 0; i < this.stage.height; i++){
-			for(let j = 0; j < this.stage.width; j++){
+		let currentMapGrid = this.currentMap.groundTileSet;
+		for(let i = 0; i < this.currentMap.height; i++){
+			for(let j = 0; j < this.currentMap.width; j++){
 				//dirt up the glass
-				if(this.stage.groundTileSet[i][j] >= 0 && this.stage.groundTileSet[i][j] < 52){
+				if(this.currentMap.groundTileSet[i][j] >= 0 && this.currentMap.groundTileSet[i][j] < 52){
 					this.glass.push([i, j]);
-					this.stage.objectGrid[0][this.glass[this.glass.length-1][1]][this.glass[this.glass.length-1][0]] = this.glassState[random(0, 2)];
+					this.currentMap.objectGrid[0][this.glass[this.glass.length-1][1]][this.glass[this.glass.length-1][0]] = this.glassState[random(0, 2)];
 				}
 			}
 		}
 	},
 	draw(entity){
-		this.stage.drawFloor( this.tileGraph);
-		this.stage.objectGridDraw(0, this.glassStateImg);
+		this.currentMap.drawFloor( this.tileGraph);
+		this.currentMap.objectGridDraw(0, this.glassStateImg);
 		Game.ctx.drawImage(this.cleanerGraph, 0, 0, 64*3, 128, entity.centralPoint[0] - TILE_SIZE, entity.centralPoint[1] - TILE_SIZE *0.5, TILE_SIZE*3, TILE_SIZE * 1.5);
-		entity.draw(this.stage);
+		entity.draw(this.currentMap);
 		Game.ctx.drawImage(this.cleanerGraph, 0, 0, 64*3, 32, entity.centralPoint[0] - TILE_SIZE, entity.centralPoint[1], TILE_SIZE*3, TILE_SIZE *0.5);
 	},
 	checkWinning(){
 		for(let i = 0; i < this.glass.length; i++){
-			if(this.stage.groundTileSet[this.glass[i][0]][this.glass[i][1]] == 0){
+			if(this.currentMap.groundTileSet[this.glass[i][0]][this.glass[i][1]] == 0){
 				return false;
 			}
 		}
@@ -57,17 +57,17 @@ const WallCleaner = {
 		if(!this.hasStarted){
 			//declair the grid 
 			if(!Scenery.hasDeclaired){
-				Scenery.declair(Game, Game.levelName, MAPS);
+				Scenery.declair(this, this.currentLevelName, WallCleanerMaps);
 				this.currentCharacter = entity;
 				Scenery.hasDeclair = true;
 			}
-			Game.currentMap = this.stage,
+			Game.currentMap = this.currentMap,
 			this.setGlass();
 			entity.boxCol.x = GridToWorld(5, TILE_SIZE);
 			entity.boxCol.z = GridToWorld(5, TILE_SIZE);
 			entity.WorldPos.x = GridToWorld(5, TILE_SIZE);
 			entity.WorldPos.z = GridToWorld(5, TILE_SIZE);
-			entity.WorldPos.y = -1;
+			entity.WorldPos.y = 0;
 			this.hasStarted = true;
 		}
 		entity.update();
@@ -76,7 +76,7 @@ const WallCleaner = {
 		//this.randomHappening[this.randomHappeningList[random(0, this.randomHappeningList.length)]]();
 		this.draw(entity);
 		Camera.moveTo(entity.WorldPos.x, entity.WorldPos.z, 0);
-		Col.main(entity, this.stage);
+		Col.wallCleaner(entity, this.currentMap);
 		this.hasWon = this.checkWinning(); 
 		if(this.hasWon){
 			entity.money.unit += this.salary;

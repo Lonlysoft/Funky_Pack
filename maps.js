@@ -197,21 +197,13 @@ class Level{
 				if(this.npcGrid[i][j] > 0){
 					this.npcs[i].push(
 						new NonPlayableChar(
-							nonPlayableCharacterList[this.npcGrid[i][j]].name,
-							nonPlayableCharacterList[this.npcGrid[i][j]].age,
-							nonPlayableCharacterList[this.npcGrid[i][j]].height,
-							nonPlayableCharacterList[this.npcGrid[i][j]].width,
-							nonPlayableCharacterList[this.npcGrid[i][j]].dept,
+						nonPlayableCharacterList[this.npcGrid[i][j]],
 							//COORDINATES X, Y, Z;
 							{
 								z: GridToWorld(i, TILE_SIZE),
 								y: GridToWorld(this.grndElGrid[i][j], TILE_SIZE),
 								x: GridToWorld(j, TILE_SIZE),
-							},
-							nonPlayableCharacterList[this.npcGrid[i][j]].dialogs,
-							nonPlayableCharacterList[this.npcGrid[i][j]].pathArr,
-							nonPlayableCharacterList[this.npcGrid[i][j]].HTMLsrc,
-							nonPlayableCharacterList[this.npcGrid[i][j]].animations,
+							}
 						)
 					)
 				} else{

@@ -27,12 +27,11 @@ class Item{
 	}
 	draw(){
 		ctx.drawImage(itemGraphics, this.ID*96, 0, 96, 96, this.centralPoint[0] - this.boxCol.w*0.5,
-			this.centralPoint[1] - this.boxCol.h,
+			this.centralPoint[1] - this.boxCol.w,
 			this.boxCol.w, this.boxCol.w
 		);
 	}
 	update(){
-		//Col.handleShadowCoords(this);
 		this.centralPoint[0] = WorldToScreen1D(this.WorldPos.x, Camera.x, Camera.w/2 - Game.SCREEN_CENTER[0]);
 		this.centralPoint[1] = WorldToScreen1D(this.WorldPos.z, Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]);
 		this.boxCol.x += this.velocity.x;
@@ -42,8 +41,15 @@ class Item{
 		this.WorldPos.z = this.boxCol.z + this.boxCol.p*0.5;
 		this.shadow.x = this.boxCol.x;
 		this.shadow.y = this.boxCol.z + this.boxCol.y;
-		//this.velocity.z *= this.friction;
-		//this.velocity.x *= this.friction;
+		this.velocity.z *= this.friction;
+		this.velocity.x *= this.friction;
+	}
+}
+
+class Structure extends Item{
+	constructor(structureConstructor, x, y, z){
+		super(structureConstructor);
+		this.graphCoords = []
 	}
 }
 
@@ -64,7 +70,9 @@ const itemCategories = {
 		entity.hunger += item.value;
 		entity.hp += item.value;
 	},
-	
+	structure: function(entity, item){
+		item.value();
+	}
 }
 
 //constant for assets
@@ -73,7 +81,9 @@ const ITEMS = [
 	{ID: 1, name: "penny", description: "a singular monetary solution costs $0.01", value: 1, type: "centMoney", usage: "CollectAndUse", ColType: "use", w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/4)},
 	{ID: 3, name: "coin", description: "a centural monetary solution costs $1.00", value: 1, type: "money", usage: "CollectAndUse", ColType: "use" , w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/6)},
 	//fruits
-	{ID: 2, name:"apple", description: "freah as ever give us the best", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: Number.parseInt(TILE_SIZE/2),p: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4)},
+	{ID: 2, name:"apple", description: "freah as ever give us the best", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: Number.parseInt(TILE_SIZE/2),p: Number.parseInt(TILE_SIZE/6), h: Number.parseInt(TILE_SIZE/4)},
+	{ID: 3, name:"pear", description: "fresh, but more watery. hunger -10, hp +7", value: 8, type: "food", usage: "useLater", ColType: "solidObject",
+w: Number.parseInt(TILE_SIZE/2),p: Number.parseInt(TILE_SIZE/6), h: Number.parseInt(TILE_SIZE/4)},
 	{ID: 4, name:"block", description: "completely solid object. I think you can only carry this if you're Nukko", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: TILE_SIZE, h: TILE_SIZE, p: TILE_SIZE},
 	{ID: 5, name: ""},
 	{ID: 50, name: "oven", description: "get cooking with this one", usage: "interact", ColType: "solidObject", w: TILE_SIZE, h: TILE_SIZE, p: TILE_SIZE},

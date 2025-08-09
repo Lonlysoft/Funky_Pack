@@ -2,6 +2,7 @@ var NPCS = [
 	"NPCS",
 	{
 		name: "JSON FOLF",
+		ID: 1,
 		age: 8,
 		height: TILE_SIZE,
 		width: TILE_SIZE,
@@ -16,6 +17,7 @@ var NPCS = [
 	},
 	
 	{
+		ID: 2,
 		name: "Rodney",
 		age: 26,
 		height: TILE_SIZE*1.5,

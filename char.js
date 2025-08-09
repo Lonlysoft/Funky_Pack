@@ -32,7 +32,7 @@ class Being{
 		this.isAlive = true;
 		this.WorldPos = {x: undefined, y: undefined, z: undefined};
 		this.OriginPos = {x: undefined, y: undefined, z: undefined};
-		this.boxCol = new Box(undefined, undefined, undefined, width, height, dept);
+		this.boxCol = new Box(undefined, undefined, undefined, width/2, height, dept/2);
 		this.velocity = {x: 0, y: 0, z: 0};
 		this.friction = 0.4;
 		
@@ -110,23 +110,24 @@ class Being{
 }
 
 class Protagonist extends Being{
-	constructor(name, age, VMIN, VMAX, JMAX, tail, height, width, dept, skills, HTMLsrc, animations){
-		super(name, age, VMIN, VMAX, height, width, dept, HTMLsrc, animations);
-		this.STR = VMIN;
-		this.JPOW = JMAX;
+	constructor(arg){
+		super(arg.name, arg.age, arg.min_speed, arg.max_speed, arg.height, arg.width, arg.dept, arg.htmlSrc, arg.animations);
+		this.dimen = {w: arg.width, h: arg.height, p: arg.dept};
+		this.STR = arg.min_speed;
+		this.JPOW = arg.jump_power;
 		this.isSwimming = false;
 		this.isSpecialSkilling = false;
 		this.isCrouching = false;
 		this.canTakeDamage = true;
 		this.tail = [];
 		this.hand = 0;
-		this.tailMaxLength = tail;
+		this.tailMaxLength = arg.inventory;
 		this.money = {cents: 0, unit: 0};
 		this.xp = 0;
 		this.invensibility = false;
-		
-		this.ATKbox = {x: undefined, y: undefined, z: undefined, w: width, h: height, p: dept, type: "punch"};
-		this.skillList = skills;
+		this.relationships = arg.relationships;
+		this.ATKbox = {x: undefined, y: undefined, z: undefined, w: arg.width, h: arg.height, p: arg.dept, type: "punch"};
+		this.skillList = arg.skills;
 		this.section = 0;
 		this.ID = 0;
 		this.holdingObject = false;
@@ -152,7 +153,7 @@ class Protagonist extends Being{
 		}
 		if(this.holdingObject && this.hand !== 0){
 			this.hand.centralPoint[0] = this.centralPoint[0];
-			this.hand.centralPoint[1] = this.centralPoint[1] - this.boxCol.h*0.95;
+			this.hand.centralPoint[1] = this.centralPoint[1] - this.boxCol.h*0.8;
 	//		this.hand.update();
 		}
 		this.hp = limitateUp(this.hp, this.HP);
@@ -190,8 +191,9 @@ class Protagonist extends Being{
 			let this__box = [NPC__arr[i].boxCol.x, NPC__arr[i].boxCol.z, NPC__arr[i].boxCol.w, NPC__arr[i].boxCol.p];
 			if(isOnGround(this.WorldPos.y, NPC__arr[i].boxCol.y) && Col.AABB(box, this__box)){
 				Game.onDialog = true;
-				UI.dialogItems.object = NPC__arr[i].dialog[NPC__arr[i].relationshipLevelWithYou][Clock.lateness]
-				UI.dialogItems.object.relationshipLevel = NPC__arr[i].relationshipLevelWithYou
+				UI.dialogItems.object = NPC__arr[i].dialog[this.relationships[NPC__arr[i].ID]][Clock.getDayLateness()];
+				
+				UI.dialogItems.object.relationshipLevel = this.relationships[NPC__arr[i].ID];
 				UI.dialogItems.bufferAnimation = 0;
 				UI.dialogStart();
 			}

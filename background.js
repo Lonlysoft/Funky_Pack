@@ -18,5 +18,21 @@ const BG = {
 				return al + frameSpeed;
 			break;
 		}
+	},
+	twoTransition: function(stackingNumbers, type, frameSpeed){
+		switch(type){
+			case "coming":
+				BG.ctx.fillStyle = "#000";
+				BG.ctx.fillRect(0, stackingNumbers, canvas.width, canvas.height);
+				BG.ctx.fillRect(0, 0, canvas.width, stackingNumbers);
+				return stackingNumbers - frameSpeed;
+			break;
+			case "going":
+				BG.ctx.fillStyle = "#000";
+				BG.ctx.fillRect(0, stackingNumbers, canvas.width, canvas.height);
+				BG.ctx.fillRect(0, 0, canvas.width, stackingNumbers);
+				return al + frameSpeed;
+			break;
+		}
 	}
 }

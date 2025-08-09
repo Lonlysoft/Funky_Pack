@@ -1,17 +1,16 @@
 //codigo dos INIMIGOS E NPCs
 
 class NonPlayableChar extends Being{
-	constructor(name, age, height, width, dept, coords, dialogs, pathArr, HTMLsrc, animations){
-		super(name, age, 4, 8, height, width, dept, HTMLsrc, animations);
-		this.dialog = dialogs;
-		this.realtionshipLevelWithYou = 0;
-		this.dimen = {w: width, h: height, p: dept};
+	constructor(arg, coords){
+		super(arg.name, arg.age, 4, 8, arg.height, arg.width, arg.dept, arg.HTMLsrc, arg.animations);
+		this.dialog = arg.dialogs;
+		this.dimen = {w: arg.width, h: arg.height, p: arg.dept};
 		this.visible = true;
 		this.SpawnPos = {x: coords.x, y: coords.y, z: coords.z};
 		this.flagCoords = {x: coords.x, y: coords.y, z: coords.z}
 		this.boxCol = new Box(coords.x, coords.y + this.dimen.h, coords.z, this.dimen.w, this.dimen.h, this.dimen.p);
-		this.behaviorArr = {arr: pathArr, index: 0};
-		this.relationshipLevelWithYou = 0;
+		this.behaviorArr = {arr: arg.pathArr, index: 0};
+		this.ID = arg.ID;
 	}
 	draw(){
 		ctx.fillRect(this.centralPoint[0], this.centralPoint[1], this.boxCol.w , this.boxCol.h);

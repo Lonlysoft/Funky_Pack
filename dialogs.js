@@ -10,7 +10,7 @@ const Dialogs = {
 				name: "Jason Folf",
 				ID: "JSON_FOLF",
 				text: "hey there",
-				condition: {time: "day", weather: "sunny"},
+				condition: {time: "day", weather: "clear"},
 				next: "dayAlt"
 			},
 			dayAlt: {
@@ -20,14 +20,14 @@ const Dialogs = {
 			},
 			dayRainy: {
 				text: "hey Man! Weather's sure cozy to relax and give it a little more of a relaxing feeling. if you know what I mean.",
-				condition: {time: "day", weather: "sunny"},
+				condition: {time: "day", weather: "clear"},
 				next: "dialogDayAlt"
 			},
 			night: {
 				name: "Jason Folf",
 				ID: "JSON_FOLF",
 				text: "Oi! Starry Night huh?.",
-				condition: {time: "night", weather: "sunny"},
+				condition: {time: "night", weather: "clear"},
 				next: "dayAlt"
 			},
 			dawn: {
@@ -40,7 +40,7 @@ const Dialogs = {
 		{
 			day: {
 				text: "hi man",
-				condition: {time: "day", weather: "sunny"},
+				condition: {time: "day", weather: "clear"},
 				next: "dialogDayAlt"
 			},
 			dayAlt: {
@@ -53,7 +53,7 @@ const Dialogs = {
 			},
 			night: {
 				text: "Oi! Starry Night huh?",
-				condition: {time: "night", weather: "sunny"},
+				condition: {time: "night", weather: "clear"},
 				next: "dialogDayAlt"
 			},
 			storm: {

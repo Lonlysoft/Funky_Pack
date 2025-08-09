@@ -1,12 +1,14 @@
 const Waiter = {
 	player: null,
 	day: 0,
+	NPCarr: [],
 	isPlayerThere: false,
 	bonusTips: {
 		unit: 0, cents: 0
 	},
 	tablesCoords: [],
-	map: null,
+	currentMap: null,
+	levelNumber: "ristorant01",
 	orders: [],
 	FOODS: ["small meal", "large meal", "water", "large water", "fish meal", "barbecue", "salt"],
 	requestTable: function(){
@@ -27,7 +29,7 @@ const Waiter = {
 		GameMoment = "mainWorld"
 	},
 	gamePlay(){
-		this.map[this.tablesCoords[randomNumber(0, this.tablesCoords.length)][0]] = 2;
+		Scenery.declair(this, this.levelNumber, WAITER_MAPS);
 		Col.main(player);
 	},
 	setTableID(){

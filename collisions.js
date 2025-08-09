@@ -147,6 +147,14 @@ const Col = {
 		this.right(entity, cube)
 		this.uppingBottom(entity, cube);
 	},
+	slopeEast(entity, cube){
+		this.top(entity, cube);
+		this.bottom(entity, cube);
+		this.slopeTop(entity, cube, 1, 0.01, "x");
+		this.right(entity, cube);
+	},
+	
+	
 	solid3D:function(entity, cube){
 		if(this.top(entity, cube))return;
 		if(this.left(entity, cube))return;
@@ -188,7 +196,7 @@ const Col = {
 	
 	water: function(entity, cube){
 		if(entity.boxCol.y < cube.y && entity.boxCol.oldY >= cube.y){
-			//entity.velocity.y = 0;
+			entity.velocity.y = 0;
 			entity.gravity = gravity_NA_AGUA;
 			return true;
 		}
@@ -263,11 +271,11 @@ const Col = {
 		let dimen = (axis == "x")? "w" : "p"
 		let originX = cube[axis];
 		let originY = cube.y + y_offset;
-		let currentX = (slope < 0) ? entity[axis] + entity[dimen] - originX : entity.boxCol[axis] - originX;
+		let currentX = (slope < 0) ? entity.boxCol[axis] + entity.boxCol[dimen] - originX : entity.boxCol[axis] - originX;
 		let currentY = entity.boxCol.y + entity.boxCol.height - originY;
-		let oldX = (slope < 0) ? entity["old"+axis.toUppercase()] + entity[dimen] - originX : entity.boxCol["old"+axis.toUppercase()] - originX;
+		let oldX = (slope < 0) ? entity["old"+axis.toUpperCase()] + entity[dimen] - originX : entity.boxCol["old"+axis.toUpperCase()] - originX;
 		let oldY = entity.boxCol.oldY + entity.boxCol.h - originY;
-		//["old"+axis.toUppercase()]
+		//["old"+axis.toUpperCase()]
 		let currentCrossProduct = currentX * slope - currentY;
 		let oldCrossProduct = oldX * slope - oldY;
 		let top = (slope < 0) ? cube.y + cube.h + y_offset * slope : cube.y + y_offset;
@@ -339,6 +347,66 @@ const Col = {
 			entity.WorldPos.y = currLim;
 			entity.centralPoint[1] = Game.SCREEN_CENTER[1];
 		}
+	},
+	
+	wallCleaner(entity, mapGrid){
+		if(entity.WorldPos.x<entity.boxCol.w*0.5){
+			entity.WorldPos.x = 30;
+			entity.boxCol.x = 0;
+			entity.velocity.x = 0;
+		}
+		if(entity.WorldPos.z<entity.boxCol.p*0.5){
+			entity.WorldPos.z = 30;
+			entity.boxCol.z = 0;
+			entity.velocity.z = 0;
+		}
+		
+		if(entity.WorldPos.x>=((mapGrid.width)*TILE_SIZE)-entity.boxCol.w/2){
+			entity.WorldPos.x = ((mapGrid.width)*TILE_SIZE)-entity.boxCol.w*0.5;
+			entity.boxCol.x = mapGrid.width*TILE_SIZE-entity.boxCol.w-MAGIC_OFFSET;
+			entity.velocity.x = 0;
+		}
+		
+		if(entity.WorldPos.z>=((mapGrid.height)*TILE_SIZE)-entity.boxCol.p*0.5){
+			entity.WorldPos.z = ((mapGrid.height)*TILE_SIZE)-entity.boxCol.p*0.5;
+			entity.boxCol.z = mapGrid.height*TILE_SIZE-entity.boxCol.p-MAGIC_OFFSET;
+			entity.velocity.z = 0;
+		}
+		
+		let curLimStartZ = WorldToGrid(entity.WorldPos.z - entity.boxCol.p*0.5, TILE_SIZE);
+		let curLimEndZ = WorldToGrid(entity.WorldPos.z + entity.boxCol.p*0.5, TILE_SIZE);
+		let curLimStartX = WorldToGrid(entity.WorldPos.x - entity.boxCol.w/2, TILE_SIZE);
+		let curLimEndX = WorldToGrid(entity.WorldPos.x + entity.boxCol.w/2, TILE_SIZE);
+		let curLimStartY = WorldToGrid(entity.WorldPos.y, TILE_SIZE);
+		let curLimEndY = WorldToGrid(entity.WorldPos.y - entity.boxCol.h, TILE_SIZE);
+		
+		let playerBoxCol = [entity.boxCol.x, entity.boxCol.z, entity.boxCol.w, entity.boxCol.p, entity.boxCol.y, entity.boxCol.h];
+		
+		let x_intro = Math.floor(Camera.x/TILE_SIZE);
+		let x_end = Math.floor((Camera.x+Camera.w)/TILE_SIZE);
+		let y_intro = Math.floor(Camera.y/TILE_SIZE);
+		let y_end = Math.floor((Camera.y+Camera.h)/TILE_SIZE);
+		
+		if(x_intro < 0) x_intro = 0;
+		if(y_intro < 0) y_intro = 0;
+		if(x_end > mapGrid.width) x_end = mapGrid.width;
+		if(y_end > mapGrid.height) y_end = mapGrid.height;
+		
+		
+		for(let j = x_intro; j < x_end; j++){
+			for(let i = y_intro; i < y_end; i++){
+				if(entity.WorldPos.y < mapGrid.bounds[i][j].y){
+					mapBoxCol = [mapGrid.bounds[i][j].x, mapGrid.bounds[i][j].z, TILE_SIZE, TILE_SIZE];
+					if(Col.AABB(playerBoxCol, mapBoxCol)){
+						Col[mapGrid.bounds[i][j].tipo](entity, mapGrid.bounds[i][j]);
+					}
+				}
+			}//fim for
+		}//fim for
+		
+		entity.WorldPos.x = entity.boxCol.x + entity.boxCol.w/2;
+		entity.WorldPos.z = entity.boxCol.z + entity.boxCol.p/2;
+		entity.boxCol.y = entity.WorldPos.y + entity.boxCol.h;
 	},
 	
 	main(entity, mapGrid, num = -1){

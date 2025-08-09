@@ -1,171 +1,181 @@
 <!DOCTYPE html>
 
-<html lang = "pt-br">
-	<head>
-		<meta charset="utf-8">
-		<meta name = "viewport" content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-		<title> Funky Pack </title>
-		<link rel = "icon" type = "image/x-icon" href = "src/favicon/DynnyIcon.png">
-		<link rel = "stylesheet" href = "UIs.css"/>
-		<link rel = "stylesheet" href = "style.css"/>
-		<!--<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		-->
-			
-	</head>
-	<body onload = "GameBonanza()">
-		<canvas class = "gameScreen" id= "scenery"></canvas>
-		<canvas class= "gameScreen" id = "mainCanvas">canvas not supported</canvas>
-		<div class = "assets">
-			<canvas id = "processing"></canvas>
-			
-			<img id = "CNTRLS" src = "src/imgs/ctrls.png">
-			<img id = "WallCleanerTileGraphic" src = "src/imgs/WallCleanerTiles.png">
-			<img id = "tilemap" src = "src/imgs/tileset.png">
-			<img id = "dynnySpriteSheet" src = "src/imgs/dynnySpriteSheet.png">
-			<img id = "WallCleanerPlatform" src = "src/imgs/WC_CleanPlat.png"/>
-			<img id = "glassStates" src = "src/imgs/WC_GlassState.png"/>
-			<img id = "items" src = "src/imgs/itemGraph.png"/>
-			<!-- Game World Graphics -->
-				
-		</div>
-		<div class = "inGameUI">
-			<div class = "OutGameMenus">
-				<section class = "container__saving flat notHere">
-					<div class = "svit Cookies selected">
-						Load by Cookies
-					</div>
-					<div class = "svit SendAFile">
-						Load by File Sending
-					</div>
-				</section>
-				<div class = "titleScreen">
-					<img src = "src/imgs/americanCity.png" alt="title_representation_logo_that_theres_nothing_to_do_with_the_game"/>
-					<h1 class = "titleLogo pangolin"> Funky Pack </h1>
-					<div class = "titleOptions flex-row">
-						<h2 class = "titleCommand selected new">NEW GAME</h2>
-						<h2 class = "titleCommand continue">CONTINUE</h2>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class = "inGameUI">
-			<div class = "charWin">
-				<div class = "quickStats absolute">
-					<div class = "GameDate">unknown Month, 0 - 0:00</div>
-					<img class = "weather_icon" src = "src/imgs/weather info.png">
-					<div class = "charName">--</div>
-				</div>
-				<div class = "characterQuickInfo flex-column absolute">
-					<div class = "vertical-bar"><div class = "HUD__lifeBar"></div></div>
-					<div class = "flex-row">
-						<div class = "circularBar HUD__solitude circle"><img class = "icon-pic circle" src = "src/imgs/dynny_icon.png"></div>
-						<div class = "flex-column"><div>Dynny</div><div class = "money"></div><div class = "horizontal-bar"><div class = "HUD__staminaBar"></div></div></div>
-					</div>
-				</div>
-			</div>
-			<section class = "characterMenu">
-				<div class = "it characterMenu__talkTo selected"></div>
-				<div class = "it characterMenu__item"></div>
-				<div class = "it characterMenu__look"></div>
-				<div class = "it characterMenu__stats"></div>
-				<div class = "description">talk to</div>
-			</section>
-			<section class = "dialogs flat flex-column"></section>
-			<section class = "bags flat flex-column notHere"></section>
-			<!--<section class = "status">
-				<div>DYNNY STATS</div>
-				<div>CALENDAR</div>
-				<div>SCHEDULE</div>
-				<div>DEBT TO PAY</div>
-			</section>-->
-		</div>
-		<div class = "inGameUI">
-			<section class = "schedule">
-				<header>
-					WEEKLY SCHEDULE
-				</header>
-				<main>
-					<div class = "readOnly">time</div><div class = "readOnly">SUN</div><div class = "readOnly">MON</div><div class = "readOnly">TUE</div><div class = "readOnly">WED</div><div class = "readOnly">THU</div><div class = "readOnly">FRI</div><div class = "readOnly">SAT</div>
-					<div class = "readOnly">dawn</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-					<div class = "readOnly">early morning</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-					<div class = "readOnly">morning</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-					<div class = "readOnly">early Afternoon</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-					<div class = "readOnly">afternoon</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-					<div class = "readOnly">evening</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-					<div class = "readOnly">night</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-					<div class = "readOnly">early dawn</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-				</main>
-				<footer class = "schedule__options">
-					<div class = "addJob">add job</div>
-					<div class = "giveUp">give up on a job</div>
-					<div class = "cancel">go with figurines</div>
-				</footer>
-			</section>
-			
-			<!--
-			<section class = "outConfig glassyFunkyPack">
-				<div class = "outConfig__fullscreen"></div>
-				<div class = "outConfig__translate"></div>
-			</section>
-			-->
-		</div>
-		<section class = "inGameUI notHere">
-			<table class = "calendar absolute">
-				<thead>
-					<tr>
-						<td>SUN</td><td>MON</td><td>TUE</td><td>WED</td><td>THU</td><td>FRI</td><td>SAT</td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td>
-					</tr>
-					<tr>
-						<td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td>
-					</tr>
-					<tr>
-						<td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td>
-					</tr>
-					<tr>
-						<td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td>
-					</tr>
-				</tbody>
-			</table>
-		</section>
-		<div class = "cinema"><div class = "cinema__alphaLock"></div></div>
-		<canvas class = "gameScreen" id = "tra"></canvas>
-		<canvas class="controles_cheroso" id = "ctrl"></canvas>
-		
-		
-	</body>
-	<!--
-	<script src = "https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
-	<script src = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/aes.min.js"></script>
-	<script src = "save_load.js"></script>
+<html lang = "en-us">
+<head>
+	<meta charset="utf-8">
+	<meta name = "viewport" content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<title> Funky Pack </title>
+	<link rel = "icon" type = "image/x-icon" href = "src/favicon/DynnyIcon.png">
+	<link rel = "stylesheet" href = "UIs.css"/>
+	<link rel = "stylesheet" href = "style.css"/>
+	<!--<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	-->
-	<script src = "gameTools.js"></script>
-	<script src = "drawingTools.js"></script>
-	<script src = "dialogs.js"></script>
-	<script src = "NPC__assets.js"></script>
-	<script src = "src/JS/graphics__wallCleanerLv1.js"></script>
-	<script src = "src/JS/ground__wallCleanerLv1.js"></script>
-	<script src = "maps_assets.js"></script>
-	<script src = "controls.js"></script>
-	<script src = "controls__gamepad.js"></script>
-	<script src = "controls__KeyBoard.js"></script>
-	<script src = "char.js"></script>
-	<script src = "char_assets.js"></script>
-	<script src = "items.js"></script>
-	<script src = "NPCs.js"></script>
-	<script src = "maps.js"></script>
-	<script src = "UI.js"></script>
-	<script src = "background.js"></script>
-	<script src = "cenery.js"></script>
-	<script src = "wallCleaner.js"></script>
-	<script src = "collisions.js"></script>
-	<script src = "Waiter.js"></script>
-	<script src = "inGameClock.js"></script>
-	<script src = "debug.js"></script> <!-- do not do structural Changes Here-->
-	<script src = "main.js"></script>
+		
+</head>
+<body onload = "GameBonanza()">
+	<canvas class = "gameScreen" id= "scenery"></canvas>
+	<canvas class= "gameScreen" id = "mainCanvas">canvas not supported</canvas>
+	<div class = "assets">
+		<canvas id = "processing"></canvas>
+		
+		<img id = "CNTRLS" src = "src/imgs/ctrls.png">
+		<img id = "tilemap" src = "src/imgs/tileset.png">
+		<img id = "dynnySpriteSheet" src = "src/imgs/dynnySpriteSheet.png">
+		<img id = "items" src = "src/imgs/itemGraph.png"/>
+		<!-- Game World Graphics -->
+			
+	</div>
+	<div class = "inGameUI">
+		<div class = "OutGameMenus">
+			<section class = "container__saving flat notHere">
+				<div class = "svit Cookies selected">
+					Load by Cookies
+				</div>
+				<div class = "svit SendAFile">
+					Load by File Sending
+				</div>
+			</section>
+			<div class = "titleScreen">
+				<img src = "src/imgs/americanCity.png" alt="title_representation_logo_that_theres_nothing_to_do_with_the_game"/>
+				<h1 class = "titleLogo pangolin"> FUNKY <span class = "outlined">PACK</span> </h1>
+				<div class = "titleOptions flex-row">
+					<h2 class = "titleCommand selected new">NEW GAME</h2>
+					<h2 class = "titleCommand continue">CONTINUE</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class = "inGameUI">
+		<div class = "charWin">
+			<div class = "quickStats absolute">
+				<div class = "money"></div>
+				<img class = "weather_icon" src = "src/imgs/WeatherIcon__clearDay.png">
+				<div class = "GameDate">unknown Month, 0 - 0:00</div>
+			</div>
+			<div class = "characterQuickInfo flex-row absolute">
+				<img class = "icon" src = "src/imgs/steak.png" alt = "beef_indicator">
+				<div class = "horizontal-bar">
+					<div class = "HUD__hungerBar"></div>
+				</div>
+				<div class = "circle"><img class = "icon-pic circle" src = "src/imgs/dynny_icon.png"></div>
+					<div class = "flex-row">
+						<div class = "horizontal-bar">
+							<div class = "HUD__lifeBar"></div>
+						</div>
+						<img class = "icon" src = "src/imgs/heart.png" alt = "life_heart_indicator">
+					</div>
+				</div>
+			</div>
+		<section class = "characterMenu absolute">
+			<div class = "it characterMenu__talkTo selected">
+				<img class = "icon-menu" src = "src/imgs/CharacterMenuIcon_talkTo.png"/>
+			</div>
+			<div class = "it characterMenu__item">
+				<img class = "icon-menu" src = "src/imgs/CharacterMenuIcon_item.png"/>
+			</div>
+			<div class = "it characterMenu__look">
+				<img class = "icon-menu" src = "src/imgs/CharacterMenuIcon_check.png"/>
+			</div>
+			<div class = "it characterMenu__stats">
+				<img class = "icon-menu" src = "src/imgs/CharacterMenuIcon_stats.png"/>
+			</div>
+			<div class = "description">talk to</div>
+		</section>
+		<section class = "dialogs comic flex-column"></section>
+		<section class = "bags flat flex-column notHere"></section>
+		<!--<section class = "status">
+			<div>DYNNY STATS</div>
+			<div>CALENDAR</div>
+			<div>SCHEDULE</div>
+			<div>DEBT TO PAY</div>
+		</section>-->
+	</div>
+	<div class = "inGameUI">
+		<section class = "schedule">
+			<header>
+				WEEKLY SCHEDULE
+			</header>
+			<main>
+				<div class = "readOnly">time</div><div class = "readOnly">SUN</div><div class = "readOnly">MON</div><div class = "readOnly">TUE</div><div class = "readOnly">WED</div><div class = "readOnly">THU</div><div class = "readOnly">FRI</div><div class = "readOnly">SAT</div>
+				<div class = "readOnly">dawn</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
+				<div class = "readOnly">early morning</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
+				<div class = "readOnly">morning</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
+				<div class = "readOnly">early Afternoon</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
+				<div class = "readOnly">afternoon</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
+				<div class = "readOnly">evening</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
+				<div class = "readOnly">night</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
+				<div class = "readOnly">early dawn</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
+			</main>
+			<footer class = "schedule__options">
+				<div class = "addJob">add job</div>
+				<div class = "giveUp">give up on a job</div>
+				<div class = "cancel">go with figurines</div>
+			</footer>
+		</section>
+		
+		<!--
+		<section class = "outConfig glassyFunkyPack">
+			<div class = "outConfig__fullscreen"></div>
+			<div class = "outConfig__translate"></div>
+			<div class = "outConfig__exitApplication"></div>
+		</section>
+		-->
+	</div>
+	<section class = "inGameUI notHere">
+		<table class = "calendar absolute">
+			<thead>
+				<tr>
+					<td>SUN</td><td>MON</td><td>TUE</td><td>WED</td><td>THU</td><td>FRI</td><td>SAT</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td>
+				</tr>
+				<tr>
+					<td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td>
+				</tr>
+				<tr>
+					<td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td>
+				</tr>
+				<tr>
+					<td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	<div class = "cinema"><div class = "cinema__alphaLock"></div></div>
+	<canvas class = "gameScreen" id = "tra"></canvas>
+	<canvas class="controles_cheroso" id = "ctrl"></canvas>
+</body>
+<!--
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/aes.min.js"></script>
+<script src = "save_load.js"></script>
+-->
+<script src = "gameTools.js"></script>
+<script src = "drawingTools.js"></script>
+<script src = "dialogs.js"></script>
+<script src = "NPC__assets.js"></script>
+<script src = "src/JS/graphics__wallCleanerLv1.js"></script>
+<script src = "src/JS/ground__wallCleanerLv1.js"></script>
+<script src = "maps_assets.js"></script>
+<script src = "controls.js"></script>
+<script src = "controls__gamepad.js"></script>
+<script src = "controls__KeyBoard.js"></script>
+<script src = "char.js"></script>
+<script src = "char_assets.js"></script>
+<script src = "items.js"></script>
+<script src = "NPCs.js"></script>
+<script src = "maps.js"></script>
+<script src = "UI.js"></script>
+<script src = "background.js"></script>
+<script src = "cenery.js"></script>
+<script src = "wallCleaner.js"></script>
+<script src = "collisions.js"></script>
+<script src = "Waiter.js"></script>
+<script src = "inGameClock.js"></script>
+<script src = "debug.js"></script> <!-- do not do structural Changes Here-->
+<script src = "main.js"></script>
 </html>

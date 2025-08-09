@@ -129,8 +129,8 @@ const Game = {
 			UI.charWinStart();
 			if(!Scenery.hasDeclaired){
 				Scenery.declair(Game, Game.levelName, MAPS);
-				Game.CurrentCharacter = Characters[0];
-				Scenery.hasDeclair = true;
+				Game.CurrentCharacter = new Protagonist(Characters.Dynny);
+				Scenery.hasDeclaired = true;
 			}
 			if(!Game.CurrentCharacter.isSpawn && Scenery.hasDeclaired){
 				Game.CurrentCharacter.isSpawn = Game.CurrentCharacter.spawn();
@@ -180,7 +180,7 @@ const Game = {
 			Ctrl.action(null, "load");
 			Ctrl.stateSave();
 			Game.ctx.fillStyle = "#000"
-			Game.ctx.fillRect(0, 0, 800, 800);
+			Game.ctx.fillRect(0, 0, Game.canvas.width, Game.canvas.height);
 			if(Game.requestTransition && Game.appearScreen){
 				Game.alpha = BG.transition(Game.alpha, "going", 0.1);
 				if(Game.alpha >= 1){
@@ -189,6 +189,31 @@ const Game = {
 					GameMoment = Game.buffer;
 					Game.appearScreen = false;
 					UI.loadDismiss();
+				}
+			}
+		},
+		cookie: () => {
+			if(Game.requestTransition && !Game.appearScreen){
+				Game.alpha = BG.transition(Game.alpha, "coming", 0.1);
+				if(Game.alpha < 0){
+					Game.requestTransition = false;
+					Game.appearScreen = true;
+				}
+			}
+			let saveDataBriefing = getCookies();
+			UI.cookiesStart(saveDataBriefing);
+			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
+			//Ctrl.action(null, "loadCookies");
+			Ctrl.stateSave();
+			
+			if(Game.requestTransition && Game.appearScreen){
+				Game.alpha = BG.transition(Game.alpha, "going", 0.1);
+				if(Game.alpha >= 1){
+					Game.alpha = 1;
+					GameMomentSav = "title";
+					GameMoment = Game.buffer;
+					Game.appearScreen = false;
+					UI.loadCookiesDismiss();
 				}
 			}
 		}

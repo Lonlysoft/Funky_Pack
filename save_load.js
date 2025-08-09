@@ -39,6 +39,10 @@ function saveCookies(characterName, inventory, coords, levelName, currentMoment)
 	document.cookies = finalString;
 }
 
+function getCookies(){
+	return document.cookies;
+}
+
 function loadCookies(){
 	let data = decrypt(document.cookies);
 	injectData(Game, JSON.parse(data));
@@ -51,7 +55,6 @@ function injectData(game, dataParsed){
 	game.currentCharacter.joy = dataParsed.characterInfo.joy;
 	game.currentCharacter.tail = dataParsed.characterInfo.tail;
 	game.storyMoment = dataParsed.storyMoment;
-	
 	Clock.month = dataParse.clock.month;
 	Clock.day = dataParse.clock.day;
 	Clock.year = dataParse.clock.year;

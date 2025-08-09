@@ -12,13 +12,19 @@ const UI = {
 	characterQuickInfoDOM: {
 		hpDOM: document.querySelector(".HUD__lifeBar"),
 		solitudeDOM: document.querySelector(".HUD__solitude"),
-		staminaDOM: document.querySelector(".HUD__staminaBar"),
+		hungerDOM: document.querySelector(".HUD__hungerBar"),
 		update(entity){
-			this.hpDOM.style.height = ("" + transformIntoBar(entity.hp, entity.HP)) + "%";
-			this.staminaDOM.style.width = ("" + transformIntoBar(entity.hunger, entity.maxHunger)) + "%";
-			
-			this.solitudeDOM.style.background = "conic-gradient(from 0deg, var(--bg-color) 0deg " + transformIntoCircularBar(entity.hunger, entity.maxHunger) + "deg, var(--font-color) 0deg 360deg)";
+			this.hpDOM.style.width = ("" + transformIntoBar(entity.hp, entity.HP)) + "%";
+			this.hungerDOM.style.width = ("" + transformIntoBar(entity.hunger, entity.maxHunger)) + "%";
 		}
+	},
+	charWinUpdate: function(clock, entity){
+		let clockHourFormat = clock.getHourSummerSystem();
+		this.charWin.clockDOM.innerHTML = `${clock.monthList[clock.month]}, ${clock.day} - ${(clockHourFormat.hour >= 10) ? clockHourFormat.hour : "0" + (clock.hour +"")}:${(clockHourFormat.minute >= 10) ? clockHourFormat.minute : "0" + (clockHourFormat.minute +" ")}`;
+		this.charWin.clockDOM.innerHTML += clockHourFormat.late;
+		this.charWin.weatherDOM.src = "src/imgs/WeatherIcon__" + Clock.currentWeather + Clock.getBinaryLateness().charAt(0).toUpperCase() + Clock.getBinaryLateness().slice(1) + ".png";
+		this.charWin.moneyDOM.innerHTML = "US$" + entity.money.unit + "." + ((entity.money.cents>= 10)? entity.money.cents : "0" + (entity.money.cents + ""));
+		this.characterQuickInfoDOM.update(entity);
 	},
 	characterMenuDOM: document.querySelector(".characterMenu"),
 	characterMenuItems:{
@@ -91,16 +97,21 @@ const UI = {
 		bufferAnimation: NaN,
 		hasOption: false,
 		object: null,
+		position: {x: undefined, y: undefined},
 		selectedOption: 0,
 		writeText(){
 			if(this.bufferAnimation < this.object.text.length){
 				this.bufferAnimation++;
 			}
-			let stringSplice = "<p class = 'speaking'>";
+			let stringSplice = "<div class = 'whoTalks'>"+this.object.name+"</div><div class = 'speaking'>";
 			for(let i = 0; i < this.bufferAnimation; i++){
 				stringSplice += this.object.text[i];
 			}
-			stringSplice += "</p>"
+			stringSplice += "</div>"
+			UI.dialogDOM.style.width = "25em";
+			UI.dialogDOM.style.height = Math.ceil(this.object.text.length/25) + 3 + "em";
+			UI.dialogDOM.style.top = "25%"; //transformIntoBar(Game.CurrentCharacter.centralPoint[1], Game.canvas.height) + "%"
+			UI.dialogDOM.style.left = "25%"
 			UI.dialogDOM.innerHTML = stringSplice;
 		}
 	},
@@ -109,11 +120,6 @@ const UI = {
 	charWindowDOM: document.querySelector(".charWin"),
 	milionaire: 0,
 	wallCleanerHud: 0,
-	charWinUpdate: function(clock, entity){
-		this.charWin.clockDOM.innerHTML = `${clock.monthList[clock.month]}, ${clock.day} - ${(clock.hour >= 10) ? clock.hour : "0" + (clock.hour +"")}:${(clock.minute >= 10) ? clock.minute : "0" + (clock.minute +"")}`;
-		this.charWin.moneyDOM.innerHTML = "US$" + entity.money.unit + "." + ((entity.money.cents>= 10)? entity.money.cents : "0" + (entity.money.cents + ""));
-		this.characterQuickInfoDOM.update(entity);
-	},
 	jobTableDOM_options:
 	{
 		objs: document.querySelectorAll(".selectable"),
@@ -129,6 +135,15 @@ const UI = {
 		selectedOption: 0,
 		option: ["cookie", "sendFile"],
 		optionDOM: [document.querySelector(".Cookies"), document.querySelector(".SendAFile")]
+	},
+	loadCookies:{
+		selectedOption: 0,
+		option: ["noFile"],
+		DOM: document.querySelector(".loadByCookie"),
+	},
+	loadCookiesStart(str){
+		let save = this.loadCookies.DOM.createElement("div");
+		save.innerHTML = str;
 	},
 	titleStart(){
 		this.titleDOM.style.display = "flex";
@@ -156,8 +171,10 @@ const UI = {
 	},
 	dialogStart(){
 		this.dialogDOM.style.display = "flex"
+		this.dialogDOM.style.transform = "scale(1)"
 	},
 	dialogDismiss(){
+		this.dialogDOM.style.transform = "scale(0)"
 		this.dialogDOM.style.display = "none"
 	},
 	characterMenuStart(){

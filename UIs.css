@@ -23,7 +23,11 @@
 	font-size: 5em;
 	margin: 0;
 	color: var(--bg-color);
-	font-family: cursive;
+}
+
+.outlined{
+	color: rgba(0, 0, 0, 0);
+	-webkit-text-stroke: 2px var(--bg-color);
 }
 
 .titleOptions{
@@ -150,51 +154,99 @@
 }
 
 .characterQuickInfo{
-	bottom: 4%;
-	left: 4%;
+	bottom: 5%;
+	left: 50%;
+	transform: translateX(-50%);
+	gap: 0.5em;
 }
 
 /*character menu*/
 
 .characterMenu{
 	display: none;
+	top: 25%;
+	left: 50%;
 	justify-content: space-between;
 	align-items: center;
-	background: var(--bg-color);
-	margin-top: 9em;
+	min-width: 90%;
 	max-width: 100%;
 	padding: 1em;
 	gap: 1em;
+	transform: translate(-50%, -50%);
 }
 
-.characterMenu .it{
-	width: 2em; height: 2em;
-	background: var(--font-color);
+.characterMenu::before{
+	content: '';
+	z-index: -1;
+	position: absolute;
+	width: 100%;
+	height: 25%;
+	bottom: 20%;
+	left: 0;
+	background: var(--dynny-color);
+	border-radius: 50px;
+	overflow: hidden;
+}
+
+.it:before{
+	position: absolute;
+	content: "";
+	z-index: 0;
+	bottom: 1.25em;
+	width: 3em;
+	height: 1em;
+	background: #000;
+	border-radius: 50%;
+	opacity: 50%;
 }
 
 .characterMenu .description{
 	width: 75%;
+	text-shadow: 0 1px 0 #000, 0 2px 0 #000, 0 3px 0 #000, 0 4px 0 #000;
+	color: white;
 	text-align: right;
 	font-size: 2em;
+	font-family: "classicalComic", sans-serif;
 }
 
 .characterMenu .it.selected{
-	background: white;
+	transform: translate(0, -2px);
+}
+.characterMenu .it.selected:before{
+	position: absolute;
+	content: "";
+	z-index: 0;
+	left: 0;
+	width: 3em;
+	height: 3em;
+	background: var(--Dynny-color);
+	border-radius: 50%;
 }
 
 .dialogs{
 	position: absolute;
 	display: none;
-	width: 70%;
-	height: 10%;
+	transform: scale(0.2);
+	transition: transform 1s;
+}
+
+.comic{
+	background: #fff;
+	border-radius: 1em;
+	border: 2px solid black;
 	padding: 0.5em;
-	left: 5%;
-	bottom: 5%;
+	box-shadow: 0 3px 0 #000;
+	box-shadow: 0 5px 0 #000;
+}
+
+.whoTalks{
+	font-weight: 900;
 }
 
 .speaking{
 	margin: 0;
-	padding: 0;
+	padding: 1em;
+	color: #000;
 }
 
 .option.selected{
@@ -229,8 +281,7 @@
 }
 
 .icon-pic{
-	width: 2em;
-	height: 2em;
+	width: 2.5em;
 	border-radius: 50%;
 	border: 1px solid #000;
 }
@@ -261,7 +312,7 @@
 }
 
 .horizontal-bar div{
-	background: var(--font-color);
+	background: var(--bg-color);
 	height: 100%;
 }
 
