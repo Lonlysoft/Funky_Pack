@@ -30,7 +30,7 @@ const Clock = {
 		}
 	},
 	getDayLateness: function(){
-		if(this.hour > 0 && this.hour < 5){
+		if(this.hour >= 0 && this.hour < 5){
 			return "dawn";
 		}
 		else if(this.hour >= 5 && this.hour < 10){

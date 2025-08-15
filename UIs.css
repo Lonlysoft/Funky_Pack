@@ -20,7 +20,7 @@
 }
 
 .titleLogo{
-	font-size: 5em;
+	font-size: 10vh;
 	margin: 0;
 	color: var(--bg-color);
 }
@@ -314,6 +314,12 @@
 .horizontal-bar div{
 	background: var(--bg-color);
 	height: 100%;
+}
+
+.next-symbol{
+	background-image: url("data:image/svg+xml;utf-8,<svg viewbox='0 0 100 100' fill=var(--font-color)><path d = 'M0 0 h 100 l -50 100z'></svg>");
+	width: 2em;
+	height: 2em;
 }
 
 /*

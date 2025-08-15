@@ -107,10 +107,6 @@ const Game = {
 		selectFunction: function(){
 			UI.scheduleStart();
 		},
-		wallCleaner: function(){
-			Game.CurrentCharacter = Characters[0];
-			WallCleaner.start(Game.CurrentCharacter);
-		},
 		newGame: function(){
 			GameMoment = "mainWorld";
 		},
