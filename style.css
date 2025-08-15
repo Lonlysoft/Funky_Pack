@@ -15,6 +15,11 @@
 	font-family: "kindSans";
 	src: local("Kind Sans Thin Regular"), local("Kind Sans Thin"), local("kindSans"), url("src/Letras/Kind_Sans_Thin.otf") format("opentype");
 }
+
+@font-face{
+	font-family: "PlaypenSans-regular";
+	src: local("Playpen Sans Regular"), local("Playpen Sans"), local("Playpen"), url("src/Letras/PlaypenSans-Regular.ttf") format("truetype");
+}
 @keyframe scaledComingUp{
 	from{
 		transform: translate(100%, 12%) scale(0);

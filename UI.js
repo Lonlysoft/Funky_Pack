@@ -107,9 +107,9 @@ const UI = {
 			for(let i = 0; i < this.bufferAnimation; i++){
 				stringSplice += this.object.text[i];
 			}
-			stringSplice += "</div>"
+			stringSplice += "</div><div class='next-symbol'></div>"
 			UI.dialogDOM.style.width = "25em";
-			UI.dialogDOM.style.height = Math.ceil(this.object.text.length/25) + 3 + "em";
+			UI.dialogDOM.style.height = Math.ceil(this.object.text.length/25) + 2 + "em";
 			UI.dialogDOM.style.top = "25%"; //transformIntoBar(Game.CurrentCharacter.centralPoint[1], Game.canvas.height) + "%"
 			UI.dialogDOM.style.left = "25%"
 			UI.dialogDOM.innerHTML = stringSplice;
