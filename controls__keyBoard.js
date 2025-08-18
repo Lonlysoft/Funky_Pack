@@ -15,7 +15,7 @@ function KeyBoardEvent(){
 		e => {
 			e.preventDefault();
 			for(let i = 0; i < keyBoardControls.touchEquiv.length; i++){
-				if(e.keyCode == keyBoardControls.keyBoardID[i]){
+				if(e.keyCode == keyBoardControls.keyboardID[i]){
 					Ctrl.Btns[keyBoardControls.touchEquiv[i]].active = true;
 				}
 			}
@@ -26,7 +26,7 @@ function KeyBoardEvent(){
 		e => {
 			e.preventDefault();
 			for(let i = 0; i < keyBoardControls.touchEquiv.length; i++){
-				if(e.keyCode == keyBoardControls.keyBoardID[i]){
+				if(e.keyCode == keyBoardControls.keyboardID[i]){
 					Ctrl.Btns[keyBoardControls.touchEquiv[i]].active = false;
 				}
 			}
