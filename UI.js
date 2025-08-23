@@ -3,35 +3,33 @@ const UI = {
 	loadDOM: document.querySelector(".container__saving"),
 	charDOM: document.querySelector(".charWin"),
 	charWin:{
-		clockDOM: document.querySelector(".GameDate"),
+		clockDOM: [document.querySelector(".GameDate"), document.querySelector(".GameHour")],
 		weatherDOM: document.querySelector(".weather_icon"),
 		barDOM: document.querySelector(".charWin__HPbar"),
 		charName: document.querySelector(".charName"),
 		moneyDOM: document.querySelector(".money")
 	},
 	characterQuickInfoDOM: {
-		hpDOM: document.querySelector(".HUD__lifeBar"),
+		hpDOM: document.querySelector(".HUD__HPnumber"),
 		solitudeDOM: document.querySelector(".HUD__solitude"),
 		hungerDOM: document.querySelector(".HUD__hungerBar"),
 		update(entity){
-			this.hpDOM.style.width = ("" + transformIntoBar(entity.hp, entity.HP)) + "%";
+			//this.hpDOM.style.width = ("" + transformIntoBar(entity.hp, entity.HP)) + "%";
 			this.hungerDOM.style.width = ("" + transformIntoBar(entity.hunger, entity.maxHunger)) + "%";
 		}
 	},
 	charWinUpdate: function(clock, entity){
 		let clockHourFormat = clock.getHourSummerSystem();
-		this.charWin.clockDOM.innerHTML = `${clock.monthList[clock.month]}, ${clock.day} - ${(clockHourFormat.hour >= 10) ? clockHourFormat.hour : "0" + (clock.hour +"")}:${(clockHourFormat.minute >= 10) ? clockHourFormat.minute : "0" + (clockHourFormat.minute +" ")}`;
-		this.charWin.clockDOM.innerHTML += clockHourFormat.late;
+		this.charWin.clockDOM[0].innerHTML = `${clock.monthList[clock.month]}, ${clock.day}`;
+		this.charWin.clockDOM[1].innerHTML = `${(clockHourFormat.hour >= 10) ? clockHourFormat.hour : "0" + (clock.hour +"")}:${(clockHourFormat.minute >= 10) ? clockHourFormat.minute : "0" + (clockHourFormat.minute +" ")}`;
+		this.charWin.clockDOM[1].innerHTML += clockHourFormat.late;
 		this.charWin.weatherDOM.src = "src/imgs/WeatherIcon__" + Clock.currentWeather + Clock.getBinaryLateness().charAt(0).toUpperCase() + Clock.getBinaryLateness().slice(1) + ".png";
 		this.charWin.moneyDOM.innerHTML = "US$" + entity.money.unit + "." + ((entity.money.cents>= 10)? entity.money.cents : "0" + (entity.money.cents + ""));
 		this.characterQuickInfoDOM.update(entity);
 	},
 	characterMenuDOM: document.querySelector(".characterMenu"),
 	characterMenuItems:{
-		0: document.querySelector(".characterMenu__talkTo"),
-		1: document.querySelector(".characterMenu__item"),
-		2: document.querySelector(".characterMenu__look"),
-		3: document.querySelector(".characterMenu__stats"),
+		elements: document.querySelectorAll(".it"),
 		alt: document.querySelector(".characterMenu .description"),
 		optionList: ["talk to", "items", "look at", "stats"],
 		selectedOption: 0,
@@ -53,6 +51,10 @@ const UI = {
 					finalString += "<div class = 'bags__item'>" + entity.tail[i].name + "</div>";
 				else 
 					finalString += "<div class = 'bags__item'> -- </div>";
+			}
+			if(entity.tail.length == 0){
+				this.itemsDOM.innerHTML = "empty inventory"
+				return;
 			}
 			this.itemsDOM.innerHTML = finalString;
 			this.inventoryEach = this.itemsDOM.querySelectorAll(".bags__item");

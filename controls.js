@@ -498,7 +498,7 @@ const Ctrl = {
 			},
 			A(argumentEntity){
 				if(Ctrl.Btns.A.active && Ctrl.state.A == false){ //A interação
-					argumentEntity.interact(Game.NPCarr);
+					argumentEntity.interact(Game.NPCarr, Game.ItemArr);
 				}
 			},
 			zed(argumentEntity){
@@ -554,16 +554,17 @@ const Ctrl = {
 			select(argumentEntity){
 				if(Ctrl.Btns.select.active && !Ctrl.state.select){
 					UI.charWinDismiss();
-					UI.characterMenuStart();
+					
 					GameMomentSav = GameMoment;
-					GameMoment = 'characterMenu';
+					GameMoment = 'pause';
 				}
 			},
 			start(argumentEntity){
 				if(Ctrl.Btns.start.active && Ctrl.state.start == false){//start
 					UI.charWinDismiss();
+					UI.characterMenuStart();
 					GameMomentSav = GameMoment;
-					GameMoment = 'pause';
+					GameMoment = 'characterMenu';
 				}
 			},
 		}
@@ -592,11 +593,17 @@ const Ctrl = {
 			},
 			A(entity){
 				if(Ctrl.Btns.A.active && !Ctrl.state.A){
+					if(entity.tail.length == 0){
+						return;
+					}
 					entity.tail[UI.characterMenuSubmenus.selectedInventoryIndex].use(entity);
 					let item = entity.tail[UI.characterMenuSubmenus.selectedInventoryIndex];
 					entity.tail[UI.characterMenuSubmenus.selectedInventoryIndex] = entity.tail[entity.tail.length-1];
 					entity.tail[entity.tail.length-1] = item;
 					entity.tail.pop();
+					if(UI.characterMenuSubmenus.selectedInventoryIndex >= entity.tail.length){
+						UI.characterMenuSubmenus.selectedInventoryIndex = entity.tail.length-1;
+					}
 				}
 			},
 			B(entity){
@@ -645,29 +652,29 @@ const Ctrl = {
 			}
 		},
 		characterMenu: function(argumentEntity){
-			if(Ctrl.Btns.select.active && Ctrl.state.select == false){
+			if(Ctrl.Btns.start.active && Ctrl.state.start == false){
 				UI.characterMenuDismiss();
 				GameMoment = GameMomentSav;
 			}
 			
 			if(Ctrl.Btns.west.active && !Ctrl.state.west){ //right
-				UI.characterMenuItems[UI.characterMenuItems.selectedOption].classList.remove("selected");
+				UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.remove("selected");
 				UI.characterMenuItems.selectedOption--;
 				if(UI.characterMenuItems.selectedOption<0){
 					UI.characterMenuItems.selectedOption = UI.characterMenuItems.optionLength;
 				}
 				UI.characterMenuItems.alt.innerHTML = UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption];
-				UI.characterMenuItems[UI.characterMenuItems.selectedOption].classList.add("selected");
+				UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.add("selected");
 			}
 			if(Ctrl.Btns.east.active && !Ctrl.state.east){ //right
 				
-				UI.characterMenuItems[UI.characterMenuItems.selectedOption].classList.remove("selected");
+				UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.remove("selected");
 				UI.characterMenuItems.selectedOption++;
 				if(UI.characterMenuItems.selectedOption>UI.characterMenuItems.optionLength){
 					UI.characterMenuItems.selectedOption = 0;
 				}
 				UI.characterMenuItems.alt.innerHTML = UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption];
-				UI.characterMenuItems[UI.characterMenuItems.selectedOption].classList.add("selected");
+				UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.add("selected");
 				
 			}
 			if(Ctrl.Btns.A.active && Ctrl.state.A == false){

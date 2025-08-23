@@ -76,18 +76,29 @@ const itemCategories = {
 }
 
 //constant for assets
-const ITEMS = [
-	{name: "clearItem", description: "enableCredits", value: 0, type: "creditsScene"},
-	{ID: 1, name: "penny", description: "a singular monetary solution costs $0.01", value: 1, type: "centMoney", usage: "CollectAndUse", ColType: "use", w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/4)},
-	{ID: 3, name: "coin", description: "a centural monetary solution costs $1.00", value: 1, type: "money", usage: "CollectAndUse", ColType: "use" , w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/6)},
+const ITEMS = {
+	0: {name: "clearItem", description: "enableCredits", value: 0, type: "creditsScene"},
+	1: {ID: 1, name: "penny", description: "a singular monetary solution costs $0.01", value: 1, type: "centMoney", usage: "CollectAndUse", ColType: "use", w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/4)},
+	2: {ID: 3, name: "coin", description: "a centural monetary solution costs $1.00", value: 1, type: "money", usage: "CollectAndUse", ColType: "use" , w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/6)},
 	//fruits
-	{ID: 2, name:"apple", description: "freah as ever give us the best", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: Number.parseInt(TILE_SIZE/2),p: Number.parseInt(TILE_SIZE/6), h: Number.parseInt(TILE_SIZE/4)},
-	{ID: 3, name:"pear", description: "fresh, but more watery. hunger -10, hp +7", value: 8, type: "food", usage: "useLater", ColType: "solidObject",
+	2: {ID: 2, name:"apple", description: "freah as ever give us the best", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: Number.parseInt(TILE_SIZE/2),p: Number.parseInt(TILE_SIZE/6), h: Number.parseInt(TILE_SIZE/4)},
+	3: {ID: 3, name:"pear", description: "fresh, but more watery. hunger -10, hp +7", value: 8, type: "food", usage: "useLater", ColType: "solidObject",
 w: Number.parseInt(TILE_SIZE/2),p: Number.parseInt(TILE_SIZE/6), h: Number.parseInt(TILE_SIZE/4)},
-	{ID: 4, name:"block", description: "completely solid object. I think you can only carry this if you're Nukko", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: TILE_SIZE, h: TILE_SIZE, p: TILE_SIZE},
-	{ID: 5, name: ""},
-	{ID: 50, name: "oven", description: "get cooking with this one", usage: "interact", ColType: "solidObject", w: TILE_SIZE, h: TILE_SIZE, p: TILE_SIZE},
-];
+	4: {ID: 4, name:"block", description: "completely solid object. I think you can only carry this if you're Nukko", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: TILE_SIZE, h: TILE_SIZE, p: TILE_SIZE},
+	5: {ID: 5, name: ""},
+	
+	50: {
+		ID: 50,
+		name: "oven",
+		type: "structure",
+		value: function(){
+			GameMomentSav = GameMoment;
+			GameMoment = "cooking";
+		},
+		description: "get cooking with this one",
+		usage: "interact", ColType: "solidObject",
+		w: TILE_SIZE, h: TILE_SIZE, p: TILE_SIZE},
+};
 /*
 	{"banana", ""},
 	["peach", ""],

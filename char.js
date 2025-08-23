@@ -52,12 +52,12 @@ class Being{
 		this.centralPoint = [canvas.width/2, canvas.height/2];
 		this.jumping = false;
 		this.sprite = {
-			w: 154,
-			h: 154
+			w: 192,
+			h: 192
 		};
 		this.gravity = GRAVITY_EARTH;
 		this.frameX = 0;
-		this.frameY = 1;
+		this.frameY = 0;
 	}
 	
 	walk(axis){
@@ -162,7 +162,7 @@ class Protagonist extends Being{
 	//graphics
 	// We'll need the map.current because... Most mini-games require An special and different game map.
 	draw(currentMap = Game.currentMap){
-		drawShadow(ctx, this, currentMap, 1);
+		drawShadow(ctx, this, currentMap, 0.5);
 		let tailInFront = false;
 		this.frameY = directions.setFrameY[this.dir](this);
 		this.frameX = displayAnim(this);
@@ -172,7 +172,7 @@ class Protagonist extends Being{
 			this.frameY*this.sprite.h,
 			this.sprite.w, this.sprite.h,
 			this.centralPoint[0]-this.boxCol.h*0.5,
-			this.centralPoint[1]-this.boxCol.h+this.boxCol.p*0.25,
+			this.centralPoint[1]-this.boxCol.h+this.boxCol.p,
 			this.boxCol.h, this.boxCol.h
 		);
 		if(this.isMirrored){//get back to normal state
@@ -183,7 +183,7 @@ class Protagonist extends Being{
 			this.hand.draw();
 		}
 	}
-	interact(NPC__arr){
+	interact(NPC__arr, item__arr){
 		let box = directions.setBox[this.dir](this);
 		ctx.fillStyle = "green";
 		ctx.fillRect(WorldToScreen1D(box[0], Camera.x, Camera.w/2 - Game.SCREEN_CENTER[0]), WorldToScreen1D(box[1], Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]), TILE_SIZE, TILE_SIZE);
@@ -196,6 +196,19 @@ class Protagonist extends Being{
 				UI.dialogItems.object.relationshipLevel = this.relationships[NPC__arr[i].ID];
 				UI.dialogItems.bufferAnimation = 0;
 				UI.dialogStart();
+			}
+		}
+		
+		//to interact with the interactables items 
+		let interactables = item__arr.filter(
+			item =>{
+				return item.usage == "interact";
+			}
+		);
+		for(let i = 0; i < interactables.length; i++){
+			let this__box = [interactables[i].boxCol.x, interactables[i].boxCol.z, interactables[i].boxCol.w, interactables[i].boxCol.p];
+			if(isOnGround(this.WorldPos.y, interactables[i].boxCol.y) && Col.AABB(box, this__box)){
+				interactables[i].use(this);
 			}
 		}
 	}
@@ -249,8 +262,8 @@ const skillSet = {
 			entity.holdingObject = false;
 			const box = directions.setBox[entity.dir](entity);
 			entity.hand.isCollected = false;
-			entity.hand.boxCol.x = box[0];
-			entity.hand.boxCol.z = box[1];
+			entity.hand.boxCol.x = box[0]+TILE_SIZE*0.5-entity.hand.boxCol.w*0.5;
+			entity.hand.boxCol.z = box[1]+TILE_SIZE*0.5-entity.hand.boxCol.p*0.5;
 			entity.hand.boxCol.y = Game.currentMap.bounds[WorldToGrid(box[1], TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)].y
 			Game.currentMap.items[WorldToGrid(box[1], TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] = entity.hand;
 			entity.hand = 0;

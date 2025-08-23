@@ -100,34 +100,34 @@ const directions = {
 	setFrameY:
 	{
 		S: function(entity){
-			return 1;
+			return 0;
 		},
 		N: function(entity){
 			return 2;
 		},
 		E: function(entity){
-			return 4;
+			return 1;
 		},
 		W: function(entity){
 			mirrorateToAPoint(Game.ctx, entity.centralPoint[0], entity.centralPoint[1]);
 			entity.isMirrored = true;
-			return 4;
+			return 1;
 		},
 		NE: function(entity){
 			mirrorateToAPoint(Game.ctx, entity.centralPoint[0], entity.centralPoint[1]);
 			entity.isMirrored = true;
-			return 6.5;
+			return 3;
 		},
 		NW: function(entity){
-			return 6.5;
+			return 3;
 		},
 		SE: function(entity){
-			return 4;
+			return 1;
 		},
 		SW: function(entity){
 			mirrorateToAPoint(Game.ctx, entity.centralPoint[0], entity.centralPoint[1]);
 			entity.isMirrored = true;
-			return 4;
+			return 1;
 		}
 	},
 	setBox: {
@@ -305,8 +305,8 @@ function drawShadow(context, entity, map, oppacity){
 	context.ellipse(
 		entity.centralPoint[0],
 		entity.centralPoint[1] + entity.WorldPos.y - map.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y,
-		entity.boxCol.w*0.5,
-		entity.boxCol.p*0.5,
+		entity.boxCol.w*0.8,
+		entity.boxCol.p*0.8,
 		0, 0, 2*Math.PI, true
 	);
 	context.fill();

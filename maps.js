@@ -92,7 +92,7 @@ class Level{
 			this.items.push(new Array());
 			for(let j = 0; j < this.width; j++){
 				if(this.itemGrid[i][j] > 0){
-					this.items[i].push(new Item( itemSource[this.itemGrid[i][j]], j*TILE_SIZE, i*TILE_SIZE, this.grndElGrid[i][j]*TILE_SIZE));
+					this.items[i].push(new Item( itemSource[this.itemGrid[i][j]], j*TILE_SIZE+TILE_SIZE*0.5-itemSource[this.itemGrid[i][j]].w*0.5, i*TILE_SIZE+TILE_SIZE*0.5-itemSource[this.itemGrid[i][j]].p*0.5, this.grndElGrid[i][j]*TILE_SIZE));
 					
 				} else{
 					this.items[i].push(0);

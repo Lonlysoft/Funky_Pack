@@ -53,7 +53,11 @@ function zero(screen, context){
 
 const setUsingTools = {
 	mainWorld: "use",
-	wallCleaner: "clean"
+	wallCleaner: "clean",
+	waiter: "serve",
+	boxPusher: "push",
+	tacticArmer: "confirm",
+	frontArmy: "shoot"
 }
 
 function displayAnim(Character){

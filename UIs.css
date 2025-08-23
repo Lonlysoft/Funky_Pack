@@ -152,7 +152,8 @@
 	justify-content: center;
 	align-items: center;
 	top: 4%;
-	right: 4%;
+	left: 50%;
+	transform: translate(-50%, 0);
 	gap: 1em;
 	padding: 1em;
 }
@@ -318,6 +319,18 @@
 .horizontal-bar div{
 	background: var(--bg-color);
 	height: 100%;
+}
+
+.HUD__HPnumber{
+	color: var(--bg-color);
+	font-size: 2em;
+}
+
+.money, .GameDate, .GameHour{
+	font-weight: 100;
+	color: var(--bg-color);
+	font-size: 2em;
+	text-shadow: 1px 1px 2px var(--font-color);
 }
 
 .next-symbol{

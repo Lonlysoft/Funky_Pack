@@ -21,7 +21,7 @@
 		
 		<img id = "CNTRLS" src = "src/imgs/ctrls.png">
 		<img id = "tilemap" src = "src/imgs/tileset.png">
-		<img id = "dynnySpriteSheet" src = "src/imgs/dynnySpriteSheet.png">
+		<img id = "dynnySpriteSheet" src = "src/imgs/dynnySpriteSheet2.png">
 		<img id = "items" src = "src/imgs/itemGraph.png"/>
 		<!-- Game World Graphics -->
 			
@@ -37,7 +37,7 @@
 				</div>
 			</section>
 			<div class = "titleScreen">
-				<img src = "src/imgs/titleLogo.png" alt="title_representation_logo_that_theres_nothing_to_do_with_the_game"/>
+				<img src = "src/imgs/TitleLogo.png" alt="title_representation_logo_that_theres_nothing_to_do_with_the_game"/>
 				<div class = "titleOptions flex-row">
 					<h2 class = "titleCommand selected new">NEW GAME</h2>
 					<h2 class = "titleCommand continue">CONTINUE</h2>
@@ -48,9 +48,9 @@
 	<div class = "inGameUI">
 		<div class = "charWin">
 			<div class = "quickStats absolute">
-				<div class = "money"></div>
+				<div class = "GameDate">unknown Month, 0</div>
 				<img class = "weather_icon" src = "src/imgs/WeatherIcon__clearDay.png">
-				<div class = "GameDate">unknown Month, 0 - 0:00</div>
+				<div class = "GameHour">0:00</div>
 			</div>
 			<div class = "characterQuickInfo flex-row absolute">
 				<img class = "icon" src = "src/imgs/steak.png" alt = "beef_indicator">
@@ -59,10 +59,10 @@
 				</div>
 				<div class = "circle"><img class = "icon-pic circle" src = "src/imgs/dynny_icon.png"></div>
 					<div class = "flex-row">
-						<div class = "horizontal-bar">
+						<!--<div class = "horizontal-bar">
 							<div class = "HUD__lifeBar"></div>
-						</div>
-						<img class = "icon" src = "src/imgs/heart.png" alt = "life_heart_indicator">
+						</div>-->
+						<div class = "money"></div>
 					</div>
 				</div>
 			</div>
@@ -71,7 +71,7 @@
 				<img class = "icon-menu" src = "src/imgs/CharacterMenuIcon_talkTo.png"/>
 			</div>
 			<div class = "it characterMenu__item">
-				<img class = "icon-menu" src = "src/imgs/CharacterMenuIcon_item.png"/>
+				<img class = "icon-menu" alt = "itens" src = "src/imgs/CharacterMenuIcon_item.png"/>
 			</div>
 			<div class = "it characterMenu__look">
 				<img class = "icon-menu" src = "src/imgs/CharacterMenuIcon_check.png"/>

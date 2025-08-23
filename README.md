@@ -1,19 +1,16 @@
 # FUNKY PACK #
-It's a personal project made for:
+this project is an personal project made for:
 - Enhance my skills with frontend and game development
-- Give to my characters of the Funky Pack series an interactive environment
-- test my english skills with writing documentation and dialogs
-- put this thing on my portfolio might be good, I don't know...
-
-# Playtest
-
-<a href = "https://lonlysoft.github.io/Funky_Pack" > here! </a> Please bear in mind that it's not done yet, but you can test the controls performance on mobile or PC. it's pretty important because I don't have a keyboard so I can't test it.
+- Give my characters of the Funky Pack an interactive environment
+- test my english skills
+- put this thing on my portfolio might be good
+- confirm the thesis that it's a media collection not static fetish art only
 
 # what is it?
 Funky Pack is a game inspired by farming simulators. We all have heard the story of a farming simulator before: <br>
 "There's this guy whose life is not good in the city and then he goes to a farm." <br>
-the only difference between a normal farming simulator and Funky Pack is that the guy here never goes to the farm. He needs to work on the city.<br>
-The game takes place in American City. A city inspired by the american cartoon stereotype. <br>
+the only difference between a normal farming simulator and Funky Pack is that the guy here never goes to the farm. He needs to work on the city to then go to a farm to see his family. <br>
+The game takes place in american city. A city that is a mix of my U.S. beliefs. <br>
 the game follows a structure of a weekly schedule. Dynny builds that schedule based on his jobs.
 
 Full schedule run
@@ -25,54 +22,96 @@ stats
 Dynny has stats like life, hunger, joy, stamina and solitude. <br>
 the player needs to watch out for those 5.
 
-life: it's mostly refered as HP. Dynny has 200 HP. if he reaches 0 HP. Game Over. go to hospital that will append your debt. <br>
+life: it's mostly refered as HP. Dynny has 200 HP. if he reaches 0 HP. Game Over. you have 2 options. go to hospital that will append your debt, or reset game to the latest save. which is a reset. <br>
 HUNGER: Dynny gotta eat. if he doesn't, he might faint and eat the holding object to satisfy his hunger. <br>
-JOY: How dynny feels. Joy is given by spending time with nukko, playing games or doing leisure activities. <br>
+JOY: How dynny feels. Joy is given by spending time with nukko, playing games or doing leasure activities. <br>
 solitude: a special bar that decreases by the years that you're away from Nukko. Dynny doesn't understand that, but Nukko is important to him. And not having him around for too long might get his life empty. if this bar goes to 0. objects like trees and stores might close and Dynny will notice a decrease in water levels.
 
 Jobs
 -
-Dynny needs to work to pay his debt. the work is made via mini games. and at the end of the month you get a wage for a well done job.
+Dynny needs to work to pay his debt. the work is made via mini games. and at the end of the month you get his wage.
 
 
 needs exclusive GameMoment with mechanics and graphics
-- box pusher: morning to afternoon;
-- office guy: morning, afternoon or night;
-- elevator technician: when requested. mostly it's in dawn or night;
-- I.T. tester: 7x0. hour randomized $1,000,000
-- trucker: paid by work and kilometree
-- factory worker: morning to night
-- caker: morning to afternoon
-- tree cutter: morning to evening
-- Who wants to be a milionaire!?
-- glass cleaner: 5x2 morning only
+- box pusher: 9 - 17 or 7 - 14 $2500
+- office guy: 10 - 4 or 6 - 20 or 18 - 22 $3300
+- I.T. tester: 7x0 hour decided. $1,000,000
+- caker
+- waiter
 
-average game moment covers, but the triggers are different
+the normal GameMoment covers
 - informant: when requested. paid by work. minimun of $500
-- newspaper deliverer
-- pizza deliverer
+- newspaper delivery: 3x4 5 - 6 $2400
+- pizza deliverer: 6x1 18 - 22. $1,660
 
 our wealthy badger - he's important for story
-- limo driver: when requested. mostly night or morning
-- personal assistant
+- limo driver $30,000
+- personal assistant $40,000
+- special partner $1,000,000
+- world saver - one way payment - 2,000,001
 
-Current State:
--
-Everything is as initial as you can guess. It's not a complicated game, but since it's my first time developing a big project such as a game is. It'll be hard to make.
 
-My main focus is currently on:
+- Who wants to be a milionaire!?
 
-the mini games:
-they are a huge part of the game. they actually are the reason why this game is called Funky pack.
-I'm starting by the Wall Cleaner mini-game. It's pretty easy because it uses the same engine of the main world.
+# UI
 
-NPC behavior system:
-they have lots of behaviors, but most of them is to spawn, move, wait and arrive at certain locations.
-it's just important because you need the NPCs to look like they have an actual life inside the game.
++-------------------------------------+ <br>
+|	12:35am SUNNY ~~~~~~~  $ • 00	| <br>
++-------------------------------------+ <br>
 
-current changelog:
-dialogs.js readded. the dialog type is now quite better than the first version. I now need to do all the NPCs variations aswell their option system that can change relationship levels.
++--------------+
+| TALK TO	  |
+| LOOK		 |
 
-Item and its collisions updated. Now the player can stand on top of the items, and also collect and put them in their inventory. The next step is make them acessible and usable in the Character Menu.
 
-Issues with pages' lexical erros is resolved. I discovered that my IDE isn't case sensitive. And I'll for sure forget that this is a thing and I'll be wondering why the game isn't running on the pages for more weeks... y'know, the basics...
+# Dialogs
+
+- Dynny: and that's that
+well, accidents happen, but I actually told you that it was expensive...
+I can pay your debt if you want.
+No, I'm good. The thing is... what can I do to get all this money? Health is just for wealthy ones or what?
+Well, guess you'll need to work.
+debts aren't gonna pay by themselves, so You'll need to work to pay them all.
+I saw some jobs in the newspaper so you can apply for some... or find some people that want your help. I heard that the pavan needs a guy to deliver the newspaper at 4am. if you want, I can call him.
+
+thanks nukko.
+
+new in town? this isn't new
+
+I wanna know how lonely you can get if you don't have any families in here.
+Well, you have nukko, so... you're not that alone.
+my family is just off there because they're evading taxes. I'm just here because I like living here.
+I don't need them because I have my maids and you.
+I love you, Dynny...
+don't get me wrong... I'm not gay, I like you platonically.
+
+You'll continue receiving your salary. I'm rich. You won't be punished.
+
+You'll be more than my driver. you'll be my member. in this world, dad always said that, you need to firm connections with others in order to grow. you don't need to like or chat with them like in a bar. just having his simple contact can give you power to do anything you wish.
+
+I heard that if you know the right people they'll quit your debt.
+It's not dignity if you work more than everyone, like I don't even work. You work about 4 different jobs and all just to pay off a debt from a thing that wasn't even that serious.
+
+the crystal is beautiful.
+
+I'm not here for anything, let's go Dynny.
+
+my dad says that we cannot go to airport in debt. but he actually is referring that if anything you'll need a private jet.
+
+the street of same houses? kinda gross, but unification is key.
+
+is this your house? Looks small, but it may be pretty comfy.
+
+dad always tells me that gross people lives in trailers, but Nukko is so cute I'm not sure that it's true.
+
+Nukko eats you? can he eat me too?
+wow Dynny, your friend's belly is so comfy. I could be here forever...
+
+can I get eaten by you?
+comfy as always. i could make you my sleep sack 
+
+like what? saving the world? this isn't gonna happen, actually they don't care much about anything related to that. it's the 21st century and no one actually care if aliens are real or not.
+I don't know why your family abandoned you, you're such a chill guy.
+
+
+I know this guy!

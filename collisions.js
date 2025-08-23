@@ -28,7 +28,7 @@ const Col = {
 		let bottomRight = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w+entity.velocity.x, TILE_SIZE)];
 		let maxValue = maxVal([topLeft, topRight, bottomLeft, bottomRight]);
 		entity.layer = maxValue;
-		//inserir sublayer baseado na Colisão de sombra do inimigo
+		//DONE: not necessary to do it here. drawing order is now merge sort based. it's not as dynamic, but it covers plenty of the issues here
 		let arr = Game.NPCarr;
 		for(let i = 0; i < arr.length; i++){
 			if(i == num) continue;

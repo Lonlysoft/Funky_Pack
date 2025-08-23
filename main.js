@@ -155,6 +155,12 @@ const Game = {
 			}
 			debug();
 		},
+		waiter(){
+			if(Game.CurrentCharacter == null){
+				Game.CurrentCharacter = new Protagonist(Characters.Dynny);
+			}
+			Waiter.gamePlay(Game.CurrentCharacter);
+		},
 		dialog: function(){
 			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			Ctrl.action(Game.dialogBox, "dialogs");
@@ -217,11 +223,12 @@ const Game = {
 }
 
 let GameMoment = 0;
-let GameMomentSav = 'title';
+let GameMomentSav = 'mainWorld';
 let frame = 0
 let frameaux = 0
 
 const fps = 60, timeFrequency = 1000/fps;
+let INTERVAL_ID;
 
 function GameBonanza(){
 	TouchEvent();
@@ -229,8 +236,8 @@ function GameBonanza(){
 	//
 	window.addEventListener("resize", resize);
 	resize();
-	//setInterval(GamePlay, timeFrequency);
-	GamePlayLoop();
+	INTERVAL_ID = setInterval(GamePlay, timeFrequency);
+	//GamePlayLoop();
 }
 
 document.addEventListener("DOMContentLoaded", function(){
@@ -241,15 +248,33 @@ document.addEventListener("DOMContentLoaded", function(){
 })
 
 function GamePlay(){
-	clear(Game.canvas, Game.ctx);
-	clear(BG.canvas, BG.ctx);
-	clear(Ctrl.canvas, Ctrl.ctx);
-	Game.moment[GameMoment]();
-	if(frame > fps){
-		frame = 0;
-	}
-	else{
-		frame++;
+	try{
+		clear(Game.canvas, Game.ctx);
+		clear(BG.canvas, BG.ctx);
+		clear(Ctrl.canvas, Ctrl.ctx);
+		Game.moment[GameMoment]();
+		if(frame > fps){
+			frame = 0;
+		}
+		else{
+			frame++;
+		}
+	} catch (error){
+		clearInterval(INTERVAL_ID);
+		console.log(error);
+		ctx.fillStyle = "#000";
+		ctx.fillRect(0, 0, canvas.width,canvas.height);
+		ctx.fillStyle = "#fff";
+		ctx.font = "24px sans-serif"
+		for(let i = 0; i < 3; i++){
+			for(let j = 0; j < 25; j++){
+				let rand = random(0, 99999999999999);
+				ctx.fillText("0x" + rand.toString(16).padStart(15, '0'), 20+i*20*13, 30+j*24);
+			}
+		}
+		ctx.fillText("game terminated, reload page to reset", 20, 30+26*24);
+		
+		
 	}
 }
 
