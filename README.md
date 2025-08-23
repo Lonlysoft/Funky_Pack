@@ -7,7 +7,7 @@ It's a personal project made for:
 
 # Playtest
 
-<a href = "https://lonlysoft.github.io/Funky_Pack" > here! </a> Please bear in mind that it's not done yet, but you can test the controls performance on mobile, PC or with a gamepad. it's pretty important because I don't have a keyboard or gamepad in order to test the viability of those control modes
+<a href = "https://lonlysoft.github.io/Funky_Pack"> Test my game here!</a> <br> Please bear in mind that it's not finished yet, it's still in its early stages, but you can test the controls performance on mobile or PC. It's pretty important because I don't have a keyboard, so I can't test it. And also, a gamepad option is available for testing.
 
 # what is it?
 Funky Pack is a game inspired by farming simulators. We all have heard the story of a farming simulator before: <br>
@@ -80,10 +80,9 @@ they have lots of behaviors, but most of them is to spawn, move, wait and arrive
 it's just important because you need the NPCs to look like they have an actual life inside the game and also handle that to make the game run without problems
 
 current changelog:
-dialogs.js re-added. the dialog data is now quite better than the first version. I now need to do all the NPCs variations aswell their option system that can change relationship levels.
 
-Item and its collisions updated. Now the player can stand on top of the items, and also collect and put them in their inventory. The next step is make them acessible and usable in the Character Menu.
-
+- ```dialogs.js``` re-added. the dialog data is now quite better than the first version. I now need to do all the NPCs variations aswell their option system that can change relationship levels.
+- Items and its collisions updated. Now the player can stand on top of the items, and also collect and put them in their inventory. The next step is make them acessible and usable in the Character Menu.
 - Issues with pages' lexical erros is resolved. Now remote playability is possible
 - Issues involving imagery are now resolved
 - Dynny's spriteshhet updated, but unfortunately still with incomplete animations. Sorry, but the old one had some major issues and it was bugging me the fact that he hadn't a tail.
