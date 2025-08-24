@@ -1,4 +1,4 @@
-//WARNING: gamepads weren't tested throughout the development of this game. if you experience any button misarrangement or input fail, please send a feedback.
+//WARNING: Gamepads weren't tested throughout the development of this game. In case you experience any button misarrangement or input fail, please send a feedback.
 
 const gamepadControls = {
 	touchEquiv: ["B", "A", "Y", "X", "look", "run", "zed", "select", "start", "select", "start", "up", "down", "west", "east", "extrasOption"],
@@ -29,4 +29,5 @@ function GamePadEvent(){
 
 function remap(gamePadControls){
 	
+
 }
