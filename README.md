@@ -82,9 +82,10 @@ It's just important because you need the NPCs to look like they have an actual l
 # Current changelog:
 
 - ```dialogs.js``` was re-added. The dialog data is now quite better than the first version. I now need to do all the NPCs variations as well as their option system that can change relationship levels.
-- Items and their collisions are updated. Now the player can stand on top of the items, and also collect and put them in their inventory. The next step is make them acessible and usable in the Character Menu.
+- Items and their collisions are updated. Now the player can stand on top of the items, and also collect and put them in their inventory. The next step is make them accessible and usable in the Character Menu.
 
 - Issues with pages' lexical errors have been resolved. Now remote playability is also possible.
 - Issues involving imagery are now resolved.
 - Dynny's spritesheet was updated, but unfortunately still with incomplete animations. Sorry, but the old one had some major issues and it was bugging me the fact that he didn't have a tail.
+
 
