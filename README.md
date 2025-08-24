@@ -18,7 +18,7 @@ The game follows a structure of a weekly schedule. Dynny builds that schedule ba
 
 Full schedule run
 -
-Dynny can do as many jobs he wants as long as they don't overlap much. With a full schedule there's a chance where the locations of each job are far away. To be fair play, the clock changes to a stopwatch 10 minutes early. As if it had a kind of slow motion effect.
+Dynny can do as many jobs he wants as long as they don't overlap much. With a full schedule there's a chance where the locations of each job are far away. To be fairplay, the clock changes to a stopwatch 10 minutes early. As if it had a kind of slow motion effect.
 
 Stats
 -
@@ -87,3 +87,4 @@ It's just important because you need the NPCs to look like they have an actual l
 - Issues with pages' lexical errors have been resolved. Now remote playability is also possible.
 - Issues involving imagery are now resolved.
 - Dynny's spritesheet was updated, but unfortunately still with incomplete animations. Sorry, but the old one had some major issues and it was bugging me the fact that he didn't have a tail.
+
