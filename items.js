@@ -82,7 +82,7 @@ const ITEMS = {
 	2: {ID: 3, name: "coin", description: "A centural monetary solution costs $1.00", value: 1, type: "money", usage: "CollectAndUse", ColType: "use" , w: Number.parseInt(TILE_SIZE/4), h: Number.parseInt(TILE_SIZE/4), p: Number.parseInt(TILE_SIZE/6)},
 	//fruits
 	2: {ID: 2, name:"apple", description: "Fresh and gives us the best", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: Number.parseInt(TILE_SIZE/2),p: Number.parseInt(TILE_SIZE/6), h: Number.parseInt(TILE_SIZE/4)},
-	3: {ID: 3, name:"pear", description: "Fresh, but more watery", hunger -10, hp +7", value: 8, type: "food", usage: "useLater", ColType: "solidObject",
+	3: {ID: 3, name:"pear", description: "Fresh, but more watery, hunger -10, hp +7", value: 8, type: "food", usage: "useLater", ColType: "solidObject",
 w: Number.parseInt(TILE_SIZE/2),p: Number.parseInt(TILE_SIZE/6), h: Number.parseInt(TILE_SIZE/4)},
 	4: {ID: 4, name:"block", description: "Completely solid object. I think you can only carry this if you're Nukko", value: 2, type: "food", usage: "useLater", ColType: "solidObject", w: TILE_SIZE, h: TILE_SIZE, p: TILE_SIZE},
 	5: {ID: 5, name: ""},
