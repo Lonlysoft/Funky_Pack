@@ -95,6 +95,22 @@
 	position: absolute;
 }
 
+.fixed{
+	position: fixed;
+	z-index: 8;
+}
+
+.bottom{
+	bottom: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
+	
+}
+
+.screenMenu.activated{
+	background: black;
+}
+
 .flex-row{
 	display: flex;
 	gap: 2em;

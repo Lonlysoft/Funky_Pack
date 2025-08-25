@@ -2,8 +2,8 @@ const Characters = {
 	Dynny:{
 		name: "Dynny",
 		age: 20,
-		min_speed: 2,
-		max_speed: 8,
+		min_speed: 1,
+		max_speed: 5,
 		jump_power: 40,
 		inventory: 8,
 		height: TILE_SIZE*1.5,

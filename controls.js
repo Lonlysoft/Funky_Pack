@@ -1,5 +1,6 @@
 var client_width = Math.floor(document.documentElement.clientWidth);
 var client_height = Math.floor(document.documentElement.clientHeight);
+const body = document.querySelector("body");
 var boundingRect = undefined
 var aspectRatio = 1;
 const CONTROLS_LAND_HEIGHT = 80;
@@ -31,6 +32,7 @@ function resize(){
 	aspectRatio = controls_canvas.width/client_width;
 	aspectRatioHeight = controls_canvas.height/client_height;
 	Ctrl.resize();
+	DeviceInfo.orientation = client_width>client_height?"landscape":"portrait";
 }
 
 const ControlsButtons = {
@@ -454,33 +456,33 @@ const Ctrl = {
 				if((Ctrl.Btns.west.active && Ctrl.Btns.down.active) || Ctrl.Btns.southwest.active){ //↙
 					Ctrl.Btns.west.active = Ctrl.Btns.down.active = true;
 					argumentEntity.dir = "SW";
-					argumentEntity.pol = -0.7;
+					argumentEntity.pol = -1;
 					argumentEntity.walk("x");
-					argumentEntity.pol = 0.7;
+					argumentEntity.pol = 1;
 					argumentEntity.walk("z");
 				}
 				else if((Ctrl.Btns.down.active && Ctrl.Btns.east.active) || Ctrl.Btns.southeast.active){ //↘
 					Ctrl.Btns.east.active = Ctrl.Btns.down.active = true;
 					argumentEntity.dir = "SE"
-					argumentEntity.pol = 0.7;
+					argumentEntity.pol = 1;
 					argumentEntity.walk("x");
-					argumentEntity.pol = 0.7;
+					argumentEntity.pol = 1;
 					argumentEntity.walk("z");
 				}
 				else if((Ctrl.Btns.up.active && Ctrl.Btns.east.active) || Ctrl.Btns.northeast.active){ //↗
 					Ctrl.Btns.up.active = Ctrl.Btns.east.active = true;
 					argumentEntity.dir = "NE"
-					argumentEntity.pol = 0.7;
+					argumentEntity.pol = 1;
 					argumentEntity.walk("x");
-					argumentEntity.pol = -0.7;
+					argumentEntity.pol = -1;
 					argumentEntity.walk("z");
 				}
 				else if((Ctrl.Btns.up.active && Ctrl.Btns.west.active) || Ctrl.Btns.northwest.active){ //↖
 					Ctrl.Btns.up.active = Ctrl.Btns.west.active = true;
 					argumentEntity.dir = "NW"
-					argumentEntity.pol = -0.7;
+					argumentEntity.pol = -1;
 					argumentEntity.walk("x");
-					argumentEntity.pol = -0.7;
+					argumentEntity.pol = -1;
 					argumentEntity.walk("z");
 				}
 			},

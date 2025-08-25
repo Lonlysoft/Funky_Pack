@@ -223,7 +223,7 @@ const Game = {
 }
 
 let GameMoment = 0;
-let GameMomentSav = 'title';
+let GameMomentSav = 'mainWorld';
 let frame = 0
 let frameaux = 0
 
@@ -240,9 +240,14 @@ function GameBonanza(){
 	//GamePlayLoop();
 }
 
+const DeviceInfo = {
+	isMobile: false,
+	orientation: "landscape"
+}
+
 document.addEventListener("DOMContentLoaded", function(){
-	const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-	if (!isMobile)
+	DeviceInfo.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+	if (!DeviceInfo.isMobile)
 		Ctrl.canvas.style.display = "none";
 		KeyBoardEvent();
 })
@@ -262,17 +267,16 @@ function GamePlay(){
 	} catch (error){
 		clearInterval(INTERVAL_ID);
 		console.log(error);
-		ctx.fillStyle = "#000";
-		ctx.fillRect(0, 0, canvas.width,canvas.height);
+		body.innerHTML = error.message;
+		/*
 		ctx.fillStyle = "#fff";
+		ctx.font = "48px serif"
+		ctx.fillText(":'/", 20, 48+1*24);
+		ctx.font = "24px monospace"
+		ctx.fillText(error.message, 20, 30+4*24);
 		ctx.font = "24px sans-serif"
-		for(let i = 0; i < 3; i++){
-			for(let j = 0; j < 25; j++){
-				let rand = random(0, 99999999999999);
-				ctx.fillText("0x" + rand.toString(16).padStart(15, '0'), 20+i*20*13, 30+j*24);
-			}
-		}
-		ctx.fillText("game terminated, reload page to reset", 20, 30+26*24);
+		ctx.fillText("game terminated, reload page to reset", 20, 30+5*24);
+		*/
 		
 		
 	}
