@@ -227,7 +227,7 @@ let GameMomentSav = 'mainWorld';
 let frame = 0
 let frameaux = 0
 
-const fps = 60, timeFrequency = 1000/fps;
+const fps = 50, timeFrequency = 1000/fps;
 let INTERVAL_ID;
 
 function GameBonanza(){
