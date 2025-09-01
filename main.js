@@ -291,7 +291,7 @@ function GamePlay(){
 function GamePlayLoop(timestamp){
 	try{
 		GamePlay();
-		deltaTime = Math.floor((intervalSav - timestamp)/100)*-1;
+		deltaTime = Math.floor((intervalSav - timestamp)/1000)*-1;
 		timeCounter += (timestamp && intervalSav)? Math.floor(timestamp - intervalSav) : 0;
 		intervalSav = timestamp;
 		window.requestAnimationFrame(GamePlayLoop);
