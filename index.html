@@ -47,7 +47,7 @@
 	</div>
 	<div class = "inGameUI">
 		<div class = "charWin">
-			<div class = "quickStats absolute">
+			<div class = "quickstats absolute">
 				<div class = "GameDate">unknown Month, 0</div>
 				<img class = "weather_icon" src = "src/imgs/WeatherIcon__clearDay.png">
 				<div class = "GameHour">0:00</div>
@@ -66,6 +66,22 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<section class = "cooking absolute centered">
+			<div class = "cooking__tools grid">
+				<div class = "oven"></div>
+				<div class = "fridge"></div>
+				<div class = "mixer"></div>
+				<div class = "frying pan"></div>
+				<div class = "large pot"></div>
+				<div class = "small pot"></div>
+			</div>
+			<div class = "holding_items flex-column">
+					
+			</div>
+			<div class = "button confirm"> start cooking </div>
+			<div class = "button cancel"> cancel </div>
+		</section>
 		<section class = "characterMenu absolute">
 			<div class = "it characterMenu__talkTo selected">
 				<img class = "icon-menu" src = "src/imgs/CharacterMenuIcon_talkTo.png"/>
@@ -147,9 +163,17 @@
 	<div class = "cinema"><div class = "cinema__alphaLock"></div></div>
 	<canvas class = "gameScreen" id = "tra"></canvas>
 	<canvas class="controles_cheroso" id = "ctrl"></canvas>
-	<div id = "fullScreen" class = "fixed bottom screenMenu">
+	<div class = "fixed bottom screenMenu not here">
 		<svg class = "icon" viewbox = "0 0 100 100" fill = "transparent" stroke= "#000" stroke-width = "3px">
 			<path d = "M0 50 l 50 -50 l 50 50">
+		</svg>
+	</div>
+	<div class = "flex-row fixed flat bottom">
+		<svg class = "icon" id = "fullscreen" viewbox = "0 0 110 110" fill = "var(--font-color)">
+			<path d = "M 10 50 v -40 h 40 v 10 h -30 v 30z"/>
+			<path d = "M 60 10 h 40 v 40 h -10 v -30 h -30 z"/>
+			<path d = "M 10 60 v 40 h 40 v -10 h -30 v -30z"/>
+			<path d = "M 60 90 h 30 v -30 h 10 v 40 h -40 z"/>
 		</svg>
 	</div>
 </body>

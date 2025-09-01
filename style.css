@@ -104,7 +104,6 @@
 	bottom: 0;
 	left: 50%;
 	transform: translate(-50%, 0);
-	
 }
 
 .screenMenu.activated{
@@ -133,6 +132,10 @@
 .icon{
 	height: 3em;
 	backdrop-filter: drop-shadow(1px 2px 0px rgba(0, 0, 0, 255));
+}
+
+.icon-big{
+	height: 15%;
 }
 
 .flex-column {

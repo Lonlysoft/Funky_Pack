@@ -1,8 +1,9 @@
 function debug(){
 	ctx.fillStyle = "#fff";
-	ctx.font = "10px sans-serif"
+	ctx.font = "20px sans-serif"
 	
-	ctx.fillText(Clock.getDayLateness(), 360, 100);
+	ctx.fillText(Game.CurrentCharacter.velocity.x, 360, 100);
+	ctx.fillText(Game.CurrentCharacter.velocity.z, 360, 120);
 	/*
 	for(let i = 0; i < Game.NPCarr.length; i++){
 		ctx.fillText(Game.NPCarr[i].name, 300, 162+(32*i));

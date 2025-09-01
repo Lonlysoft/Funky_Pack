@@ -456,46 +456,46 @@ const Ctrl = {
 				if((Ctrl.Btns.west.active && Ctrl.Btns.down.active) || Ctrl.Btns.southwest.active){ //↙
 					Ctrl.Btns.west.active = Ctrl.Btns.down.active = true;
 					argumentEntity.dir = "SW";
-					argumentEntity.pol = -1;
+					argumentEntity.pol = -0.7;
 					argumentEntity.walk("x");
-					argumentEntity.pol = 1;
+					argumentEntity.pol = 0.7;
 					argumentEntity.walk("z");
 				}
 				else if((Ctrl.Btns.down.active && Ctrl.Btns.east.active) || Ctrl.Btns.southeast.active){ //↘
 					Ctrl.Btns.east.active = Ctrl.Btns.down.active = true;
 					argumentEntity.dir = "SE"
-					argumentEntity.pol = 1;
+					argumentEntity.pol = 0.7;
 					argumentEntity.walk("x");
-					argumentEntity.pol = 1;
+					argumentEntity.pol = 0.7;
 					argumentEntity.walk("z");
 				}
 				else if((Ctrl.Btns.up.active && Ctrl.Btns.east.active) || Ctrl.Btns.northeast.active){ //↗
 					Ctrl.Btns.up.active = Ctrl.Btns.east.active = true;
 					argumentEntity.dir = "NE"
-					argumentEntity.pol = 1;
+					argumentEntity.pol = 0.7;
 					argumentEntity.walk("x");
-					argumentEntity.pol = -1;
+					argumentEntity.pol = -0.7;
 					argumentEntity.walk("z");
 				}
 				else if((Ctrl.Btns.up.active && Ctrl.Btns.west.active) || Ctrl.Btns.northwest.active){ //↖
 					Ctrl.Btns.up.active = Ctrl.Btns.west.active = true;
 					argumentEntity.dir = "NW"
-					argumentEntity.pol = -1;
+					argumentEntity.pol = -0.7;
 					argumentEntity.walk("x");
-					argumentEntity.pol = -1;
+					argumentEntity.pol = -0.7;
 					argumentEntity.walk("z");
 				}
 			},
 			B(argumentEntity){
 				if(Ctrl.Btns.B.active && argumentEntity.onGround == true && Ctrl.state.B == false /*&& !argumentEntity.isSwimming*/){//jumping 
-					argumentEntity.velocity.y += argumentEntity.JPOW;
+					argumentEntity.velocity.y += argumentEntity.JPOW *deltaTime;
 				}
 				else if(!Ctrl.Btns.B.active && !argumentEntity.onGround && !argumentEntity.jumping && Ctrl.state.B){//jump velocity basics
 					argumentEntity.velocity.y = 0;
 					argumentEntity.jumping = true;
 				}
 				else if(Ctrl.Btns.B.active && Ctrl.state.B == false && argumentEntity.isSwimming){ //jumping on water
-					argumentEntity.velocity.y += argumentEntity.JPOW;
+					argumentEntity.velocity.y += argumentEntity.JPOW *deltaTime;
 				}
 			},
 			A(argumentEntity){

@@ -149,11 +149,21 @@ const Game = {
 			Game.CurrentCharacter.update();
 			Col.main(Game.CurrentCharacter, Game.currentMap, -1);
 			UI.charWinUpdate(Clock, Game.CurrentCharacter);
-			if(frame > fps){
+			if(timeCounter>=2000){
 				Clock.passTime();
-				Game.CurrentCharacter.hunger+=1;
+				timeCounter = 0;
 			}
 			debug();
+		},
+		cookin5g(){
+			UI.cookingStart();
+			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			Ctrl.action(null, "pause");
+			Ctrl.stateSave();
+			Game.ctx.globalAlpha = 0.3;
+			Game.ctx.fillStyle = "#000";
+			Game.ctx.fillRect(0, 0, Game.canvas.width, Game.canvas.height);
+			Game.ctx.globalAlpha = 1;
 		},
 		waiter(){
 			if(Game.CurrentCharacter == null){
@@ -227,17 +237,30 @@ let GameMomentSav = 'mainWorld';
 let frame = 0
 let frameaux = 0
 
-const fps = 50, timeFrequency = 1000/fps;
-let INTERVAL_ID;
+let fps = 60, timeFrequency = 1000/fps;
+let timeCounter = 0;
+let intervalSav = 0;
+let deltaTime = 0;
 
 function GameBonanza(){
 	TouchEvent();
 	GamePadEvent();
-	//
+	let fullScreenBtn = document.getElementById("fullscreen");
+	fullScreenBtn.addEventListener("click",
+		(event)=>{
+			if(body.requestFullscreen)
+				body.requestFullscreen();
+			else if(body.webkitRequestFullscreen)
+				body.webkitRequestFullscreen();
+			else if(body.msRequestFullscreen)
+				body.msRequestFullscreen();
+			else if(body.mozRequestFullscreen)
+				body.mozRequestFullscreen();
+		}
+	);
 	window.addEventListener("resize", resize);
 	resize();
-	INTERVAL_ID = setInterval(GamePlay, timeFrequency);
-	//GamePlayLoop();
+	GamePlayLoop();
 }
 
 const DeviceInfo = {
@@ -253,36 +276,37 @@ document.addEventListener("DOMContentLoaded", function(){
 })
 
 function GamePlay(){
-	try{
-		clear(Game.canvas, Game.ctx);
-		clear(BG.canvas, BG.ctx);
-		clear(Ctrl.canvas, Ctrl.ctx);
-		Game.moment[GameMoment]();
-		if(frame > fps){
-			frame = 0;
-		}
-		else{
-			frame++;
-		}
-	} catch (error){
-		clearInterval(INTERVAL_ID);
-		console.log(error);
-		body.innerHTML = error.message;
-		/*
-		ctx.fillStyle = "#fff";
-		ctx.font = "48px serif"
-		ctx.fillText(":'/", 20, 48+1*24);
-		ctx.font = "24px monospace"
-		ctx.fillText(error.message, 20, 30+4*24);
-		ctx.font = "24px sans-serif"
-		ctx.fillText("game terminated, reload page to reset", 20, 30+5*24);
-		*/
-		
-		
+	clear(Game.canvas, Game.ctx);
+	clear(BG.canvas, BG.ctx);
+	clear(Ctrl.canvas, Ctrl.ctx);
+	Game.moment[GameMoment]();
+	if(frame > fps){
+		frame = 0;
+	}
+	else{
+		frame++;
 	}
 }
 
-function GamePlayLoop(){
-	GamePlay();
-	window.requestAnimationFrame(GamePlayLoop);
+function GamePlayLoop(timestamp){
+	try{
+		GamePlay();
+		deltaTime = Math.floor((intervalSav - timestamp)/100)*-1;
+		timeCounter += (timestamp && intervalSav)? Math.floor(timestamp - intervalSav) : 0;
+		intervalSav = timestamp;
+		window.requestAnimationFrame(GamePlayLoop);
+	} catch (error){
+		console.log(error);
+		body.innerHTML = errorScreen.icon;
+		body.innerHTML += errorScreen.text;
+		body.innerHTML += error.message;
+		body.style.color = "var(--bg-color)";
+		body.style.display = "flex";
+		body.style.flexDirection = "column";
+		body.style.justifyContent = "center";
+		body.style.alignItems = "flex-start";
+		body.style.padding = "20%"
+		body.style.boxSizing = "border-box"
+		body.style.height = "100vh";
+	}
 }

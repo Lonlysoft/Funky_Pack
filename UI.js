@@ -143,9 +143,28 @@ const UI = {
 		option: ["noFile"],
 		DOM: document.querySelector(".loadByCookie"),
 	},
+	cooking: {
+		selectedOption: 0,
+		currentLayer: 0,
+		
+		option: [],
+		items: [],
+		DOM: document.querySelector(".cooking"),
+		toolsDOM: document.querySelector(".cooking__tools"),
+	},
 	loadCookiesStart(str){
 		let save = this.loadCookies.DOM.createElement("div");
 		save.innerHTML = str;
+	},
+	cookingStart(){
+		//get the cooking tools the object represents.
+		//stoves have: oven and the upper part, for testing manners I'll put anything here
+		this.cooking.option = ["stove", "oven", "freeze"];
+		//so you'll push the 
+		this.cooking.DOM.style.display = "flex";
+	},
+	cookingDismiss(){
+		this.loadDOM.style.display = "none";
 	},
 	titleStart(){
 		this.titleDOM.style.display = "flex";

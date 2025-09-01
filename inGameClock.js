@@ -2,6 +2,7 @@ const Clock = {
 	hour: 0, minute: 0,
 	year: 1, day: 28, month: 1,
 	monthList: ["yearMonth", "spring", "summer", "autumn", "winter"],
+	secondSav: 0,
 	currentWeather: "clear",
 	weatherList: ["clear", "rain", "storm", "snow", "snowstorm", "fog", "special_weather_statement_statement"],
 	upcomingWeather: "rain",
