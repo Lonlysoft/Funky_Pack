@@ -49,8 +49,7 @@ Time to be recursive, it's a 5 level mini-game where you need to test a bunch of
 - Who wants to be a milionaire?
 A quiz about the game with the most specific questions. If you give the correct answers to all the questions, you'll win $1M. But be careful, if one answer is wrong, you lose it all.
 
-- Soldier: all time
-Inspired from topdown shooters, you'll be sent to a war on a unknown country and you'll battle against some foes that aren't actually evil, but it's your duty to eliminate them. Winning or losing makes you get a different game ending. 
+- Soldier: all time; Inspired from topdown shooters, you'll be sent to a war on a unknown country and you'll battle against some foes that aren't actually evil, but it's your duty to eliminate them. Winning or losing makes you get a different game ending. 
 *in this mode Dynny won't be able to go back to the American City or add other jobs on the schedule.
 
 Average game moment covers, but the triggers are different
@@ -67,7 +66,7 @@ Drive the limousine of the wealthy badger into different requested places.
 
 Current State:
 -
-Everything is as initial as you can guess. It's not a complicated game, but since it's my first time developing a big project such as a game is hard to make.
+Everything is in its early stages as you can guess. It's not a complicated game, but since it's my first time developing a big project such as a game is hard to make.
 
 My main focus is currently on:
 
@@ -82,10 +81,10 @@ It's just important because you need the NPCs to look like they have an actual l
 # Current changelog:
 
 - ```dialogs.js``` was re-added. The dialog data is now quite better than the first version. I now need to do all the NPCs variations as well as their option system that can change relationship levels.
-- Items and their collisions are updated. Now the player can stand on top of the items, and also collect and put them in their inventory. The next step is make them accessible and usable in the Character Menu.
-
-- Issues with pages' lexical errors have been resolved. Now remote playability is also possible.
+- Items and their collisions are updated. Now the player can stand on top of the items, and also collect and put them in their inventory. The next step is to make them accessible and usable in the Character Menu.
+- Issues with pages' lexical errors have been resolved. Playing remotely is now also possible.
 - Issues involving imagery are now resolved.
-- Dynny's spritesheet was updated, but unfortunately still with incomplete animations. Sorry, but the old one had some major issues and it was bugging me the fact that he didn't have a tail.
+- Dynny's spritesheet was updated, but unfortunately, it still has incomplete animations. Sorry, but the old one had some major issues and it was bugging me the fact that he didn't have a tail.
+
 
 
