@@ -237,7 +237,7 @@ let GameMomentSav = 'mainWorld';
 let frame = 0
 let frameaux = 0
 
-let fps = 60, timeFrequency = 1000/fps;
+let fps = 20, timeFrequency = 1000/fps;
 let timeCounter = 0;
 let intervalSav = 0;
 let deltaTime = 0;
@@ -290,9 +290,13 @@ function GamePlay(){
 
 function GamePlayLoop(timestamp){
 	try{
-		GamePlay();
+		let lastFrameTime = 9999;
 		deltaTime = Math.floor((intervalSav - timestamp)/1000)*-1;
 		timeCounter += (timestamp && intervalSav)? Math.floor(timestamp - intervalSav) : 0;
+		if (lastFrameTime >= timeFrequency) {
+			lastFrameTime = timestamp - (timeCounter % timeFrequency);
+			GamePlay();
+		}
 		intervalSav = timestamp;
 		window.requestAnimationFrame(GamePlayLoop);
 	} catch (error){
