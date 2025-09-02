@@ -43,7 +43,6 @@ const Col = {
 		let entityBox = [entity.boxCol.x, entity.boxCol.z, entity.boxCol.w, entity.boxCol.p];
 		let shadowBox = [shadow.x, shadow.z, shadow.w, shadow.p];
 		if(this.AABB(entityBox, shadowBox)){
-			entity.subLayer = shadowSubLayer-1;
 			entity.layer = shadowLayer;
 		}
 	},

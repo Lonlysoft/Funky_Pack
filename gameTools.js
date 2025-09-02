@@ -1,6 +1,6 @@
 const TILE_SIZE = 64;
 const MAGIC_OFFSET = 0.01;
-const GRAVITY_EARTH = 6;
+const GRAVITY_EARTH = 5;
 const GRAVITY_WATER = 1;
 
 function WorldToGrid(axis, tileSize){
