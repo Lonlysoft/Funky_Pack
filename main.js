@@ -238,9 +238,8 @@ let frame = 0
 let frameaux = 0
 
 let fps = 30, timeFrequency = 1000/fps;
-let timeCounter = 0;
-let intervalSav = 0;
-let deltaTime = 0;
+let timeCounter = 0, intervalSav = 0, deltaTime = 0;
+let intervalID;
 
 function GameBonanza(){
 	TouchEvent();
@@ -260,7 +259,8 @@ function GameBonanza(){
 	);
 	window.addEventListener("resize", resize);
 	resize();
-	GamePlayLoop();
+	//GamePlayLoop();
+	setInterval(GamePlayLoop, timeFrequency);
 }
 
 const DeviceInfo = {
@@ -288,14 +288,13 @@ function GamePlay(){
 	}
 }
 
-function GamePlayLoop(timestamp){
+function GamePlayLoop(){
 	try{
-		deltaTime = Math.floor((intervalSav - timestamp)/1000)*-1;
-		timeCounter += (timestamp && intervalSav)? Math.floor(timestamp - intervalSav) : 0;
+		deltaTime = 1;
+		timeCounter += timeFrequency;
 		GamePlay();
-		intervalSav = timestamp;
-		window.requestAnimationFrame(GamePlayLoop);
 	} catch (error){
+		clearInterval(intervalID);
 		console.log(error);
 		body.innerHTML = errorScreen.icon;
 		body.innerHTML += errorScreen.text;
