@@ -23,11 +23,11 @@ Dynny can do as many jobs he wants as long as they don't overlap much. With a fu
 Stats
 -
 Dynny has stats like life, hunger, joy, stamina and solitude. <br>
-The player needs to watch for those 5.
+The player needs to be careful of those 5.
 
 Life: It's commonly referred to as HP. Dynny has 200 HP. If he reaches 0 HP, it's game over. You'll need to go to a hospital and your debt will increase.<br>
 Hunger: Dynny gotta eat. If he doesn't, he might faint and eat the holding object to satisfy his hunger. <br>
-Joy: How Dynny feels. Joy is given by spending time with nukko, playing games or doing relaxing activities. <br>
+Joy: How Dynny feels. Joy is given by spending time with Nukko, playing games or doing relaxing activities. <br>
 Solitude: a special bar that decreases by the years you're away from Nukko. Dynny doesn't understand that, but Nukko is important to him. And not having him around for too long might get his life empty. if this bar goes to 0, objects like trees and stores might disappear. And Dynny might presence allucinations and weird effercts might appear randomly.
 
 Jobs
@@ -85,6 +85,7 @@ It's just important because you need the NPCs to look like they have an actual l
 - Issues with pages' lexical errors have been resolved. Playing remotely is now also possible.
 - Issues involving imagery are now resolved.
 - Dynny's spritesheet was updated, but unfortunately, it still has incomplete animations. Sorry, but the old one had some major issues and it was bugging me the fact that he didn't have a tail.
+
 
 
 
