@@ -16,6 +16,7 @@ const Game = {
 	buffer: undefined,
 	onDialog: false,
 	currentDialogType: 'none',
+	storyMoment: 0,
 	ischaracterMenud: false,
 	placeBuffer: 0,
 	requestTransition: true,
@@ -155,7 +156,7 @@ const Game = {
 			}
 			debug();
 		},
-		cookin5g(){
+		cooking(){
 			UI.cookingStart();
 			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			Ctrl.action(null, "pause");
@@ -241,11 +242,32 @@ let fps = 30, timeFrequency = 1000/fps;
 let timeCounter = 0, intervalSav = 0, deltaTime = 0;
 let intervalID;
 
+const SideBar = {
+	DOM: body.querySelector(".sidebar"),
+	isHere: false,
+	fullScreenBtn: document.getElementById("fullscreen"),
+	musicVolume: document.querySelector("#music-volume"),
+	sfxVolume: document.querySelector("#sfx-volume"),
+	bringSideBar: document.getElementById("bring-sidebar"),
+}
+
 function GameBonanza(){
 	TouchEvent();
 	GamePadEvent();
-	let fullScreenBtn = document.getElementById("fullscreen");
-	fullScreenBtn.addEventListener("click",
+	const fullScreenBtn = document.getElementById("fullscreen");
+	const fullScreenBtnIcon = fullScreenBtn.querySelector("svg");
+	SideBar.bringSideBar.addEventListener("click",
+		(event)=>{
+			SideBar.isHere = !SideBar.isHere;
+			if(SideBar.isHere){
+				SideBar.DOM.classList.remove("notHere");
+				SideBar.DOM.style.left = 0;
+			}else{
+				SideBar.DOM.classList.add("notHere");
+			}
+		}
+	);
+	SideBar.fullScreenBtn.addEventListener("click",
 		(event)=>{
 			if(body.requestFullscreen)
 				body.requestFullscreen();
@@ -255,17 +277,27 @@ function GameBonanza(){
 				body.msRequestFullscreen();
 			else if(body.mozRequestFullscreen)
 				body.mozRequestFullscreen();
+			SideBar.fullScreenBtn.classList.toggle("active");
+			DeviceInfo.fullScreen = !DeviceInfo.fullScreen;
+			console.log(DeviceInfo.fullScreen);
+			console.log(fullScreenBtnIcon.viewBox);
+			if(DeviceInfo.fullScreen){
+				fullScreenBtnIcon.viewBox.baseVal.x = 110
+			} else {
+				fullScreenBtnIcon.viewBox.baseVal.x = 0
+			}
 		}
 	);
 	window.addEventListener("resize", resize);
 	resize();
 	//GamePlayLoop();
-	setInterval(GamePlayLoop, timeFrequency);
+	intervalID = setInterval(GamePlayLoop, timeFrequency);
 }
 
 const DeviceInfo = {
 	isMobile: false,
-	orientation: "landscape"
+	orientation: "landscape",
+	fullScreen: false
 }
 
 document.addEventListener("DOMContentLoaded", function(){
@@ -299,6 +331,7 @@ function GamePlayLoop(){
 		body.innerHTML = errorScreen.icon;
 		body.innerHTML += errorScreen.text;
 		body.innerHTML += error.message;
+		body.innerHTML += "<a href = ''><button>reset game</button></a>";
 		body.style.color = "var(--bg-color)";
 		body.style.display = "flex";
 		body.style.flexDirection = "column";
@@ -308,4 +341,5 @@ function GamePlayLoop(){
 		body.style.boxSizing = "border-box"
 		body.style.height = "100vh";
 	}
+
 }

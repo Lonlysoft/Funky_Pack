@@ -31,9 +31,9 @@ const UI = {
 	characterMenuItems:{
 		elements: document.querySelectorAll(".it"),
 		alt: document.querySelector(".characterMenu .description"),
-		optionList: ["talk to", "items", "look at", "stats"],
+		optionList: ["items", "look at", "stats"],
 		selectedOption: 0,
-		optionLength: 3,
+		optionLength: 2,
 		layer: 0
 	},
 	characterMenuSubmenus: {
@@ -97,7 +97,6 @@ const UI = {
 	dialogItems: {
 		stackPair: 0,
 		bufferAnimation: NaN,
-		hasOption: false,
 		object: null,
 		position: {x: undefined, y: undefined},
 		selectedOption: 0,
@@ -110,23 +109,32 @@ const UI = {
 				stringSplice += this.object.text[i];
 			}
 			stringSplice += "</div><div class='next-symbol'></div>"
+			if(this.object.option && bufferAnimation >= this.object.text.length){
+				for(let i = 0; i < this.object.length; i++){
+					stringSplice += "<div class = 'option'>"+this.object[i].text+"</div>";
+				}
+			}
 			UI.dialogDOM.style.width = "25em";
-			UI.dialogDOM.style.height = Math.ceil(this.object.text.length/25) + 2 + "em";
-			UI.dialogDOM.style.top = "25%"; //transformIntoBar(Game.CurrentCharacter.centralPoint[1], Game.canvas.height) + "%"
-			UI.dialogDOM.style.left = "25%"
+			UI.dialogDOM.style.height = Math.ceil(this.object.text.length/25) + 3 + "em";
+			UI.dialogDOM.style.top = "5%";
+			//transformIntoBar(Game.CurrentCharacter.centralPoint[1], Game.canvas.height) + "%";
+			UI.dialogDOM.style.left = "5%"
 			UI.dialogDOM.innerHTML = stringSplice;
 		}
 	},
-	statsBottomMenu: document.querySelector(".schedule_options"),
 	waiterHud: 0,
 	charWindowDOM: document.querySelector(".charWin"),
 	milionaire: 0,
 	wallCleanerHud: 0,
-	jobTableDOM_options:
+	jobTable:
 	{
 		objs: document.querySelectorAll(".selectable"),
 		optionX: 0,
-		optionY: 0
+		optionY: 0,
+		statsBottomMenu: document.querySelector(".schedule_options"),
+		layer: 0,
+		//layer = 0 -> the cursor is in the bottom menu 
+		//layer = 1 -> the cursor controling the schedule
 	},
 	title: {
 		selectedOption: 0,
@@ -191,12 +199,13 @@ const UI = {
 		this.jobTableDOM.style.display = "none";
 	},
 	dialogStart(){
-		this.dialogDOM.style.display = "flex"
-		this.dialogDOM.style.transform = "scale(1)"
+		this.dialogDOM.style.display = "block"
+		
+		setTimeout(()=>{this.dialogDOM.style.transform = "scale(1)"}, 304)
 	},
 	dialogDismiss(){
 		this.dialogDOM.style.transform = "scale(0)"
-		this.dialogDOM.style.display = "none"
+		setTimeout(()=>{this.dialogDOM.style.display = "none"}, 304)
 	},
 	characterMenuStart(){
 		this.characterMenuDOM.style.display = "flex";

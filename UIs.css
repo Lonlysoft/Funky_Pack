@@ -1,8 +1,4 @@
-.inGameUI{
-	width: 100vh;
-	height: 100vh;
-	overflow: hidden;
-}
+
 
 /* title screen */
 .titleScreen{
@@ -28,16 +24,6 @@
 	margin: 0;
 	color: var(--bg-color);
 }
-
-.outlined{
-	color: rgba(0, 0, 0, 0);
-	-webkit-text-stroke: 2px var(--bg-color);
-}
-
-.titleOptions{
-	
-}
-
 .titleCommand{
 	background: var(--font-color);
 	opacity: 50%;
@@ -45,14 +31,12 @@
 	padding: 0.5em 1.5em;
 	border-radius: 50px;
 }
-
 .titleCommand.selected{
 	transition: color 0.4s, transform 0.4s, opacity 0.5s;
 	opacity: 100%;
 	transform: translate(-0.2em, -0.2em);
 	box-shadow: 0.2em 0.2em 0 #000;
 }
-
 .titleScreen footer{
 	color: var(--bg-color);
 	text-align: center;
@@ -60,7 +44,6 @@
 }
 
 /* container saving */
-
 .container__saving{
 	padding: 1em;
 	position: absolute;
@@ -71,13 +54,11 @@
 	gap: 0.2em;
 	color: var(--font-color);
 }
-
 .container__saving div{
 	padding: 0.5em 1em;
 	color: var(--font-color);
 	border: 1px solid var(--font-color);
 }
-
 .container__saving div.selected{
 	color: var(--bg-color);
 	border: none;
@@ -85,21 +66,17 @@
 	transition: color 0.4s, border 0.4s;
 }
 
-
 /* schedule table */
 .schedule{
 	display:none;
 }
-
 .schedule header{
 	background: var(--bg-color);
 	text-align: center;
 	padding: 1em;
-	
 	color: var(--font-color);
 	border: 1px solid var(--font-color);
 }
-
 .schedule__options{
 	display: flex;
 	justify-content: center;
@@ -114,14 +91,12 @@
 	font-size: 1.5em;
 	text-align: center;
 }
-
 .schedule main{
 	width: 100%;
 	overflow-y: scroll;
 	display: grid;
 	grid-template-columns: repeat(8, 4fr);
 }
-
 .schedule main div{
 	display: flex;
 	background: var(--bg-color);
@@ -130,18 +105,10 @@
 	padding: 0.5em;
 	border: 1px solid var(--font-color);
 }
-
 .schedule main div.selected{
 	transition: background 0.2s, color 0.2s;
 	background: var(--font-color);
 	color: var(--bg-color);
-}
-
-.weather_icon{
-	object-fit: cover;
-	background-position: 0 0;
-	width: 2em;
-	height: 2em;
 }
 
 .charWin{
@@ -157,7 +124,6 @@
 	gap: 1em;
 	padding: 1em;
 }
-
 .characterQuickInfo{
 	bottom: 5%;
 	left: 50%;
@@ -178,8 +144,8 @@
 	padding: 1em;
 	gap: 1em;
 	transform: translate(-50%, -50%);
+	z-index: 6;
 }
-
 .characterMenu::before{
 	content: '';
 	z-index: -1;
@@ -192,7 +158,6 @@
 	border-radius: 50px;
 	overflow: hidden;
 }
-
 .it:before{
 	position: absolute;
 	content: "";
@@ -204,7 +169,6 @@
 	border-radius: 50%;
 	opacity: 50%;
 }
-
 .characterMenu .description{
 	width: 75%;
 	text-shadow: 0 1px 0 #000, 0 2px 0 #000, 0 3px 0 #000, 0 4px 0 #000;
@@ -213,7 +177,6 @@
 	font-size: 2em;
 	font-family: "classicalComic", sans-serif;
 }
-
 .characterMenu .it.selected{
 	transform: translate(0, -2px);
 }
@@ -232,9 +195,8 @@
 	position: absolute;
 	display: none;
 	transform: scale(0.2);
-	transition: transform 1s;
+	transition: transform 0.6s;
 }
-
 .comic{
 	background: #fff;
 	border-radius: 1em;
@@ -243,11 +205,9 @@
 	box-shadow: 0 3px 0 #000;
 	box-shadow: 0 5px 0 #000;
 }
-
 .whoTalks{
 	font-weight: 900;
 }
-
 .speaking{
 	margin: 0;
 	padding: 1em;
@@ -262,12 +222,10 @@
 	width: 50%;
 	padding: 2vh;
 }
-
 .bags__item{
 	position: relative;
 	padding-left: 1.5em;
 }
-
 .bags__item.selected::after{
 	content: '';
 	width: 1em;
@@ -285,67 +243,18 @@
 	transform: translate(-50%, -50%);
 }
 
-.icon-pic{
-	width: 2.5em;
-	border-radius: 50%;
-	border: 1px solid #000;
-}
-
-.circularBar{
-	padding: 0.2em;
-	background: conic-gradient(from 0deg, var(--bg-color) 0deg 80deg, var(--font-color) 0deg 360deg);
-	transition: background 2s;
-}
-
-.vertical-bar{
-	padding: 0.1em;
-	background: var(--font-color);
-	width: 1em;
-	height: 5em;
-}
-
-.vertical-bar div{
-	width: 100%;
-	background: var(--bg-color);
-}
-
-.horizontal-bar{
-	padding: 0.1em;
-	background: var(--font-color);
-	width: 5em;
-	height: 1em;
-}
-
-.horizontal-bar div{
-	background: var(--bg-color);
-	height: 100%;
-}
-
 .HUD__HPnumber{
 	color: var(--bg-color);
 	font-size: 2em;
 }
-
 .money, .GameDate, .GameHour{
 	font-weight: 100;
 	color: var(--bg-color);
 	font-size: 2em;
 	text-shadow: 1px 1px 2px var(--font-color);
 }
-
 .next-symbol{
 	background-image: url("data:image/svg+xml;utf-8,<svg viewbox='0 0 100 100' fill=var(--font-color)><path d = 'M0 0 h 100 l -50 100z'></svg>");
 	width: 2em;
 	height: 2em;
 }
-
-/*
-.option.selected::before{
-	position: absolute;
-	content: '';
-	left: 0;
-	top: 0;
-	width:1em; height: 1em;
-	background: #000;
-}
-*/

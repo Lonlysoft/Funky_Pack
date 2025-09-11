@@ -44,6 +44,7 @@ class Being{
 		this.onGround = true;
 		this.animationIndex = 0;
 		this.anim = animations;
+		this.movementFlag = "walk";
 		this.isMirrored = false;
 		this.grapho = document.querySelector(HTMLsrc);
 		this.layer = 0;
@@ -67,6 +68,18 @@ class Being{
 		}
 		else if(this.velocity[axis] <= (this.VMAX *-1)){
 			this.velocity[axis] = this.VMAX *deltaTime * this.pol;
+		}
+		else{
+			this.velocity[axis] += this.ACL* deltaTime* this.pol;
+		}
+	}
+	run(axis){
+		this.isWalking[axis] = true;
+		if(this.velocity[axis] >= this.VMAX*2){
+			this.velocity[axis] = this.VMAX *2 * deltaTime * this.pol;
+		}
+		else if(this.velocity[axis] <= (this.VMAX *-1)){
+			this.velocity[axis] = this.VMAX*2 *deltaTime * this.pol;
 		}
 		else{
 			this.velocity[axis] += this.ACL* deltaTime* this.pol;
@@ -132,7 +145,6 @@ class Protagonist extends Being{
 		this.ID = 0;
 		this.holdingObject = false;
 	}
-	//important
 	update(){
 		saveCoords(this.boxCol);
 		if(this.onGround && this.isSpecialSkilling){
@@ -159,8 +171,6 @@ class Protagonist extends Being{
 		this.hp = limitateUp(this.hp, this.HP);
 		this.hunger = limitateUp(this.hunger, this.maxHunger);
 	}
-	//graphics
-	// We'll need the map.current because... Most mini-games require An special and different game map.
 	draw(currentMap = Game.currentMap){
 		drawShadow(ctx, this, currentMap, 0.5);
 		let tailInFront = false;
@@ -190,10 +200,9 @@ class Protagonist extends Being{
 		for(let i = 0; i < NPC__arr.length; i++){
 			let this__box = [NPC__arr[i].boxCol.x, NPC__arr[i].boxCol.z, NPC__arr[i].boxCol.w, NPC__arr[i].boxCol.p];
 			if(isOnGround(this.WorldPos.y, NPC__arr[i].boxCol.y) && Col.AABB(box, this__box)){
+				const conditionalDto = {time: Clock.getDayLateness(), story: Game.storyMoment, relationship: this.relationships[NPC__arr[i].ID]};
 				Game.onDialog = true;
-				UI.dialogItems.object = NPC__arr[i].dialog[this.relationships[NPC__arr[i].ID]][Clock.getDayLateness()];
-				
-				UI.dialogItems.object.relationshipLevel = this.relationships[NPC__arr[i].ID];
+				UI.dialogItems.object = chooseDialog(NPC__arr[i].dialog, conditionalDto);
 				UI.dialogItems.bufferAnimation = 0;
 				UI.dialogStart();
 			}
@@ -227,11 +236,9 @@ class Protagonist extends Being{
 			}
 		}
 	}
-	
 	learnSkill(skillName){
 		if(!this.skillList.includes(skillName))this.skillList.push(skillName);
 	}
-	
 	doSkill(skillName){
 		if(this.skillList.includes(skillName))skillSet[skillName](this);
 	}
@@ -258,6 +265,7 @@ const skillSet = {
 		entity.velocity.y = 0;
 	},
 	release: function(entity){
+		//TODO: check if item is a food. if it is the food will be discarted and play an animation of it getting destroyed.
 		if(entity.hand != 0){
 			entity.holdingObject = false;
 			const box = directions.setBox[entity.dir](entity);
@@ -280,5 +288,4 @@ const skillSet = {
 		entity.holdingObject = false;
 		entity.hand = 0;
 	}
-	
 }

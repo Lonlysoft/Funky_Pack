@@ -304,10 +304,10 @@ const Ctrl = {
 			this.Btns = this.BtnsLandscape;
 		}
 	},
-	
-	ListProps4WallCleaner: ["eastNwest", "upNdown", "A", "B", "start"],
 	ListPropsMainWorld: ["eastWest", "upDown", "diagonals", "B", "A", "Y", "X", "crouch", "run", "select", "start", "zed"],
 	ListPropsItemMenu: ["up", "down", "east", "A", "B"],
+	ListPropsTitle: ["up", "down", "confirm", "B"],
+	ListPropsPause: ["start", "directionals", "confirm", "cancel"],
 	
 	state: {
 		A: false,
@@ -340,228 +340,167 @@ const Ctrl = {
 			}
 		}
 	},
-	
 	touchend:function(event) {
 		event.preventDefault();
 		Ctrl.testBtns(event.targetTouches);
     },
-
 	touchmove:function(event) {
 		event.preventDefault();
 		Ctrl.testBtns(event.targetTouches);
     },
-
     touchstart:function(event) {
 		event.preventDefault();
 		Ctrl.testBtns(event.targetTouches);
 	},
 	
 	BonanzaMiniGames: {
-		wallCleaner: {
-			eastNwest: function(argumentEntity){
-				if(Ctrl.Btns.west.active){//⬅
-					argumentEntity.dir = "NW"
-					argumentEntity.pol = -1;
-					argumentEntity.walk("x");
-				}
-				else if(Ctrl.Btns.east.active){ //➡
-					argumentEntity.dir = "NE"
-					argumentEntity.pol = 1;
-					argumentEntity.walk("x");
-				}
-				else{
-					argumentEntity.stopAbsolute("x");
-				}
-			},
-			upNdown: function(argumentEntity){
-				if(Ctrl.Btns.up.active){//⬆
-					if(!WallCleaner.isControllingStrolling){
-						argumentEntity.velocity.z = -10;
-						WallCleaner.stroller.y = argumentEntity.boxCol.z;
-					}
-					else{
-						
-					}
-				}
-				else if(Ctrl.Btns.down.active){//⬇
-					if(!WallCleaner.isControllingStrolling){
-						argumentEntity.velocity.z = 10;
-						WallCleaner.stroller.y = argumentEntity.boxCol.z;
-					}
-					else{
-					
-					}
-				}
-				else{ argumentEntity.stopAbsolute("z"); }
-			},
-			A: function(argumentEntity){
-				if(Ctrl.Btns.A.active && Ctrl.state.A == false){ //A interação 
-					if(argumentEntity.pol < 0 && WallCleaner.stroller.x == argumentEntity.boxCol.x){
-						WallCleaner.isControllingStroller = !WallCleaner.isControllingStroller;
-					}
-					else{
-						WallCleaner.cleaner.x = WorldToGrid(argumentEntity.WorldPos.x, TILE_SIZE);
-						WallCleaner.cleaner.y = WorldToGrid(argumentEntity.WorldPos.z - TILE_SIZE, TILE_SIZE);
-					}
-				}
-			},
-			B: function(){
-				if(Ctrl.Btns.B.active && Ctrl.state.B == false){ //A interação 
-					WallCleaner.clean();
-				}
-			},
-			start: function(){
-				if(Ctrl.Btns.start.active && Ctrl.state.start == false){//start
-					UI.charWinDismiss();
-					GameMomentSav = GameMoment;
-					GameMoment = 'pause';
-				}
-			}
-		}
+		
 	},
 	Bonanza: {
 		character: {
-			eastWest(argumentEntity){
+			eastWest(entity){
 				if(Ctrl.Btns.west.active){//⬅
-					argumentEntity.dir = "W";
-					argumentEntity.pol = -1;
-					argumentEntity.walk("x");
+					entity.dir = "W";
+					entity.pol = -1;
+					entity[entity.movementFlag]("x");
 				}
 				else if(Ctrl.Btns.east.active){ //➡
-					argumentEntity.dir = "E"
-					argumentEntity.pol = 1;
-					argumentEntity.walk("x");
+					entity.dir = "E"
+					entity.pol = 1;
+					entity[entity.movementFlag]("x");
 					
 				}
 				else{
-					argumentEntity.stop("x");				
+					entity.stop("x");				
 				}
 			},
-			upDown: function(argumentEntity){
+			upDown: function(entity){
 				if(Ctrl.Btns.up.active){//⬆
-					argumentEntity.dir = "N";
-					argumentEntity.pol = -1;
-					argumentEntity.walk("z");
+					entity.dir = "N";
+					entity.pol = -1;
+					entity[entity.movementFlag]("z");
 				}
 				else if(Ctrl.Btns.down.active){//⬇
-					argumentEntity.dir = "S"
-					argumentEntity.pol = 1;
-					argumentEntity.walk("z");
+					entity.dir = "S"
+					entity.pol = 1;
+					entity[entity.movementFlag]("z");
 				}
 				else{
-					argumentEntity.stop("z");
+					entity.stop("z");
 				}
 			},
-			diagonals(argumentEntity){
+			diagonals(entity){
 				if((Ctrl.Btns.west.active && Ctrl.Btns.down.active) || Ctrl.Btns.southwest.active){ //↙
 					Ctrl.Btns.west.active = Ctrl.Btns.down.active = true;
-					argumentEntity.dir = "SW";
-					argumentEntity.pol = -0.7;
-					argumentEntity.walk("x");
-					argumentEntity.pol = 0.7;
-					argumentEntity.walk("z");
+					entity.dir = "SW";
+					entity.pol = -0.7;
+					entity[entity.movementFlag]("x");
+					entity.pol = 0.7;
+					entity[entity.movementFlag]("z");
 				}
 				else if((Ctrl.Btns.down.active && Ctrl.Btns.east.active) || Ctrl.Btns.southeast.active){ //↘
 					Ctrl.Btns.east.active = Ctrl.Btns.down.active = true;
-					argumentEntity.dir = "SE"
-					argumentEntity.pol = 0.7;
-					argumentEntity.walk("x");
-					argumentEntity.pol = 0.7;
-					argumentEntity.walk("z");
+					entity.dir = "SE"
+					entity.pol = 0.7;
+					entity[entity.movementFlag]("x");
+					entity.pol = 0.7;
+					entity[entity.movementFlag]("z");
 				}
 				else if((Ctrl.Btns.up.active && Ctrl.Btns.east.active) || Ctrl.Btns.northeast.active){ //↗
 					Ctrl.Btns.up.active = Ctrl.Btns.east.active = true;
-					argumentEntity.dir = "NE"
-					argumentEntity.pol = 0.7;
-					argumentEntity.walk("x");
-					argumentEntity.pol = -0.7;
-					argumentEntity.walk("z");
+					entity.dir = "NE"
+					entity.pol = 0.7;
+					entity[entity.movementFlag]("x");
+					entity.pol = -0.7;
+					entity[entity.movementFlag]("z");
 				}
 				else if((Ctrl.Btns.up.active && Ctrl.Btns.west.active) || Ctrl.Btns.northwest.active){ //↖
 					Ctrl.Btns.up.active = Ctrl.Btns.west.active = true;
-					argumentEntity.dir = "NW"
-					argumentEntity.pol = -0.7;
-					argumentEntity.walk("x");
-					argumentEntity.pol = -0.7;
-					argumentEntity.walk("z");
+					entity.dir = "NW"
+					entity.pol = -0.7;
+					entity[entity.movementFlag]("x");
+					entity.pol = -0.7;
+					entity[entity.movementFlag]("z");
 				}
 			},
-			B(argumentEntity){
-				if(Ctrl.Btns.B.active && argumentEntity.onGround == true && Ctrl.state.B == false /*&& !argumentEntity.isSwimming*/){//jumping 
-					argumentEntity.velocity.y += argumentEntity.JPOW *deltaTime;
+			B(entity){
+				if(Ctrl.Btns.B.active && entity.onGround == true && Ctrl.state.B == false /*&& !entity.isSwimming*/){//jumping 
+					entity.velocity.y += entity.JPOW *deltaTime;
 				}
-				else if(!Ctrl.Btns.B.active && !argumentEntity.onGround && !argumentEntity.jumping && Ctrl.state.B){//jump velocity basics
-					argumentEntity.velocity.y = 0;
-					argumentEntity.jumping = true;
+				else if(!Ctrl.Btns.B.active && !entity.onGround && !entity.jumping && Ctrl.state.B){//jump velocity basics
+					entity.velocity.y = 0;
+					entity.jumping = true;
 				}
-				else if(Ctrl.Btns.B.active && Ctrl.state.B == false && argumentEntity.isSwimming){ //jumping on water
-					argumentEntity.velocity.y += argumentEntity.JPOW *deltaTime;
-				}
-			},
-			A(argumentEntity){
-				if(Ctrl.Btns.A.active && Ctrl.state.A == false){ //A interação
-					argumentEntity.interact(Game.NPCarr, Game.ItemArr);
+				else if(Ctrl.Btns.B.active && Ctrl.state.B == false && entity.isSwimming){ //jumping on water
+					entity.velocity.y += entity.JPOW *deltaTime;
 				}
 			},
-			zed(argumentEntity){
+			A(entity){
+				if(Ctrl.Btns.A.active && Ctrl.state.A == false){
+					entity.interact(Game.NPCarr, Game.ItemArr);
+				}
+			},
+			zed(entity){
 				
 			},
-			run(argumentEntity){
-				
+			run(entity){
+				if(Ctrl.Btns.run.active){
+					entity.movementFlag = "run";
+				} else{
+					entity.movementFlag = "walk";
+				}
+					
 			},
-			Y(argumentEntity){
+			Y(entity){
 				if(Ctrl.Btns.Y.active && !Ctrl.state.Y){ //Y
-					if(!argumentEntity.onGround && argumentEntity.skillList.includes("dashDive")){
-						argumentEntity.doSkill("dashDive");
-						//argumentEntity.atk();
-						argumentEntity.isSpecialSkilling = true;
+					if(!entity.onGround && entity.skillList.includes("dashDive")){
+						entity.doSkill("dashDive");
+						//entity.atk();
+						entity.isSpecialSkilling = true;
 					}
 					else{
-						//argumentEntity.atk();
+						//entity.atk();
 					}
 				}
-				if((Ctrl.Btns.zed.active /*!Ctrl.state.L*/) && (Ctrl.Btns.Y.active && !Ctrl.state.Y) && argumentEntity.holdingObject){
-					argumentEntity.doSkill("eatAnything");
+				if((Ctrl.Btns.zed.active /*!Ctrl.state.L*/) && (Ctrl.Btns.Y.active && !Ctrl.state.Y) && entity.holdingObject){
+					entity.doSkill("eatAnything");
 				}
-				if(Ctrl.Btns.Y.active && !Ctrl.state.Y && argumentEntity.holdingObject){
-					argumentEntity.doSkill("putAway");
+				if(Ctrl.Btns.Y.active && !Ctrl.state.Y && entity.holdingObject){
+					entity.doSkill("putAway");
 				}
 			},
-			X(argumentEntity){
+			X(entity){
 				if(Ctrl.Btns.X.active && Ctrl.state.X == false){
-					if(argumentEntity.skillList.includes("hold") && argumentEntity.skillList.includes("release") && !argumentEntity.holdingObject){
-						argumentEntity.doSkill("hold");
+					if(entity.skillList.includes("hold") && entity.skillList.includes("release") && !entity.holdingObject){
+						entity.doSkill("hold");
 					}
-					else if(argumentEntity.holdingObject){
-						argumentEntity.doSkill("release");
+					else if(entity.holdingObject){
+						entity.doSkill("release");
 					}
 				}
 			},
-			crouch(argumentEntity){
+			crouch(entity){
 				if(Ctrl.Btns.look.active && Ctrl.state.L == false){
-					if(!argumentEntity.onGround && argumentEntity.skillList.includes("dashDive")){
-						argumentEntity.doSkill("dashDive");
-						//argumentEntity.atk();
+					if(!entity.onGround && entity.skillList.includes("dashDive")){
+						entity.doSkill("dashDive");
+						//entity.atk();
 					}
 					else{
-						argumentEntity.isCrouching = true;
+						entity.isCrouching = true;
 					}
 				}
 				if(Ctrl.Btns.look.active){
-					if(argumentEntity.onGround && argumentEntity.skillList.includes("feralMode")){
-						argumentEntity.feralMode = true;
+					if(entity.onGround && entity.skillList.includes("feralMode")){
+						entity.feralMode = true;
 					}
 				}
 			},
-			select(argumentEntity){
+			select(entity){
 				if(Ctrl.Btns.select.active && !Ctrl.state.select){
-					UI.charWinDismiss();
 					
-					GameMomentSav = GameMoment;
-					GameMoment = 'pause';
 				}
 			},
-			start(argumentEntity){
+			start(entity){
 				if(Ctrl.Btns.start.active && Ctrl.state.start == false){//start
 					UI.charWinDismiss();
 					UI.characterMenuStart();
@@ -613,181 +552,223 @@ const Ctrl = {
 					UI.characterMenuItems.layer--;
 				}
 			}
+		},
+		startMenu: {
+			west(){
+				if(Ctrl.Btns["west"].active){
+					UI.title.optionDOM[1].classList.remove("selected");
+					UI.title.selectedOption = 0;
+					UI.title.optionDOM[0].classList.add("selected");
+				}
+			},
+			east(){
+				if(Ctrl.Btns.east.active){ //➡️
+					UI.title.optionDOM[0].classList.remove("selected");
+					UI.title.selectedOption = 1;
+					UI.title.optionDOM[1].classList.add("selected");
+				}
+			},
+			confirm(){
+				if((Ctrl.Btns.start.active && !Ctrl.state.start) || (Ctrl.Btns.A.active && !Ctrl.state.A)){
+					Game.requestTransition = true;
+					Game.buffer = UI.title.options[UI.title.selectedOption];
+				}
+			},
+			B(){}
+		},
+		loadMenu: {
+			west(){
+				if(Ctrl.Btns.west.active){
+					UI.loadGame.optionDOM[1].classList.remove("selected");
+					UI.loadGame.selectedOption = 0;
+					UI.loadGame.optionDOM[0].classList.add("selected");
+				}
+			},
+			east(){
+				if(Ctrl.Btns.east.active){ //➡️
+					UI.loadGame.optionDOM[0].classList.remove("selected");
+					UI.loadGame.selectedOption = 1;
+					UI.loadGame.optionDOM[1].classList.add("selected");
+				}
+			},
+			confirm(){
+				if((Ctrl.Btns.start.active && Ctrl.state.start == false) || (Ctrl.Btns.A.active && Ctrl.state.A == false)){
+					Game.requestTransition = true;
+					Game.buffer = UI.loadGame.options[UI.title.selectedOption];
+				}
+			},
+			B(){
+				if(Ctrl.Btns.B.active && !Ctrl.state.B){
+					Game.requestTransition = true;
+					Game.buffer = GameMomentSav;
+				}
+			}
+		},
+		charMenu: {
+			start(){
+				if(Ctrl.Btns.start.active && Ctrl.state.start == false){
+					UI.characterMenuDismiss();
+					GameMoment = GameMomentSav;
+				}
+			},
+			directionals(){
+				if(Ctrl.Btns.west.active && !Ctrl.state.west){ //right
+					UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.remove("selected");
+					UI.characterMenuItems.selectedOption--;
+					if(UI.characterMenuItems.selectedOption<0){
+						UI.characterMenuItems.selectedOption = UI.characterMenuItems.optionLength;
+					}
+					UI.characterMenuItems.alt.innerHTML = UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption];
+					UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.add("selected");
+				}
+				if(Ctrl.Btns.east.active && !Ctrl.state.east){ //right
+					
+					UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.remove("selected");
+					UI.characterMenuItems.selectedOption++;
+					if(UI.characterMenuItems.selectedOption>UI.characterMenuItems.optionLength){
+						UI.characterMenuItems.selectedOption = 0;
+					}
+					UI.characterMenuItems.alt.innerHTML = UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption];
+					UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.add("selected");
+					
+				}
+			},
+			confirm(){
+				if(Ctrl.Btns.A.active && !Ctrl.state.A){
+					UI.characterMenuItems.layer++;
+				}
+			},
+			cancel(){
+				if(Ctrl.Btns.B.active && !Ctrl.state.B){
+					
+				}
+			}
+		},
+		stats: {
+			start(){
+				return;
+			},
+			directionals(){
+				if(Ctrl.Btns.west.active && !Ctrl.state.west){ //left
+					
+				}
+				else if(Ctrl.Btns.up.active && !Ctrl.state.up){//⬆
+					
+				}
+				else if(Ctrl.Btns.down.active && !Ctrl.state.down){//⬇
+					
+				}
+				if(Ctrl.Btns.west.active && !Ctrl.state.east){ //right
+					
+				}
+			},
+			confirm(){
+				if(Ctrl.Btns.A.active && Ctrl.state.A == false){
+					if(UI.jobTable.layer < 1){
+						UI.jobTable.layer++;
+					} else {
+						UI.jobTable[UI.jobTable.bottomOptions[UI.jobTable.selectedBottomOptionIndex]]();
+					}
+				}
+			},
+			cancel(){
+				if(Ctrl.Btns.B.active && Ctrl.state.B == false){
+					UI.scheduleDismiss();
+					UI.characterMenuItems.layer--;
+				}
+			}
+		},
+		dialogs: {
+			start(){
+				return;
+			},
+			directionals(){
+				if(Ctrl.Btns.up.active && !Ctrl.state.up && UI.dialogItems.hasOption){
+					const possibleOptions = document.querySelectorAll(".option");
+					console.log(UI.dialogItems.selectedOption);
+					possibleOptions[UI.dialogItems.selectedOption].classList.remove("selected");
+					UI.dialogItems.selectedOption--;
+					if(UI.dialogItems.selectedOption < 0){
+						UI.dialogItems.selectedOption = possibleOptions.length - 1;
+					}
+					possibleOptions[UI.dialogItems.selectedOption].classList.add("selected");
+				}
+				if(Ctrl.Btns.down.active && !Ctrl.state.down && UI.dialogItems.hasOption){
+					const possibleOptions = document.querySelectorAll(".option");
+					console.log(UI.dialogItems.selectedOption);
+					possibleOptions[UI.dialogItems.selectedOption].classList.remove("selected");
+					UI.dialogItems.selectedOption++;
+					if(UI.dialogItems.selectedOption > possibleOptions.length-1){
+						UI.dialogItems.selectedOption = 0;
+					}
+					possibleOptions[UI.dialogItems.selectedOption].classList.add("selected");
+				}
+			},
+			confirm(){
+				if(Ctrl.Btns.A.active && Ctrl.state.A == false){
+					if(UI.dialogItems.bufferAnimation < UI.dialogItems.object.text.length-1){
+						UI.dialogItems.bufferAnimation = UI.dialogItems.object.text.length-1;
+					}
+					else{
+						if(UI.dialogItems.object.next == undefined){
+							UI.dialogDismiss();
+							Game.onDialog = false;
+							UI.dialogItems.bufferAnimation = NaN;
+							GameMoment = GameMomentSav;
+						}
+						else{
+							UI.dialogItems.bufferAnimation = 0;
+							UI.dialogItems.object = Dialogs[UI.dialogItems.object.ID][UI.dialogItems.object.next];
+						}
+					}
+				}
+			},
+			cancel(){
+				
+			}
 		}
 	},
 	
 	Moment: {
-		start: function(argumentEntity){
-			if(Ctrl.Btns["west"].active){
-				UI.title.optionDOM[1].classList.remove("selected");
-				UI.title.selectedOption = 0;
-				UI.title.optionDOM[0].classList.add("selected");
-			}
-			if(Ctrl.Btns.east.active){ //➡️
-				UI.title.optionDOM[0].classList.remove("selected");
-				UI.title.selectedOption = 1;
-				UI.title.optionDOM[1].classList.add("selected");
-			}
-			if((Ctrl.Btns.start.active && Ctrl.state.start == false) || (Ctrl.Btns.A.active && Ctrl.state.A == false)){
-				Game.requestTransition = true;
-				Game.buffer = UI.title.options[UI.title.selectedOption];
+		start: function(entity){
+			for(let i = 0; i < Ctrl.ListPropsTitle.length; i++){
+				Ctrl.BonanzaMenu["startMenu"][Ctrl.ListPropsTitle[i]]();
 			}
 		},
-		load: function(argumentEntity){
-			if(Ctrl.Btns.west.active){
-				UI.loadGame.optionDOM[1].classList.remove("selected");
-				UI.loadGame.selectedOption = 0;
-				UI.loadGame.optionDOM[0].classList.add("selected");
-			}
-			if(Ctrl.Btns.east.active){ //➡️
-				UI.loadGame.optionDOM[0].classList.remove("selected");
-				UI.loadGame.selectedOption = 1;
-				UI.loadGame.optionDOM[1].classList.add("selected");
-			}
-			if((Ctrl.Btns.start.active && Ctrl.state.start == false) || (Ctrl.Btns.A.active && Ctrl.state.A == false)){
-				Game.requestTransition = true;
-				Game.buffer = UI.loadGame.options[UI.title.selectedOption];
-			}
-			if(Ctrl.Btns.B.active && !Ctrl.state.B){
-				Game.requestTransition = true;
-				Game.buffer = GameMomentSav;
+		load: function(entity){
+			for(let i = 0; i < Ctrl.ListPropsTitle.length; i++){
+				Ctrl.BonanzaMenu["loadMenu"][Ctrl.ListPropsTitle[i]]();
 			}
 		},
-		characterMenu: function(argumentEntity){
-			if(Ctrl.Btns.start.active && Ctrl.state.start == false){
-				UI.characterMenuDismiss();
-				GameMoment = GameMomentSav;
-			}
-			
-			if(Ctrl.Btns.west.active && !Ctrl.state.west){ //right
-				UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.remove("selected");
-				UI.characterMenuItems.selectedOption--;
-				if(UI.characterMenuItems.selectedOption<0){
-					UI.characterMenuItems.selectedOption = UI.characterMenuItems.optionLength;
-				}
-				UI.characterMenuItems.alt.innerHTML = UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption];
-				UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.add("selected");
-			}
-			if(Ctrl.Btns.east.active && !Ctrl.state.east){ //right
-				
-				UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.remove("selected");
-				UI.characterMenuItems.selectedOption++;
-				if(UI.characterMenuItems.selectedOption>UI.characterMenuItems.optionLength){
-					UI.characterMenuItems.selectedOption = 0;
-				}
-				UI.characterMenuItems.alt.innerHTML = UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption];
-				UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.add("selected");
-				
-			}
-			if(Ctrl.Btns.A.active && Ctrl.state.A == false){
-				UI.characterMenuItems.layer++;
-				
-			}
-			if(Ctrl.Btns.A.active && Ctrl.state.B == false){
-				
-			}
-			
-		},
-		
-		stats: function(argumentEntity){
-			if(Ctrl.Btns.west.active && !Ctrl.state.west){ //left
-				
-			}
-			else if(Ctrl.Btns.up.active && !Ctrl.state.up){//⬆
-				
-			}
-			else if(Ctrl.Btns.down.active && !Ctrl.state.down){//⬇
-				
-			}
-			if(Ctrl.Btns.west.active && !Ctrl.state.east){ //right
-				
-			}
-			if(Ctrl.Btns.A.active && Ctrl.state.A == false){
-				
-			}
-			if(Ctrl.Btns.B.active && Ctrl.state.B == false){
-				UI.scheduleDismiss();
-				UI.characterMenuItems.layer--;
+		characterMenu: function(entity){
+			for(let i = 0; i < Ctrl.ListPropsPause.length; i++){
+				Ctrl.BonanzaMenu["charMenu"][Ctrl.ListPropsPause[i]]();
 			}
 		},
 		
-		"talk to": function(argumentEntity){
-			if(Ctrl.state.A == false){
-				if(argumentEntity.party == undefined){
-					Game.onDialog = true;
-					UI.dialogItems.text = Dialogs.party_not_present[0].text;
-					UI.dialogItems.bufferAnimation = 0;
-					UI.dialogStart();
-				}
-			}
-			if(Ctrl.Btns.A.active && Ctrl.state.A == false){
-				//Game.dialogBox.buffer++;
-				//if(Game.dialogBox.buffer == undefined){
-					UI.dialogDismiss();
-					Game.onDialog = false;
-					UI.dialogItems.bufferAnimation = NaN;
-					UI.characterMenuItems.layer--;
-				//}
+		stats: function(entity){
+			for(let i = 0; i < Ctrl.ListPropsPause.length; i++){
+				Ctrl.BonanzaMenu["stats"][Ctrl.ListPropsPause[i]]();
 			}
 		},
 		
-		items: function(argumentEntity){
+		items: function(entity){
 			for(let i = 0; i < Ctrl.ListPropsItemMenu.length; i++){
-				Ctrl.BonanzaMenu["itemMenu"][Ctrl.ListPropsItemMenu[i]](argumentEntity);
+				Ctrl.BonanzaMenu["itemMenu"][Ctrl.ListPropsItemMenu[i]](entity);
 			}
 		},
 		
-		dialogs: function(argumentEntity){
-			if(Ctrl.Btns.A.active && Ctrl.state.A == false){
-				if(UI.dialogItems.object.next == undefined){
-					UI.dialogDismiss();
-					Game.onDialog = false;
-					UI.dialogItems.bufferAnimation = NaN;
-					GameMoment = GameMomentSav;
-				}
-				else{
-					UI.dialogItems.bufferAnimation = 0;
-					UI.dialogItems.object = Dialogs[UI.dialogItems.object.ID][UI.dialogItems.object.relationshipLevel][UI.dialogItems.object.next];
-				}
+		dialogs: function(entity){
+			for(let i = 0; i < Ctrl.ListPropsPause.length; i++){
+				Ctrl.BonanzaMenu["dialogs"][Ctrl.ListPropsPause[i]]();
 			}
-			if(Ctrl.Btns.up.active && !Ctrl.state.up && UI.dialogItems.hasOption){
-				const possibleOptions = document.querySelectorAll(".option");
-				console.log(UI.dialogItems.selectedOption);
-				possibleOptions[UI.dialogItems.selectedOption].classList.remove("selected");
-				UI.dialogItems.selectedOption--;
-				if(UI.dialogItems.selectedOption < 0){
-					UI.dialogItems.selectedOption = possibleOptions.length - 1;
-				}
-				possibleOptions[UI.dialogItems.selectedOption].classList.add("selected");
-			}
-			if(Ctrl.Btns.down.active && !Ctrl.state.down && UI.dialogItems.hasOption){
-				const possibleOptions = document.querySelectorAll(".option");
-				console.log(UI.dialogItems.selectedOption);
-				possibleOptions[UI.dialogItems.selectedOption].classList.remove("selected");
-				UI.dialogItems.selectedOption++;
-				if(UI.dialogItems.selectedOption > possibleOptions.length-1){
-					UI.dialogItems.selectedOption = 0;
-				}
-				possibleOptions[UI.dialogItems.selectedOption].classList.add("selected");
-			}
-			
 		},
 		
-		character: function(argumentEntity){
+		character: function(entity){
 			for(let i = 0; i < Ctrl.ListPropsMainWorld.length; i++){
-				Ctrl.Bonanza["character"][Ctrl.ListPropsMainWorld[i]](argumentEntity);
+				Ctrl.Bonanza["character"][Ctrl.ListPropsMainWorld[i]](entity);
 			}
 		},
-		pause: function(){
-			if(Ctrl.Btns.start.active && !Ctrl.state.start){
-				GameMoment = GameMomentSav;
-			}
-		},//pause action End
-		wallCleaner: function(argumentEntity){
-			for(let i = 0; i < Ctrl.ListProps4WallCleaner.length; i++){
-				Ctrl.BonanzaMiniGames["wallCleaner"][Ctrl.ListProps4WallCleaner[i]](argumentEntity);
-			}
-		}//wallcleaner action end
 	},
 	stateSave(){
 		Ctrl.state.up = Ctrl.Btns.up.active;
@@ -803,10 +784,8 @@ const Ctrl = {
 		Ctrl.state.L = Ctrl.Btns.look.active;
 		Ctrl.state.X = Ctrl.Btns.X.active;
 	},
-	action(argumentEntity, type){
-		let contanter = 0
-		//pre-config
-		Ctrl.Moment[type](argumentEntity);
+	action(entity, type){
+		Ctrl.Moment[type](entity);
 	}
 }
 

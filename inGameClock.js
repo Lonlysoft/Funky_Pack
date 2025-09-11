@@ -71,5 +71,8 @@ const Clock = {
 		} else{
 			return {hour: this.hour%13, minute: this.minute, late: "PM"};
 		}
+	},
+	getMonth(){
+		return this.monthList[this.month];
 	}
 }

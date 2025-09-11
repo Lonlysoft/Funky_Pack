@@ -31,7 +31,9 @@ const BoxPusher = {
 	declairBoxes(){
 		for(let i = 0; i < currentMap.height; i++){
 			for(let j = 0; j < currentMap.width; j++){
-				if(random_number(0, 3))
+				if(random_number(0, 3)){
+					
+				}
 			}
 		}
 	},
@@ -45,6 +47,12 @@ const BoxPusher = {
 			if(!this.hasBoxesPushed){
 				this.declairBoxes();
 			}
+		}
+	},
+	winningCondition(){
+		if(this.finalBoxAmount >= 200){
+			//request winning transition 
+			
 		}
 	}
 };

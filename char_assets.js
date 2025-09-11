@@ -3,7 +3,7 @@ const Characters = {
 		name: "Dynny",
 		age: 20,
 		min_speed: 2,
-		max_speed: 5,
+		max_speed: 7,
 		jump_power: 40,
 		inventory: 8,
 		height: TILE_SIZE*1.5,
@@ -21,8 +21,8 @@ const Characters = {
 			walkHold: ["infinite", 4, 4, 4, 4, 5, 5, 5, 5, 4, 4, 4, 4, "m", 5, "m", 5, "m", 5, "m", 5],
 			walkDifferentHold: ["infinite", 5, 5, 5, 5, 5, 4, 4, 4, 4, 6, 6, 6, 6, 6, 4, 4, 4, 4],
 			jumpHold: ["linear", 5],
-			diving: ["linear", 9],
-			crouch: ["linear", 9],
+			diving: ["linear", 7],
+			crouch: ["linear", 7],
 			eating: ["linear", 8, 8, 8, 8, 8, 8, 8, 8, 0]
 		},
 		relationships: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
