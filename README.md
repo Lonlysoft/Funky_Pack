@@ -7,7 +7,7 @@ It's a personal project made for:
 
 # Playtest
 
-<a href = "https://lonlysoft.github.io/Funky_Pack"> Test my game here!</a> <br> Please bear in mind that it's not finished yet, it's still in its early stages, but you can test the controls performance on mobile or PC. It's pretty important because I don't have a keyboard, so I can't test it. And also, a gamepad option is available for testing.
+<a href = "https://lonlysoft.github.io/Funky_Pack"> Test my game here!</a> <br><br> Please bear in mind that it's not finished yet, it's still in its early stages, but you can test the controls performance on mobile or PC. It's pretty important because I don't have a keyboard, so I can't test it. And also, a gamepad option is available for testing.
 
 # What is it?
 Funky Pack is a game inspired by farming simulators. We all have heard the story of a farming simulator before: <br>
@@ -84,7 +84,8 @@ It's just important because you need the NPCs to look like they have an actual l
 - Items and their collisions are updated. Now the player can stand on top of the items, and also collect and put them in their inventory. The next step is to make them accessible and usable in the Character Menu.
 - Issues with pages' lexical errors have been resolved. Playing remotely is now also possible.
 - Issues involving imagery are now resolved.
-- Dynny's spritesheet was updated, but unfortunately, it still has incomplete animations. Sorry, but the old one had some major issues and it was bugging me the fact that he didn't have a tail.
+- Dynny's spritesheet was updated, but unfortunately, it still has incomplete animations. Sorry, but the old one had some major issues and the fact that he didn't have a tail was irritating me.
+
 
 
 
