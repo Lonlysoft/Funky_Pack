@@ -22,7 +22,7 @@
 		<img id = "CNTRLS" src = "src/imgs/ctrls.png">
 		<img id = "tilemap" src = "src/imgs/tileset.png">
 		<img id = "dynnySpriteSheet" src = "src/imgs/DynnySpriteSheet2.png">
-		<img id = "items" src = "src/imgs/itemGraph.png"/>
+		<img id = "items" src = "src/imgs/Items.png"/>
 		<!-- Game World Graphics -->
 			
 	</div>
@@ -96,7 +96,7 @@
 			</div>
 			<div class = "description">items</div>
 		</section>
-		<section class = "dialogs comic notHere"></section>
+		<section class = "dialogs comic notHere" id = "dialogs"></section>
 		<section class = "notHere bags flat"></section>
 		<!--<section class = "status">
 			<div>DYNNY STATS</div>
@@ -151,6 +151,15 @@
 			</tbody>
 		</table>
 	</section>
+	<section class = "inGameUI">
+		<div class = "waiterToolBox flex-row" id = "waiterToolBox">
+			<div class = "timer vertical-line">
+				<h6>Timer</h6>
+				<h5>200</h5>
+			</div>
+			<div class = "pauted" id = "noteblock"></div>
+		</div>
+	</section>
 	<div class = "cinema"><div class = "cinema__alphaLock"></div></div>
 	<canvas class = "gameScreen" id = "tra"></canvas>
 	<canvas class="controles_cheroso" id = "ctrl"></canvas>
@@ -164,7 +173,7 @@
 		</svg>
 	</div>
 	<section class = "outConfig sidebar notHere">
-		<div class = "sidebar__image">You're playing: Funky Pack</div>
+		<h1 class = "sidebar__image">You're playing: Funky Pack</h1>
 		<div class = "flex-row">
 			<div class = "outConfig__fullscreen bordered" id = "fullscreen">
 				<svg class = "icon" viewbox = "0 0 110 110" fill = "var(--bg-color)">
@@ -197,7 +206,7 @@
 		</div>
 		-->
 		<a href = "">
-		<button class = "outConfig__exitApplication">
+		<button class = "outConfig__resetApplication">
 			reset game
 		</button>
 		</a>

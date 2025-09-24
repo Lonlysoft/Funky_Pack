@@ -16,9 +16,9 @@ function load(){
 	const reader = new FileReader();
 	const stream;
 	//get the textStream as a string because it's """""encrypted""""""
-	//decrypt the stream (still laughing because it's JS. this shit is NOT secure at all lol)
+	//decrypt the stream 
 	const decryptedStream = decrypt(stream);
-	//receive this as JSON and convert to an object. THAT MEANS: PUT THE BOXES INTO A BOX. (the anecdote of boxes)
+	//receive this as JSON and convert to an object. THAT MEANS: PUT THE BOXES INTO their respective box.
 	const SavedData = decryptedStream.parseJSON();
 	Game.levelName = SavedData.levelName;
 	Game.currentCharacter = Character[SavedData.character];
@@ -49,18 +49,19 @@ function loadCookies(){
 }
 
 function injectData(game, dataParsed){ 
-	game.currentCharacter = Character[dataParsed.character.ID];
-	game.currentCharacter.hp = dataParsed.character.hp;
-	game.currentCharacter.hunger = dataParsed.character.hunger;
-	game.currentCharacter.joy = dataParsed.characterInfo.joy;
+	game.currentCharacter = new Protagonist(dataParsed.character);
+	game.currentCharacter.hp = dataParsed.character.currentHp;
+	game.currentCharacter.hunger = dataParsed.character.currentHunger;
+	game.currentCharacter.joy = dataParsed.characterInfo.currentJoy;
 	game.currentCharacter.tail = dataParsed.characterInfo.tail;
 	game.storyMoment = dataParsed.storyMoment;
 	Clock.month = dataParse.clock.month;
 	Clock.day = dataParse.clock.day;
 	Clock.year = dataParse.clock.year;
+	Clock.hour = dataParse.clock.hour;
 }
 
-//just the basic in order to not use
+//the basic AES system to encrypt the save system
 function encrypt(message){
 	const key = "Rest in peace CreatureUnknown..."
 	const IV = CryptoJS.lib.WordArray.random(16);
@@ -76,7 +77,7 @@ function encrypt(message){
 	);
 	
 	const encryptedMessage = encrypted.toString();
-	const ivHex = CryptoJS.enc.Hex.stringify(iv);
+	const ivHex = CryptoJS.enc.Hex.stringify(IV);
 	const combinedMessage = ivHex + encryptedMessage;
 	
 	return combinedMessage;

@@ -306,7 +306,7 @@ const Ctrl = {
 	},
 	ListPropsMainWorld: ["eastWest", "upDown", "diagonals", "B", "A", "Y", "X", "crouch", "run", "select", "start", "zed"],
 	ListPropsItemMenu: ["up", "down", "east", "A", "B"],
-	ListPropsTitle: ["up", "down", "confirm", "B"],
+	ListPropsTitle: ["east", "west", "confirm", "B"],
 	ListPropsPause: ["start", "directionals", "confirm", "cancel"],
 	
 	state: {
@@ -594,7 +594,7 @@ const Ctrl = {
 			confirm(){
 				if((Ctrl.Btns.start.active && Ctrl.state.start == false) || (Ctrl.Btns.A.active && Ctrl.state.A == false)){
 					Game.requestTransition = true;
-					Game.buffer = UI.loadGame.options[UI.title.selectedOption];
+					Game.buffer = UI.loadGame.option[UI.loadGame.selectedOption];
 				}
 			},
 			B(){
@@ -684,24 +684,20 @@ const Ctrl = {
 			},
 			directionals(){
 				if(Ctrl.Btns.up.active && !Ctrl.state.up && UI.dialogItems.hasOption){
-					const possibleOptions = document.querySelectorAll(".option");
-					console.log(UI.dialogItems.selectedOption);
-					possibleOptions[UI.dialogItems.selectedOption].classList.remove("selected");
+					UI.dialogItems.optionsDOM[UI.dialogItems.selectedOption].classList.toggle("selected");
 					UI.dialogItems.selectedOption--;
 					if(UI.dialogItems.selectedOption < 0){
-						UI.dialogItems.selectedOption = possibleOptions.length - 1;
+						UI.dialogItems.selectedOption = UI.dialogItems.optionsDOM.length - 1;
 					}
-					possibleOptions[UI.dialogItems.selectedOption].classList.add("selected");
+					UI.dialogItems.optionsDOM[UI.dialogItems.selectedOption].classList.toggle("selected");
 				}
 				if(Ctrl.Btns.down.active && !Ctrl.state.down && UI.dialogItems.hasOption){
-					const possibleOptions = document.querySelectorAll(".option");
-					console.log(UI.dialogItems.selectedOption);
-					possibleOptions[UI.dialogItems.selectedOption].classList.remove("selected");
+					UI.dialogItems.optionsDOM[UI.dialogItems.selectedOption].classList.toggle("selected");
 					UI.dialogItems.selectedOption++;
-					if(UI.dialogItems.selectedOption > possibleOptions.length-1){
+					if(UI.dialogItems.selectedOption > UI.dialogItems.optionsDOM.length-1){
 						UI.dialogItems.selectedOption = 0;
 					}
-					possibleOptions[UI.dialogItems.selectedOption].classList.add("selected");
+					UI.dialogItems.optionsDOM[UI.dialogItems.selectedOption].classList.toggle("selected");
 				}
 			},
 			confirm(){
@@ -710,11 +706,18 @@ const Ctrl = {
 						UI.dialogItems.bufferAnimation = UI.dialogItems.object.text.length-1;
 					}
 					else{
-						if(UI.dialogItems.object.next == undefined){
+						if(UI.dialogItems.object.next == undefined && !UI.dialogItems.hasOption){
 							UI.dialogDismiss();
 							Game.onDialog = false;
 							UI.dialogItems.bufferAnimation = NaN;
 							GameMoment = GameMomentSav;
+						}
+						else if(UI.dialogItems.object.next == undefined && UI.dialogItems.hasOption){
+							UI.dialogItems.bufferAnimation = 0;
+							UI.dialogItems.object = Dialogs[UI.dialogItems.object.ID][UI.dialogItems.object.options[UI.dialogItems.selectedOption].next];
+							UI.dialogItems.selectedOption = 0;
+							UI.dialogItems.hasOption = false;
+							UI.dialogItems.hasOptionsLoaded = false;
 						}
 						else{
 							UI.dialogItems.bufferAnimation = 0;

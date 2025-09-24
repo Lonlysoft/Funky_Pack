@@ -1,6 +1,6 @@
 const TILE_SIZE = 64;
 const MAGIC_OFFSET = 0.01;
-const GRAVITY_EARTH = 5;
+const GRAVITY_EARTH = 6;
 const GRAVITY_WATER = 1;
 
 function WorldToGrid(axis, tileSize){
@@ -313,4 +313,19 @@ function drawShadow(context, entity, map, oppacity){
 	context.stroke();
 	context.closePath();
 	context.globalAlpha = 1;
+}
+
+class Money{
+	constructor(initialAmount = 0){
+		this.cents = 0
+		this.unit = 0
+	}
+	add(number){
+		this.cents += number%100;
+		this.unit += Math.trunc(number/100);
+	}
+	remove(number){
+		this.cents -= number%100;
+		this.unit -= Math.trunc(number/100);
+	}
 }

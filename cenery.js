@@ -8,9 +8,9 @@ const Scenery = {
 		nowMoment.currentMap.setItems(ITEMS);
 		this.hasDeclaired = true;
 	},
-	draw: function(currChar, items, NPCs){
+	draw: function(currentMap, currChar, items, NPCs){
 		let layers = [];
-		for(let i = 0; i < Game.currentMap.objectGrid.length; i++){
+		for(let i = 0; i < currentMap.objectGrid.length; i++){
 			layers.push(new Array());
 		}
 		for(let i = 0; i < NPCs.length; i++){
@@ -19,14 +19,14 @@ const Scenery = {
 		for(let i = 0; i < items.length; i++){
 			layers[items[i].layer].push(items[i]);
 		}
-		Game.currentMap.drawFloor();
+		currentMap.drawFloor();
 		layers[currChar.layer].push(currChar);
 		for(let i = 0; i < layers.length; i++){
 			layers[i] = mergeSort(layers[i]);
 			for(let j = 0; j < layers[i].length; j++){
-				layers[i][j].draw();
+				layers[i][j].draw(currentMap);
 			}
-			Game.currentMap.objectGridDraw(i);
+			currentMap.objectGridDraw(i);
 		}
 		
 	}

@@ -1,5 +1,3 @@
-
-
 /* title screen */
 .titleScreen{
 	display: none;
@@ -13,10 +11,6 @@
 .titleScreen img{
 	max-width: 90%;
 	margin-top: 1em;
-}
-
-.comic{
-	font-family: "playpenSans-regular", "classicComic", sans-serif;
 }
 
 .titleLogo{
@@ -111,6 +105,7 @@
 	color: var(--bg-color);
 }
 
+/*MainWorld UI*/
 .charWin{
 	display: none;
 }
@@ -132,7 +127,6 @@
 }
 
 /*character menu*/
-
 .characterMenu{
 	display: none;
 	top: 25%;
@@ -191,6 +185,7 @@
 	border-radius: 50%;
 }
 
+/*dialog*/
 .dialogs{
 	position: absolute;
 	display: none;
@@ -198,6 +193,7 @@
 	transition: transform 0.6s;
 }
 .comic{
+	font-family: "playpenSans-regular", "classicComic", sans-serif;
 	background: #fff;
 	border-radius: 1em;
 	border: 2px solid black;
@@ -212,6 +208,20 @@
 	margin: 0;
 	padding: 1em;
 	color: #000;
+}
+.dialog-option{
+	padding-left: 1em;
+	position: relative;
+}
+.dialog-option.selected::before{
+	content: "";
+	width: 0.5em;
+	height: 0.5em;
+	background: url("data:image/svg+xml;utf-8,<svg viewbox='0 0 100 100' fill=var(--font-color)><path d = 'M0 0 h 100 l -50 100z'/></svg>"); /*TODO: add Dynny/Protagonist cursor here*/
+	background-size: 100px 100px;
+	position: absolute;
+	top: 0.25em;
+	left: 0.25em;
 }
 
 .option.selected{

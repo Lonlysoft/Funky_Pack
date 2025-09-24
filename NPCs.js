@@ -12,7 +12,7 @@ class NonPlayableChar extends Being{
 		this.behaviorArr = {arr: arg.pathArr, index: 0};
 		this.ID = arg.ID;
 	}
-	draw(){
+	draw(map){
 		ctx.fillRect(this.centralPoint[0], this.centralPoint[1], this.boxCol.w , this.boxCol.h);
 	}
 	update(){

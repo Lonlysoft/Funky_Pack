@@ -420,7 +420,6 @@ const Col = {
 			entity.WorldPos.z = 30;
 			entity.boxCol.z = 0;
 			entity.velocity.z = 0;
-			//aqui teria uma tela de game over porque ele tà out of bounds
 		}
 		
 		if(entity.WorldPos.x>=((mapGrid.width)*TILE_SIZE)-entity.boxCol.w/2){
@@ -433,8 +432,6 @@ const Col = {
 			entity.WorldPos.z = ((mapGrid.height)*TILE_SIZE)-entity.boxCol.p*0.5;
 			entity.boxCol.z = mapGrid.height*TILE_SIZE-entity.boxCol.p-MAGIC_OFFSET;
 			entity.velocity.z = 0;
-			
-			//aqui tbm
 		}
 		
 		

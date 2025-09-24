@@ -45,12 +45,11 @@ const Dialogs = {
 					next: "selfExplanation"
 				}
 			],
-			next: "dayAlt"
 		},
 		selfExplanation: {
 			name: "Jason Folf",
 			ID: "JSON_FOLF",
-			text: "hey there",
+			text: "I'm Jason, The Folf. I mean we already know each other you're Dynny, and we're supposed to be friends or something. I don't know...",
 		},
 		greetingsRainy: {
 			name: "Jason Folf",

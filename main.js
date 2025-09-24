@@ -61,7 +61,7 @@ const Game = {
 			}
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Ctrl.stateSave();
-			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			
 			Game.ctx.globalAlpha = 0.5;
 			Game.ctx.fillRect(0, 0, Game.canvas.width, Game.canvas.height);
@@ -130,7 +130,7 @@ const Game = {
 				Scenery.hasDeclaired = true;
 			}
 			if(!Game.CurrentCharacter.isSpawn && Scenery.hasDeclaired){
-				Game.CurrentCharacter.isSpawn = Game.CurrentCharacter.spawn();
+				Game.CurrentCharacter.isSpawn = Game.CurrentCharacter.spawn(Game.currentMap);
 			}
 			if(Game.ischaracterMenud){
 				GameMomentSav = GameMoment;
@@ -138,7 +138,7 @@ const Game = {
 			}
 			Game.setAndUpdateNPCs();
 			Game.setAndUpdateItems();
-			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			if(Game.onDialog){
 				GameMomentSav = GameMoment;
 				GameMoment = "dialog"
@@ -158,8 +158,8 @@ const Game = {
 		},
 		cooking(){
 			UI.cookingStart();
-			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
-			Ctrl.action(null, "pause");
+			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			Ctrl.action(null, "cooking");
 			Ctrl.stateSave();
 			Game.ctx.globalAlpha = 0.3;
 			Game.ctx.fillStyle = "#000";
@@ -173,7 +173,7 @@ const Game = {
 			Waiter.gamePlay(Game.CurrentCharacter);
 		},
 		dialog: function(){
-			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			Ctrl.action(Game.dialogBox, "dialogs");
 			Ctrl.stateSave();
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
@@ -229,12 +229,17 @@ const Game = {
 					UI.loadCookiesDismiss();
 				}
 			}
+		},
+		sendFile: () => {
+			Ctrl.action(this.player, "load");
+			Ctrl.stateSave();
+			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 		}
 	}
 }
 
 let GameMoment = 0;
-let GameMomentSav = 'mainWorld';
+let GameMomentSav = 'title';
 let frame = 0
 let frameaux = 0
 
@@ -261,37 +266,45 @@ function GameBonanza(){
 			SideBar.isHere = !SideBar.isHere;
 			if(SideBar.isHere){
 				SideBar.DOM.classList.remove("notHere");
-				SideBar.DOM.style.left = 0;
+				setTimeout(()=>{SideBar.DOM.style.bottom = "15%"}, 100);
 			}else{
 				SideBar.DOM.classList.add("notHere");
+				SideBar.DOM.style.bottom = "-20%"
 			}
 		}
 	);
 	SideBar.fullScreenBtn.addEventListener("click",
 		(event)=>{
-			if(body.requestFullscreen)
-				body.requestFullscreen();
-			else if(body.webkitRequestFullscreen)
-				body.webkitRequestFullscreen();
-			else if(body.msRequestFullscreen)
-				body.msRequestFullscreen();
-			else if(body.mozRequestFullscreen)
-				body.mozRequestFullscreen();
 			SideBar.fullScreenBtn.classList.toggle("active");
-			DeviceInfo.fullScreen = !DeviceInfo.fullScreen;
-			console.log(DeviceInfo.fullScreen);
-			console.log(fullScreenBtnIcon.viewBox);
 			if(DeviceInfo.fullScreen){
-				fullScreenBtnIcon.viewBox.baseVal.x = 110
+				fullScreenBtnIcon.viewBox.baseVal.x = 0;
+				if(document.exitFullscreen)
+					document.exitFullscreen();
+				else if(document.webkitExitFullscreen)
+					document.webkitExitFullscreen();
+				else if(document.msExitFullscreen)
+					document.msExitFullscreen();
+				else if(document.mozExitFullscreen)
+					document.mozExitFullscreen();
 			} else {
-				fullScreenBtnIcon.viewBox.baseVal.x = 0
+				fullScreenBtnIcon.viewBox.baseVal.x = 110;
+				if(body.requestFullscreen)
+					body.requestFullscreen();
+				else if(body.webkitRequestFullscreen)
+					body.webkitRequestFullscreen();
+				else if(body.msRequestFullscreen)
+					body.msRequestFullscreen();
+				else if(body.mozRequestFullscreen)
+					body.mozRequestFullscreen();
 			}
+			DeviceInfo.fullScreen = !DeviceInfo.fullScreen;
 		}
 	);
 	window.addEventListener("resize", resize);
 	resize();
 	//GamePlayLoop();
 	intervalID = setInterval(GamePlayLoop, timeFrequency);
+	//setTimeout(GamePlayLoop, timeFrequency);
 }
 
 const DeviceInfo = {
@@ -324,6 +337,7 @@ function GamePlayLoop(){
 	try{
 		deltaTime = 1;
 		timeCounter += timeFrequency;
+		//setTimeout(GamePlayLoop, timeFrequency);
 		GamePlay();
 	} catch (error){
 		clearInterval(intervalID);
@@ -340,6 +354,7 @@ function GamePlayLoop(){
 		body.style.padding = "20%"
 		body.style.boxSizing = "border-box"
 		body.style.height = "100vh";
+		
 	}
 
 }
