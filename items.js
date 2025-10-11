@@ -72,5 +72,8 @@ const itemCategories = {
 	},
 	structure: function(entity, item){
 		item.value();
+	},
+	foodGiver: function(entity, item){
+		item.value(entity);
 	}
 }

@@ -265,7 +265,7 @@ const skillSet = {
 		entity.velocity.y = 0;
 	},
 	release: function(entity){
-		//TODO: check if item is a food. if it is the food will be discarted and play an animation of it getting destroyed.
+		//TODO: check if item is a food. if it is, the food will be discarted and play an animation of it getting destroyed.
 		if(entity.hand != 0){
 			entity.holdingObject = false;
 			const box = directions.setBox[entity.dir](entity);

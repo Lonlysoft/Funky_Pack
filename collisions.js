@@ -8,17 +8,17 @@ function saveCoords(entityBoxCol){
 
 
 const Col = {
-	AABB: function(retangulo1, retangulo2){
-		return retangulo1[0] + retangulo1[2] >= retangulo2[0] &&
-				retangulo1[0] <= retangulo2[0] + retangulo2[2] &&
-				retangulo1[1] + retangulo1[3] >= retangulo2[1] &&
-				retangulo1[1] <= retangulo2[1] + retangulo2[3];
+	AABB: function(rect1, rect2){
+		return rect1[0] + rect1[2] >= rect2[0] &&
+				rect1[0] <= rect2[0] + rect2[2] &&
+				rect1[1] + rect1[3] >= rect2[1] &&
+				rect1[1] <= rect2[1] + rect2[3];
 	},
-	AABB_JSON: function(retangulo1, retangulo2){
-		return retangulo1.x + retangulo1.w >= retangulo2.x &&
-				retangulo1.x <= retangulo2.x + retangulo2.w &&
-				retangulo1.z + retangulo1.p >= retangulo2.z &&
-				retangulo1.z <= retangulo2.z + retangulo2.p;
+	AABB_JSON: function(rect1, rect2){
+		return rect1.x + rect1.w >= rect2.x &&
+				rect1.x <= rect2.x + rect2.w &&
+				rect1.z + rect1.p >= rect2.z &&
+				rect1.z <= rect2.z + rect2.p;
 	},
 	
 	handleShadowCoords(entity, mapGrid = Game.currentMap, num = -1){
@@ -308,6 +308,14 @@ const Col = {
 	
 	
 	handleYcoords(entity, mapGrid){
+		
+		// no idea what's the responsibility here
+		if(entity.velocity.y < 0){
+			entity.gravity = GRAVITY_EARTH_FALLING;
+		} else {
+			entity.gravity = GRAVITY_EARTH;
+		}
+		
 		//entity.pontoCentral[1] -= entity.velocity.y;
 		let top = mapGrid.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)].y
 		let bottom = mapGrid.bounds[WorldToGrid(entity.boxCol.z + entity.boxCol.p, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y;

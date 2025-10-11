@@ -248,12 +248,14 @@ let timeCounter = 0, intervalSav = 0, deltaTime = 0;
 let intervalID;
 
 const SideBar = {
+	fullDOM: body.querySelector(".fullSideBar"),
 	DOM: body.querySelector(".sidebar"),
 	isHere: false,
 	fullScreenBtn: document.getElementById("fullscreen"),
 	musicVolume: document.querySelector("#music-volume"),
 	sfxVolume: document.querySelector("#sfx-volume"),
 	bringSideBar: document.getElementById("bring-sidebar"),
+	blankSpace: document.querySelector(".sidebar-blank-space")
 }
 
 function GameBonanza(){
@@ -265,11 +267,11 @@ function GameBonanza(){
 		(event)=>{
 			SideBar.isHere = !SideBar.isHere;
 			if(SideBar.isHere){
-				SideBar.DOM.classList.remove("notHere");
-				setTimeout(()=>{SideBar.DOM.style.bottom = "15%"}, 100);
+				SideBar.fullDOM.classList.remove("notHere");
+				setTimeout(()=>{SideBar.DOM.style.bottom = "0"}, 100);
 			}else{
-				SideBar.DOM.classList.add("notHere");
-				SideBar.DOM.style.bottom = "-20%"
+				SideBar.fullDOM.classList.add("notHere");
+				SideBar.DOM.style.bottom = "-40%"
 			}
 		}
 	);
@@ -298,6 +300,13 @@ function GameBonanza(){
 					body.mozRequestFullscreen();
 			}
 			DeviceInfo.fullScreen = !DeviceInfo.fullScreen;
+		}
+	);
+	SideBar.blankSpace.addEventListener("click",
+		event => {
+			SideBar.DOM.style.bottom = "-40%";
+			SideBar.isHere = false;
+			setTimeout(()=>{ SideBar.fullDOM.classList.add("notHere") },900);
 		}
 	);
 	window.addEventListener("resize", resize);

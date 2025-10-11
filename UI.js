@@ -222,7 +222,6 @@ const UI = {
 	},
 	dialogStart(){
 		this.dialogDOM.style.display = "block"
-		
 		setTimeout(()=>{this.dialogDOM.style.transform = "scale(1)"}, 304)
 	},
 	dialogDismiss(){

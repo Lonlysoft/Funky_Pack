@@ -27,6 +27,7 @@ const Waiter = {
 	presentNPCsHavePendingRequests: [],
 	plates: [],
 	UI: {
+		here: false,
 		DOM: document.querySelector("#waiterToolBox"),
 		noteblock: document.querySelector("#noteblock"),
 		update(){
@@ -36,7 +37,10 @@ const Waiter = {
 			}
 			let waiterTimer = this.DOM.querySelector(".timer h5");
 			waiterTimer.innerHTML = Waiter.timer;
-		}
+		},
+		toggle(){
+			this.DOM.classList.toggle("notHere");
+		},
 	},
 	requestTable: function(){
 		let tableId = random(0, this.tablesCoords.length-1);

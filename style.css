@@ -34,6 +34,8 @@
 body {
 	margin: 0;
 	background: #4A2A00;
+	width: 100vw;
+	height: 100vh;
 }
 
 h1{
@@ -179,8 +181,16 @@ input[type="range"]{
 	background: var(--font-color);
 	z-index: 10;
 	border-radius: 0.5em;
-	min-width: 50%;
+	min-width: 100%;
 	transition: bottom 1s;
+}
+.sidebar-blank-space{
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 10;
 }
 .screenMenu.activated{
 	background: black;
