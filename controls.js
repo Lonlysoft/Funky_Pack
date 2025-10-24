@@ -26,8 +26,8 @@ class Btn{
 }
 
 function resize(){
-	client_width = Math.floor(document.documentElement.clientWidth);
-	client_height = Math.floor(document.documentElement.clientHeight);
+	client_width = Math.floor(controls_canvas.clientWidth);
+	client_height = Math.floor(controls_canvas.clientHeight);
 	boundingRect = controls_canvas.getBoundingClientRect();
 	aspectRatio = controls_canvas.width/client_width;
 	aspectRatioHeight = controls_canvas.height/client_height;
