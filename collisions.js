@@ -307,7 +307,7 @@ const Col = {
 	},
 	
 	
-	handleYcoords(entity, mapGrid){
+	handleYcoords(entity, mapGrid, items, npcs){
 		
 		// no idea what's the responsibility here
 		if(entity.velocity.y < 0){
@@ -324,9 +324,9 @@ const Col = {
 		let currLim = mapGrid.bounds[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.WorldPos.x, TILE_SIZE)].y;
 		//não é a melhor forma de fazer isso pois é 4*O(N) todos os frames.
 		const solidObjectArray = []
-		for(let i = 0; i < Game.ItemArr.length; i++){
-			if(Game.ItemArr[i].ColType == "solidObject"){
-				solidObjectArray.push(Game.ItemArr[i].boxCol);
+		for(let i = 0; i < items.length; i++){
+			if(items[i].ColType == "solidObject"){
+				solidObjectArray.push(items[i].boxCol);
 			}
 		}
 		let filterCollidings = this.testCol(entity, solidObjectArray);
@@ -357,67 +357,7 @@ const Col = {
 		}
 	},
 	
-	wallCleaner(entity, mapGrid){
-		if(entity.WorldPos.x<entity.boxCol.w*0.5){
-			entity.WorldPos.x = 30;
-			entity.boxCol.x = 0;
-			entity.velocity.x = 0;
-		}
-		if(entity.WorldPos.z<entity.boxCol.p*0.5){
-			entity.WorldPos.z = 30;
-			entity.boxCol.z = 0;
-			entity.velocity.z = 0;
-		}
-		
-		if(entity.WorldPos.x>=((mapGrid.width)*TILE_SIZE)-entity.boxCol.w/2){
-			entity.WorldPos.x = ((mapGrid.width)*TILE_SIZE)-entity.boxCol.w*0.5;
-			entity.boxCol.x = mapGrid.width*TILE_SIZE-entity.boxCol.w-MAGIC_OFFSET;
-			entity.velocity.x = 0;
-		}
-		
-		if(entity.WorldPos.z>=((mapGrid.height)*TILE_SIZE)-entity.boxCol.p*0.5){
-			entity.WorldPos.z = ((mapGrid.height)*TILE_SIZE)-entity.boxCol.p*0.5;
-			entity.boxCol.z = mapGrid.height*TILE_SIZE-entity.boxCol.p-MAGIC_OFFSET;
-			entity.velocity.z = 0;
-		}
-		
-		let curLimStartZ = WorldToGrid(entity.WorldPos.z - entity.boxCol.p*0.5, TILE_SIZE);
-		let curLimEndZ = WorldToGrid(entity.WorldPos.z + entity.boxCol.p*0.5, TILE_SIZE);
-		let curLimStartX = WorldToGrid(entity.WorldPos.x - entity.boxCol.w/2, TILE_SIZE);
-		let curLimEndX = WorldToGrid(entity.WorldPos.x + entity.boxCol.w/2, TILE_SIZE);
-		let curLimStartY = WorldToGrid(entity.WorldPos.y, TILE_SIZE);
-		let curLimEndY = WorldToGrid(entity.WorldPos.y - entity.boxCol.h, TILE_SIZE);
-		
-		let playerBoxCol = [entity.boxCol.x, entity.boxCol.z, entity.boxCol.w, entity.boxCol.p, entity.boxCol.y, entity.boxCol.h];
-		
-		let x_intro = Math.floor(Camera.x/TILE_SIZE);
-		let x_end = Math.floor((Camera.x+Camera.w)/TILE_SIZE);
-		let y_intro = Math.floor(Camera.y/TILE_SIZE);
-		let y_end = Math.floor((Camera.y+Camera.h)/TILE_SIZE);
-		
-		if(x_intro < 0) x_intro = 0;
-		if(y_intro < 0) y_intro = 0;
-		if(x_end > mapGrid.width) x_end = mapGrid.width;
-		if(y_end > mapGrid.height) y_end = mapGrid.height;
-		
-		
-		for(let j = x_intro; j < x_end; j++){
-			for(let i = y_intro; i < y_end; i++){
-				if(entity.WorldPos.y < mapGrid.bounds[i][j].y){
-					mapBoxCol = [mapGrid.bounds[i][j].x, mapGrid.bounds[i][j].z, TILE_SIZE, TILE_SIZE];
-					if(Col.AABB(playerBoxCol, mapBoxCol)){
-						Col[mapGrid.bounds[i][j].tipo](entity, mapGrid.bounds[i][j]);
-					}
-				}
-			}//fim for
-		}//fim for
-		
-		entity.WorldPos.x = entity.boxCol.x + entity.boxCol.w/2;
-		entity.WorldPos.z = entity.boxCol.z + entity.boxCol.p/2;
-		entity.boxCol.y = entity.WorldPos.y + entity.boxCol.h;
-	},
-	
-	main(entity, mapGrid, num = -1){
+	main(entity, mapGrid, itemArr, npcArr, num = -1){
 		
 		if(entity.WorldPos.x<entity.boxCol.w*0.5){
 			entity.WorldPos.x = 30;
@@ -470,10 +410,10 @@ const Col = {
 		//comparar Colisoes com os itens presentes
 		if(num == -1){
 			let itensBox;
-			for(let i = 0; i < Game.ItemArr.length; i++){
-				itensBox = [Game.ItemArr[i].boxCol.x, Game.ItemArr[i].boxCol.z, Game.ItemArr[i].boxCol.w, Game.ItemArr[i].boxCol.p];
-				if(Col.AABB(playerBoxCol, itensBox) && isOnGround(entity.WorldPos.y, Game.ItemArr[i].boxCol.y)){
-					Col[Game.ItemArr[i].ColType](entity, Game.ItemArr[i]);
+			for(let i = 0; i < itemArr.length; i++){
+				itensBox = [itemArr[i].boxCol.x, itemArr[i].boxCol.z, itemArr[i].boxCol.w, itemArr[i].boxCol.p];
+				if(Col.AABB(playerBoxCol, itensBox) && isOnGround(entity.WorldPos.y, itemArr[i].boxCol.y)){
+					Col[itemArr[i].ColType](entity, itemArr[i]);
 				}
 			}
 		}
@@ -502,7 +442,7 @@ const Col = {
 		entity.WorldPos.x = entity.boxCol.x + entity.boxCol.w/2;
 		entity.WorldPos.z = entity.boxCol.z + entity.boxCol.p/2;
 		entity.boxCol.y = entity.WorldPos.y + entity.boxCol.h;
-		this.handleYcoords(entity, mapGrid);
+		this.handleYcoords(entity, mapGrid, itemArr, npcArr);
 		this.handleExitsAndTeleporters(entity, mapGrid);
 	}
 }

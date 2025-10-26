@@ -107,19 +107,16 @@ const UI = {
 			if(this.bufferAnimation < this.object.text.length){
 				this.bufferAnimation++;
 			}
-			let stringSplice = "<div class = 'whoTalks'>"+this.object.name+"</div><div class = 'speaking'>";
+			let stringSplice = "<div class = 'whoTalks comic'>"+this.object.name+"</div><div class = 'speaking comic'>";
 			let heightSplice = 0;
 			for(let i = 0; i < this.bufferAnimation; i++){
 				stringSplice += this.object.text[i];
 			}
-
-			
-			UI.dialogDOM.style.width = "25em";
+			UI.dialogDOM.style.width = "70%";
 			heightSplice = Math.ceil(this.object.text.length/25) + 3;
 			UI.dialogDOM.style.top = "5%";
-			//transformIntoBar(Game.CurrentCharacter.centralPoint[1], Game.canvas.height) + "%";
-			UI.dialogDOM.style.left = "5%"
-			
+			UI.dialogDOM.style.right = "5%";
+			stringSplice += "</div>"
 			UI.dialogDOM.innerHTML = stringSplice;
 			if(this.object.options && this.bufferAnimation >= this.object.text.length-1 && !this.hasOptionsLoaded){
 				this.hasOption = true;

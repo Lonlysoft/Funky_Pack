@@ -27,7 +27,6 @@ class Being{
 		this.ATK = Math.floor(AGE/2); this.DEF = Math.ceil(AGE/2);
 		this.ACL = ACL; this.VMAX = VMAX;
 		this.constHP = AGE*10;
-		
 		this.isSpawn = false;
 		this.isAlive = true;
 		this.WorldPos = {x: undefined, y: undefined, z: undefined};
@@ -44,6 +43,7 @@ class Being{
 		this.onGround = true;
 		this.animationIndex = 0;
 		this.anim = animations;
+		this.animTimer = 0;
 		this.movementFlag = "walk";
 		this.isMirrored = false;
 		this.grapho = document.querySelector(HTMLsrc);
@@ -165,7 +165,7 @@ class Protagonist extends Being{
 		}
 		if(this.holdingObject && this.hand !== 0){
 			this.hand.centralPoint[0] = this.centralPoint[0];
-			this.hand.centralPoint[1] = this.centralPoint[1] - this.boxCol.h*0.8;
+			this.hand.centralPoint[1] = this.centralPoint[1] - this.boxCol.h*0.6;
 	//		this.hand.update();
 		}
 		this.hp = limitateUp(this.hp, this.HP);
@@ -173,7 +173,6 @@ class Protagonist extends Being{
 	}
 	draw(currentMap = Game.currentMap){
 		drawShadow(ctx, this, currentMap, 0.5);
-		let tailInFront = false;
 		this.frameY = directions.setFrameY[this.dir](this);
 		this.frameX = displayAnim(this);
 		

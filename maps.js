@@ -101,10 +101,9 @@ class Level{
 		}
 	}
 	
-	updateVisibleItems(camera) {
+	updateVisibleItems(camera, arr) {
 		//cleans the array and restart you got it.
-		Game.ItemArr = [];
-		const visibleItems = Game.ItemArr;
+		arr = [];
 		
 		const startCol = Math.max(0, Math.floor(camera.x / TILE_SIZE));
 		const endCol = Math.min(this.width - 1, Math.floor((camera.x + camera.w) / TILE_SIZE));
@@ -115,15 +114,16 @@ class Level{
 		for (let i = startRow; i <= endRow; i++) {
 			for (let j = startCol; j <= endCol; j++) {
 				if (this.items[i][j] !== 0 && !this.items[i][j].isCollected) {
-					Game.ItemArr.push(this.items[i][j]);
+					arr.push(this.items[i][j]);
 					this.items[i][j].visible = true;
 				}
 			}
 		}
+		return arr;
 	}
 	
-	cleanupItems(camera) {
-		Game.ItemArr = Game.ItemArr.filter(item => {
+	cleanupItems(camera, arr) {
+		return arr.filter(item => {
 			if (item.isCollected) return false;
 			
 			const itemRight = item.boxCol.x + TILE_SIZE;

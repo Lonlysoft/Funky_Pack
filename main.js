@@ -29,8 +29,8 @@ const Game = {
 		Col.checkEntities(this.TrigArr);
 	},
 	setAndUpdateItems(){
-		this.currentMap.cleanupItems(Camera);
-		this.currentMap.updateVisibleItems(Camera);
+		this.ItemArr = this.currentMap.cleanupItems(Camera, this.ItemArr);
+		this.ItemArr = this.currentMap.updateVisibleItems(Camera, this.ItemArr);
 		for(let i = 0; i < this.ItemArr.length; i++){
 			this.ItemArr[i].update();
 		}
@@ -148,7 +148,7 @@ const Game = {
 			Ctrl.stateSave();
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Game.CurrentCharacter.update();
-			Col.main(Game.CurrentCharacter, Game.currentMap, -1);
+			Col.main(Game.CurrentCharacter, Game.currentMap, Game.ItemArr, Game.NPCarr -1);
 			UI.charWinUpdate(Clock, Game.CurrentCharacter);
 			if(timeCounter>=2000){
 				Clock.passTime();

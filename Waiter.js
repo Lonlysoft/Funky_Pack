@@ -23,6 +23,7 @@ const Waiter = {
 	levelNumber: "lv1",
 	orders: [],
 	FOODS: ["small meal", "large meal", "water", "large water", "fish meal", "barbecue", "salt"],
+	balcons: [],
 	presentNPCs: [],
 	presentNPCsHavePendingRequests: [],
 	plates: [],
@@ -52,7 +53,8 @@ const Waiter = {
 		}
 	},
 	setAndUpdateItems(){
-		this.currentMap.updateItems(Camera);
+		this.plates = this.currentMap.updateVisibleItems(Camera, this.plates);
+		this.plates = this.currentMap.cleanupItems(Camera, this.plates);
 		for(let i = 0; i < this.plates.length; i++){
 			this.plates[i].update();
 		}
@@ -82,9 +84,20 @@ const Waiter = {
 		this.bonusTips = 0;
 		GameMoment = "mainWorld"
 	},
+	locateBalcons(map){
+		for(let i = 0; i < map.height; i++){
+			for(let j = 0; j < map.width; j++){
+				if(map.items[i][j].ID == 49){
+					this.balcons.push(map.items[i][j]);
+					this.balcons[this.balcons.length-1].holds = this.FOODS;
+				}
+			}
+		}
+	},
 	gamePlay(entity){
 		if(!Scenery.hasDeclaired){
 			Scenery.declair(this, this.levelNumber, WAITER_MAPS);
+			this.locateBalcons(this.currentMap);
 			this.start(entity);
 		}
 		if(!this.player.isSpawn && Scenery.hasDeclaired){
@@ -95,10 +108,11 @@ const Waiter = {
 		if(this.getWinningCondition()){
 			this.end();
 		}
+		this.setAndUpdateItems();
 		this.events();
 		Camera.moveTo(this.player.WorldPos.x, this.player.WorldPos.z, this.player.WorldPos.y);
 		this.player.update();
-		Col.main(this.player, this.currentMap);
+		Col.main(this.player, this.currentMap, this.plates, this.presentNPCs);
 		this.UI.update();
 		this.requestTable();
 		this.debug();
