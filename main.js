@@ -313,8 +313,8 @@ function GameBonanza(){
 	resize();
 	//GamePlayLoop();
 	//intervalID = setInterval(GamePlayLoop, timeFrequency);
-	//setTimeout(GamePlayLoop, timeFrequency);
-	window.requestAnimationFrame(GamePlayLoop2);
+	setTimeout(GamePlayLoop, timeFrequency);
+	//window.requestAnimationFrame(GamePlayLoop2);
 }
 
 const DeviceInfo = {
@@ -347,10 +347,10 @@ function GamePlayLoop(){
 	try{
 		deltaTime = 1;
 		timeCounter += timeFrequency;
-		//setTimeout(GamePlayLoop, timeFrequency);
+		setTimeout(GamePlayLoop, timeFrequency);
 		GamePlay();
 	} catch (error){
-		clearInterval(intervalID);
+		//clearInterval(intervalID);
 		console.log(error);
 		body.innerHTML = errorScreen.icon;
 		body.innerHTML += errorScreen.text;
@@ -372,7 +372,7 @@ let timerplay = 0;
 
 function GamePlayLoop2(timestamp){
 	try{
-		window.requestAnimationFrame(GamePlayLoop2)
+		
 		timerplay += timestamp
 		if(timerplay >= timeFrequency){
 			timerplay = 0;
@@ -380,6 +380,7 @@ function GamePlayLoop2(timestamp){
 			timeCounter += timeFrequency;
 			GamePlay();
 		}
+		window.requestAnimationFrame(GamePlayLoop2)
 	} catch (error){
 		console.log(error);
 		body.innerHTML = errorScreen.icon;
