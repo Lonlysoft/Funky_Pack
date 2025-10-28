@@ -312,8 +312,9 @@ function GameBonanza(){
 	window.addEventListener("resize", resize);
 	resize();
 	//GamePlayLoop();
-	intervalID = setInterval(GamePlayLoop, timeFrequency);
+	//intervalID = setInterval(GamePlayLoop, timeFrequency);
 	//setTimeout(GamePlayLoop, timeFrequency);
+	window.requestAnimationFrame(GamePlayLoop2);
 }
 
 const DeviceInfo = {
@@ -365,5 +366,34 @@ function GamePlayLoop(){
 		body.style.height = "100vh";
 		
 	}
+}
 
+let timerplay = 0;
+
+function GamePlayLoop2(timestamp){
+	try{
+		window.requestAnimationFrame(GamePlayLoop2)
+		timerplay += timestamp
+		if(timerplay >= timeFrequency){
+			timerplay = 0;
+			deltaTime = 1;
+			timeCounter += timeFrequency;
+			GamePlay();
+		}
+	} catch (error){
+		console.log(error);
+		body.innerHTML = errorScreen.icon;
+		body.innerHTML += errorScreen.text;
+		body.innerHTML += error.message;
+		body.innerHTML += "<a href = ''><button>reset game</button></a>";
+		body.style.color = "var(--bg-color)";
+		body.style.display = "flex";
+		body.style.flexDirection = "column";
+		body.style.justifyContent = "center";
+		body.style.alignItems = "flex-start";
+		body.style.padding = "20%"
+		body.style.boxSizing = "border-box"
+		body.style.height = "100vh";
+		
+	}
 }
