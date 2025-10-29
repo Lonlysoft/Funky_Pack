@@ -29,8 +29,8 @@ const Game = {
 		Col.checkEntities(this.TrigArr);
 	},
 	setAndUpdateItems(){
-		this.currentMap.cleanupItems(Camera);
-		this.currentMap.updateVisibleItems(Camera);
+		this.ItemArr = this.currentMap.cleanupItems(Camera, this.ItemArr);
+		this.ItemArr = this.currentMap.updateVisibleItems(Camera, this.ItemArr);
 		for(let i = 0; i < this.ItemArr.length; i++){
 			this.ItemArr[i].update();
 		}
@@ -61,7 +61,7 @@ const Game = {
 			}
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Ctrl.stateSave();
-			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			
 			Game.ctx.globalAlpha = 0.5;
 			Game.ctx.fillRect(0, 0, Game.canvas.width, Game.canvas.height);
@@ -130,7 +130,7 @@ const Game = {
 				Scenery.hasDeclaired = true;
 			}
 			if(!Game.CurrentCharacter.isSpawn && Scenery.hasDeclaired){
-				Game.CurrentCharacter.isSpawn = Game.CurrentCharacter.spawn();
+				Game.CurrentCharacter.isSpawn = Game.CurrentCharacter.spawn(Game.currentMap);
 			}
 			if(Game.ischaracterMenud){
 				GameMomentSav = GameMoment;
@@ -138,7 +138,7 @@ const Game = {
 			}
 			Game.setAndUpdateNPCs();
 			Game.setAndUpdateItems();
-			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			if(Game.onDialog){
 				GameMomentSav = GameMoment;
 				GameMoment = "dialog"
@@ -148,7 +148,7 @@ const Game = {
 			Ctrl.stateSave();
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Game.CurrentCharacter.update();
-			Col.main(Game.CurrentCharacter, Game.currentMap, -1);
+			Col.main(Game.CurrentCharacter, Game.currentMap, Game.ItemArr, Game.NPCarr -1);
 			UI.charWinUpdate(Clock, Game.CurrentCharacter);
 			if(timeCounter>=2000){
 				Clock.passTime();
@@ -158,8 +158,8 @@ const Game = {
 		},
 		cooking(){
 			UI.cookingStart();
-			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
-			Ctrl.action(null, "pause");
+			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			Ctrl.action(null, "cooking");
 			Ctrl.stateSave();
 			Game.ctx.globalAlpha = 0.3;
 			Game.ctx.fillStyle = "#000";
@@ -173,7 +173,7 @@ const Game = {
 			Waiter.gamePlay(Game.CurrentCharacter);
 		},
 		dialog: function(){
-			Scenery.draw(Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			Ctrl.action(Game.dialogBox, "dialogs");
 			Ctrl.stateSave();
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
@@ -229,12 +229,17 @@ const Game = {
 					UI.loadCookiesDismiss();
 				}
 			}
+		},
+		sendFile: () => {
+			Ctrl.action(this.player, "load");
+			Ctrl.stateSave();
+			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 		}
 	}
 }
 
 let GameMoment = 0;
-let GameMomentSav = 'mainWorld';
+let GameMomentSav = 'title';
 let frame = 0
 let frameaux = 0
 
@@ -243,12 +248,14 @@ let timeCounter = 0, intervalSav = 0, deltaTime = 0;
 let intervalID;
 
 const SideBar = {
+	fullDOM: body.querySelector(".fullSideBar"),
 	DOM: body.querySelector(".sidebar"),
 	isHere: false,
 	fullScreenBtn: document.getElementById("fullscreen"),
 	musicVolume: document.querySelector("#music-volume"),
 	sfxVolume: document.querySelector("#sfx-volume"),
 	bringSideBar: document.getElementById("bring-sidebar"),
+	blankSpace: document.querySelector(".sidebar-blank-space")
 }
 
 function GameBonanza(){
@@ -260,38 +267,54 @@ function GameBonanza(){
 		(event)=>{
 			SideBar.isHere = !SideBar.isHere;
 			if(SideBar.isHere){
-				SideBar.DOM.classList.remove("notHere");
-				SideBar.DOM.style.left = 0;
+				SideBar.fullDOM.classList.remove("notHere");
+				setTimeout(()=>{SideBar.DOM.style.bottom = "0"}, 100);
 			}else{
-				SideBar.DOM.classList.add("notHere");
+				SideBar.fullDOM.classList.add("notHere");
+				SideBar.DOM.style.bottom = "-40%"
 			}
 		}
 	);
 	SideBar.fullScreenBtn.addEventListener("click",
 		(event)=>{
-			if(body.requestFullscreen)
-				body.requestFullscreen();
-			else if(body.webkitRequestFullscreen)
-				body.webkitRequestFullscreen();
-			else if(body.msRequestFullscreen)
-				body.msRequestFullscreen();
-			else if(body.mozRequestFullscreen)
-				body.mozRequestFullscreen();
 			SideBar.fullScreenBtn.classList.toggle("active");
-			DeviceInfo.fullScreen = !DeviceInfo.fullScreen;
-			console.log(DeviceInfo.fullScreen);
-			console.log(fullScreenBtnIcon.viewBox);
 			if(DeviceInfo.fullScreen){
-				fullScreenBtnIcon.viewBox.baseVal.x = 110
+				fullScreenBtnIcon.viewBox.baseVal.x = 0;
+				if(document.exitFullscreen)
+					document.exitFullscreen();
+				else if(document.webkitExitFullscreen)
+					document.webkitExitFullscreen();
+				else if(document.msExitFullscreen)
+					document.msExitFullscreen();
+				else if(document.mozExitFullscreen)
+					document.mozExitFullscreen();
 			} else {
-				fullScreenBtnIcon.viewBox.baseVal.x = 0
+				fullScreenBtnIcon.viewBox.baseVal.x = 110;
+				if(body.requestFullscreen)
+					body.requestFullscreen();
+				else if(body.webkitRequestFullscreen)
+					body.webkitRequestFullscreen();
+				else if(body.msRequestFullscreen)
+					body.msRequestFullscreen();
+				else if(body.mozRequestFullscreen)
+					body.mozRequestFullscreen();
 			}
+			DeviceInfo.fullScreen = !DeviceInfo.fullScreen;
+		}
+	);
+	SideBar.blankSpace.addEventListener("click",
+		event => {
+			SideBar.DOM.style.bottom = "-40%";
+			SideBar.isHere = false;
+			setTimeout(()=>{ SideBar.fullDOM.classList.add("notHere") },900);
 		}
 	);
 	window.addEventListener("resize", resize);
 	resize();
 	//GamePlayLoop();
-	intervalID = setInterval(GamePlayLoop, timeFrequency);
+	//intervalID = setInterval(GamePlayLoop, timeFrequency);
+	setTimeout(GamePlayLoop, timeFrequency);
+	//window.requestAnimationFrame(GamePlayLoop2);
 }
 
 const DeviceInfo = {
@@ -324,9 +347,10 @@ function GamePlayLoop(){
 	try{
 		deltaTime = 1;
 		timeCounter += timeFrequency;
+		setTimeout(GamePlayLoop, timeFrequency);
 		GamePlay();
 	} catch (error){
-		clearInterval(intervalID);
+		//clearInterval(intervalID);
 		console.log(error);
 		body.innerHTML = errorScreen.icon;
 		body.innerHTML += errorScreen.text;
@@ -340,6 +364,37 @@ function GamePlayLoop(){
 		body.style.padding = "20%"
 		body.style.boxSizing = "border-box"
 		body.style.height = "100vh";
+		
 	}
+}
 
+let timerplay = 0;
+
+function GamePlayLoop2(timestamp){
+	try{
+		
+		timerplay += timestamp
+		if(timerplay >= timeFrequency){
+			timerplay = 0;
+			deltaTime = 1;
+			timeCounter += timeFrequency;
+			GamePlay();
+		}
+		window.requestAnimationFrame(GamePlayLoop2)
+	} catch (error){
+		console.log(error);
+		body.innerHTML = errorScreen.icon;
+		body.innerHTML += errorScreen.text;
+		body.innerHTML += error.message;
+		body.innerHTML += "<a href = ''><button>reset game</button></a>";
+		body.style.color = "var(--bg-color)";
+		body.style.display = "flex";
+		body.style.flexDirection = "column";
+		body.style.justifyContent = "center";
+		body.style.alignItems = "flex-start";
+		body.style.padding = "20%"
+		body.style.boxSizing = "border-box"
+		body.style.height = "100vh";
+		
+	}
 }

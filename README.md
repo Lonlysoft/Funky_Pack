@@ -76,16 +76,12 @@ I'm starting by the Wall Cleaner mini-game. It's pretty easy because it uses the
 
 NPC behavior system:
 They have lots of behaviors, but most of them are spawning, moving, waiting and arriving at certain locations.
-It's just important because you need the NPCs to look like they have an actual life inside the game and also handle that to make the game run without problems
+It's just important because you need the NPCs to look like they have an actual life inside the game and also handle that to make the game run without problems.
+a close thought in here is: disabling the NPC grid in the map and writing a system of spawning unimportant NPCs in crowded areas and always looking to update NPC behaviors (looking on a good performance system for that)
 
 # Current changelog:
 
-- ```dialogs.js``` was re-added. The dialog data is now quite better than the first version. I now need to do all the NPCs variations as well as their option system that can change relationship levels.
-- Items and their collisions are updated. Now the player can stand on top of the items, and also collect and put them in their inventory. The next step is to make them accessible and usable in the Character Menu.
-- Issues with pages' lexical errors have been resolved. Playing remotely is now also possible.
-- Issues involving imagery are now resolved.
-- Dynny's spritesheet was updated, but unfortunately, it still has incomplete animations. Sorry, but the old one had some major issues and the fact that he didn't have a tail was irritating me.
-
-
-
+- animation system structure rewritten
+- Dynny's spritesheet was updated again, but unfortunately, it still has incomplete animations.
+- added new systems on the Waiter mini-game. unfortunately still inaccessible, but for the better I guess...
 

@@ -86,21 +86,24 @@ function displayAnim(Character){
 		Character.doing = "diving"
 	}
 	
-	if(Character.animationIndex < Character.anim[Character.doing].length-1){
-		Character.animationIndex++;
+	if(Character.animationIndex < Character.anim[Character.doing].imageX.length-1){
+		Character.animTimer++;
+		if(Character.animTimer >= Character.anim[Character.doing].timing[Character.animationIndex]){
+			Character.animationIndex++;
+			Character.animTimer = 0;
+		}
 	}
 	else{
-		if(Character.anim[Character.doing][0] == "infinite"){
-			Character.animationIndex = 1;
+		if(Character.anim[Character.doing].type == "infinite"){
+			Character.animationIndex = 0;
 		}
 		else{
-			Character.animationIndex = Character.anim[Character.doing].length-1;
+			Character.animationIndex = Character.anim[Character.doing].imageX.length-1;
 		}
 	}
-	if(Character.anim[Character.doing][Character.animationIndex] == "m"){
+	if(Character.anim[Character.doing].isMirrored && Character.anim[Character.doing].isMirrored[Character.animationIndex] == 1){
 		Character.isMirrored = true;
 		mirrorate(Game.ctx);
-		Character.animationIndex++;
 	}
-	return Character.anim[Character.doing][Character.animationIndex];
+	return Character.anim[Character.doing].imageX[Character.animationIndex];
 }

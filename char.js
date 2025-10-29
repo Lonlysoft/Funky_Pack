@@ -27,7 +27,6 @@ class Being{
 		this.ATK = Math.floor(AGE/2); this.DEF = Math.ceil(AGE/2);
 		this.ACL = ACL; this.VMAX = VMAX;
 		this.constHP = AGE*10;
-		
 		this.isSpawn = false;
 		this.isAlive = true;
 		this.WorldPos = {x: undefined, y: undefined, z: undefined};
@@ -44,6 +43,7 @@ class Being{
 		this.onGround = true;
 		this.animationIndex = 0;
 		this.anim = animations;
+		this.animTimer = 0;
 		this.movementFlag = "walk";
 		this.isMirrored = false;
 		this.grapho = document.querySelector(HTMLsrc);
@@ -135,7 +135,7 @@ class Protagonist extends Being{
 		this.tail = [];
 		this.hand = 0;
 		this.tailMaxLength = arg.inventory;
-		this.money = {cents: 0, unit: 0};
+		this.money = new Money(0);
 		this.xp = 0;
 		this.invensibility = false;
 		this.relationships = arg.relationships;
@@ -165,7 +165,7 @@ class Protagonist extends Being{
 		}
 		if(this.holdingObject && this.hand !== 0){
 			this.hand.centralPoint[0] = this.centralPoint[0];
-			this.hand.centralPoint[1] = this.centralPoint[1] - this.boxCol.h*0.8;
+			this.hand.centralPoint[1] = this.centralPoint[1] - this.boxCol.h*0.6;
 	//		this.hand.update();
 		}
 		this.hp = limitateUp(this.hp, this.HP);
@@ -173,7 +173,6 @@ class Protagonist extends Being{
 	}
 	draw(currentMap = Game.currentMap){
 		drawShadow(ctx, this, currentMap, 0.5);
-		let tailInFront = false;
 		this.frameY = directions.setFrameY[this.dir](this);
 		this.frameX = displayAnim(this);
 		
@@ -221,16 +220,16 @@ class Protagonist extends Being{
 			}
 		}
 	}
-	spawnInY(x, y){
-		return Game.currentMap.grndElGrid[y][x]*TILE_SIZE;
+	spawnInY(map, x, y){
+		return map.grndElGrid[y][x]*TILE_SIZE;
 	}
-	spawn(){
-		for(let i = 0; i < Game.currentMap.height; i++){
-			for(let j = 0; j < Game.currentMap.width; j++){
-				if(Game.currentMap.beingGrid[i][j] == "p1"){
+	spawn(map){
+		for(let i = 0; i < map.height; i++){
+			for(let j = 0; j < map.width; j++){
+				if(map.beingGrid[i][j] == "p1"){
 					this.boxCol.x = j*TILE_SIZE;
 					this.boxCol.z = i*TILE_SIZE;
-					this.WorldPos.y = this.spawnInY(j,i);
+					this.WorldPos.y = this.spawnInY(map,j,i);
 					return true;
 				}
 			}
@@ -265,7 +264,7 @@ const skillSet = {
 		entity.velocity.y = 0;
 	},
 	release: function(entity){
-		//TODO: check if item is a food. if it is the food will be discarted and play an animation of it getting destroyed.
+		//TODO: check if item is a food. if it is, the food will be discarted and play an animation of it getting destroyed.
 		if(entity.hand != 0){
 			entity.holdingObject = false;
 			const box = directions.setBox[entity.dir](entity);

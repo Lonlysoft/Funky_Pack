@@ -93,33 +93,52 @@ const UI = {
 	},
 	pauseDOM: document.querySelector(".pause"),
 	jobTableDOM: document.querySelector(".schedule"),
-	dialogDOM: document.querySelector(".dialogs"),
+	dialogDOM: document.querySelector("#dialogs"),
 	dialogItems: {
 		stackPair: 0,
 		bufferAnimation: NaN,
 		object: null,
 		position: {x: undefined, y: undefined},
 		selectedOption: 0,
+		optionsDOM: [],
+		hasOption: false,
+		hasOptionsLoaded: false,
 		writeText(){
 			if(this.bufferAnimation < this.object.text.length){
 				this.bufferAnimation++;
 			}
-			let stringSplice = "<div class = 'whoTalks'>"+this.object.name+"</div><div class = 'speaking'>";
+			let stringSplice = "<div class = 'whoTalks comic'>"+this.object.name+"</div><div class = 'speaking comic'>";
+			let heightSplice = 0;
 			for(let i = 0; i < this.bufferAnimation; i++){
 				stringSplice += this.object.text[i];
 			}
-			stringSplice += "</div><div class='next-symbol'></div>"
-			if(this.object.option && bufferAnimation >= this.object.text.length){
-				for(let i = 0; i < this.object.length; i++){
-					stringSplice += "<div class = 'option'>"+this.object[i].text+"</div>";
+			UI.dialogDOM.style.width = "70%";
+			heightSplice = Math.ceil(this.object.text.length/25) + 3;
+			UI.dialogDOM.style.top = "5%";
+			UI.dialogDOM.style.right = "5%";
+			stringSplice += "</div>"
+			UI.dialogDOM.innerHTML = stringSplice;
+			if(this.object.options && this.bufferAnimation >= this.object.text.length-1 && !this.hasOptionsLoaded){
+				this.hasOption = true;
+				for(let i = 0; i < this.object.options.length; i++){
+					this.optionsDOM.push(document.createElement("div"));
+					this.optionsDOM[i].textContent = this.object.options[i].text;
+					this.optionsDOM[i].setAttribute("class", "dialog-option");
+					if(i === 0){
+						this.optionsDOM[i].classList.add("selected");
+					}
+					UI.dialogDOM.insertBefore(this.optionsDOM[i], null);
+				}
+				this.hasOptionsLoaded = true;
+			}
+			if(this.object.options && this.bufferAnimation >= this.object.text.length-1){
+				for(let i = 0; i < this.object.options.length; i++){
+					heightSplice += Math.ceil(this.object.options[i].text.length/25)+1;
+					UI.dialogDOM.insertBefore(this.optionsDOM[i], null);
 				}
 			}
-			UI.dialogDOM.style.width = "25em";
-			UI.dialogDOM.style.height = Math.ceil(this.object.text.length/25) + 3 + "em";
-			UI.dialogDOM.style.top = "5%";
-			//transformIntoBar(Game.CurrentCharacter.centralPoint[1], Game.canvas.height) + "%";
-			UI.dialogDOM.style.left = "5%"
-			UI.dialogDOM.innerHTML = stringSplice;
+			heightSplice += "em"
+			UI.dialogDOM.style.height = heightSplice;
 		}
 	},
 	waiterHud: 0,
@@ -164,7 +183,7 @@ const UI = {
 		let save = this.loadCookies.DOM.createElement("div");
 		save.innerHTML = str;
 	},
-	cookingStart(){
+	cookingStart(entity){
 		//get the cooking tools the object represents.
 		//stoves have: oven and the upper part, for testing manners I'll put anything here
 		this.cooking.option = ["stove", "oven", "freeze"];
@@ -200,12 +219,16 @@ const UI = {
 	},
 	dialogStart(){
 		this.dialogDOM.style.display = "block"
-		
 		setTimeout(()=>{this.dialogDOM.style.transform = "scale(1)"}, 304)
 	},
 	dialogDismiss(){
 		this.dialogDOM.style.transform = "scale(0)"
-		setTimeout(()=>{this.dialogDOM.style.display = "none"}, 304)
+		setTimeout(()=>{
+			this.dialogDOM.style.display = "none";
+			this.dialogItems.optionsDOM = [];
+			this.dialogItems.hasOption = false;
+			this.dialogItems.hasOptionsLoaded = false;
+		}, 304)
 	},
 	characterMenuStart(){
 		this.characterMenuDOM.style.display = "flex";

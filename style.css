@@ -5,6 +5,7 @@
 	--negative-bg: #971E2F;
 	--negative-font: #FD7F44;
 	--dynny-color: #A2BAE0;
+	--bg-color-darkened: #DD800E;
 }
 
 @font-face{
@@ -14,11 +15,11 @@
 }
 @font-face{
 	font-family: "kindSans";
-	src: local("Kind Sans Thin Regular"), local("Kind Sans Thin"), local("kindSans"), url("src/fonts/Kind_Sans_Thin.otf") format("opentype");
+	src: local("Kind Sans Thin Regular"), local("Kind Sans Thin"), local("kindSans"), url("src/Letras/Kind_Sans_Thin.otf") format("opentype");
 }
 @font-face{
 	font-family: "PlaypenSans-regular";
-	src: local("Playpen Sans Regular"), local("Playpen Sans"), local("Playpen"), url("src/fonts/PlaypenSans-Regular.ttf") format("truetype");
+	src: local("Playpen Sans Regular"), local("Playpen Sans"), local("Playpen"), url("src/Letras/PlaypenSans-Regular.ttf") format("truetype");
 }
 
 @keyframe scaledComingUp{
@@ -33,6 +34,12 @@
 body {
 	margin: 0;
 	background: #4A2A00;
+	width: 100vw;
+	height: 100vh;
+}
+
+h1{
+	text-align: center;
 }
 
 button{
@@ -46,6 +53,9 @@ button{
 	background: var(--bg-color);
 	color: var(--font-color);
 	border: none;
+}
+button.outConfig__resetApplication{
+	box-shadow: 0 0.5em 0 var(--bg-color-darkened)
 }
 
 table td{
@@ -165,11 +175,22 @@ input[type="range"]{
 
 .sidebar{
 	position: fixed;
-	height: 100%;
-	top: 0; left: -25%;
+	padding: 0.5em;
+	bottom: -40%; left: 50%;
+	transform: translate(-50%, 0);
 	background: var(--font-color);
 	z-index: 10;
-	min-width: 40%;
+	border-radius: 0.5em;
+	min-width: 100%;
+	transition: bottom 1s;
+}
+.sidebar-blank-space{
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 10;
 }
 .screenMenu.activated{
 	background: black;
