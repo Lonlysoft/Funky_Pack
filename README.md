@@ -7,7 +7,7 @@ It's a personal project made for:
 
 # Playtest
 
-<a href = "https://lonlysoft.github.io/Funky_Pack"> Test my game here!</a> <br> Please bear in mind that it's not finished yet, it's still in its early stages, but you can test the controls performance on mobile or PC. It's pretty important because I don't have a keyboard, so I can't test it. And also, a gamepad option is available for testing.
+<a href = "https://lonlysoft.github.io/Funky_Pack"> Test my game here!</a> <br><br> Please bear in mind that it's not finished yet, it's still in its early stages, but you can test the controls performance on mobile or PC. It's pretty important because I don't have a keyboard, so I can't test it. And also, a gamepad option is available for testing.
 
 # What is it?
 Funky Pack is a game inspired by farming simulators. We all have heard the story of a farming simulator before: <br>
