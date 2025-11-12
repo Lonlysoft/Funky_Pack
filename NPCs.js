@@ -1,7 +1,7 @@
 //codigo dos INIMIGOS E NPCs
 
 class NonPlayableChar extends Being{
-	constructor(arg, coords){
+	constructor(arg, coords){ 
 		super(arg.name, arg.age, 4, 8, arg.height, arg.width, arg.dept, arg.HTMLsrc, arg.animations);
 		this.dialog = arg.dialogs;
 		this.dimen = {w: arg.width, h: arg.height, p: arg.dept};

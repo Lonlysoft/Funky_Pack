@@ -331,7 +331,7 @@ const Col = {
 		}
 		let filterCollidings = this.testCol(entity, solidObjectArray);
 		if((!isOnGround(entity.WorldPos.y, top) && !isOnGround(entity.WorldPos.y, left) && !isOnGround(entity.WorldPos.y, right) && !isOnGround(entity.WorldPos.y, bottom))){
-			entity.velocity.y -= entity.gravity *deltaTime;
+			entity.velocity.y -= entity.gravity /*/1000*/ *deltaTime;
 			entity.onGround = false;
 		}
 		else{

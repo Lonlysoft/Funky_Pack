@@ -4,8 +4,10 @@
 	--positive-bg: #1AE4AA;
 	--negative-bg: #971E2F;
 	--negative-font: #FD7F44;
-	--dynny-color: #A2BAE0;
+	--dynny-color: linear-gradient(45deg, #A2BAE0, #729AD0);
 	--bg-color-darkened: #DD800E;
+	--font-gradient: linear-gradient(180deg, #430C00, #000);
+	--bg-gradient: linear-gradient(180deg, #FEA11E, #DE710E);
 }
 
 @font-face{
@@ -104,7 +106,7 @@ input[type="range"]{
 	font-family: "kindSans", sans-serif;
 	font-weight: 900;
 	box-shadow: 0.1em 0.1em 0 var(--font-color);
-	background: var(--bg-color);
+	background: var(--bg-gradient);
 	border-radius: 1em;
 }
 .comic-balloon{

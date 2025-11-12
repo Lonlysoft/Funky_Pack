@@ -161,6 +161,7 @@
 	background: #000;
 	border-radius: 50%;
 	opacity: 50%;
+	filter: blur(2px);
 }
 .characterMenu .description{
 	width: 75%;

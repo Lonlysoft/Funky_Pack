@@ -23,6 +23,7 @@ class Boundary{
 	}
 }
 
+
 //isso vai ser pra tipificar o terreno das tiles
 function tipify(num){
 	switch(num){
@@ -62,6 +63,14 @@ class Level{
 		this.hasWater = mapObject.hasWater;
 		this.waterGrid = mapObject.grids.water;
 		this.waterBounds = [];
+		this.grass = [];
+	}
+	
+	initialize(){
+		this.setBoundaries();
+		this.setNPCs(NPCS);
+		this.setWater();
+		this.setItems(ITEMS);
 	}
 	
 	setBoundaries(){
@@ -72,6 +81,35 @@ class Level{
 				this.bounds[i].push(new Boundary(j * TILE_SIZE, this.grndElGrid[i][j] * TILE_SIZE, i * TILE_SIZE, tipify(angulation)));
 			}
 		}
+	}
+	setGrass(){
+		for(let i = 0; i < this.height; i++){
+			for(let j = 0; j < this.width; j++){
+				if(this.groundTileSet[i][j] >= 0 && this.groundTileSet[i][j] < 16){
+					for(let k = 0; k < 10; k++){
+						this.grass.push(new Grass(j*TILE_SIZE+k*(TILE_SIZE*0.1), this.grndElGrid[i][j]*TILE_SIZE, i*TILE_SIZE +random(0, TILE_SIZE)));
+					}
+				}
+			}
+		}
+	}
+	updateGrass(camera, arr){
+		arr = [];
+		
+		const cameraCoords = [camera.x, camera.y, camera.w, camera.h]
+		
+		for (let i = 0; i < this.grass.length; i++) {
+			const itemShadow = [
+				this.grass[i].WorldPos.x,
+				this.grass[i].WorldPos.z - this.grass[i].WorldPos.y,
+				this.grass[i].w,
+				this.grass[i].p + this.grass[i].h
+			];
+			if(Col.AABB(cameraCoords, itemShadow)){
+				arr.push(this.grass[i]);
+			}
+		}
+		return arr;
 	}
 	setWater(){
 		if(this.hasWater){
@@ -89,13 +127,9 @@ class Level{
 			return;
 		}
 		for(let i = 0; i < this.height; i++){
-			this.items.push(new Array());
 			for(let j = 0; j < this.width; j++){
 				if(this.itemGrid[i][j] > 0){
-					this.items[i].push(new Item( itemSource[this.itemGrid[i][j]], j*TILE_SIZE+TILE_SIZE*0.5-itemSource[this.itemGrid[i][j]].w*0.5, i*TILE_SIZE+TILE_SIZE*0.5-itemSource[this.itemGrid[i][j]].p*0.5, this.grndElGrid[i][j]*TILE_SIZE));
-					
-				} else{
-					this.items[i].push(0);
+					this.items.push(new Item( itemSource[this.itemGrid[i][j]], j*TILE_SIZE+TILE_SIZE*0.5-itemSource[this.itemGrid[i][j]].w*0.5, i*TILE_SIZE+TILE_SIZE*0.5-itemSource[this.itemGrid[i][j]].p*0.5, this.grndElGrid[i][j]*TILE_SIZE));
 				}
 			}
 		}
@@ -103,20 +137,21 @@ class Level{
 	
 	updateVisibleItems(camera, arr) {
 		//cleans the array and restart you got it.
+		
 		arr = [];
 		
-		const startCol = Math.max(0, Math.floor(camera.x / TILE_SIZE));
-		const endCol = Math.min(this.width - 1, Math.floor((camera.x + camera.w) / TILE_SIZE));
+		const cameraCoords = [camera.x, camera.y, camera.w, camera.h]
 		
-		const startRow = Math.max(0, Math.floor(camera.y / TILE_SIZE));
-		const endRow = Math.min(this.height - 1, Math.floor((camera.y + camera.h) / TILE_SIZE));
-		
-		for (let i = startRow; i <= endRow; i++) {
-			for (let j = startCol; j <= endCol; j++) {
-				if (this.items[i][j] !== 0 && !this.items[i][j].isCollected) {
-					arr.push(this.items[i][j]);
-					this.items[i][j].visible = true;
-				}
+		for (let i = 0; i < this.items.length; i++) {
+			const itemShadow = [
+				this.items[i].boxCol.x,
+				this.items[i].boxCol.z - this.items[i].boxCol.y,
+				this.items[i].boxCol.w,
+				this.items[i].boxCol.p + this.items[i].boxCol.h
+			];
+			if(!this.items[i].isCollected && Col.AABB(cameraCoords, itemShadow)){
+				arr.push(this.items[i]);
+				this.items[i].visible = true;
 			}
 		}
 		return arr;
@@ -139,7 +174,9 @@ class Level{
 	}
 	
 	updateNPCs(camera){
-		
+		if(this.npcGrid == undefined){
+			return;
+		}
 		const newArr = [];
 		
 		const x_grid = Math.max(0, Math.floor(camera.x / TILE_SIZE));
@@ -187,6 +224,15 @@ class Level{
 			}
 		}
 	}
+	setImportantNPCs(){
+		if(!this.importants){
+			return;
+		}
+		for(let i = 0; i < this.importants.length; i++){
+			Game.ImportantNPCs.push(new NonPlayableChar(IMPORTANTS[this.importants[i]], {x: undefined, y: undefined, z: undefined}));
+		}
+	}
+	//set as a chance of spawning new NPCs
 	setNPCs(nonPlayableCharacterList){
 		if(this.npcGrid == undefined){
 			return;
@@ -197,7 +243,7 @@ class Level{
 				if(this.npcGrid[i][j] > 0){
 					this.npcs[i].push(
 						new NonPlayableChar(
-						nonPlayableCharacterList[this.npcGrid[i][j]],
+						nonPlayableCharacterList[random(1, 2)],
 							//COORDINATES X, Y, Z;
 							{
 								z: GridToWorld(i, TILE_SIZE),

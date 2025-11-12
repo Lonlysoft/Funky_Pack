@@ -1,7 +1,7 @@
 
 
 const MAPS = {
-
+	test: mapTest,
 	amCity:
 
 	{

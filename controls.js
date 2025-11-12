@@ -425,14 +425,14 @@ const Ctrl = {
 			},
 			B(entity){
 				if(Ctrl.Btns.B.active && entity.onGround == true && Ctrl.state.B == false /*&& !entity.isSwimming*/){//jumping 
-					entity.velocity.y += entity.JPOW *deltaTime;
+					entity.velocity.y += entity.JPOW;
 				}
 				else if(!Ctrl.Btns.B.active && !entity.onGround && !entity.jumping && Ctrl.state.B){//jump velocity basics
 					entity.velocity.y = 0;
 					entity.jumping = true;
 				}
 				else if(Ctrl.Btns.B.active && Ctrl.state.B == false && entity.isSwimming){ //jumping on water
-					entity.velocity.y += entity.JPOW *deltaTime;
+					entity.velocity.y += entity.JPOW;
 				}
 			},
 			A(entity){

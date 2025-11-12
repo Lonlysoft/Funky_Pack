@@ -70,7 +70,7 @@ class Being{
 			this.velocity[axis] = this.VMAX *deltaTime * this.pol;
 		}
 		else{
-			this.velocity[axis] += this.ACL* deltaTime* this.pol;
+			this.velocity[axis] += this.ACL * deltaTime* this.pol;
 		}
 	}
 	run(axis){
@@ -224,6 +224,12 @@ class Protagonist extends Being{
 		return map.grndElGrid[y][x]*TILE_SIZE;
 	}
 	spawn(map){
+		if(map.beingGrid == undefined){
+			this.boxCol.x = 5*TILE_SIZE;
+			this.boxCol.z = 5*TILE_SIZE;
+			this.WorldPos.y = this.spawnInY(map,5,5);
+			return true;
+		}
 		for(let i = 0; i < map.height; i++){
 			for(let j = 0; j < map.width; j++){
 				if(map.beingGrid[i][j] == "p1"){
@@ -234,6 +240,7 @@ class Protagonist extends Being{
 				}
 			}
 		}
+		
 	}
 	learnSkill(skillName){
 		if(!this.skillList.includes(skillName))this.skillList.push(skillName);
@@ -272,7 +279,7 @@ const skillSet = {
 			entity.hand.boxCol.x = box[0]+TILE_SIZE*0.5-entity.hand.boxCol.w*0.5;
 			entity.hand.boxCol.z = box[1]+TILE_SIZE*0.5-entity.hand.boxCol.p*0.5;
 			entity.hand.boxCol.y = Game.currentMap.bounds[WorldToGrid(box[1], TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)].y
-			Game.currentMap.items[WorldToGrid(box[1], TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)] = entity.hand;
+			Game.currentMap.items.push(entity.hand);
 			entity.hand = 0;
 		}
 	},

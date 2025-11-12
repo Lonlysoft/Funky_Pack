@@ -2,10 +2,7 @@ const Scenery = {
 	hasDeclaired: false,
 	declair: function(nowMoment, LevelNumber, map){
 		nowMoment.currentMap = new Level(map[LevelNumber]);
-		nowMoment.currentMap.setBoundaries();
-		nowMoment.currentMap.setNPCs(NPCS);
-		nowMoment.currentMap.setWater();
-		nowMoment.currentMap.setItems(ITEMS);
+		nowMoment.currentMap.initialize();
 		this.hasDeclaired = true;
 	},
 	draw: function(currentMap, currChar, items, NPCs){

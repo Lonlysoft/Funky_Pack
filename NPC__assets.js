@@ -33,3 +33,30 @@ var NPCS = [
 	}
 	
 ];
+
+const IMPORTANTS = {
+	1: {
+		name: "JSON FOLF",
+		ID: 1,
+		age: 8,
+		height: TILE_SIZE,
+		width: TILE_SIZE,
+		dept: TILE_SIZE,
+		dialogs: Dialogs["JSON_FOLF"],
+		routine: {
+			defaults: [
+				["stay", "9:00"],
+				["go", "railRoadCrossing"],
+				["takePhotos", "11:00"],
+				["go", "jasonHouse"],
+				["stay", "0:00"]
+			],
+			sundays: []
+		},
+		HTMLsrc: "#ultraNPC",
+		animations: {
+			still: ["infinite", 0],
+			walk: ["infinite", 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0]
+		}
+	}
+}

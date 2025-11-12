@@ -4,8 +4,8 @@ const Game = {
 	ctx: ctx,
 	SCREEN_CENTER: [canvas.width*0.5, canvas.height*0.5],
 	currentMap: null,
-	levelName: "amCity",
-	LocationsProps: [null, undefined, "amCity", "Qmart", "nukkoHouse", "houseVariation"],
+	levelName: "test",
+	LocationsProps: [null, undefined, "test", "Qmart", "nukkoHouse", "houseVariation"],
 	CurrentCharacter: null,
 	ItemArr: [],
 	NPCarr: [],
@@ -34,6 +34,7 @@ const Game = {
 		for(let i = 0; i < this.ItemArr.length; i++){
 			this.ItemArr[i].update();
 		}
+		this.GrassArr = this.currentMap.updateGrass(Camera, this.GrassArr);
 	},
 	setAndUpdateNPCs(){
 		this.currentMap.cleanupNPCs(Camera, this.NPCarr);
@@ -97,7 +98,7 @@ const Game = {
 		},
 		pause: function(){
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
-			Scenery.draw(Game.CurrentCharacter, Game.currentMap, Game.ItemArr, Game.NPCarr)
+			Scenery.draw(Game.CurrentCharacter, Game.currentMap, Game.ItemArr, Game.NPCarr, Game.GrassArr)
 			Ctrl.action(null, "pause");
 			Ctrl.stateSave();
 			Game.ctx.globalAlpha = 0.3;
@@ -138,7 +139,7 @@ const Game = {
 			}
 			Game.setAndUpdateNPCs();
 			Game.setAndUpdateItems();
-			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr, Game.GrassArr);
 			if(Game.onDialog){
 				GameMomentSav = GameMoment;
 				GameMoment = "dialog"
@@ -313,8 +314,8 @@ function GameBonanza(){
 	resize();
 	//GamePlayLoop();
 	//intervalID = setInterval(GamePlayLoop, timeFrequency);
-	setTimeout(GamePlayLoop, timeFrequency);
-	//window.requestAnimationFrame(GamePlayLoop2);
+	//setTimeout(GamePlayLoop, timeFrequency);
+	window.requestAnimationFrame(GamePlayLoop2);
 }
 
 const DeviceInfo = {
@@ -347,9 +348,10 @@ function GamePlayLoop(){
 	try{
 		deltaTime = 1;
 		timeCounter += timeFrequency;
-		setTimeout(GamePlayLoop, timeFrequency);
+		intervalID = setTimeout(GamePlayLoop, timeFrequency);
 		GamePlay();
 	} catch (error){
+		clearTimeout(intervalID);
 		//clearInterval(intervalID);
 		console.log(error);
 		body.innerHTML = errorScreen.icon;
@@ -369,15 +371,17 @@ function GamePlayLoop(){
 }
 
 let timerplay = 0;
+let timeGame = 0;
 
 function GamePlayLoop2(timestamp){
 	try{
-		
-		timerplay += timestamp
-		if(timerplay >= timeFrequency){
-			timerplay = 0;
+		deltaTime = timestamp - timerplay;
+		timerplay = timestamp
+		timeCounter += deltaTime;
+		timeGame += deltaTime;
+		if(timeGame >= timeFrequency){
 			deltaTime = 1;
-			timeCounter += timeFrequency;
+			timeGame = 0;
 			GamePlay();
 		}
 		window.requestAnimationFrame(GamePlayLoop2)

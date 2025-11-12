@@ -34,6 +34,14 @@ const BG = {
 				return al + frameSpeed;
 			break;
 		}
+	},
+	CRTfilter(){
+		Game.ctx.globalAlpha = 0.25;
+		Game.ctx.fillStyle = "#000";
+		for(let i = 0; i < BG.canvas.height; i+=4){
+			Game.ctx.fillRect(0, i, canvas.width, 2);
+		}
+		Game.ctx.globalAlpha = 1;
 	}
 }
 
