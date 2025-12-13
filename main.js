@@ -91,7 +91,7 @@ const Game = {
 					Game.appearScreen = false;
 				}
 			}
-			console.log(Game.requestTransition)
+			
 		},
 		title:function(){
 			if(Game.requestTransition && !Game.appearScreen){
