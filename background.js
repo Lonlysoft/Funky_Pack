@@ -1,6 +1,35 @@
 const BG = {
 	canvas: BG__canvas,
 	ctx: BG__ctx,
+	dayAndNight: {
+		//dawn
+		colors: {
+			0: "#0D0A26df",
+			1: "#13113Edf",
+			2: "#1E224Fdf",
+			3: "#353C5Cdf",
+			4: "#475C73df",
+			5: "#387DA4df",
+			6: "#259CD6df",
+			7: "#26AEE2df",
+			8: "#22B0E6df",
+			9: "#1AAFEFdf",
+			10: "#36B4DAdf",
+			11: "#5BB9BBdf",
+			12: "#82BF9Bdf",
+			13: "#B4BE75df",
+			14: "#D5B45Bdf",
+			15: "#E6A64Ddf",
+			16: "#EA9445df",
+			17: "#E28144df",
+			18: "#C66845df",
+			19: "#9F5049df",
+			20: "#4E2653df",
+			21: "#23123Cdf",
+			22: "#160D30df",
+			23: "#0D0A26df",
+		}
+	},
 	transition: function(al, type, frameSpeed){
 		switch(type){
 			case "coming":
@@ -42,6 +71,17 @@ const BG = {
 			Game.ctx.fillRect(0, i, canvas.width, 2);
 		}
 		Game.ctx.globalAlpha = 1;
+	},
+	dayAndNightFilter(hoursRightNow){
+		Game.ctx.save();
+		
+		Game.ctx.globalCompositeOperation = "multiply";
+		
+		Game.ctx.fillStyle = this.dayAndNight.colors[hoursRightNow];
+		Game.ctx.fillRect(0, 0, Game.canvas.width, Game.canvas.height);
+		
+		
+		Game.ctx.restore();
 	}
 }
 

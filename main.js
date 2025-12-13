@@ -45,9 +45,7 @@ const Game = {
 	},
 	moment: {
 		0: function(){
-			if(controls_canvas.width >= controls_canvas.height){
-				GameMoment = GameMomentSav;
-			}
+			GameMoment = GameMomentSav;
 		},
 		characterMenu: function(){
 			//Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
@@ -68,8 +66,32 @@ const Game = {
 			Game.ctx.fillRect(0, 0, Game.canvas.width, Game.canvas.height);
 			Game.ctx.globalAlpha = 1;
 		},
-		preTile: function(){
-			
+		preTitle: function(){
+			let lonlysoft = document.getElementById("lonlysoft-logo");
+			if(Game.requestTransition && !Game.appearScreen){
+				Game.alpha = BG.transition(Game.alpha, "coming", 0.1);
+				if(Game.alpha < 0){
+					Game.requestTransition = false;
+					Game.appearScreen = true;
+				}
+			}
+			ctx.fillStyle = "#000000"
+			ctx.fillRect(0,0,Game.canvas.width, Game.canvas.height)
+			ctx.drawImage(lonlysoft, 0, 0, canvas.width, lonlysoft.height)
+			if(timeCounter >= 3000){
+				Game.requestTransition = true;
+			}
+			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
+			if(Game.requestTransition && Game.appearScreen){
+				Game.alpha = BG.transition(Game.alpha, "going", 0.1);
+				if(Game.alpha >= 1){
+					Game.alpha = 1;
+					GameMomentSav = GameMoment;
+					GameMoment = "title";
+					Game.appearScreen = false;
+				}
+			}
+			console.log(Game.requestTransition)
 		},
 		title:function(){
 			if(Game.requestTransition && !Game.appearScreen){
@@ -151,10 +173,11 @@ const Game = {
 			Game.CurrentCharacter.update();
 			Col.main(Game.CurrentCharacter, Game.currentMap, Game.ItemArr, Game.NPCarr -1);
 			UI.charWinUpdate(Clock, Game.CurrentCharacter);
-			if(timeCounter>=2000){
+			if(timeCounter>=50){
 				Clock.passTime();
 				timeCounter = 0;
 			}
+			BG.dayAndNightFilter(Clock.hour);
 			debug();
 		},
 		cooking(){
@@ -239,7 +262,7 @@ const Game = {
 	}
 }
 
-let GameMoment = 0;
+let GameMoment = "preTitle";
 let GameMomentSav = 'title';
 let frame = 0
 let frameaux = 0
@@ -312,10 +335,7 @@ function GameBonanza(){
 	);
 	window.addEventListener("resize", resize);
 	resize();
-	//GamePlayLoop();
-	//intervalID = setInterval(GamePlayLoop, timeFrequency);
-	//setTimeout(GamePlayLoop, timeFrequency);
-	window.requestAnimationFrame(GamePlayLoop2);
+	window.requestAnimationFrame(GamePlayLoop);
 }
 
 const DeviceInfo = {
@@ -344,36 +364,10 @@ function GamePlay(){
 	}
 }
 
-function GamePlayLoop(){
-	try{
-		deltaTime = 1;
-		timeCounter += timeFrequency;
-		intervalID = setTimeout(GamePlayLoop, timeFrequency);
-		GamePlay();
-	} catch (error){
-		clearTimeout(intervalID);
-		//clearInterval(intervalID);
-		console.log(error);
-		body.innerHTML = errorScreen.icon;
-		body.innerHTML += errorScreen.text;
-		body.innerHTML += error.message;
-		body.innerHTML += "<a href = ''><button>reset game</button></a>";
-		body.style.color = "var(--bg-color)";
-		body.style.display = "flex";
-		body.style.flexDirection = "column";
-		body.style.justifyContent = "center";
-		body.style.alignItems = "flex-start";
-		body.style.padding = "20%"
-		body.style.boxSizing = "border-box"
-		body.style.height = "100vh";
-		
-	}
-}
-
 let timerplay = 0;
 let timeGame = 0;
 
-function GamePlayLoop2(timestamp){
+function GamePlayLoop(timestamp){
 	try{
 		deltaTime = timestamp - timerplay;
 		timerplay = timestamp
@@ -384,7 +378,7 @@ function GamePlayLoop2(timestamp){
 			timeGame = 0;
 			GamePlay();
 		}
-		window.requestAnimationFrame(GamePlayLoop2)
+		window.requestAnimationFrame(GamePlayLoop)
 	} catch (error){
 		console.log(error);
 		body.innerHTML = errorScreen.icon;

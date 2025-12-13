@@ -2,7 +2,7 @@ const Characters = {
 	Dynny:{
 		name: "Dynny",
 		age: 20,
-		min_speed: 2,
+		min_speed: 4,
 		max_speed: 7,
 		jump_power: 40,
 		inventory: 8,
@@ -20,8 +20,8 @@ const Characters = {
 			},
 			walkDifferent: {
 				type: "infinite",
-				imageX: [3, 0, 5, 0],
-				timing: [5, 4, 5, 4],
+				imageX: [3, 4, 3, 0, 5, 6, 5, 0],
+				timing: [3, 3, 3, 3, 3, 3, 3, 3],
 				isMirrored: null
 			},
 			still: {

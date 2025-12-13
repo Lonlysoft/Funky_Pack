@@ -64,13 +64,13 @@ class Being{
 	walk(axis){
 		this.isWalking[axis] = true;
 		if(this.velocity[axis] >= this.VMAX){
-			this.velocity[axis] = this.VMAX *deltaTime * this.pol;
+			this.velocity[axis] = Math.floor(this.VMAX *deltaTime * this.pol);
 		}
 		else if(this.velocity[axis] <= (this.VMAX *-1)){
-			this.velocity[axis] = this.VMAX *deltaTime * this.pol;
+			this.velocity[axis] = Math.floor(this.VMAX *deltaTime * this.pol);
 		}
 		else{
-			this.velocity[axis] += this.ACL * deltaTime* this.pol;
+			this.velocity[axis] += Math.floor(this.ACL * deltaTime* this.pol);
 		}
 	}
 	run(axis){

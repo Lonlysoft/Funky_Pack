@@ -393,33 +393,33 @@ const Ctrl = {
 				if((Ctrl.Btns.west.active && Ctrl.Btns.down.active) || Ctrl.Btns.southwest.active){ //↙
 					Ctrl.Btns.west.active = Ctrl.Btns.down.active = true;
 					entity.dir = "SW";
-					entity.pol = -0.7;
+					entity.pol = -MAGIC_NORMALIZER;
 					entity[entity.movementFlag]("x");
-					entity.pol = 0.7;
+					entity.pol = MAGIC_NORMALIZER;
 					entity[entity.movementFlag]("z");
 				}
 				else if((Ctrl.Btns.down.active && Ctrl.Btns.east.active) || Ctrl.Btns.southeast.active){ //↘
 					Ctrl.Btns.east.active = Ctrl.Btns.down.active = true;
 					entity.dir = "SE"
-					entity.pol = 0.7;
+					entity.pol = MAGIC_NORMALIZER;
 					entity[entity.movementFlag]("x");
-					entity.pol = 0.7;
+					entity.pol = MAGIC_NORMALIZER;
 					entity[entity.movementFlag]("z");
 				}
 				else if((Ctrl.Btns.up.active && Ctrl.Btns.east.active) || Ctrl.Btns.northeast.active){ //↗
 					Ctrl.Btns.up.active = Ctrl.Btns.east.active = true;
 					entity.dir = "NE"
-					entity.pol = 0.7;
+					entity.pol = MAGIC_NORMALIZER;
 					entity[entity.movementFlag]("x");
-					entity.pol = -0.7;
+					entity.pol = -MAGIC_NORMALIZER;
 					entity[entity.movementFlag]("z");
 				}
 				else if((Ctrl.Btns.up.active && Ctrl.Btns.west.active) || Ctrl.Btns.northwest.active){ //↖
 					Ctrl.Btns.up.active = Ctrl.Btns.west.active = true;
 					entity.dir = "NW"
-					entity.pol = -0.7;
+					entity.pol = -MAGIC_NORMALIZER;
 					entity[entity.movementFlag]("x");
-					entity.pol = -0.7;
+					entity.pol = -MAGIC_NORMALIZER;
 					entity[entity.movementFlag]("z");
 				}
 			},
@@ -427,7 +427,7 @@ const Ctrl = {
 				if(Ctrl.Btns.B.active && entity.onGround == true && Ctrl.state.B == false /*&& !entity.isSwimming*/){//jumping 
 					entity.velocity.y += entity.JPOW;
 				}
-				else if(!Ctrl.Btns.B.active && !entity.onGround && !entity.jumping && Ctrl.state.B){//jump velocity basics
+				else if(!Ctrl.Btns.B.active && !entity.onGround && !entity.jumping && Ctrl.state.B && entity.velocity.y > 0){//jump velocity basics
 					entity.velocity.y = 0;
 					entity.jumping = true;
 				}
