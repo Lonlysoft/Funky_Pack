@@ -23,8 +23,8 @@ const Scenery = {
 			for(let j = 0; j < layers[i].length; j++){
 				layers[i][j].draw(currentMap);
 			}
-			currentMap.objectGridDraw(i);
+			if(i < layers.length-1)
+				currentMap.objectGridDraw(i);
 		}
-		
 	}
 }

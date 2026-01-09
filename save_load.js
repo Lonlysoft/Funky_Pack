@@ -1,5 +1,7 @@
-function save(characterName, inventory, coords, levelName, currentMoment){
+function save(character, levelName, currentMoment){
+	let dto = turnDto(character);
 	let finalString = "{"
+	finalString += 'header: ' 
 	finalString += "character: " + characterName + ", ";
 	finalString += "inventory: ["
 	for(let i = 0; i < inventory.length; i++){
@@ -10,6 +12,15 @@ function save(characterName, inventory, coords, levelName, currentMoment){
 	finalString += "}";
 	//Crypt the JSON string
 	saveAs([finalString], {type: "text;charset=utf-8"});
+}
+
+function readFile(e){
+	const arq = e.target.files[0];
+	const leitor = new FileReader();
+	leitor.onload = function(e){
+		return JSON.parse(decrypt(e.target.result));
+	}
+	leitor.readAsDataURL(file);
 }
 
 function load(){

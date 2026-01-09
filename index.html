@@ -49,20 +49,18 @@
 	<div class = "inGameUI">
 		<div class = "charWin">
 			<div class = "quickstats absolute">
-				<div class = "GameDate">unknown Month, 0</div>
+				
 				<img class = "weather_icon icon" src = "src/imgs/WeatherIcon__clearDay.png">
-				<div class = "GameHour">0:00</div>
-			</div>
-			<div class = "characterQuickInfo flex-row absolute">
-				<img class = "icon" src = "src/imgs/Steak.png" alt = "beef_indicator">
-				<div class = "horizontal-bar">
-					<div class = "HUD__hungerBar"></div>
-				</div>
+				<section class = 'flex-column'>
+					<div class = "GameHour">0:00</div>
+					<div class = "GameDate">unknown Month, 0</div>
+				</section>
+				
 				<div class = "circle"><img class = "icon-pic circle" src = "src/imgs/dynny_icon.png"></div>
-					<div class = "flex-row">
-						<!--<div class = "horizontal-bar">
-							<div class = "HUD__lifeBar"></div>
-						</div>-->
+					<div class = "flex-column">
+						<div class = "horizontal-bar hunger-bar">
+							<div class = "HUD__hungerBar"></div>
+						</div>
 						<div class = "money"></div>
 					</div>
 				</div>
@@ -99,35 +97,6 @@
 		</section>
 		<section class = "dialogs notHere" id = "dialogs"></section>
 		<section class = "notHere bags flat"></section>
-		<!--<section class = "status">
-			<div>DYNNY STATS</div>
-			<div>CALENDAR</div>
-			<div>SCHEDULE</div>
-			<div>DEBT TO PAY</div>
-		</section>-->
-	</div>
-	<div class = "inGameUI">
-		<section class = "schedule">
-			<header>
-				WEEKLY SCHEDULE
-			</header>
-			<main>
-				<div class = "readOnly">time</div><div class = "readOnly">SUN</div><div class = "readOnly">MON</div><div class = "readOnly">TUE</div><div class = "readOnly">WED</div><div class = "readOnly">THU</div><div class = "readOnly">FRI</div><div class = "readOnly">SAT</div>
-				<div class = "readOnly">dawn</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-				<div class = "readOnly">early morning</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-				<div class = "readOnly">morning</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-				<div class = "readOnly">early Afternoon</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-				<div class = "readOnly">afternoon</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-				<div class = "readOnly">evening</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-				<div class = "readOnly">night</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-				<div class = "readOnly">early dawn</div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div><div class = "selectable"></div>
-			</main>
-			<footer class = "schedule__options">
-				<div class = "addJob">add job</div>
-				<div class = "giveUp">give up on a job</div>
-				<div class = "cancel">go with figurines</div>
-			</footer>
-		</section>
 	</div>
 	<section class = "inGameUI notHere">
 		<table class = "calendar absolute">
@@ -161,6 +130,7 @@
 			<img class = "pauted" id = "noteblock"></div>
 		</div>
 	</section>
+	<div class = "inGameUI" id = "dynamicPlacement"></div>
 	<div class = "cinema"><div class = "cinema__alphaLock"></div></div>
 	<canvas class = "gameScreen" id = "tra"></canvas>
 	<canvas class="controles_cheroso" id = "ctrl"></canvas>
@@ -173,6 +143,7 @@
 			<rect x = "10" y = "70" width = "90" height = "20"/>
 		</svg>
 	</div>
+	
 	<section class = "fullSideBar notHere">
 		<div class = "sidebar-blank-space"></div>
 		<section class = "outConfig sidebar">
@@ -227,8 +198,6 @@
 <script src = "drawingTools.js"></script>
 <script src = "dialogs.js"></script>
 <script src = "NPC__assets.js"></script>
-<script src = "src/JS/graphics__waiterLv1.js"></script>
-<script src = "src/JS/ground__waiterLv1.js"></script>
 <script src = "src/JS/Test2.js"></script>
 <script src = "maps_assets.js"></script>
 <script src = "controls.js"></script>

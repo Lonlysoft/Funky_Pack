@@ -1,5 +1,5 @@
 const Clock = {
-	hour: 0, minute: 0,
+	hour: 12, minute: 0,
 	year: 1, day: 28, month: 1,
 	monthList: ["yearMonth", "spring", "summer", "autumn", "winter"],
 	secondSav: 0,
@@ -67,9 +67,9 @@ const Clock = {
 	},
 	getHourSummerSystem(){
 		if(this.getDayLateness() == "morning" || this.getDayLateness() == "dawn"){
-			return {hour: this.hour%13, minute: this.minute, late: "AM"};
+			return {hour: this.hour, minute: this.minute, late: "AM"};
 		} else{
-			return {hour: this.hour%13, minute: this.minute, late: "PM"};
+			return {hour: this.hour==12? 12 : this.hour%12, minute: this.minute, late: "PM"};
 		}
 	},
 	getMonth(){

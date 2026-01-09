@@ -1,7 +1,7 @@
 const CARS = {
 	1: {
 		ID: 10820, name: "car",
-		description: "", ColType: "solidVehicle",
+		description: "",
 		w: (TILE_SIZE*2)-10, TILE_SIZE*0.7, (TILE_SIZE*4)-10
 	}
 
@@ -9,13 +9,35 @@ const CARS = {
 		ID: 18966, "bmw", "", "solid", (TILE_SIZE*2)-10, TILE_SIZE*0.7, (TILE_SIZE*4)-10
 	},
 
-	3: [20000, "NUKKO's bus", "it's his home. made out of a old bus found in a forest after public transportation got discontinued", (TILE_SIZE*2)-10, (TILE_SIZE*2)-4, (TILE_SIZE*6)-10],
+	3: {
+		ID: 3,
+		name: "NUKKO's bus",
+		description: "it's his home. made out of a old bus found in a forest after public transportation got discontinued",
+		w:(TILE_SIZE*2)-10,
+		h: (TILE_SIZE*2)-4,
+		p: (TILE_SIZE*6)-10
+	},
 
-	[4500, "mercedes", "", (TILE_SIZE*2)-10, TILE_SIZE*0.7, (TILE_SIZE*4)-10],
+	4: {
+		ID: 4,
+		name: "mercedes",
+		description: "",
+		w: (TILE_SIZE*2)-10,
+		h: TILE_SIZE*0.7,
+		p: (TILE_SIZE*4)-10
+	},
 
-	[6000, "TAXI", "", (TILE_SIZE*2)-10, TILE_SIZE*0.7, (TILE_SIZE*4)-10],
+	5: {
+		ID: 5,
+		name: "TAXI",
+		description: "",
+		w: (TILE_SIZE*2)-10,
+		h: TILE_SIZE*0.7,
+		p: (TILE_SIZE*4)-10
+	},
 
-	[23455, "BUS", "", (TILE_SIZE*2)-10, TILE_SIZE*0.7, (TILE_SIZE*8)-10],
+	6: {
+		ID: 6, "BUS", "", (TILE_SIZE*2)-10, TILE_SIZE*0.7, (TILE_SIZE*8)-10],
 
 	[3000000, "BLACK LIMO", "", (TILE_SIZE*2)-10, TILE_SIZE*0.7, (TILE_SIZE*10)-10],
 

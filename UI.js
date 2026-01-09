@@ -1,4 +1,5 @@
 const UI = {
+	inGameUI: body.querySelector("#dynamicPlacement"),
 	titleDOM: document.querySelector(".titleScreen"),
 	loadDOM: document.querySelector(".container__saving"),
 	charDOM: document.querySelector(".charWin"),
@@ -21,7 +22,7 @@ const UI = {
 	charWinUpdate: function(clock, entity){
 		let clockHourFormat = clock.getHourSummerSystem();
 		this.charWin.clockDOM[0].innerHTML = `${clock.monthList[clock.month]}, ${clock.day}`;
-		this.charWin.clockDOM[1].innerHTML = `${(clockHourFormat.hour >= 10) ? clockHourFormat.hour : "0" + (clock.hour +"")}:${(clockHourFormat.minute >= 10) ? clockHourFormat.minute : "0" + (clockHourFormat.minute +" ")}`;
+		this.charWin.clockDOM[1].innerHTML = `${(clockHourFormat.hour >= 10) ? clockHourFormat.hour : "0" + (clockHourFormat.hour +"")}:${(clockHourFormat.minute >= 10) ? clockHourFormat.minute : "0" + (clockHourFormat.minute +" ")}`;
 		this.charWin.clockDOM[1].innerHTML += clockHourFormat.late;
 		this.charWin.weatherDOM.src = "src/imgs/WeatherIcon__" + Clock.currentWeather + Clock.getBinaryLateness().charAt(0).toUpperCase() + Clock.getBinaryLateness().slice(1) + ".png";
 		this.charWin.moneyDOM.innerHTML = "US$" + entity.money.unit + "." + ((entity.money.cents>= 10)? entity.money.cents : "0" + (entity.money.cents + ""));
@@ -37,8 +38,9 @@ const UI = {
 		layer: 0
 	},
 	characterMenuSubmenus: {
-		statsDOM: document.querySelector(".extraStats"),
+		statsDOM: null,
 		itemsDOM: document.querySelector(".bags"),
+		jobTableDOM: null,
 		isVisible: false,
 		inventoryEach: null,
 		selectedInventoryIndex: 0,
@@ -73,7 +75,28 @@ const UI = {
 			this.itemsDOM.style.display = "none";
 		},
 		startstats(entity){
-			UI.scheduleStart();
+			if(!this.hasLoadedCharacterMenuUI){
+				this.jobTableDOM = document.createElement("section");
+				//this.jobTableDOM.classList.add('flat');
+				const dayThings = ['week', "dawn", "early morning", "morning", "day", "noon", "afternoon", "evening", "night", "midnight"];
+				const week = ['sun', "mon", "tue", "wed", 'thu', 'fri', 'sat'];
+				const table = document.createElement('table');
+				for(let i = 0; i < dayThings.length; i++){
+					const tr = document.createElement("tr");
+					for(let j = 0; j < week.length; j++){
+						const td = document.createElement('td');
+						if(j == 0)
+							tr.innerHTML = dayThings[i];
+						if(i == 0)
+							td.innerHTML = week[j];
+						tr.appendChild(td)
+					}
+					table.appendChild(tr);
+				}
+				this.jobTableDOM.appendChild(table);
+				UI.inGameUI.appendChild(this.jobTableDOM);
+				this.hasLoadedCharacterMenuUI = true;
+			}
 		},
 		"starttalk to": function(entity){
 			return;
@@ -81,18 +104,45 @@ const UI = {
 		"dismisstalk to": function(entity){
 			return;
 		},
+		hasLoadedCharacterMenuUI: false,
 		"startlook at": function (entity){
-			return;
+			if(!this.hasLoadedCharacterMenuUI){
+				this.statsDOM = document.createElement('section');
+				this.statsDOM.classList.add('flat');
+				this.statsDOM.classList.add('statusWindow');
+				this.statsDOM.classList.add('flex-row');
+				this.statsDOM.classList.add('absolute');
+				const dynnyImage = document.createElement('img');
+				dynnyImage.src = "src/imgs/dynnyImage.png";
+				const status = document.createElement('div');
+				let finalStr = "<h2>"+entity.name+" status</h2><ul>"
+				const info = ["hp: ", "hunger: ", "jobs: ", "stamina: "]
+				for(let i = 0; i < info.length; i++){
+					finalStr += "<li>"+info[i] + entity[info[i]] + "</li>"
+				}
+				finalStr += "</ul>"
+				status.innerHTML = finalStr;
+				this.statsDOM.appendChild(dynnyImage);
+				this.statsDOM.appendChild(status);
+				UI.inGameUI.appendChild(this.statsDOM);
+				this.hasLoadedCharacterMenuUI = true;
+			}
 		},
 		"dismisslook at": function(entity){
+			if(this.statsDOM)
+				this.statsDOM.remove();
+			this.statsDOM = null;
+			this.hasLoadedCharacterMenuUI = false;
 			return;
 		},
 		dismissstats(entity){
-			UI.scheduleDismiss();
+			if(this.jobTableDOM)
+				this.jobTableDOM.remove();
+			this.jobTableDOM = null;
+			this.hasLoadedCharacterMenuUI = false;
 		}
 	},
 	pauseDOM: document.querySelector(".pause"),
-	jobTableDOM: document.querySelector(".schedule"),
 	dialogDOM: document.querySelector("#dialogs"),
 	dialogItems: {
 		stackPair: 0,
@@ -165,19 +215,40 @@ const UI = {
 		option: ["cookie", "sendFile"],
 		optionDOM: [document.querySelector(".Cookies"), document.querySelector(".SendAFile")]
 	},
-	loadCookies:{
-		selectedOption: 0,
-		option: ["noFile"],
-		DOM: document.querySelector(".loadByCookie"),
-	},
-	cooking: {
-		selectedOption: 0,
-		currentLayer: 0,
-		
-		option: [],
-		items: [],
-		DOM: document.querySelector(".cooking"),
-		toolsDOM: document.querySelector(".cooking__tools"),
+	loadMenu:{
+		option: ["load", "cancel"],
+		saveStream: null,
+		DOM: null,
+		readSaveFile(event){
+			let save = document.createElement('section');
+			this.saveStream = readFile(event);
+			if(this.DOM){
+				save.innerHTML = saveStream.header;
+				this.DOM.appendChild(save);
+			}
+		},
+		hasRendered: false,
+		sendFile: {
+			render(){
+				if(!this.hasRendered){
+					this.DOM = document.createElement("section");
+					this.DOM.classList.add('flex-column');
+					this.DOM.classList.add('absolute');
+					this.DOM.classList.add('centered');
+					let fileSend = document.createElement('input');
+					fileSend.type = "file"
+					fileSend.placeholder = "your saved save here";
+					fileSend.classList.add("files");
+					fileSend.addEventListener("change", UI.loadMenu.readSaveFile);
+					this.DOM.appendChild(fileSend);
+					Ctrl.canvas.style.display = "none";
+					BG.canvas.style.display = "none";
+					UI.inGameUI.appendChild(this.DOM);
+					this.hasRendered = true;
+				}
+				
+			}
+		}
 	},
 	loadCookiesStart(str){
 		let save = this.loadCookies.DOM.createElement("div");
@@ -211,12 +282,7 @@ const UI = {
 	charWinDismiss(){
 		this.charDOM.style.display = "none";
 	},
-	scheduleStart(){
-		this.jobTableDOM.style.display = "grid";
-	},
-	scheduleDismiss(){
-		this.jobTableDOM.style.display = "none";
-	},
+	
 	dialogStart(){
 		this.dialogDOM.style.display = "block"
 		setTimeout(()=>{this.dialogDOM.style.transform = "scale(1)"}, 304)

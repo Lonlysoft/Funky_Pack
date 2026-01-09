@@ -103,7 +103,7 @@ function displayAnim(Character){
 	}
 	if(Character.anim[Character.doing].isMirrored && Character.anim[Character.doing].isMirrored[Character.animationIndex] == 1){
 		Character.isMirrored = true;
-		mirrorate(Game.ctx);
+		mirrorateToAPoint(Game.ctx, Character.centralPoint[0], Character.centralPoint[1]);
 	}
 	return Character.anim[Character.doing].imageX[Character.animationIndex];
 }

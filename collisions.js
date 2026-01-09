@@ -28,24 +28,6 @@ const Col = {
 		let bottomRight = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w+entity.velocity.x, TILE_SIZE)];
 		let maxValue = maxVal([topLeft, topRight, bottomLeft, bottomRight]);
 		entity.layer = maxValue;
-		//DONE: not necessary to do it here. drawing order is now merge sort based. it's not as dynamic, but it covers plenty of the issues here
-		let arr = Game.NPCarr;
-		for(let i = 0; i < arr.length; i++){
-			if(i == num) continue;
-			this.handleShadowObjects(entity, arr[i].shadow, arr[i].layer, arr[i].sublayer);
-		}
-		for(let i = 0; i < Game.ItemArr.length; i++){
-			this.handleShadowObjects(entity, Game.ItemArr[i].shadow, Game.ItemArr[i].layer, Game.ItemArr[i].sublayer);
-		}
-	},
-	
-	handleShadowObjects(entity, shadow, shadowLayer, shadowSubLayer){
-		let entityBox = [entity.boxCol.x, entity.boxCol.z, entity.boxCol.w, entity.boxCol.p];
-		let shadowBox = [shadow.x, shadow.z, shadow.w, shadow.p];
-		if(this.AABB(entityBox, shadowBox)){
-			entity.subLayer = shadowSubLayer-1;
-			entity.layer = shadowLayer;
-		}
 	},
 	
 	teleportTo: function(entity, placeName){
@@ -439,9 +421,11 @@ const Col = {
 			}//fim for
 		}//fim for
 		
-		entity.WorldPos.x = entity.boxCol.x + entity.boxCol.w/2;
-		entity.WorldPos.z = entity.boxCol.z + entity.boxCol.p/2;
+		entity.WorldPos.x = entity.boxCol.x + entity.boxCol.w*0.5;
+		entity.WorldPos.z = entity.boxCol.z + entity.boxCol.p*0.5;
 		entity.boxCol.y = entity.WorldPos.y + entity.boxCol.h;
+		
+		this.handleShadowCoords(entity, mapGrid, num)
 		this.handleYcoords(entity, mapGrid, itemArr, npcArr);
 		this.handleExitsAndTeleporters(entity, mapGrid);
 	}

@@ -1,14 +1,14 @@
 var Camera = {
-	x: 100, y: 100, z: 0, w: canvas.width, h: canvas.height,
+	x: 100, y: 100, w: canvas.width, h: canvas.height,
+	smoothing: 0.7,
 	moveTo: function(x, y, z){
-		this.x = x - this.w*0.5;
-		this.y = y - z - this.h*0.5;
-		this.z = z;
+		//this.x = x - this.w*0.5;
+		//this.y = y - z - this.h*0.5;
 		
-		this.x += (x - this.x - this.w*0.5)*0.9; 
-		this.y += (y - this.y - this.h*0.5)*0.9 - z;
+		this.x += (x - this.x - this.w*0.5) *this.smoothing; 
+		this.y += (y - z - this.y - this.h*0.5) *this.smoothing;
 		
-	}
+	},
 };
 
 class Boundary{

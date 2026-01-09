@@ -156,6 +156,10 @@ input[type="range"]{
 	left: 50%;
 	transform: translate(-50%, 0);
 }
+.centered{
+	top: 50%; left: 50%;
+	transform: translate(-50%, -50%);
+}
 .flex-column {
 	display: flex;
 	justify-content: center;
@@ -272,7 +276,7 @@ input[type="range"]{
 		transform: translate(-50%, -50%);
 		z-index: 6;
 		width: 100%; /* Cobrir a largura da tela */
-		min-height: 100%; /* Cobrir a altura da tela */
+		height: 100%; /* Cobrir a altura da tela */
 	}
 	.gameScreen , .inGameUI{
 		position: absolute;

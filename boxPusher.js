@@ -11,6 +11,7 @@ class BoxPusherBox{
 }
 
 const BoxPusher = {
+	boxArr: [],
 	currentMap: null,
 	player: null,
 	hasDeclared: false,
@@ -18,12 +19,15 @@ const BoxPusher = {
 	asset: {
 		box: document.querySelector(".boxPusherSprites"),
 		boxProps: ["small", "medium", "big", "large", "huge", "hyper", "macro"],
-		boxPropsObjects: [
-			{w: TILE_SIZE/4, p: TILE_SIZE/4, h: TILE_SIZE/4},
-			{w: TILE_SIZE/2, p: TILE_SIZE/2, h: TILE_SIZE/2},
-			{w: TILE_SIZE, p: TILE_SIZE, h: TILE_SIZE},
-			{w: TILE_SIZE*1.5, p: TILE_SIZE*1.5, h: TILE_SIZE*1.5},
-		]
+		boxPropsSizeMultiplier: {
+			small: 0.25,
+			medium: 0.5,
+			big: 0.75,
+			large: 1.25,
+			huge: 1.5,
+			hyper: 2.25,
+			macro: 3.75
+		}
 	},
 	draw(){
 		//drawGrid
@@ -31,9 +35,7 @@ const BoxPusher = {
 	declairBoxes(){
 		for(let i = 0; i < currentMap.height; i++){
 			for(let j = 0; j < currentMap.width; j++){
-				if(random_number(0, 3)){
-					
-				}
+				this.boxArr[random(0, 3)]
 			}
 		}
 	},

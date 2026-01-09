@@ -37,9 +37,7 @@ function createMatrixWithSomething(width, height, arg){
 }
 
 function preventStacking(arr){
-	for(let i = 0; i< arr.length; i++){
-		arr.pop();
-	}
+	arr = [];
 }
 
 function mergeSort(arr) {
@@ -287,10 +285,6 @@ function zoomOut(context){
 	context.scale(0.5, 0.5)
 }
 
-function checkCentralPoint(x, y){
-	if(x == Game.SCREEN_CENTER[0] && y == Game.SCREEN_CENTER[1]) return true;
-	return false;
-}
 
 function random(min, max) {
 	if (min > max) {
@@ -300,12 +294,19 @@ function random(min, max) {
 }
 
 function drawShadow(context, entity, map, oppacity){
-	context.fillStyle = "#000"
+	context.fillStyle = "#000";
+	let shadowCoords = {x: entity.WorldPos.x, z: entity.WorldPos.z, y: entity.WorldPos.y};
+	let shadowScreenCoords = {
+		x: WorldToScreen1D(shadowCoords.x, Camera.x
+, Camera.w/2 - Game.SCREEN_CENTER[0]),
+		y: WorldToScreen1D(shadowCoords.z - map.bounds[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.WorldPos.x, TILE_SIZE)].y, Camera.y
+, Camera.h/2 - Game.SCREEN_CENTER[0])
+	}
 	context.globalAlpha = oppacity;
 	context.beginPath();
 	context.ellipse(
-		entity.centralPoint[0],
-		entity.centralPoint[1] + entity.WorldPos.y - map.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y,
+		shadowScreenCoords.x,
+		shadowScreenCoords.y,
 		entity.boxCol.w*0.8,
 		entity.boxCol.p*0.8,
 		0, 0, 2*Math.PI, true

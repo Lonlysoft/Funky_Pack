@@ -33,7 +33,7 @@ class Being{
 		this.OriginPos = {x: undefined, y: undefined, z: undefined};
 		this.boxCol = new Box(undefined, undefined, undefined, width/2, height, dept/2);
 		this.velocity = {x: 0, y: 0, z: 0};
-		this.friction = 0.4;
+		this.friction = 0.6;
 		
 		
 		this.dir = "S";
@@ -126,6 +126,7 @@ class Protagonist extends Being{
 	constructor(arg){
 		super(arg.name, arg.age, arg.min_speed, arg.max_speed, arg.height, arg.width, arg.dept, arg.htmlSrc, arg.animations);
 		this.dimen = {w: arg.width, h: arg.height, p: arg.dept};
+		this.jobs = [];
 		this.STR = arg.min_speed;
 		this.JPOW = arg.jump_power;
 		this.isSwimming = false;
@@ -146,10 +147,14 @@ class Protagonist extends Being{
 		this.holdingObject = false;
 	}
 	update(){
+		this.centralPoint[0] = WorldToScreen1D(this.WorldPos.x, Camera.x
+, Camera.w/2 - Game.SCREEN_CENTER[0]);
+		this.centralPoint[1] = WorldToScreen1D(this.WorldPos.z-this.WorldPos.y, Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]);
 		saveCoords(this.boxCol);
 		if(this.onGround && this.isSpecialSkilling){
 			this.isSpecialSkilling = false;
 		}
+		
 		this.onGround = false;
 		this.boxCol.x += this.velocity.x;
 		this.boxCol.z += this.velocity.z;
@@ -159,10 +164,7 @@ class Protagonist extends Being{
 		this.boxCol.y = this.WorldPos.y + this.boxCol.h;
 		this.shadow.x = this.boxCol.x;
 		this.shadow.z = this.boxCol.z-this.boxCol.h;
-		if( checkCentralPoint(this.centralPoint[0], this.centralPoint[1]) == false ){
-			this.centralPoint[1]-=this.velocity.z;
-			this.centralPoint[0]-=this.velocity.x;
-		}
+		
 		if(this.holdingObject && this.hand !== 0){
 			this.hand.centralPoint[0] = this.centralPoint[0];
 			this.hand.centralPoint[1] = this.centralPoint[1] - this.boxCol.h*0.6;
@@ -186,6 +188,7 @@ class Protagonist extends Being{
 		);
 		if(this.isMirrored){//get back to normal state
 			mirrorateToAPoint(Game.ctx, this.centralPoint[0], this.centralPoint[1]);
+			//mirrorate(Game.ctx)
 			this.isMirrored = false;
 		}
 		if(this.hand != 0){

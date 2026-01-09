@@ -553,6 +553,8 @@ const Ctrl = {
 				}
 			}
 		},
+		
+		
 		startMenu: {
 			west(){
 				if(Ctrl.Btns["west"].active){
@@ -673,7 +675,6 @@ const Ctrl = {
 			},
 			cancel(){
 				if(Ctrl.Btns.B.active && Ctrl.state.B == false){
-					UI.scheduleDismiss();
 					UI.characterMenuItems.layer--;
 				}
 			}
@@ -752,6 +753,12 @@ const Ctrl = {
 		stats: function(entity){
 			for(let i = 0; i < Ctrl.ListPropsPause.length; i++){
 				Ctrl.BonanzaMenu["stats"][Ctrl.ListPropsPause[i]]();
+			}
+		},
+		
+		"look at": function(entity){
+			if(Ctrl.Btns.B.active && !Ctrl.state.B){
+				UI.characterMenuItems.layer--;
 			}
 		},
 		

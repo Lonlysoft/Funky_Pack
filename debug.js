@@ -8,6 +8,8 @@ function debug(){
 	ctx.fillText("x "+Game.CurrentCharacter.WorldPos.x, 100, 140);
 	ctx.fillText("y "+Game.CurrentCharacter.WorldPos.y, 100, 160);
 	ctx.fillText("z "+Game.CurrentCharacter.WorldPos.z, 100, 180);
+	ctx.fillText("imgX "+Game.CurrentCharacter.centralPoint[0], 100, 220);
+	ctx.fillText("imgY "+Game.CurrentCharacter.centralPoint[1], 100, 240);
 	ctx.fillText("dir "+Game.CurrentCharacter.dir, 100, 200);
 	/*
 	for(let i = 0; i < Game.NPCarr.length; i++){

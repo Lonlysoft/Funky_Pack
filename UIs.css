@@ -23,6 +23,7 @@
 	color: var(--bg-color);
 	padding: 0.5em 1.5em;
 	border-radius: 50px;
+	font-size: 100%;
 }
 .titleCommand.selected{
 	transition: color 0.4s, transform 0.4s, opacity 0.5s;
@@ -57,6 +58,27 @@
 	border: none;
 	background: var(--font-color);
 	transition: color 0.4s, border 0.4s;
+}
+
+.files{
+	padding: 3vw;
+	position: relative;
+}
+
+.files::after{
+	content: 'choose your file here!';
+	padding: 3vw;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	inset: 0;
+	box-sizing: border-box;
+	border: 2px dashed var(--bg-color);
+	border-radius: 1000vw;
+	color: var(--bg-color);
+	text-align: center;
+	background: #000;
+	
 }
 
 /* schedule table */
@@ -116,13 +138,34 @@
 	left: 50%;
 	transform: translate(-50%, 0);
 	gap: 1em;
-	padding: 1em;
+	padding: .5em;
 }
 .characterQuickInfo{
 	bottom: 5%;
 	left: 50%;
 	transform: translateX(-50%);
 	gap: 0.5em;
+}
+
+.hunger-bar{
+	position: relative;
+	border-radius: 0 458vw 458vw 0;
+}
+
+.hunger-bar *{
+	border-radius: inherit;
+}
+
+.hunger-bar::after{
+	content: '';
+	position: absolute; 
+	top: -1rem;
+	left: -1rem;
+	width: 2rem;
+	height: 2rem;
+	background: url("src/imgs/Steak.png");
+	background-size: cover;
+	border-radius: 50%;
 }
 
 /*character menu*/
@@ -246,6 +289,10 @@
 	top: 0;
 }
 
+.statusWindow{
+	z-index: 7;
+}
+
 .calendar{
 	width: 50%;
 	top: 50%;
@@ -258,9 +305,10 @@
 	font-size: 2em;
 }
 .money, .GameDate, .GameHour{
-	font-weight: 100;
+	font-weight: 1000;
 	color: var(--bg-color);
-	font-size: 2em;
+	font-size: 65%;
+	white-space: nowrap;
 	text-shadow: 1px 1px 2px var(--font-color);
 }
 .next-symbol{

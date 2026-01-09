@@ -1,11 +1,20 @@
 
+let timerplay = 0;
+let timeGame = 0;
+let GameMoment = 0;
+let GameMomentSav = 'preTitle';
+let frame = 0
+let frameaux = 0
+let fps = 30, timeFrequency = 1000/fps;
+let timeCounter = 0, deltaTime = 0;
+
 const Game = {
 	canvas: canvas,
 	ctx: ctx,
 	SCREEN_CENTER: [canvas.width*0.5, canvas.height*0.5],
 	currentMap: null,
-	levelName: "test",
-	LocationsProps: [null, undefined, "test", "Qmart", "nukkoHouse", "houseVariation"],
+	levelName: "testRoom",
+	LocationsProps: [],
 	CurrentCharacter: null,
 	ItemArr: [],
 	NPCarr: [],
@@ -77,7 +86,7 @@ const Game = {
 			}
 			ctx.fillStyle = "#000000"
 			ctx.fillRect(0,0,Game.canvas.width, Game.canvas.height)
-			ctx.drawImage(lonlysoft, 0, 0, canvas.width, lonlysoft.height)
+			ctx.drawImage(lonlysoft, 0, Game.SCREEN_CENTER[1] - lonlysoft.height*0.5, canvas.width, lonlysoft.height)
 			if(timeCounter >= 3000){
 				Game.requestTransition = true;
 			}
@@ -91,7 +100,6 @@ const Game = {
 					Game.appearScreen = false;
 				}
 			}
-			
 		},
 		title:function(){
 			if(Game.requestTransition && !Game.appearScreen){
@@ -154,6 +162,7 @@ const Game = {
 			}
 			if(!Game.CurrentCharacter.isSpawn && Scenery.hasDeclaired){
 				Game.CurrentCharacter.isSpawn = Game.CurrentCharacter.spawn(Game.currentMap);
+				Game.CurrentCharacter.update();
 			}
 			if(Game.ischaracterMenud){
 				GameMomentSav = GameMoment;
@@ -172,8 +181,9 @@ const Game = {
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Game.CurrentCharacter.update();
 			Col.main(Game.CurrentCharacter, Game.currentMap, Game.ItemArr, Game.NPCarr -1);
+			
 			UI.charWinUpdate(Clock, Game.CurrentCharacter);
-			if(timeCounter>=50){
+			if(timeCounter>=2000){
 				Clock.passTime();
 				timeCounter = 0;
 			}
@@ -258,18 +268,12 @@ const Game = {
 			Ctrl.action(this.player, "load");
 			Ctrl.stateSave();
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
+			UI.loadMenu.sendFile.render();
+			Game.ctx.fillRect(0, 0, Game.canvas.width, Game.canvas.height);
+			
 		}
 	}
 }
-
-let GameMoment = "preTitle";
-let GameMomentSav = 'title';
-let frame = 0
-let frameaux = 0
-
-let fps = 30, timeFrequency = 1000/fps;
-let timeCounter = 0, intervalSav = 0, deltaTime = 0;
-let intervalID;
 
 const SideBar = {
 	fullDOM: body.querySelector(".fullSideBar"),
@@ -363,9 +367,6 @@ function GamePlay(){
 		frame++;
 	}
 }
-
-let timerplay = 0;
-let timeGame = 0;
 
 function GamePlayLoop(timestamp){
 	try{
