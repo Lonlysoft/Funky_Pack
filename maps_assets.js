@@ -20,7 +20,7 @@ const MAPS = {
 	testRoom3: {}
 }
 
-loadMap("testRoom").then(
+loadMap("TestRoom").then(
 	mapData => {
 		MAPS.testRoom = mapData;
 	}
