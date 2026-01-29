@@ -20,8 +20,18 @@ const MAPS = {
 	testRoom3: {}
 }
 
-loadMap("TestRoom").then(
+const WAITER_MAPS = {
+	lv1: {}
+}
+
+loadMap("testRoom").then(
 	mapData => {
 		MAPS.testRoom = mapData;
+	}
+);
+
+loadMap("WaiterLevel").then(
+	mapData => {
+		WAITER_MAPS.lv1 = mapData;
 	}
 );

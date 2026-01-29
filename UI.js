@@ -1,6 +1,5 @@
 const UI = {
 	inGameUI: body.querySelector("#dynamicPlacement"),
-	titleDOM: document.querySelector(".titleScreen"),
 	loadDOM: document.querySelector(".container__saving"),
 	charDOM: document.querySelector(".charWin"),
 	charWin:{
@@ -15,7 +14,6 @@ const UI = {
 		solitudeDOM: document.querySelector(".HUD__solitude"),
 		hungerDOM: document.querySelector(".HUD__hungerBar"),
 		update(entity){
-			//this.hpDOM.style.width = ("" + transformIntoBar(entity.hp, entity.HP)) + "%";
 			this.hungerDOM.style.width = ("" + transformIntoBar(entity.hunger, entity.maxHunger)) + "%";
 		}
 	},
@@ -55,7 +53,7 @@ const UI = {
 					finalString += "<div class = 'bags__item'> -- </div>";
 			}
 			if(entity.tail.length == 0){
-				this.itemsDOM.innerHTML = "empty inventory"
+				this.itemsDOM.innerHTML = "empty inventory";
 				return;
 			}
 			this.itemsDOM.innerHTML = finalString;
@@ -78,22 +76,40 @@ const UI = {
 			if(!this.hasLoadedCharacterMenuUI){
 				this.jobTableDOM = document.createElement("section");
 				//this.jobTableDOM.classList.add('flat');
-				const dayThings = ['week', "dawn", "early morning", "morning", "day", "noon", "afternoon", "evening", "night", "midnight"];
-				const week = ['sun', "mon", "tue", "wed", 'thu', 'fri', 'sat'];
+				const dayThings = ["dawn", "early morning", "morning", "day", "noon", "afternoon", "evening", "night", "midnight"];
+				const week = ['week', 'sun', "mon", "tue", "wed", 'thu', 'fri', 'sat'];
 				const table = document.createElement('table');
+				table.classList.add('schedule');
+				
 				for(let i = 0; i < dayThings.length; i++){
 					const tr = document.createElement("tr");
 					for(let j = 0; j < week.length; j++){
 						const td = document.createElement('td');
 						if(j == 0)
-							tr.innerHTML = dayThings[i];
+							td.innerHTML = dayThings[i];
 						if(i == 0)
 							td.innerHTML = week[j];
-						tr.appendChild(td)
+						tr.appendChild(td);
 					}
 					table.appendChild(tr);
 				}
 				this.jobTableDOM.appendChild(table);
+				const toolBar = document.createElement('div');
+				toolBar.classList.add('flex-row');
+				toolBar.classList.add('absolute');
+				toolBar.classList.add('bottom');
+				let option = [];
+				for(let i = 0; i < 3; i++){
+					option.push(document.createElement('div'));
+					option[i].classList.add('schedule_option');
+					option[i].innerHTML = UI.jobTable.options[i];
+					if(i == 0){
+						option[i].classList.add('selected');
+					}
+					toolBar.appendChild(option[i]);
+				}
+				UI.jobTable.optionsDOM = option;
+				this.jobTableDOM.appendChild(toolBar);
 				UI.inGameUI.appendChild(this.jobTableDOM);
 				this.hasLoadedCharacterMenuUI = true;
 			}
@@ -143,6 +159,49 @@ const UI = {
 		}
 	},
 	pauseDOM: document.querySelector(".pause"),
+	jobTable:
+	{
+		layer: 0, //define if you're controlling the toolbar, or the schedule table
+		selectedOption: 0,
+		options: ["add job", "remove job", "go with figurines"],
+		selectedJobIndex: 0,
+		optionsDOM: null,
+		jobListDOM: null,
+		openAvailableJobsList(){
+			if(!this.jobListDOM){
+				const jobDOM = document.createElement('section');
+				jobDOM.classList.add('flex-column');
+				jobDOM.classList.add('flat');
+				const listDOM = [];
+				for(let i = 0; i < Schedule.availableJobs.length; i++){
+					const newElement = document.createElement('section');
+					newElement.classList.add('job');
+					listDOM.push(newElement);
+					jobDOM.appendChild(listDOM[i]);
+				}
+				if(listDOM.length <= 0){
+					jobDOM.innerHTML = "There's no jobs to apply"
+				}
+			}
+			UI.inGameUI.appendChild(jobDOM);
+		},
+		closeAvailableJobsList(){
+			if(this.jobListDOM){
+				this.jobListDOM.remove();
+				this.jobListDOM = null;
+			}
+		},
+		optionsFunctions: {
+			0: function(){
+				UI.jobTable.openAvailableJobsList();
+			},
+			1: function(){
+				
+			}
+		}
+		//layer = 0 -> the cursor is in the bottom menu 
+		//layer = 1 -> the cursor controling the schedule
+	},
 	dialogDOM: document.querySelector("#dialogs"),
 	dialogItems: {
 		stackPair: 0,
@@ -195,21 +254,19 @@ const UI = {
 	charWindowDOM: document.querySelector(".charWin"),
 	milionaire: 0,
 	wallCleanerHud: 0,
-	jobTable:
-	{
-		objs: document.querySelectorAll(".selectable"),
-		optionX: 0,
-		optionY: 0,
-		statsBottomMenu: document.querySelector(".schedule_options"),
-		layer: 0,
-		//layer = 0 -> the cursor is in the bottom menu 
-		//layer = 1 -> the cursor controling the schedule
-	},
 	title: {
+		DOM: document.querySelector(".titleScreen"),
 		selectedOption: 0,
 		options: ["newGame", "continueGame"],
-		optionDOM: [document.querySelector(".new"), document.querySelector(".continue")]
+		optionDOM: [document.querySelector(".new"), document.querySelector(".continue")],
+		start(){
+			this.DOM.style.display = "flex";
+		},
+		dismiss(){
+			this.DOM.style.display = "none";
+		},
 	},
+	
 	loadGame: {
 		selectedOption: 0,
 		option: ["cookie", "sendFile"],
@@ -264,12 +321,6 @@ const UI = {
 	cookingDismiss(){
 		this.loadDOM.style.display = "none";
 	},
-	titleStart(){
-		this.titleDOM.style.display = "flex";
-	},
-	titleDismiss(){
-		this.titleDOM.style.display = "none";
-	},
 	loadStart(){
 		this.loadDOM.style.display = "flex";
 	},
@@ -301,5 +352,27 @@ const UI = {
 	},
 	characterMenuDismiss(){
 		this.characterMenuDOM.style.display = "none";
+	},
+	warningScreen: {
+		isHere: false,
+		message: "<h1>WARNING!</h1>",
+		text: "<p>This game is still in its initial state, please be aware of bugs and random crashes.</p><p>... anyway</p>",
+		command: "<h2 class = 'blink-anim'>press any BUTTON to continue</h2>",
+		element: null,
+		start(){
+			if(!this.isHere){
+				this.element = document.createElement('section');
+				this.element.classList.add('warning-screen');
+				this.element.innerHTML = this.message + this.text + this.command;
+				UI.inGameUI.appendChild(this.element);
+				this.isHere = true;
+			}
+		},
+		end(){
+			if(this.element)
+				this.element.remove();
+			this.element = null;
+			this.isHere = false;
+		}
 	}
 }

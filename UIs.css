@@ -81,51 +81,6 @@
 	
 }
 
-/* schedule table */
-.schedule{
-	display:none;
-}
-.schedule header{
-	background: var(--bg-color);
-	text-align: center;
-	padding: 1em;
-	color: var(--font-color);
-	border: 1px solid var(--font-color);
-}
-.schedule__options{
-	display: flex;
-	justify-content: center;
-}
-.schedule__options div{
-	display: flex;
-	background: var(--bg-color);
-	justify-content: center;
-	align-items: center;
-	padding: 0.5em;
-	border: 1px solid var(--font-color);
-	font-size: 1.5em;
-	text-align: center;
-}
-.schedule main{
-	width: 100%;
-	overflow-y: scroll;
-	display: grid;
-	grid-template-columns: repeat(8, 4fr);
-}
-.schedule main div{
-	display: flex;
-	background: var(--bg-color);
-	justify-content: center;
-	align-items: center;
-	padding: 0.5em;
-	border: 1px solid var(--font-color);
-}
-.schedule main div.selected{
-	transition: background 0.2s, color 0.2s;
-	background: var(--font-color);
-	color: var(--bg-color);
-}
-
 /*MainWorld UI*/
 .charWin{
 	display: none;
@@ -166,6 +121,35 @@
 	background: url("src/imgs/Steak.png");
 	background-size: cover;
 	border-radius: 50%;
+}
+
+@keyframes blink{
+	0%{
+		opacity: 0%;
+	} 50%{
+		opacity: 100%;
+	} 100% {
+		opacity: 0%;
+	}
+}
+
+.warning-screen{
+	color: #efe9;
+	padding: 5%;
+}
+
+.warning-screen h1{
+	color: #d33;
+}
+
+.warning-screen h2{
+	background: var(--dynny-color);
+	background-clip: text;
+	color: transparent;
+}
+
+.blink-anim{
+	animation: blink linear infinite 1s;
 }
 
 /*character menu*/

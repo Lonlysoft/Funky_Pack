@@ -30,6 +30,10 @@ class Item{
 			this.centralPoint[1] - this.boxCol.w,
 			this.boxCol.w, this.boxCol.w
 		);
+		ctx.fillRect(this.centralPoint[0] - this.boxCol.w*0.5,
+			this.centralPoint[1] - this.boxCol.w,
+			this.boxCol.w, this.boxCol.w
+		);
 	}
 	update(){
 		this.centralPoint[0] = WorldToScreen1D(this.WorldPos.x, Camera.x, Camera.w/2 - Game.SCREEN_CENTER[0]);
@@ -75,5 +79,8 @@ const itemCategories = {
 	},
 	foodGiver: function(entity, item){
 		item.value(entity);
+	},
+	nothing: function(entity, item){
+		return
 	}
 }

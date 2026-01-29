@@ -31,7 +31,8 @@ class Being{
 		this.isAlive = true;
 		this.WorldPos = {x: undefined, y: undefined, z: undefined};
 		this.OriginPos = {x: undefined, y: undefined, z: undefined};
-		this.boxCol = new Box(undefined, undefined, undefined, width/2, height, dept/2);
+		this.Dimensions = {w: width, h: height, p: dept};
+		this.boxCol = new Box(undefined, undefined, undefined, width/2, height, dept*0.5);
 		this.velocity = {x: 0, y: 0, z: 0};
 		this.friction = 0.6;
 		
@@ -49,7 +50,6 @@ class Being{
 		this.grapho = document.querySelector(HTMLsrc);
 		this.layer = 0;
 		this.sublayer = 0;
-		this.shadow = {x: this.boxCol.x, z: this.boxCol.z-this.boxCol.h};
 		this.centralPoint = [canvas.width/2, canvas.height/2];
 		this.jumping = false;
 		this.sprite = {
@@ -162,8 +162,6 @@ class Protagonist extends Being{
 		this.WorldPos.x = this.boxCol.x + this.boxCol.w*0.5;
 		this.WorldPos.z = this.boxCol.z + this.boxCol.p*0.5;
 		this.boxCol.y = this.WorldPos.y + this.boxCol.h;
-		this.shadow.x = this.boxCol.x;
-		this.shadow.z = this.boxCol.z-this.boxCol.h;
 		
 		if(this.holdingObject && this.hand !== 0){
 			this.hand.centralPoint[0] = this.centralPoint[0];
@@ -174,7 +172,7 @@ class Protagonist extends Being{
 		this.hunger = limitateUp(this.hunger, this.maxHunger);
 	}
 	draw(currentMap = Game.currentMap){
-		drawShadow(ctx, this, currentMap, 0.5);
+		//drawShadow(ctx, this, currentMap, 0.5);
 		this.frameY = directions.setFrameY[this.dir](this);
 		this.frameX = displayAnim(this);
 		
@@ -186,6 +184,13 @@ class Protagonist extends Being{
 			this.centralPoint[1]-this.boxCol.h+this.boxCol.p,
 			this.boxCol.h, this.boxCol.h
 		);
+		/*
+		Game.ctx.fillRect(
+			this.centralPoint[0]-this.boxCol.h*0.5,
+			this.centralPoint[1]-this.boxCol.h+this.boxCol.p,
+			this.boxCol.h, this.boxCol.h
+		);
+		*/
 		if(this.isMirrored){//get back to normal state
 			mirrorateToAPoint(Game.ctx, this.centralPoint[0], this.centralPoint[1]);
 			//mirrorate(Game.ctx)

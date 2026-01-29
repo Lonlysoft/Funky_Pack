@@ -132,7 +132,7 @@ const Col = {
 	slopeEast(entity, cube){
 		this.top(entity, cube);
 		this.bottom(entity, cube);
-		this.slopeTop(entity, cube, 1, 0.01, "x");
+		this.slopeTop(entity, cube.boxCol, 0.9, 0, "x");
 		this.right(entity, cube);
 	},
 	
@@ -248,31 +248,39 @@ const Col = {
 	ladder: function(){
 		
 	},
-	//isdo aqui é relativo ao Colisionador de slopes
+	//isdo aqui é relativo ao Colisionador de slope
 	slopeTop: function(entity, cube, slope, y_offset, axis){
 		let dimen = (axis == "x")? "w" : "p"
 		let originX = cube[axis];
 		let originY = cube.y + y_offset;
 		let currentX = (slope < 0) ? entity.boxCol[axis] + entity.boxCol[dimen] - originX : entity.boxCol[axis] - originX;
-		let currentY = entity.boxCol.y + entity.boxCol.height - originY;
+		let currentY = entity.WorldPos.y - originY;
 		let oldX = (slope < 0) ? entity["old"+axis.toUpperCase()] + entity[dimen] - originX : entity.boxCol["old"+axis.toUpperCase()] - originX;
+		
 		let oldY = entity.boxCol.oldY + entity.boxCol.h - originY;
 		//["old"+axis.toUpperCase()]
-		let currentCrossProduct = currentX * slope - currentY;
-		let oldCrossProduct = oldX * slope - oldY;
+		let currentCrossProduct = currentX * slope + currentY;
+		let oldCrossProduct = oldX * slope + oldY;
+		debugCollision("crossPrduct", currentCrossProduct );
+		debugCollision("oldProduct", oldCrossProduct, 1);
 		let top = (slope < 0) ? cube.y + cube.h + y_offset * slope : cube.y + y_offset;
-		if ((currentX < 0 || currentX > cube.w) && (entity.boxCol.y + entity.boxCol.h > top && entity.boxCol.oldY + entity.boxCol.h <= top || current_cross_product < 1 && old_cross_product > -1)){
+		
+		if ((currentX < 0 || currentX > cube.w) && (entity.WorldPos.y > top && entity.boxCol.oldY + entity.boxCol.h <= top || currentCrossProduct < 1 && oldCrossProduct > -1)){
+			
 			entity.onGround = true;
 			entity.velocity.y = 0;
-			object.y = top - object.height - MAGIC_OFFSET;
+			entity.WorldPos.y = top + (currentCrossProduct - oldCrossProduct) - MAGIC_OFFSET;
+			debugCollision("newY", entity.WorldPos.y, 2);
 			return true;
-		} else if(currentCrossProduct < 1 && currentCrossProduct > -1){
-			object.jumping = false;
-			object.y_velocity = 0;
-			object.y = row * TILE_SIZE + slope * current_x + y_offset - object.height - this.offset;
+		} else if(currentCrossProduct < 1 && oldCrossProduct > -1){
+			entity.onGround = true;
+			entity.velocity.y = 0;
+			entity.WorldPos.y = top + currentCrossProduct + MAGIC_OFFSET;
+			debugCollision("newY", entity.WorldPos.y, 3);
 			return true;
 		} return false;
 	},
+	
 	testCol(entity, colArr){
 		let yesArr = [];
 		let playerBoxCol = [entity.boxCol.x, entity.boxCol.z, entity.boxCol.w, entity.boxCol.p];
@@ -424,7 +432,6 @@ const Col = {
 		entity.WorldPos.x = entity.boxCol.x + entity.boxCol.w*0.5;
 		entity.WorldPos.z = entity.boxCol.z + entity.boxCol.p*0.5;
 		entity.boxCol.y = entity.WorldPos.y + entity.boxCol.h;
-		
 		this.handleShadowCoords(entity, mapGrid, num)
 		this.handleYcoords(entity, mapGrid, itemArr, npcArr);
 		this.handleExitsAndTeleporters(entity, mapGrid);

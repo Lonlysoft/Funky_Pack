@@ -2,7 +2,7 @@
 let timerplay = 0;
 let timeGame = 0;
 let GameMoment = 0;
-let GameMomentSav = 'preTitle';
+let GameMomentSav = 'warningScreen';
 let frame = 0
 let frameaux = 0
 let fps = 30, timeFrequency = 1000/fps;
@@ -12,6 +12,7 @@ const Game = {
 	canvas: canvas,
 	ctx: ctx,
 	SCREEN_CENTER: [canvas.width*0.5, canvas.height*0.5],
+	audio: Music,
 	currentMap: null,
 	levelName: "testRoom",
 	LocationsProps: [],
@@ -72,11 +73,12 @@ const Game = {
 			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			
 			Game.ctx.globalAlpha = 0.5;
+			Game.ctx.fillStyle = "#000000"
 			Game.ctx.fillRect(0, 0, Game.canvas.width, Game.canvas.height);
 			Game.ctx.globalAlpha = 1;
 		},
-		preTitle: function(){
-			let lonlysoft = document.getElementById("lonlysoft-logo");
+		warningScreen: function(){
+			//add a warning screen saying some shit like if you feel nauseated or something like this.
 			if(Game.requestTransition && !Game.appearScreen){
 				Game.alpha = BG.transition(Game.alpha, "coming", 0.1);
 				if(Game.alpha < 0){
@@ -84,10 +86,36 @@ const Game = {
 					Game.appearScreen = true;
 				}
 			}
+			ctx.fillStyle = "#000";
+			ctx.fillRect(0,0,Game.canvas.width, Game.canvas.height);
+			UI.warningScreen.start();
+			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
+			Ctrl.action(null, "warning");
+			if(Game.requestTransition && Game.appearScreen){
+				Game.alpha = BG.transition(Game.alpha, "going", 0.1);
+				if(Game.alpha >= 1){
+					Game.alpha = 1;
+					UI.warningScreen.end();
+					GameMomentSav = GameMoment;
+					GameMoment = "preTitle";
+					Game.appearScreen = false;
+				}
+			}
+		},
+		preTitle: function(){
+			let lonlysoft = document.getElementById("lonlysoft-logo");
+			if(Game.requestTransition && !Game.appearScreen){
+				Game.alpha = BG.transition(Game.alpha, "coming", 0.07);
+				if(Game.alpha < 0){
+					Game.requestTransition = false;
+					Game.appearScreen = true;
+					//Game.audio.play("ident", false);
+				}
+			}
 			ctx.fillStyle = "#000000"
 			ctx.fillRect(0,0,Game.canvas.width, Game.canvas.height)
-			ctx.drawImage(lonlysoft, 0, Game.SCREEN_CENTER[1] - lonlysoft.height*0.5, canvas.width, lonlysoft.height)
-			if(timeCounter >= 3000){
+			ctx.drawImage(lonlysoft, 0, 0, canvas.width, canvas.height)
+			if(timeCounter >= 5000){
 				Game.requestTransition = true;
 			}
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
@@ -107,9 +135,12 @@ const Game = {
 				if(Game.alpha < 0){
 					Game.requestTransition = false;
 					Game.appearScreen = true;
+					if(Game.audio.currentMusic !== "title"){
+						Game.audio.play('title');
+					}
 				}
 			}
-			UI.titleStart();
+			UI.title.start();
 			Game.ctx.fillStyle = "#000"
 			Game.ctx.fillRect(0,0,Game.canvas.width, Game.canvas.height);
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
@@ -118,11 +149,12 @@ const Game = {
 			if(Game.requestTransition && Game.appearScreen){
 				Game.alpha = BG.transition(Game.alpha, "going", 0.1);
 				if(Game.alpha >= 1){
+					
 					Game.alpha = 1;
 					GameMomentSav = GameMoment;
 					GameMoment = Game.buffer;
 					Game.appearScreen = false;
-					UI.titleDismiss();
+					UI.title.dismiss();
 				}
 			}
 		},
@@ -150,6 +182,7 @@ const Game = {
 			if(Game.requestTransition && !Game.appearScreen){
 				Game.alpha = BG.transition(Game.alpha, "coming", 0.1);
 				if(Game.alpha < 0){
+					Game.audio.stop();
 					Game.requestTransition = false;
 					Game.appearScreen = true;
 				}
@@ -381,6 +414,7 @@ function GamePlayLoop(timestamp){
 		}
 		window.requestAnimationFrame(GamePlayLoop)
 	} catch (error){
+		Game.audio.stop();
 		console.log(error);
 		body.innerHTML = errorScreen.icon;
 		body.innerHTML += errorScreen.text;

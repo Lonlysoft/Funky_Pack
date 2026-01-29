@@ -26,3 +26,9 @@ function debug(){
 	ctx.fillText(Clock.currentWeather, 200, 162);
 	
 }
+
+function debugCollision(varName, text, num = 0){
+	ctx.fillStyle = "#fff";
+	ctx.font = "20px sans-serif"
+	ctx.fillText(varName + " " + text, 100, 260 + 20*num);
+}

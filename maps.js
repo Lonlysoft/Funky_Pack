@@ -55,6 +55,7 @@ class Level{
 		this.width = mapObject.width;
 		this.height = mapObject.height;
 		this.Name = mapObject.name;
+		this.grafus = mapObject.grafus;
 		this.triggerList = [];
 		this.bounds = [];
 		this.npcs = [];

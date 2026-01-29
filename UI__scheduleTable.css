@@ -1,0 +1,54 @@
+.schedule {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.schedule tr{
+	border-left: 1px solid var(--font-color);
+	border-bottom: 1px solid var(--font-color);
+	background: var(--bg-color);
+	padding: 0.5em;
+	text-align: center;
+	font-size: 70%;
+}
+
+.schedule tr td{
+	
+}
+
+.schedule td:nth-child(1){
+	background: var(--dynny-color);
+}
+
+.schedule_option{
+	background: var(--font-color);
+	color: var(--bg-color);
+	padding: .5em;
+	text-wrap: nowrap;
+	border-radius: .5em;
+	margin-bottom: .5em;
+	position: relative;
+}
+
+.schedule_option.selected::after{
+	content: '';
+	position: absolute; 
+	top: 0;
+	left: -1rem;
+	width: 2rem;
+	height: 2rem;
+	background: url("src/imgs/HandSelector.png");
+	background-size: cover;
+	border-radius: 50%;
+	
+}
+
+.available-jobs{
+	
+}
+
+.available-jobs .nothing{
+	
+}

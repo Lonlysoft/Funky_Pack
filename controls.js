@@ -557,14 +557,16 @@ const Ctrl = {
 		
 		startMenu: {
 			west(){
-				if(Ctrl.Btns["west"].active){
+				if(Ctrl.Btns["west"].active && !Ctrl.state.west){
+					Game.audio.sfx('select');
 					UI.title.optionDOM[1].classList.remove("selected");
 					UI.title.selectedOption = 0;
 					UI.title.optionDOM[0].classList.add("selected");
 				}
 			},
 			east(){
-				if(Ctrl.Btns.east.active){ //➡️
+				if(Ctrl.Btns.east.active && !Ctrl.state.east){ //➡️
+					Game.audio.sfx('select');
 					UI.title.optionDOM[0].classList.remove("selected");
 					UI.title.selectedOption = 1;
 					UI.title.optionDOM[1].classList.add("selected");
@@ -572,6 +574,7 @@ const Ctrl = {
 			},
 			confirm(){
 				if((Ctrl.Btns.start.active && !Ctrl.state.start) || (Ctrl.Btns.A.active && !Ctrl.state.A)){
+					Game.audio.sfx('confirm');
 					Game.requestTransition = true;
 					Game.buffer = UI.title.options[UI.title.selectedOption];
 				}
@@ -652,7 +655,13 @@ const Ctrl = {
 			},
 			directionals(){
 				if(Ctrl.Btns.west.active && !Ctrl.state.west){ //left
-					
+					if(UI.jobTable.layer == 0){
+						
+						UI.jobTable.optionsDOM[UI.jobTable.selectedOption].classList.remove('selected');
+						if(UI.jobTable.selectedOption > 0)
+							UI.jobTable.selectedOption--;
+						UI.jobTable.optionsDOM[UI.jobTable.selectedOption].classList.add('selected');
+					}
 				}
 				else if(Ctrl.Btns.up.active && !Ctrl.state.up){//⬆
 					
@@ -660,8 +669,13 @@ const Ctrl = {
 				else if(Ctrl.Btns.down.active && !Ctrl.state.down){//⬇
 					
 				}
-				if(Ctrl.Btns.west.active && !Ctrl.state.east){ //right
-					
+				else if(Ctrl.Btns.east.active && !Ctrl.state.east){ //right
+					if(UI.jobTable.layer == 0){
+						UI.jobTable.optionsDOM[UI.jobTable.selectedOption].classList.remove('selected');
+						if(UI.jobTable.selectedOption < UI.jobTable.optionsDOM.length-1)
+							UI.jobTable.selectedOption++;
+						UI.jobTable.optionsDOM[UI.jobTable.selectedOption].classList.add('selected');
+					}
 				}
 			},
 			confirm(){
@@ -669,7 +683,7 @@ const Ctrl = {
 					if(UI.jobTable.layer < 1){
 						UI.jobTable.layer++;
 					} else {
-						UI.jobTable[UI.jobTable.bottomOptions[UI.jobTable.selectedBottomOptionIndex]]();
+						UI.jobTable.optionsFunctions[UI.jobTable.selectedOption]();
 					}
 				}
 			},
@@ -779,6 +793,13 @@ const Ctrl = {
 				Ctrl.Bonanza["character"][Ctrl.ListPropsMainWorld[i]](entity);
 			}
 		},
+		warning(entity){
+			for(let i = 0; i < Ctrl.ListProps.length; i++){
+				if(Ctrl.Btns[Ctrl.ListProps[i]].active){
+					Game.requestTransition = true;
+				}
+			}
+		}
 	},
 	stateSave(){
 		Ctrl.state.up = Ctrl.Btns.up.active;
