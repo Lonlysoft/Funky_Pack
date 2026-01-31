@@ -305,7 +305,7 @@ const UI = {
 					this.DOM.classList.add('centered');
 					let fileSend = document.createElement('input');
 					fileSend.type = "file"
-					fileSend.placeholder = "your saved save here";
+					fileSend.placeholder = "Your saved save here";
 					fileSend.classList.add("files");
 					fileSend.addEventListener("change", UI.loadMenu.readSaveFile);
 					this.DOM.appendChild(fileSend);
@@ -367,8 +367,8 @@ const UI = {
 	warningScreen: {
 		isHere: false,
 		message: "<h1>WARNING!</h1>",
-		text: "<p>This game might have themes that might not fit gamers' taste. such as 2d graphics, quirky perks and anthropomorphic animals</p><p>Viewer discretion is advised.</p>",
-		command: "<h2 class = 'blink-anim'>press any BUTTON to continue</h2>",
+		text: "<p>This game has themes that might not fit the gamers's taste, such as 2D graphics, quirky perks and anthropomorphic animals</p><p>Viewer discretion is advised.</p>",
+		command: "<h2 class = 'blink-anim'>Press any BUTTON to continue</h2>",
 		element: null,
 		start(){
 			if(!this.isHere){
@@ -386,4 +386,5 @@ const UI = {
 			this.isHere = false;
 		}
 	}
+
 }
