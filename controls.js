@@ -680,16 +680,24 @@ const Ctrl = {
 			},
 			confirm(){
 				if(Ctrl.Btns.A.active && Ctrl.state.A == false){
-					if(UI.jobTable.layer < 1){
+					if(UI.jobTable.layer == 0){
 						UI.jobTable.layer++;
-					} else {
 						UI.jobTable.optionsFunctions[UI.jobTable.selectedOption]();
+					} else if (Schedule.availableJobs.length > 0){
+						Schedule.add(Game.CurrentCharacter, Schedule.availableJob(UI.jobTable.selectedJobIndex));
 					}
+					console.log(UI.jobTable.layer);
 				}
 			},
 			cancel(){
 				if(Ctrl.Btns.B.active && Ctrl.state.B == false){
-					UI.characterMenuItems.layer--;
+					if(UI.jobTable.layer > 0 && UI.jobTable.selectedOption == 0){
+						UI.jobTable.layer--;
+						UI.jobTable.removalDOM[UI.jobTable.selectedOption]();
+					}
+					else{
+						UI.characterMenuItems.layer--;
+					}
 				}
 			}
 		},

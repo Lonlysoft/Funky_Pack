@@ -1,6 +1,7 @@
 {
   "width": 20,
   "height": 20,
+  "name": "testRoom",
   "grids": {
     "floor": [
       [

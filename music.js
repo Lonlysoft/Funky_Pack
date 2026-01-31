@@ -61,9 +61,9 @@ class AudioController{
 const Music = {
 	Controller: new AudioController(),
 	currentMusic: null,
-	songList: ["ident", "title"],
+	songList: ["title"],
 	songPath: {
-		ident: "src/msc/Lonlysoft_ident.mp3",
+		//ident: "src/msc/Lonlysoft_ident.mp3",
 		title: "src/msc/FunkyPack_Title.mp3"
 	},
 	sfxList: ["select", "confirm"],

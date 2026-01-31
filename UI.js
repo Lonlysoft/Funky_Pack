@@ -10,8 +10,6 @@ const UI = {
 		moneyDOM: document.querySelector(".money")
 	},
 	characterQuickInfoDOM: {
-		hpDOM: document.querySelector(".HUD__HPnumber"),
-		solitudeDOM: document.querySelector(".HUD__solitude"),
 		hungerDOM: document.querySelector(".HUD__hungerBar"),
 		update(entity){
 			this.hungerDOM.style.width = ("" + transformIntoBar(entity.hunger, entity.maxHunger)) + "%";
@@ -167,8 +165,9 @@ const UI = {
 		selectedJobIndex: 0,
 		optionsDOM: null,
 		jobListDOM: null,
+		isListHere: false,
 		openAvailableJobsList(){
-			if(!this.jobListDOM){
+			if(!this.isListHere){
 				const jobDOM = document.createElement('section');
 				jobDOM.classList.add('flex-column');
 				jobDOM.classList.add('flat');
@@ -182,18 +181,30 @@ const UI = {
 				if(listDOM.length <= 0){
 					jobDOM.innerHTML = "There's no jobs to apply"
 				}
+				this.jobListDOM = jobDOM;
+				UI.inGameUI.appendChild(this.jobListDOM);
+				this.isListHere = true;
 			}
-			UI.inGameUI.appendChild(jobDOM);
+			
 		},
 		closeAvailableJobsList(){
-			if(this.jobListDOM){
+			if(this.isListHere){
 				this.jobListDOM.remove();
 				this.jobListDOM = null;
+				this.isListHere = false;
 			}
 		},
 		optionsFunctions: {
 			0: function(){
 				UI.jobTable.openAvailableJobsList();
+			},
+			1: function(){
+				
+			}
+		},
+		removalDOM: {
+			0: function(){
+				UI.jobTable.closeAvailableJobsList();
 			},
 			1: function(){
 				
@@ -356,7 +367,7 @@ const UI = {
 	warningScreen: {
 		isHere: false,
 		message: "<h1>WARNING!</h1>",
-		text: "<p>This game is still in its initial state, please be aware of bugs and random crashes.</p><p>... anyway</p>",
+		text: "<p>This game might have themes that might not fit gamers' taste. such as 2d graphics, quirky perks and anthropomorphic animals</p><p>Viewer discretion is advised.</p>",
 		command: "<h2 class = 'blink-anim'>press any BUTTON to continue</h2>",
 		element: null,
 		start(){
