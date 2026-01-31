@@ -313,7 +313,8 @@ const SideBar = {
 	DOM: body.querySelector(".sidebar"),
 	isHere: false,
 	fullScreenBtn: document.getElementById("fullscreen"),
-	musicVolume: document.querySelector("#music-volume"),
+	musicBtn: document.querySelector("#music"),
+	musicMuted: false,
 	sfxVolume: document.querySelector("#sfx-volume"),
 	bringSideBar: document.getElementById("bring-sidebar"),
 	blankSpace: document.querySelector(".sidebar-blank-space")
@@ -363,6 +364,20 @@ function GameBonanza(){
 			DeviceInfo.fullScreen = !DeviceInfo.fullScreen;
 		}
 	);
+	const musicIcon = SideBar.musicBtn.querySelector("svg");
+	SideBar.musicBtn.addEventListener("click",
+		event => {
+			if(!SideBar.musicMuted){
+				musicIcon.viewBox.baseVal.x = 100;
+				Game.audio.setVolume(0);
+				SideBar.musicMuted = true;
+				return
+			}
+			musicIcon.viewBox.baseVal.x = 0;
+			Game.audio.setVolume(1);
+			SideBar.musicMuted = false;
+		}
+	);
 	SideBar.blankSpace.addEventListener("click",
 		event => {
 			SideBar.DOM.style.bottom = "-40%";
@@ -370,6 +385,7 @@ function GameBonanza(){
 			setTimeout(()=>{ SideBar.fullDOM.classList.add("notHere") },900);
 		}
 	);
+	
 	window.addEventListener("resize", resize);
 	resize();
 	window.requestAnimationFrame(GamePlayLoop);

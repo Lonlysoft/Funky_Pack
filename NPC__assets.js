@@ -38,7 +38,7 @@ const IMPORTANTS = {
 	1: {
 		name: "JSON FOLF",
 		ID: 1,
-		age: 8,
+		age: 18,
 		height: TILE_SIZE,
 		width: TILE_SIZE,
 		dept: TILE_SIZE,

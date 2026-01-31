@@ -71,6 +71,10 @@ const Music = {
 		select: "src/sfx/select_arrow.m4a",
 		confirm: "src/sfx/confirm_arrow.m4a"
 	},
+	setVolume(value, valueSfx = value){
+		this.Controller.musicVolume(value);
+		this.Controller.sfxVolume(valueSfx);
+	},
 	play(name, loop = true){
 		this.Controller.play(name, loop);
 		this.currentMusic = name;
