@@ -27,7 +27,7 @@ The player needs to watch for those 5.
 
 Life: It's commonly referred to as HP. Dynny has 200 HP. If he reaches 0 HP, it's game over. You'll need to go to a hospital and your debt will increase.<br>
 Hunger: Dynny gotta eat. If he doesn't, he might faint and eat the holding object to satisfy his hunger. <br>
-Joy: How Dynny feels. Joy is given by spending time with nukko, playing games or doing relaxing activities. <br>
+Joy: How Dynny feels. Joy is given by spending time with Nukko, playing games or doing relaxing activities. <br>
 Solitude: a special bar that decreases by the years you're away from Nukko. Dynny doesn't understand that, but Nukko is important to him. And not having him around for too long might get his life empty. if this bar goes to 0, objects like trees and stores might disappear. And Dynny might presence allucinations and weird effercts might appear randomly.
 
 Jobs
@@ -85,4 +85,5 @@ a close thought in here is: disabling the NPC grid in the map and writing a syst
 - Dynny's spritesheet was updated again, but unfortunately, it still has incomplete animations.
 - added new systems on the Waiter mini-game. unfortunately still inaccessible, but for the better I guess...
 - new music system added, yet only in the title screen. Soundtrack and sound effects are still in production.
+
 
