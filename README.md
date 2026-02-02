@@ -27,7 +27,7 @@ The player needs to watch for those 5.
 
 Life: It's commonly referred to as HP. Dynny has 200 HP. If he reaches 0 HP, it's game over. You'll need to go to a hospital and your debt will increase.<br>
 Hunger: Dynny gotta eat. If he doesn't, he might faint and eat the holding object to satisfy his hunger. <br>
-Joy: How Dynny feels. Joy is given by spending time with nukko, playing games or doing relaxing activities. <br>
+Joy: How Dynny feels. Joy is given by spending time with Nukko, playing games or doing relaxing activities. <br>
 Solitude: a special bar that decreases by the years you're away from Nukko. Dynny doesn't understand that, but Nukko is important to him. And not having him around for too long might get his life empty. if this bar goes to 0, objects like trees and stores might disappear. And Dynny might presence allucinations and weird effercts might appear randomly.
 
 Jobs
@@ -71,18 +71,17 @@ Everything is in its early stages as you can guess. It's not a complicated game,
 My main focus is currently on:
 
 The mini games:
-They are a huge part of the game. They actually are the reason why this game is called Funky Pack.
+These are a huge part of the game. They actually are the reason why this game is called Funky Pack.
 I'm starting by the Wall Cleaner mini-game. It's pretty easy because it uses the same engine of the main world.
 
 NPC behavior system:
 They have lots of behaviors, but most of them are spawning, moving, waiting and arriving at certain locations.
 It's just important because you need the NPCs to look like they have an actual life inside the game and also handle that to make the game run without problems.
-a close thought in here is: disabling the NPC grid in the map and writing a system of spawning unimportant NPCs in crowded areas and always looking to update NPC behaviors (looking for a good performance system for that). This might lead to a graph theory thing showing an available path so NPCs can walk through.
+A close thought in here is: disabling the NPC grid in the map and writing a system of spawning unimportant NPCs in crowded areas and always looking to update NPC behaviors (looking for a good performance system for that). This might lead to a graph theory thing showing an available path so NPCs can walk through.
 
 # Current changelog:
 
-- animation system structure rewritten
-- Dynny's spritesheet was updated again, but unfortunately, it still has incomplete animations.
-- added new systems on the Waiter mini-game. unfortunately still inaccessible, but for the better I guess...
-- new music system added, yet only in the title screen. Soundtrack and sound effects are still in production.
-
+- The animation system structure has been rewritten;
+- Dynny's spritesheet was updated again, but unfortunately, it still has incomplete animations;
+- New systems were added on the Waiter mini-game, for now still inaccessible, but for the better I guess...
+- New music system added, but currently just in the title screen. Soundtrack and sound effects are still in production;
