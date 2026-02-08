@@ -43,6 +43,10 @@ body {
 h1{
 	text-align: center;
 }
+h6{
+	margin: 0;
+	padding: 0;
+}
 
 button{
 	width: 90%;
@@ -169,7 +173,7 @@ input[type="range"]{
 }
 .flex-row{
 	display: flex;
-	gap: 2em;
+	gap: 1em;
 	justify-content: center;
 	align-items: center;
 }
@@ -183,13 +187,14 @@ input[type="range"]{
 .sidebar{
 	position: fixed;
 	padding: 0.5em;
-	bottom: -40%; left: 50%;
+	bottom: 0; left: 50%;
 	transform: translate(-50%, 0);
 	background: var(--font-color);
 	z-index: 10;
 	border-radius: 0.5em;
 	min-width: 100%;
-	transition: bottom 1s;
+	transition: opacity .1s;
+	color: var(--bg-color);
 }
 .sidebar-blank-space{
 	height: 100%;
@@ -199,6 +204,28 @@ input[type="range"]{
 	top: 0;
 	z-index: 10;
 }
+
+.audio-sliders{
+	gap: .5rem;
+	align-items: flex-start;
+}
+
+.slider{
+	width: 6em;
+	height: 2em;
+	background: var(--bg-color);
+	border-radius: .5rem;
+	overflow: hidden;
+	box-shadow: 4px 4px 0 #000;
+}
+
+.meter{
+	width: 50%;
+	height: 100%;
+	background: var(--font-color);
+	opacity: 50%;
+}
+
 .screenMenu.activated{
 	background: black;
 }
@@ -292,6 +319,15 @@ input[type="range"]{
 		width: 100vh;
 		height: 100vh;
 		overflow: hidden;
+	}
+	.sidebar{
+		left: 0;
+		transform: none;
+		min-width: 40%;
+	}
+	.audio-sliders{
+		flex-direction: row;
+		align-items: center;
 	}
 }
 

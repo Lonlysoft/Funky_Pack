@@ -47,7 +47,9 @@ const jobList = [
 	"waiter",
 	"boxPusher",
 	"Militairy",
-]
+];
+
+
 
 const jobTemplate = {
 	//this means that the job only happens on mondays from morning to evening.

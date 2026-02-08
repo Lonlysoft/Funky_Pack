@@ -8,6 +8,24 @@ class Table {
 }
 
 const Waiter = {
+	info: {
+		salary: 357500,
+		horary: {
+			partTime: {
+				mon: [2, 3, 4, 5, 6],
+				tue: [2, 3, 4, 5, 6],
+				wed: [2, 3, 4, 5, 6],
+			},
+			fullTime: {
+				sun: [2, 3, 4, 5],
+				tue: [2, 3, 4, 5],
+				wed: [2, 3, 4, 5],
+				thu: [5, 6, 7, 8],
+				fri: [5, 6, 7, 8],
+				sat: [4, 5, 6, 7, 8],
+			}
+		}
+	},
 	player: null,
 	day: 0,
 	currentMap: null,
@@ -28,19 +46,39 @@ const Waiter = {
 	presentNPCsHavePendingRequests: [],
 	plates: [],
 	UI: {
+		inGameUI: document.querySelector("#dynamicPlacement"),
 		here: false,
-		DOM: document.querySelector("#waiterToolBox"),
-		noteblock: document.querySelector("#noteblock"),
+		DOM: document.createElement('section'),
+		noteblock: document.createElement("section"),
+		timerDOM: null,
+		start(){
+			if(!this.here){
+				this.DOM.classList.add("flex-row");
+				const container = document.createElement("div");
+				container.classList.add("timer");
+				container.innerHTML = "<h5>timer</h5>";
+				this.timer = document.createElement("h3");
+				this.timer.innerHTML = Waiter.timer;
+				container.appendChild(this.timer);
+				this.noteblock.classList.add("pauted");
+				this.DOM.appendChild(this.noteblock);
+				this.DOM.appendChild(container);
+				this.here = true;
+			}
+		},
 		update(){
 			if(timeCounter > 1000){
 				Waiter.timer--;
 				timeCounter = 0;
 			}
-			let waiterTimer = this.DOM.querySelector(".timer h5");
-			waiterTimer.innerHTML = Waiter.timer;
+			this.timer.innerHTML = Waiter.timer;
+			//this.noteblock.innerHTML = Waiter.getOrderTexts();
 		},
-		toggle(){
-			this.DOM.classList.toggle("notHere");
+		end(){
+			if(this.here){
+				this.DOM.remove();
+				this.here = false;
+			}
 		},
 	},
 	requestTable: function(){
@@ -82,6 +120,7 @@ const Waiter = {
 		}
 		this.player.money.add(this.bonusTips.unit);
 		this.bonusTips = 0;
+		this.UI.end();
 		GameMoment = "mainWorld"
 	},
 	locateBalcons(map){

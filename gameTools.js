@@ -66,7 +66,7 @@ function merge(left, right) {
 
     // Compare elements from left and right arrays and add the smaller one to the result
     while (leftIndex < left.length && rightIndex < right.length) {
-        if (left[leftIndex].WorldPos.z < right[rightIndex].WorldPos.z) {
+        if (left[leftIndex].boxCol.z < right[rightIndex].boxCol.z) {
             result.push(left[leftIndex]);
             leftIndex++;
         } else {

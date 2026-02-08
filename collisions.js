@@ -21,7 +21,7 @@ const Col = {
 				rect1.z <= rect2.z + rect2.p;
 	},
 	
-	handleShadowCoords(entity, mapGrid = Game.currentMap, num = -1){
+	handleShadowCoords(entity, mapGrid = Game.currentMap){
 		let topLeft = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)];
 		let topRight = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w, TILE_SIZE)];
 		let bottomLeft = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.velocity.x, TILE_SIZE)];
@@ -80,7 +80,7 @@ const Col = {
 		let switcher;
 		for(let i = 0; i < itemArr.length; i++){
 			let arrayColItens = [itemArr[i].boxCol.x, itemArr[i].boxCol.z, itemArr[i].boxCol.w, itemArr[i].boxCol.p]
-			if(this.AABB(arrayCol, arrayColItens)){
+			if(this.AABB(arrayCol, arrayColItens) && itemArr[i].type !== "nothing"){
 				itemArr[i].isCollected = true;
 				switcher = itemArr[i];
 				itemArr[i] = itemArr[itemArr.length-1]
@@ -120,7 +120,7 @@ const Col = {
 		this.bottom(entity, cube);
 	},
 	solidObject: function(entity, cube){
-		this.solid(entity, cube.boxCol);
+		this.solid(entity, cube);
 	},
 	
 	slopeNorth: function(entity, cube){
@@ -130,12 +130,14 @@ const Col = {
 		this.uppingBottom(entity, cube);
 	},
 	slopeEast(entity, cube){
-		this.top(entity, cube);
-		this.bottom(entity, cube);
-		this.slopeTop(entity, cube.boxCol, 0.9, 0, "x");
-		this.right(entity, cube);
+		return this.slopeTop(entity, cube, "x");
 	},
-	
+	slopeWest(entity, cube){
+		return this.slopeTopWest(entity, cube, "x");
+	},
+	slopeNorth(entity, cube){
+		return this.slopeTop(entity, cube, "z");
+	},
 	
 	solid3D:function(entity, cube){
 		if(this.top(entity, cube))return;
@@ -249,36 +251,45 @@ const Col = {
 		
 	},
 	//isdo aqui é relativo ao Colisionador de slope
-	slopeTop: function(entity, cube, slope, y_offset, axis){
+	slopeTop: function(object, cube, axis){
 		let dimen = (axis == "x")? "w" : "p"
 		let originX = cube[axis];
-		let originY = cube.y + y_offset;
-		let currentX = (slope < 0) ? entity.boxCol[axis] + entity.boxCol[dimen] - originX : entity.boxCol[axis] - originX;
-		let currentY = entity.WorldPos.y - originY;
-		let oldX = (slope < 0) ? entity["old"+axis.toUpperCase()] + entity[dimen] - originX : entity.boxCol["old"+axis.toUpperCase()] - originX;
 		
-		let oldY = entity.boxCol.oldY + entity.boxCol.h - originY;
-		//["old"+axis.toUpperCase()]
-		let currentCrossProduct = currentX * slope + currentY;
-		let oldCrossProduct = oldX * slope + oldY;
-		debugCollision("crossPrduct", currentCrossProduct );
-		debugCollision("oldProduct", oldCrossProduct, 1);
-		let top = (slope < 0) ? cube.y + cube.h + y_offset * slope : cube.y + y_offset;
-		
-		if ((currentX < 0 || currentX > cube.w) && (entity.WorldPos.y > top && entity.boxCol.oldY + entity.boxCol.h <= top || currentCrossProduct < 1 && oldCrossProduct > -1)){
+		let current_x = object.WorldPos[axis] - cube[axis];
+		let top = current_x;
+
+		if (current_x > cube[dimen] && current_x > 0) {
+
 			
-			entity.onGround = true;
-			entity.velocity.y = 0;
-			entity.WorldPos.y = top + (currentCrossProduct - oldCrossProduct) - MAGIC_OFFSET;
-			debugCollision("newY", entity.WorldPos.y, 2);
-			return true;
-		} else if(currentCrossProduct < 1 && oldCrossProduct > -1){
-			entity.onGround = true;
-			entity.velocity.y = 0;
-			entity.WorldPos.y = top + currentCrossProduct + MAGIC_OFFSET;
-			debugCollision("newY", entity.WorldPos.y, 3);
-			return true;
-		} return false;
+			object.velocity.y = 0;
+			object.WorldPos.y = cube.y + MAGIC_OFFSET;
+			return cube.y;
+
+		} else if (object.boxCol.y + object.boxCol.h > top && current_x > 0) {
+			object.onGround = true;
+			object.velocity.y = 0;
+			object.WorldPos.y = top + (cube.y - cube.h) +MAGIC_OFFSET;
+			return top + (cube.y - cube.h);
+		}
+	},
+	slopeTopWest: function(object, cube, axis){
+		let dimen = (axis == "x")? "w" : "p"
+		let originX = cube[axis];
+		
+		let current_x = object.WorldPos[axis] - cube[axis];
+		let top = current_x*-1+cube.h;
+
+		if (current_x > cube[dimen] && current_x > 0) {
+			object.velocity.y = 0;
+			object.WorldPos.y = (cube.y - cube.h);
+			return cube.y - cube.h;
+
+		} else if (object.boxCol.y + object.boxCol.h > top && current_x > 0) {
+			object.onGround = true;
+			object.velocity.y = 0;
+			object.WorldPos.y = top + (cube.y - cube.h);
+			return top + (cube.y - cube.h);
+		}
 	},
 	
 	testCol(entity, colArr){
@@ -312,11 +323,22 @@ const Col = {
 		let left = mapGrid.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y;
 		let right = mapGrid.bounds[WorldToGrid(entity.boxCol.z+entity.boxCol.p, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)].y;;
 		let currLim = mapGrid.bounds[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.WorldPos.x, TILE_SIZE)].y;
-		//não é a melhor forma de fazer isso pois é 4*O(N) todos os frames.
-		const solidObjectArray = []
+		
+		const solidObjectArray = [];
+		const slopeObjectArray = [];
 		for(let i = 0; i < items.length; i++){
 			if(items[i].ColType == "solidObject"){
 				solidObjectArray.push(items[i].boxCol);
+			}
+		}
+		const direction = [];
+		for(let i = 0; i< items.length; i++){
+			if(items[i].ColType == "slopeEast"){
+				slopeObjectArray.push(items[i].boxCol);
+				direction.push("East");
+			} else if (items[i].ColType == "slopeWest"){
+				slopeObjectArray.push(items[i].boxCol);
+				direction.push("West");
 			}
 		}
 		let filterCollidings = this.testCol(entity, solidObjectArray);
@@ -341,9 +363,16 @@ const Col = {
 				}
 			}
 		}
+		for(let i = 0; i < slopeObjectArray.length; i++){
+			if(this.AABB_JSON(entity.boxCol, slopeObjectArray[i])){
+				if(isOnGround(entity.WorldPos.y, slopeObjectArray[i].y)){
+					currLim = this["slope" + direction[i]](entity, slopeObjectArray[i]);
+				}
+			}
+		}
+		
 		if(isOnGround(entity.WorldPos.y, currLim) && entity.WorldPos.y < currLim){
 			entity.WorldPos.y = currLim;
-			entity.centralPoint[1] = Game.SCREEN_CENTER[1];
 		}
 	},
 	
@@ -403,7 +432,7 @@ const Col = {
 			for(let i = 0; i < itemArr.length; i++){
 				itensBox = [itemArr[i].boxCol.x, itemArr[i].boxCol.z, itemArr[i].boxCol.w, itemArr[i].boxCol.p];
 				if(Col.AABB(playerBoxCol, itensBox) && isOnGround(entity.WorldPos.y, itemArr[i].boxCol.y)){
-					Col[itemArr[i].ColType](entity, itemArr[i]);
+					Col[itemArr[i].ColType](entity, itemArr[i].boxCol);
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 var Camera = {
 	x: 100, y: 100, w: canvas.width, h: canvas.height,
-	smoothing: 0.7,
+	smoothing: 0.4,
 	moveTo: function(x, y, z){
 		//this.x = x - this.w*0.5;
 		//this.y = y - z - this.h*0.5;
@@ -130,7 +130,11 @@ class Level{
 		for(let i = 0; i < this.height; i++){
 			for(let j = 0; j < this.width; j++){
 				if(this.itemGrid[i][j] > 0){
-					this.items.push(new Item( itemSource[this.itemGrid[i][j]], j*TILE_SIZE+TILE_SIZE*0.5-itemSource[this.itemGrid[i][j]].w*0.5, i*TILE_SIZE+TILE_SIZE*0.5-itemSource[this.itemGrid[i][j]].p*0.5, this.grndElGrid[i][j]*TILE_SIZE));
+					this.items.push(new Item(
+						itemSource[this.itemGrid[i][j]],
+						j*TILE_SIZE+TILE_SIZE*0.5-itemSource[this.itemGrid[i][j]].w*0.5,
+						i*TILE_SIZE+TILE_SIZE*0.5-itemSource[this.itemGrid[i][j]].p*0.5,
+						this.grndElGrid[i][j]*TILE_SIZE));
 				}
 			}
 		}

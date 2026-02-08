@@ -1,37 +1,117 @@
 const UI = {
 	inGameUI: body.querySelector("#dynamicPlacement"),
-	loadDOM: document.querySelector(".container__saving"),
-	charDOM: document.querySelector(".charWin"),
-	charWin:{
-		clockDOM: [document.querySelector(".GameDate"), document.querySelector(".GameHour")],
-		weatherDOM: document.querySelector(".weather_icon"),
-		barDOM: document.querySelector(".charWin__HPbar"),
-		charName: document.querySelector(".charName"),
-		moneyDOM: document.querySelector(".money")
-	},
-	characterQuickInfoDOM: {
-		hungerDOM: document.querySelector(".HUD__hungerBar"),
-		update(entity){
+	characterHUD: {
+		isHere: false,
+		quickStats: null,
+		clockDOM: [], //respectively date, hour
+		weatherDOM: null,
+		charName: null,
+		moneyDOM: null,
+		hungerDOM: null,
+		start(){
+			if(!this.isHere){
+				const fullContainer = document.createElement('main');
+				fullContainer.classList.add('quickstats');
+				fullContainer.classList.add('absolute');
+				
+				this.weatherDOM = document.createElement('img');
+				this.weatherDOM.classList.add('weather_icon');
+				this.weatherDOM.classList.add('icon');
+				fullContainer.appendChild(this.weatherDOM);
+				
+				const dateContainer = document.createElement('section');
+				dateContainer.classList.add('flex-column');
+				this.clockDOM = [];
+				this.clockDOM.push(document.createElement('div'));
+				this.clockDOM.push(document.createElement('div'));
+				this.clockDOM[0].classList.add('gameDate');
+				this.clockDOM[1].classList.add('gameHour');
+				
+				dateContainer.appendChild(this.clockDOM[0]);
+				dateContainer.appendChild(this.clockDOM[1]);
+				fullContainer.appendChild(dateContainer);
+				
+				const moneyHungerContainer = document.createElement('div');
+				moneyHungerContainer.classList.add('flex-column');
+				const hungerBar = document.createElement('div');
+				hungerBar.classList.add('horizontal-bar');
+				hungerBar.classList.add('hunger-bar');
+				
+				this.hungerDOM = document.createElement('div');
+				this.hungerDOM.classList.add('HUD__hungerBar');
+				hungerBar.appendChild(this.hungerDOM);
+				this.moneyDOM = document.createElement('div');
+				this.moneyDOM.classList.add('money');
+				moneyHungerContainer.appendChild(hungerBar);
+				moneyHungerContainer.appendChild(this.moneyDOM);
+				fullContainer.appendChild(moneyHungerContainer);
+				this.quickstats = fullContainer;
+				UI.inGameUI.appendChild(this.quickstats);
+				this.isHere = true;
+				return;
+			}
+			
+		},
+		update(clock, entity){
+			if(!this.isHere){
+				return;
+			}
 			this.hungerDOM.style.width = ("" + transformIntoBar(entity.hunger, entity.maxHunger)) + "%";
+			const clockHourFormat = clock.getHourSummerSystem();
+			this.clockDOM[0].innerHTML = `${clock.monthList[clock.month]}, ${clock.day}`;
+			this.clockDOM[1].innerHTML = `${(clockHourFormat.hour >= 10) ? clockHourFormat.hour : "0" + (clockHourFormat.hour +"")}:${(clockHourFormat.minute >= 10) ? clockHourFormat.minute : "0" + (clockHourFormat.minute +" ")}`;
+			this.weatherDOM.src = "src/imgs/WeatherIcon__" + clock.currentWeather + clock.getBinaryLateness().charAt(0).toUpperCase() + clock.getBinaryLateness().slice(1) + ".png";
+			this.moneyDOM.innerHTML = "US$" + entity.money.unit + "." + ((entity.money.cents>= 10)? entity.money.cents : "0" + (entity.money.cents + ""));
+		},
+		end(){
+			if(this.isHere){
+				this.quickstats.remove();
+				this.isHere = false;
+			}
 		}
 	},
-	charWinUpdate: function(clock, entity){
-		let clockHourFormat = clock.getHourSummerSystem();
-		this.charWin.clockDOM[0].innerHTML = `${clock.monthList[clock.month]}, ${clock.day}`;
-		this.charWin.clockDOM[1].innerHTML = `${(clockHourFormat.hour >= 10) ? clockHourFormat.hour : "0" + (clockHourFormat.hour +"")}:${(clockHourFormat.minute >= 10) ? clockHourFormat.minute : "0" + (clockHourFormat.minute +" ")}`;
-		this.charWin.clockDOM[1].innerHTML += clockHourFormat.late;
-		this.charWin.weatherDOM.src = "src/imgs/WeatherIcon__" + Clock.currentWeather + Clock.getBinaryLateness().charAt(0).toUpperCase() + Clock.getBinaryLateness().slice(1) + ".png";
-		this.charWin.moneyDOM.innerHTML = "US$" + entity.money.unit + "." + ((entity.money.cents>= 10)? entity.money.cents : "0" + (entity.money.cents + ""));
-		this.characterQuickInfoDOM.update(entity);
-	},
-	characterMenuDOM: document.querySelector(".characterMenu"),
-	characterMenuItems:{
-		elements: document.querySelectorAll(".it"),
-		alt: document.querySelector(".characterMenu .description"),
-		optionList: ["items", "look at", "stats"],
-		selectedOption: 0,
-		optionLength: 2,
-		layer: 0
+	characterMenu: {
+		here: false,
+		DOM: document.createElement("section"),
+		elements: null,
+		optionList: ["items", "stats", "schedule"],
+		optionImageryTitle: ["item", "check", "stats"],
+		altText: document.createElement("aside"),
+		layer: 0,
+		selected: 0,
+		length: 2,
+		start(){
+			if(!this.here){
+				this.elements = [];
+				for(let i = 0; i < this.optionList.length; i++){
+					this.elements.push(document.createElement("div"));
+					const img = document.createElement("img");
+					img.classList.add("icon-menu");
+					img.src = "src/imgs/CharacterMenuIcon_" + this.optionImageryTitle[i] + ".png";
+					this.elements[i].classList.add("it");
+					this.elements[i].appendChild(img);
+					this.DOM.appendChild(this.elements[i]);
+				}
+				this.altText.innerHTML = "items"
+				this.elements[0].classList.add("selected");
+				this.DOM.classList.add("characterMenu");
+				this.DOM.classList.add("absolute");
+				this.altText.classList.add("description");
+				this.DOM.appendChild(this.altText);
+				UI.inGameUI.appendChild(this.DOM);
+				this.here = true;
+			}
+		},
+		end(){
+			if(this.here){
+				for(let i = 0; i < this.optionList.length; i++){
+					this.elements[i].remove();
+				}
+				this.elements = null;
+				this.DOM.remove();
+				this.here = false;
+			}
+		}
 	},
 	characterMenuSubmenus: {
 		statsDOM: null,
@@ -70,7 +150,7 @@ const UI = {
 			this.itemsDOM.innerHTML = "";
 			this.itemsDOM.style.display = "none";
 		},
-		startstats(entity){
+		startschedule(entity){
 			if(!this.hasLoadedCharacterMenuUI){
 				this.jobTableDOM = document.createElement("section");
 				//this.jobTableDOM.classList.add('flat');
@@ -119,7 +199,7 @@ const UI = {
 			return;
 		},
 		hasLoadedCharacterMenuUI: false,
-		"startlook at": function (entity){
+		"startstats": function (entity){
 			if(!this.hasLoadedCharacterMenuUI){
 				this.statsDOM = document.createElement('section');
 				this.statsDOM.classList.add('flat');
@@ -142,14 +222,14 @@ const UI = {
 				this.hasLoadedCharacterMenuUI = true;
 			}
 		},
-		"dismisslook at": function(entity){
+		"dismissstats": function(entity){
 			if(this.statsDOM)
 				this.statsDOM.remove();
 			this.statsDOM = null;
 			this.hasLoadedCharacterMenuUI = false;
 			return;
 		},
-		dismissstats(entity){
+		dismissschedule(entity){
 			if(this.jobTableDOM)
 				this.jobTableDOM.remove();
 			this.jobTableDOM = null;
@@ -266,22 +346,88 @@ const UI = {
 	milionaire: 0,
 	wallCleanerHud: 0,
 	title: {
-		DOM: document.querySelector(".titleScreen"),
+		DOM: document.createElement('div'),
 		selectedOption: 0,
 		options: ["newGame", "continueGame"],
-		optionDOM: [document.querySelector(".new"), document.querySelector(".continue")],
+		optionsText: ["new game", "continue"],
+		titleImagery: null,
+		optionDOM: [],
+		optionDOMhere: false,
 		start(){
-			this.DOM.style.display = "flex";
+			if(!this.optionDOMhere){
+				this.titleImagery = document.createElement('img');
+				this.titleImagery.alt = "title_screen_image";
+				this.titleImagery.src = "src/imgs/TitleLogo.png";
+				for(let i = 0; i < this.options.length; i++){
+					this.optionDOM.push(document.createElement('button'));
+					this.optionDOM[i].innerHTML = this.optionsText[i];
+					this.optionDOM[i].addEventListener("click", ()=>{
+						this.selectedOption = i;
+						Game.audio.sfx('confirm');
+						Game.requestTransition = true;
+						Game.buffer = this.options[this.selectedOption];
+					});
+					this.optionDOM[i].addEventListener("hover", ()=>{
+						Game.audio.sfx('select');
+						for(let j = 0; j < this.options.length; j++){
+							this.optionDOM[i].classList.remove("selected")
+						}
+						this.optionDOM[i].classList.add("selected");
+					});
+					this.optionDOM[i].classList.add('titleCommand');
+					this.DOM.classList.add('titleOptions');
+					this.DOM.classList.add('flex-row');
+					this.DOM.appendChild(this.optionDOM[i]);
+				}
+				UI.inGameUI.classList.add('titleScreen');
+				UI.inGameUI.appendChild(this.titleImagery);
+				UI.inGameUI.appendChild(this.DOM);
+				this.optionDOMhere = true;
+				this.optionDOM[this.selectedOption].classList.add('selected');
+			}
 		},
-		dismiss(){
-			this.DOM.style.display = "none";
+		end(){
+			if(this.optionDOMhere){
+				for(let i = 0; i < this.options.length; i++){
+					this.optionDOMhere = false;
+					this.optionDOM[i].remove();
+					this.titleImagery.remove();
+				}
+				UI.inGameUI.classList.remove('titleScreen');
+				this.optionDOM = [];
+			}
+			
 		},
 	},
 	
 	loadGame: {
+		container: document.createElement('section'),
 		selectedOption: 0,
 		option: ["cookie", "sendFile"],
-		optionDOM: [document.querySelector(".Cookies"), document.querySelector(".SendAFile")]
+		optionDOM: [],
+		isOptionDOMhere: false,
+		optionText: ["Continue by cookies", "Continue by a file"],
+		start(){
+			if(!this.isOptionDOMhere){
+				this.container.classList.add("container__saving");
+				
+				this.container.classList.add("flex-row");
+				for(let i = 0; i < this.option.length; i++){
+					this.optionDOM.push(document.createElement('button'));
+					this.optionDOM[i].innerHTML = this.optionText[i];
+					
+					this.container.appendChild(this.optionDOM[i]);
+				}
+				this.isOptionDOMhere = true;
+				UI.inGameUI.appendChild(this.container);
+			}
+		},
+		end(){
+			if(this.isOptionDOMhere){
+				this.container.remove();
+				this.isOptionDOMhere = false;
+			}
+		}
 	},
 	loadMenu:{
 		option: ["load", "cancel"],
@@ -305,7 +451,7 @@ const UI = {
 					this.DOM.classList.add('centered');
 					let fileSend = document.createElement('input');
 					fileSend.type = "file"
-					fileSend.placeholder = "Your saved save here";
+					fileSend.placeholder = "your saved save here";
 					fileSend.classList.add("files");
 					fileSend.addEventListener("change", UI.loadMenu.readSaveFile);
 					this.DOM.appendChild(fileSend);
@@ -322,29 +468,6 @@ const UI = {
 		let save = this.loadCookies.DOM.createElement("div");
 		save.innerHTML = str;
 	},
-	cookingStart(entity){
-		//get the cooking tools the object represents.
-		//stoves have: oven and the upper part, for testing manners I'll put anything here
-		this.cooking.option = ["stove", "oven", "freeze"];
-		//so you'll push the 
-		this.cooking.DOM.style.display = "flex";
-	},
-	cookingDismiss(){
-		this.loadDOM.style.display = "none";
-	},
-	loadStart(){
-		this.loadDOM.style.display = "flex";
-	},
-	loadDismiss(){
-		this.loadDOM.style.display = "none";
-	},
-	charWinStart(){
-		this.charDOM.style.display = "flex";
-	},
-	charWinDismiss(){
-		this.charDOM.style.display = "none";
-	},
-	
 	dialogStart(){
 		this.dialogDOM.style.display = "block"
 		setTimeout(()=>{this.dialogDOM.style.transform = "scale(1)"}, 304)
@@ -358,17 +481,11 @@ const UI = {
 			this.dialogItems.hasOptionsLoaded = false;
 		}, 304)
 	},
-	characterMenuStart(){
-		this.characterMenuDOM.style.display = "flex";
-	},
-	characterMenuDismiss(){
-		this.characterMenuDOM.style.display = "none";
-	},
 	warningScreen: {
 		isHere: false,
 		message: "<h1>WARNING!</h1>",
-		text: "<p>This game has themes that might not fit the gamers's taste, such as 2D graphics, quirky perks and anthropomorphic animals</p><p>Viewer discretion is advised.</p>",
-		command: "<h2 class = 'blink-anim'>Press any BUTTON to continue</h2>",
+		text: "<p>this game is still unfinished reach for landing page for more information</p>",
+		command: "<h2 class = 'blink-anim'>press any BUTTON to continue</h2>",
 		element: null,
 		start(){
 			if(!this.isHere){
@@ -386,5 +503,4 @@ const UI = {
 			this.isHere = false;
 		}
 	}
-
 }

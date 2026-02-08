@@ -1,4 +1,5 @@
 const itemGraphics = document.getElementById("items");
+const structGraphics = body.querySelector("#furnitures");
 
 class Item{
 	constructor(itemSourceConstructor, x, z, y){
@@ -7,6 +8,7 @@ class Item{
 		this.WorldPos = {x: undefined, y: undefined, z: undefined};
 		this.name = itemSourceConstructor.name;
 		this.ID = itemSourceConstructor.ID;
+		this.spritesheet = (itemSourceConstructor.htmlSrc == "#furnitures")? structGraphics : itemGraphics;
 		this.centralPoint = new Array(2)
 		this.velocity = {x: 0, y: 0, z: 0};
 		this.friction = 0.9;
@@ -16,37 +18,61 @@ class Item{
 		this.sublayer = 0;
 		this.type = itemSourceConstructor.type;
 		this.value = itemSourceConstructor.value;
+		this.weight = itemSourceConstructor.weight;
 		this.visible = false;
 		this.isCollected = false;
-		this.shadow = {
-			x: x, y: y+z, w: itemSourceConstructor.w, h: itemSourceConstructor.p+itemSourceConstructor.h
-		};
+		if(itemSourceConstructor.htmlSrc == "#furnitures"){
+			this.sprite = {
+				gridLen: 48,
+				w: 48 * itemSourceConstructor.spriteLength.w,
+				h: 48 * itemSourceConstructor.spriteLength.h,
+				p: 48 * itemSourceConstructor.spriteLength.p
+			}
+			this.spriteOriginX = itemSourceConstructor.spriteID;
+		} else {
+			this.sprite = {
+				gridLen: 96,
+				w: 96,
+				h: 96,
+				p: 0
+			}
+			this.spriteOriginX = this.ID;
+		}
 	}
 	use(entity){
 		itemCategories[this.type](entity, this);
 	}
 	draw(){
-		ctx.drawImage(itemGraphics, this.ID*96, 0, 96, 96, this.centralPoint[0] - this.boxCol.w*0.5,
-			this.centralPoint[1] - this.boxCol.w,
-			this.boxCol.w, this.boxCol.w
+		let renderPosX = this.spriteOriginX*this.sprite.gridLen % this.spritesheet.width;
+		let renderPosY = Number.parseInt(this.spriteOriginX/WorldToGrid(this.spritesheet.width, this.sprite.gridLen))* this.sprite.gridLen;
+		
+		ctx.drawImage(this.spritesheet,
+			renderPosX, renderPosY,
+			this.sprite.w, this.sprite.h + this.sprite.p,
+			this.centralPoint[0] - this.boxCol.w*0.5,
+			this.centralPoint[1] - (this.boxCol.h + this.boxCol.p*0.5),
+			this.boxCol.w, this.boxCol.h + this.boxCol.p
 		);
+		/*
 		ctx.fillRect(this.centralPoint[0] - this.boxCol.w*0.5,
 			this.centralPoint[1] - this.boxCol.w,
 			this.boxCol.w, this.boxCol.w
 		);
+		*/
 	}
 	update(){
-		this.centralPoint[0] = WorldToScreen1D(this.WorldPos.x, Camera.x, Camera.w/2 - Game.SCREEN_CENTER[0]);
-		this.centralPoint[1] = WorldToScreen1D(this.WorldPos.z, Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]);
 		this.boxCol.x += this.velocity.x;
 		this.boxCol.z += this.velocity.z;
 		this.WorldPos.y += this.velocity.y;
 		this.WorldPos.x = this.boxCol.x + this.boxCol.w*0.5;
 		this.WorldPos.z = this.boxCol.z + this.boxCol.p*0.5;
-		this.shadow.x = this.boxCol.x;
-		this.shadow.y = this.boxCol.z + this.boxCol.y;
 		this.velocity.z *= this.friction;
 		this.velocity.x *= this.friction;
+		this.centralPoint[0] = WorldToScreen1D(this.WorldPos.x, Camera.x, Camera.w/2 - Game.SCREEN_CENTER[0]);
+		this.centralPoint[1] = WorldToScreen1D(this.WorldPos.z - this.boxCol.y + this.boxCol.h, Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]);
+	}
+	setLayer(map){
+		Col.handleShadowCoords(this, map);
 	}
 }
 

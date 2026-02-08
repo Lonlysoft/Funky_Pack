@@ -3,6 +3,7 @@ let timerplay = 0;
 let timeGame = 0;
 let GameMoment = 0;
 let GameMomentSav = 'warningScreen';
+//let GameMomentSav = "mainWorld";
 let frame = 0
 let frameaux = 0
 let fps = 30, timeFrequency = 1000/fps;
@@ -43,6 +44,7 @@ const Game = {
 		this.ItemArr = this.currentMap.updateVisibleItems(Camera, this.ItemArr);
 		for(let i = 0; i < this.ItemArr.length; i++){
 			this.ItemArr[i].update();
+			this.ItemArr[i].setLayer(Game.currentMap);
 		}
 		this.GrassArr = this.currentMap.updateGrass(Camera, this.GrassArr);
 	},
@@ -59,13 +61,13 @@ const Game = {
 		},
 		characterMenu: function(){
 			//Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
-			switch(UI.characterMenuItems.layer){
+			switch(UI.characterMenu.layer){
 				case 0: Ctrl.action(Game.CurrentCharacter, "characterMenu");
-				UI.characterMenuSubmenus["dismiss" + UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption] + ""](Game.CurrentCharacter);
+				UI.characterMenuSubmenus["dismiss" + UI.characterMenu.optionList[UI.characterMenu.selected] + ""](Game.CurrentCharacter);
 					break;
 				case 1:
-					Ctrl.action(Game.CurrentCharacter, UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption]);
-					UI.characterMenuSubmenus["start" + UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption] + ""](Game.CurrentCharacter);
+					Ctrl.action(Game.CurrentCharacter, UI.characterMenu.optionList[UI.characterMenu.selected]);
+					UI.characterMenuSubmenus["start" + UI.characterMenu.optionList[UI.characterMenu.selected] + ""](Game.CurrentCharacter);
 				break;
 			}
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
@@ -109,16 +111,17 @@ const Game = {
 				if(Game.alpha < 0){
 					Game.requestTransition = false;
 					Game.appearScreen = true;
+					timeCounter = 0;
 					//Game.audio.play("ident", false);
 				}
 			}
 			ctx.fillStyle = "#000000"
 			ctx.fillRect(0,0,Game.canvas.width, Game.canvas.height)
+			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			ctx.drawImage(lonlysoft, 0, 0, canvas.width, canvas.height)
 			if(timeCounter >= 5000){
 				Game.requestTransition = true;
 			}
-			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			if(Game.requestTransition && Game.appearScreen){
 				Game.alpha = BG.transition(Game.alpha, "going", 0.1);
 				if(Game.alpha >= 1){
@@ -138,6 +141,9 @@ const Game = {
 					if(Game.audio.currentMusic !== "title"){
 						Game.audio.play('title');
 					}
+					//Ctrl.canvas.classList.add('notHere');
+					BG.canvas.classList.add('notHere');
+					
 				}
 			}
 			UI.title.start();
@@ -147,14 +153,15 @@ const Game = {
 			Ctrl.action(null, "start");
 			Ctrl.stateSave();
 			if(Game.requestTransition && Game.appearScreen){
+				BG.canvas.classList.remove('notHere');
 				Game.alpha = BG.transition(Game.alpha, "going", 0.1);
 				if(Game.alpha >= 1){
-					
 					Game.alpha = 1;
 					GameMomentSav = GameMoment;
 					GameMoment = Game.buffer;
 					Game.appearScreen = false;
-					UI.title.dismiss();
+					UI.title.end();
+					//Ctrl.canvas.classList.remove('notHere');
 				}
 			}
 		},
@@ -185,9 +192,10 @@ const Game = {
 					Game.audio.stop();
 					Game.requestTransition = false;
 					Game.appearScreen = true;
+					
 				}
 			}
-			UI.charWinStart();
+			UI.characterHUD.start();
 			if(!Scenery.hasDeclaired){
 				Scenery.declair(Game, Game.levelName, MAPS);
 				Game.CurrentCharacter = new Protagonist(Characters.Dynny);
@@ -215,7 +223,7 @@ const Game = {
 			Game.CurrentCharacter.update();
 			Col.main(Game.CurrentCharacter, Game.currentMap, Game.ItemArr, Game.NPCarr -1);
 			
-			UI.charWinUpdate(Clock, Game.CurrentCharacter);
+			UI.characterHUD.update(Clock, Game.CurrentCharacter);
 			if(timeCounter>=2000){
 				Clock.passTime();
 				timeCounter = 0;
@@ -237,6 +245,7 @@ const Game = {
 			if(Game.CurrentCharacter == null){
 				Game.CurrentCharacter = new Protagonist(Characters.Dynny);
 			}
+			UI.characterHUD.end();
 			Waiter.gamePlay(Game.CurrentCharacter);
 		},
 		dialog: function(){
@@ -254,7 +263,7 @@ const Game = {
 					Game.appearScreen = true;
 				}
 			}
-			UI.loadStart();
+			UI.loadGame.start();
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			
 			Ctrl.action(null, "load");
@@ -268,7 +277,7 @@ const Game = {
 					GameMomentSav = "title";
 					GameMoment = Game.buffer;
 					Game.appearScreen = false;
-					UI.loadDismiss();
+					UI.loadGame.end();
 				}
 			}
 		},
@@ -298,9 +307,7 @@ const Game = {
 			}
 		},
 		sendFile: () => {
-			Ctrl.action(this.player, "load");
-			Ctrl.stateSave();
-			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
+			
 			UI.loadMenu.sendFile.render();
 			Game.ctx.fillRect(0, 0, Game.canvas.width, Game.canvas.height);
 			
@@ -317,7 +324,9 @@ const SideBar = {
 	musicMuted: false,
 	sfxVolume: document.querySelector("#sfx-volume"),
 	bringSideBar: document.getElementById("bring-sidebar"),
-	blankSpace: document.querySelector(".sidebar-blank-space")
+	blankSpace: document.querySelector(".sidebar-blank-space"),
+	musicMeter: document.querySelector(".music-slider .meter"),
+	sfxMeter: document.querySelector(".sfx-slider .meter")
 }
 
 function GameBonanza(){
@@ -330,10 +339,11 @@ function GameBonanza(){
 			SideBar.isHere = !SideBar.isHere;
 			if(SideBar.isHere){
 				SideBar.fullDOM.classList.remove("notHere");
-				setTimeout(()=>{SideBar.DOM.style.bottom = "0"}, 100);
+				setTimeout(()=>{SideBar.DOM.style.opacity = "100%"}, 10);
 			}else{
 				SideBar.fullDOM.classList.add("notHere");
-				SideBar.DOM.style.bottom = "-40%"
+				
+				SideBar.DOM.style.opacity = "0%";
 			}
 		}
 	);
@@ -380,9 +390,9 @@ function GameBonanza(){
 	);
 	SideBar.blankSpace.addEventListener("click",
 		event => {
-			SideBar.DOM.style.bottom = "-40%";
+			SideBar.DOM.style.opacity = "0%";
 			SideBar.isHere = false;
-			setTimeout(()=>{ SideBar.fullDOM.classList.add("notHere") },900);
+			setTimeout(()=>{ SideBar.fullDOM.classList.add("notHere") },10);
 		}
 	);
 	

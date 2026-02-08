@@ -502,8 +502,8 @@ const Ctrl = {
 			},
 			start(entity){
 				if(Ctrl.Btns.start.active && Ctrl.state.start == false){//start
-					UI.charWinDismiss();
-					UI.characterMenuStart();
+					UI.characterHUD.end();
+					UI.characterMenu.start();
 					GameMomentSav = GameMoment;
 					GameMoment = 'characterMenu';
 				}
@@ -549,7 +549,7 @@ const Ctrl = {
 			},
 			B(entity){
 				if(Ctrl.Btns.B.active && !Ctrl.state.B){
-					UI.characterMenuItems.layer--;
+					UI.characterMenu.layer--;
 				}
 			}
 		},
@@ -612,35 +612,35 @@ const Ctrl = {
 		charMenu: {
 			start(){
 				if(Ctrl.Btns.start.active && Ctrl.state.start == false){
-					UI.characterMenuDismiss();
+					UI.characterMenu.end();
 					GameMoment = GameMomentSav;
 				}
 			},
 			directionals(){
-				if(Ctrl.Btns.west.active && !Ctrl.state.west){ //right
-					UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.remove("selected");
-					UI.characterMenuItems.selectedOption--;
-					if(UI.characterMenuItems.selectedOption<0){
-						UI.characterMenuItems.selectedOption = UI.characterMenuItems.optionLength;
+				if(Ctrl.Btns.west.active && !Ctrl.state.west){ //left
+					UI.characterMenu.elements[UI.characterMenu.selected].classList.remove("selected");
+					UI.characterMenu.selected--;
+					if(UI.characterMenu.selected < 0){
+						UI.characterMenu.selected = UI.characterMenu.length;
 					}
-					UI.characterMenuItems.alt.innerHTML = UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption];
-					UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.add("selected");
+					UI.characterMenu.altText.innerHTML = UI.characterMenu.optionList[UI.characterMenu.selected];
+					UI.characterMenu.elements[UI.characterMenu.selected].classList.add("selected");
 				}
 				if(Ctrl.Btns.east.active && !Ctrl.state.east){ //right
 					
-					UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.remove("selected");
-					UI.characterMenuItems.selectedOption++;
-					if(UI.characterMenuItems.selectedOption>UI.characterMenuItems.optionLength){
-						UI.characterMenuItems.selectedOption = 0;
+					UI.characterMenu.elements[UI.characterMenu.selected].classList.remove("selected");
+					UI.characterMenu.selected++;
+					if(UI.characterMenu.selected>UI.characterMenu.length){
+						UI.characterMenu.selected = 0;
 					}
-					UI.characterMenuItems.alt.innerHTML = UI.characterMenuItems.optionList[UI.characterMenuItems.selectedOption];
-					UI.characterMenuItems.elements[UI.characterMenuItems.selectedOption].classList.add("selected");
+					UI.characterMenu.altText.innerHTML = UI.characterMenu.optionList[UI.characterMenu.selected];
+					UI.characterMenu.elements[UI.characterMenu.selected].classList.add("selected");
 					
 				}
 			},
 			confirm(){
 				if(Ctrl.Btns.A.active && !Ctrl.state.A){
-					UI.characterMenuItems.layer++;
+					UI.characterMenu.layer++;
 				}
 			},
 			cancel(){
@@ -649,7 +649,7 @@ const Ctrl = {
 				}
 			}
 		},
-		stats: {
+		schedule: {
 			start(){
 				return;
 			},
@@ -696,7 +696,7 @@ const Ctrl = {
 						UI.jobTable.removalDOM[UI.jobTable.selectedOption]();
 					}
 					else{
-						UI.characterMenuItems.layer--;
+						UI.characterMenu.layer--;
 					}
 				}
 			}
@@ -772,15 +772,15 @@ const Ctrl = {
 			}
 		},
 		
-		stats: function(entity){
+		schedule: function(entity){
 			for(let i = 0; i < Ctrl.ListPropsPause.length; i++){
-				Ctrl.BonanzaMenu["stats"][Ctrl.ListPropsPause[i]]();
+				Ctrl.BonanzaMenu["schedule"][Ctrl.ListPropsPause[i]]();
 			}
 		},
 		
-		"look at": function(entity){
+		stats: function(entity){
 			if(Ctrl.Btns.B.active && !Ctrl.state.B){
-				UI.characterMenuItems.layer--;
+				UI.characterMenu.layer--;
 			}
 		},
 		

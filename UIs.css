@@ -1,6 +1,6 @@
 /* title screen */
 .titleScreen{
-	display: none;
+	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -24,6 +24,8 @@
 	padding: 0.5em 1.5em;
 	border-radius: 50px;
 	font-size: 100%;
+	text-wrap: nowrap;
+	font-weight: 1000;
 }
 .titleCommand.selected{
 	transition: color 0.4s, transform 0.4s, opacity 0.5s;
@@ -48,12 +50,12 @@
 	gap: 0.2em;
 	color: var(--font-color);
 }
-.container__saving div{
+.container__saving button{
 	padding: 0.5em 1em;
 	color: var(--font-color);
 	border: 1px solid var(--font-color);
 }
-.container__saving div.selected{
+.container__saving button.selected{
 	color: var(--bg-color);
 	border: none;
 	background: var(--font-color);
@@ -154,7 +156,7 @@
 
 /*character menu*/
 .characterMenu{
-	display: none;
+	display: flex;
 	top: 25%;
 	left: 50%;
 	justify-content: space-between;
