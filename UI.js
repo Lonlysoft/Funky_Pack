@@ -484,7 +484,7 @@ const UI = {
 	warningScreen: {
 		isHere: false,
 		message: "<h1>WARNING!</h1>",
-		text: "<p>this game is still unfinished reach for landing page for more information</p>",
+		text: "<p>This game is still unfinished! Reach the landing page for more information</p>",
 		command: "<h2 class = 'blink-anim'>press any BUTTON to continue</h2>",
 		element: null,
 		start(){
@@ -503,4 +503,5 @@ const UI = {
 			this.isHere = false;
 		}
 	}
+
 }
