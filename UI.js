@@ -485,7 +485,7 @@ const UI = {
 		isHere: false,
 		message: "<h1>WARNING!</h1>",
 		text: "<p>This game is still unfinished! Reach the landing page for more information</p>",
-		command: "<h2 class = 'blink-anim'>press any BUTTON to continue</h2>",
+		command: "<h2 class = 'blink-anim'>Press any BUTTON to continue</h2>",
 		element: null,
 		start(){
 			if(!this.isHere){
@@ -505,3 +505,4 @@ const UI = {
 	}
 
 }
+
