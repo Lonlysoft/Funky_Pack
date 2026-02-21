@@ -1,6 +1,6 @@
-const TILE_SIZE = 64;
+const TILE_SIZE = 48;
 const MAGIC_OFFSET = 0.01;
-const MAGIC_NORMALIZER = 0.8
+const MAGIC_NORMALIZER = 0.7
 const GRAVITY_EARTH = 6, GRAVITY_EARTH_FALLING = 8;
 const GRAVITY_WATER = 1;
 
@@ -249,6 +249,48 @@ const directions = {
 			entity.velocity.y += 10
 			entity.velocity.z -= speed;
 			entity.velocity.x -= speed;
+		}
+	},
+	walk: {
+		S: function(entity, speed){
+			entity.pol = 1;
+			entity[entity.movementFlag]("z");
+		},
+		E: function(entity, speed){
+			entity.pol = 1;
+			entity[entity.movementFlag]("x");
+		},
+		N: function(entity, speed){
+			entity.pol = -1;
+			entity[entity.movementFlag]("z");
+		},
+		W: function(entity, speed){
+			entity.pol = -1;
+			entity[entity.movementFlag]("x");
+		},
+		SE: function(entity, speed){
+			entity.pol = MAGIC_NORMALIZER;
+			entity[entity.movementFlag]("x");
+			entity.pol = MAGIC_NORMALIZER;
+			entity[entity.movementFlag]("z");
+		},
+		NE: function(entity, speed){
+			entity.pol = MAGIC_NORMALIZER;
+			entity[entity.movementFlag]("x");
+			entity.pol = -MAGIC_NORMALIZER;
+			entity[entity.movementFlag]("z");
+		},
+		SW: function(entity, speed){
+			entity.pol = -MAGIC_NORMALIZER;
+			entity[entity.movementFlag]("x");
+			entity.pol = MAGIC_NORMALIZER;
+			entity[entity.movementFlag]("z");
+		},
+		NW: function(entity, speed){
+			entity.pol = -MAGIC_NORMALIZER;
+			entity[entity.movementFlag]("x");
+			entity.pol = -MAGIC_NORMALIZER;
+			entity[entity.movementFlag]("z");
 		}
 	}
 }

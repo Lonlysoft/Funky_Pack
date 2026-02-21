@@ -262,13 +262,13 @@ const Col = {
 
 			
 			object.velocity.y = 0;
-			object.WorldPos.y = cube.y + MAGIC_OFFSET;
+			object.WorldPos.y = cube.y;
 			return cube.y;
 
 		} else if (object.boxCol.y + object.boxCol.h > top && current_x > 0) {
 			object.onGround = true;
 			object.velocity.y = 0;
-			object.WorldPos.y = top + (cube.y - cube.h) +MAGIC_OFFSET;
+			object.WorldPos.y = top + (cube.y - cube.h);
 			return top + (cube.y - cube.h);
 		}
 	},

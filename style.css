@@ -210,20 +210,19 @@ input[type="range"]{
 	align-items: flex-start;
 }
 
-.slider{
+.sliders{
 	width: 6em;
 	height: 2em;
-	background: var(--bg-color);
+	background: linear-gradient(to right, var(--bg-color) 50%, var(--font-color)50%);
 	border-radius: .5rem;
 	overflow: hidden;
 	box-shadow: 4px 4px 0 #000;
+	appearance: none;
+	-webkit-appearance: none;
 }
 
-.meter{
-	width: 50%;
-	height: 100%;
-	background: var(--font-color);
-	opacity: 50%;
+.sliders::-webkit-slider-thumb{
+	opacity: 0;
 }
 
 .screenMenu.activated{

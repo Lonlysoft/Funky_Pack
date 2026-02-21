@@ -60,7 +60,10 @@ const setUsingTools = {
 	frontArmy: "shoot"
 }
 
+
+
 function displayAnim(Character){
+	
 	if(Character.onGround){
 		Character.doing = "still";
 		if(Character.isWalking.x || Character.isWalking.z){
@@ -83,7 +86,11 @@ function displayAnim(Character){
 	}
 	
 	if(Character.isSpecialSkilling){
-		Character.doing = "diving"
+		Character.doing = Character.currentSkill;
+	}
+	
+	if(Character.isCrouching && !Character.holdingObject){
+		Character.doing = "crouch"
 	}
 	
 	if(Character.animationIndex < Character.anim[Character.doing].imageX.length-1){

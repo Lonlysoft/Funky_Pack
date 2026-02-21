@@ -17,7 +17,7 @@
 		<canvas id = "processing"></canvas>
 		<img id = "CNTRLS" src = "src/imgs/ctrls.png">
 		<img id = "tilemap" src = "src/imgs/tileset.png">
-		<img id = "dynnySpriteSheet" src = "src/imgs/DynnySpriteSheet2.png">
+		<img id = "dynnySpriteSheet" src = "src/imgs/DynnySpriteSheet.png">
 		<img id = "nukkoSpriteSheet" src = "src/imgs/NukkoSpriteSheet.png">
 		<img id = "items" src = "src/imgs/Items.png"/>
 		<img id = "furnitures" src = "src/imgs/furnitures.png"/>
@@ -75,26 +75,22 @@
 					</svg>
 				</div>
 				<div class = "flex-column audio-sliders">
-					<h6>Music</h6>
-					<div class = "slider music-slider">
-						<div class = "meter"></div>
-					</div>
-					<h6>Sound effects</h6>
-					<div class = 'slider sfx-slider'>
-						<div class = "meter"></div>
-					</div>
+					<h6>music</h6>
+					<input type = "range" min = 0 max = 100 value = "70" class = "music-slider sliders">
+					<h6>sound effects</h6>
+					<input type = "range" min = 0 max = 100 value = "50" class = "sfx-slider sliders">
 				</div>
 			</div>
 			<a href = "">
 			<button class = "outConfig__resetApplication">
-				Reset
+				reset
 			</button>
 			</a>
 		</section>
 	</section>
 	<div class = "sendFileToLoadGame notHere">
 		<input type = file class = "yourSaveFileInput">
-		<button class = "continue">Continue</button>
+		<button class = "continue">continue</button>
 	</div>
 </body>
 <!--
@@ -104,12 +100,11 @@
 -->
 <script src = "gameTools.js"></script>
 <script src = "music.js"></script>
-<script src = "jobs.js"></script>
 <script src = "drawingTools.js"></script>
 <script src = "dialogs.js"></script>
 <script src = "NPC__assets.js"></script>
-<script src = "src/JS/Test2.js"></script>
 <script src = "maps_assets.js"></script>
+<script src = "controls__touch.js"></script>
 <script src = "controls.js"></script>
 <script src = "controls__gamepad.js"></script>
 <script src = "controls__keyBoard.js"></script>
@@ -119,13 +114,13 @@
 <script src = "items_assets.js"></script>
 <script src = "NPCs.js"></script>
 <script src = "maps.js"></script>
-<script src = "UI.js"></script>
 <script src = "background.js"></script>
 <script src = "cenery.js"></script>
 <script src = "collisions.js"></script>
 <script src = "Waiter.js"></script>
 <script src = "inGameClock.js"></script>
+<script src = "jobs.js"></script>
+<script src = "UI.js"></script>
 <script src = "debug.js"></script> <!-- do not do structural Changes Here-->
 <script src = "main.js"></script>
-
 </html>

@@ -50,7 +50,7 @@ const Waiter = {
 		here: false,
 		DOM: document.createElement('section'),
 		noteblock: document.createElement("section"),
-		timerDOM: null,
+		timer: null,
 		start(){
 			if(!this.here){
 				this.DOM.classList.add("flex-row");
@@ -63,6 +63,7 @@ const Waiter = {
 				this.noteblock.classList.add("pauted");
 				this.DOM.appendChild(this.noteblock);
 				this.DOM.appendChild(container);
+				this.inGameUI.appendChild(this.DOM);
 				this.here = true;
 			}
 		},
@@ -126,9 +127,9 @@ const Waiter = {
 	locateBalcons(map){
 		for(let i = 0; i < map.height; i++){
 			for(let j = 0; j < map.width; j++){
-				if(map.items[i][j].ID == 49){
-					this.balcons.push(map.items[i][j]);
-					this.balcons[this.balcons.length-1].holds = this.FOODS;
+				if(map.itemGrid[i][j] == 49){
+					this.balcons = map.items.filter(item => item.ID == 49);
+					this.balcons[this.balcons.length-1].hold = this.FOODS;
 				}
 			}
 		}
@@ -138,20 +139,23 @@ const Waiter = {
 			Scenery.declair(this, this.levelNumber, WAITER_MAPS);
 			this.locateBalcons(this.currentMap);
 			this.start(entity);
+			this.UI.start();
 		}
 		if(!this.player.isSpawn && Scenery.hasDeclaired){
 			this.player.isSpawn = this.player.spawn(this.currentMap);
 			this.setTableID();
+			this.player.update();
 		}
 		Scenery.draw(this.currentMap, this.player, this.presentNPCs, this.plates);
 		if(this.getWinningCondition()){
 			this.end();
 		}
+		Camera.moveTo(this.player.WorldPos.x, this.player.WorldPos.z, this.player.WorldPos.y);
 		this.setAndUpdateItems();
 		this.events();
-		Camera.moveTo(this.player.WorldPos.x, this.player.WorldPos.z, this.player.WorldPos.y);
 		this.player.update();
 		Col.main(this.player, this.currentMap, this.plates, this.presentNPCs);
+		
 		this.UI.update();
 		this.requestTable();
 		this.debug();
@@ -159,24 +163,18 @@ const Waiter = {
 	setTableID(){
 		for(let i = 0; i < this.currentMap.itemGrid.length; i++){
 			for(let j = 0; j < this.currentMap.itemGrid[i].length; j++){
-				if(this.currentMap.itemGrid[i][j] == 1){
+				if(this.currentMap.itemGrid[i][j] == 44){
 					this.tablesCoords.push(new Table(i, j));
 				}
 			}
 		}
 	},
 	getWinningCondition: function(){
-		if(this.timer < 0){
+		if(this.timer <= 0){
 			this.timer = this.timerConfig.max;
 			return true;
 		}
 		return false;
-	},
-	waiterUIstart(){
-		this.UI.DOM.classList.remove("notHere");
-	},
-	waiterUIdismiss(){
-		this.UI.DOM.classList.add("notHere");
 	},
 	debug(){
 		for(let i = 0; i < this.orders.length; i++){

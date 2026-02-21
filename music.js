@@ -64,7 +64,9 @@ const Music = {
 	songList: ["title"],
 	songPath: {
 		//ident: "src/msc/Lonlysoft_ident.mp3",
-		title: "src/msc/FunkyPack_Title.mp3"
+		title: "src/msc/FunkyPack_Title.mp3",
+		creditsFinal1: "src/msc/Nukkos_sunset.mp3",
+		creditsFinal2: "src/msc/1A21.mp3"
 	},
 	sfxList: ["select", "confirm"],
 	sfxPath: {
@@ -74,6 +76,12 @@ const Music = {
 	setVolume(value, valueSfx = value){
 		this.Controller.musicVolume(value);
 		this.Controller.sfxVolume(valueSfx);
+	},
+	setSfxVolume(value){
+		this.Controller.sfxVolume(value);
+	},
+	setMusicVolume(value){
+		this.Controller.musicVolume(value);
 	},
 	play(name, loop = true){
 		this.Controller.play(name, loop);

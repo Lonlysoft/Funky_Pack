@@ -70,14 +70,49 @@ const UI = {
 			}
 		}
 	},
+	charMenuManager: {
+		stack: [],
+		currentName: null,
+		current(){
+			return this.stack[this.stack.length-1];
+		},
+		push(menuObj){
+			if(this.current()){
+				
+				//this.current().end();
+				//we can actually blur that, but not now;
+			}
+			this.stack.push(menuObj);
+			this.currentName = menuObj.name;
+			menuObj.start(Game.CurrentCharacter);
+		},
+		pop(){
+			const dropped = this.stack.pop();
+			if(dropped){
+				dropped.end();
+			}
+			if(this.current()){
+				this.current().start(Game.CurrentCharacter);
+				this.currentName = this.current().name;
+				//might implement unblur here
+			}
+			
+		},
+		update(){
+			const active = this.current();
+			if(active && active.update){
+				active.update();
+			}
+		}
+	},
 	characterMenu: {
 		here: false,
+		name: "characterMenu",
 		DOM: document.createElement("section"),
 		elements: null,
 		optionList: ["items", "stats", "schedule"],
 		optionImageryTitle: ["item", "check", "stats"],
 		altText: document.createElement("aside"),
-		layer: 0,
 		selected: 0,
 		length: 2,
 		start(){
@@ -111,142 +146,149 @@ const UI = {
 				this.DOM.remove();
 				this.here = false;
 			}
+		},
+		submenus: {
+			isVisible: false,
+			selectedInventoryIndex: 0,
+			items: {
+				name: "itemMenu",
+				itemsDOM: document.querySelector(".bags"),
+				inventoryEach: null,
+				index: 0,
+				start(entity){
+					this.itemsDOM.style.display = "flex"
+					this.itemsDOM.innerHTML = "";
+					let finalString = "";
+					for(let i = 0; i < entity.tail.length; i++){
+						if(entity.tail[i] != undefined)
+							finalString += "<div class = 'bags__item'>" + entity.tail[i].name + "</div>";
+						else 
+							finalString += "<div class = 'bags__item'> -- </div>";
+					}
+					if(entity.tail.length == 0){
+						this.itemsDOM.innerHTML = "empty inventory";
+						return;
+					}
+					this.itemsDOM.innerHTML = finalString;
+					this.inventoryEach = this.itemsDOM.querySelectorAll(".bags__item");
+					if(entity.tail.length > 0){
+						this.inventoryEach[this.selectedInventoryIndex].classList.add("selected");
+					}
+				},
+				update(){
+					if(this.inventoryEach != null){
+						this.inventoryEach[this.index].classList.remove("selected");
+						this.inventoryEach[this.selectedInventoryIndex].classList.add("selected");
+					}
+				},
+				end(){
+					this.itemsDOM.innerHTML = "";
+					this.itemsDOM.style.display = "none";
+				}
+			},
+			schedule: {
+				name: "schedule",
+				here: false,
+				selectedOption: 0,
+				options: ["add job", "remove job", "go with figurines"],
+				jobTableDOM: null,
+				start(entity){
+					if(!this.here){
+						this.jobTableDOM = document.createElement("section");
+						//this.jobTableDOM.classList.add('flat');
+						const dayThings = ["late night", "dawn", "morning", "afternoon", "night"];
+						const week = ['week', 'sun', "mon", "tue", "wed", 'thu', 'fri', 'sat'];
+						const table = document.createElement('table');
+						table.classList.add('schedule');
+						
+						for(let i = 0; i < dayThings.length; i++){
+							const tr = document.createElement("tr");
+							for(let j = 0; j < week.length; j++){
+								const td = document.createElement('td');
+								if(j == 0)
+									td.innerHTML = dayThings[i];
+									
+								if(i == 0)
+									td.innerHTML = week[j];
+									
+								if(i < 0 && j < 0){
+									td.innerHTML = Schedule.matrix[week[i]];
+								}
+								tr.appendChild(td);
+							}
+							table.appendChild(tr);
+						}
+						this.jobTableDOM.appendChild(table);
+						const toolBar = document.createElement('div');
+						toolBar.classList.add('flex-row');
+						toolBar.classList.add('absolute');
+						toolBar.classList.add('bottom');
+						let option = [];
+						for(let i = 0; i < 3; i++){
+							option.push(document.createElement('div'));
+							option[i].classList.add('schedule_option');
+							option[i].innerHTML = UI.jobTable.options[i];
+							if(i == 0){
+								option[i].classList.add('selected');
+							}
+							toolBar.appendChild(option[i]);
+						}
+						UI.jobTable.optionsDOM = option;
+						this.jobTableDOM.appendChild(toolBar);
+						UI.inGameUI.appendChild(this.jobTableDOM);
+						this.hasLoadedCharacterMenuUI = true;
+					}
+				},
+				end(){
+					if(this.jobTableDOM)
+						this.jobTableDOM.remove();
+					this.jobTableDOM = null;
+					this.here = false;
+				}
+			},
+			stats: {
+				name: "stats",
+				here: false,
+				start(entity){
+					if(!this.here){
+						this.statsDOM = document.createElement('section');
+						this.statsDOM.classList.add('flat');
+						this.statsDOM.classList.add('statusWindow');
+						this.statsDOM.classList.add('flex-row');
+						this.statsDOM.classList.add('absolute');
+						const dynnyImage = document.createElement('img');
+						dynnyImage.src = "src/imgs/dynnyImage.png";
+						const status = document.createElement('div');
+						let finalStr = "<h2>"+entity.name+" status</h2><ul>"
+						const info = ["hp: ", "hunger: ", "jobs: ", "stamina: "]
+						for(let i = 0; i < info.length; i++){
+							finalStr += "<li>"+info[i] + entity[info[i]] + "</li>"
+						}
+						finalStr += "</ul>"
+						status.innerHTML = finalStr;
+						this.statsDOM.appendChild(dynnyImage);
+						this.statsDOM.appendChild(status);
+						UI.inGameUI.appendChild(this.statsDOM);
+						this.hasLoadedCharacterMenuUI = true;
+					}
+				},
+				end(){
+					if(this.statsDOM)
+						this.statsDOM.remove();
+					this.statsDOM = null;
+					this.here = false;
+					return;
+				}
+			}
 		}
 	},
-	characterMenuSubmenus: {
-		statsDOM: null,
-		itemsDOM: document.querySelector(".bags"),
-		jobTableDOM: null,
-		isVisible: false,
-		inventoryEach: null,
-		selectedInventoryIndex: 0,
-		startitems(entity){
-			this.itemsDOM.style.display = "flex"
-			this.itemsDOM.innerHTML = "";
-			let finalString = "";
-			for(let i = 0; i < entity.tail.length; i++){
-				if(entity.tail[i] != undefined)
-					finalString += "<div class = 'bags__item'>" + entity.tail[i].name + "</div>";
-				else 
-					finalString += "<div class = 'bags__item'> -- </div>";
-			}
-			if(entity.tail.length == 0){
-				this.itemsDOM.innerHTML = "empty inventory";
-				return;
-			}
-			this.itemsDOM.innerHTML = finalString;
-			this.inventoryEach = this.itemsDOM.querySelectorAll(".bags__item");
-			if(entity.tail.length > 0){
-				this.inventoryEach[this.selectedInventoryIndex].classList.add("selected");
-			}
-		},
-		updateItems(oldIndex){
-			if(this.inventoryEach != null){
-				this.inventoryEach[oldIndex].classList.remove("selected");
-				this.inventoryEach[this.selectedInventoryIndex].classList.add("selected");
-			}
-		},
-		dismissitems(){
-			this.itemsDOM.innerHTML = "";
-			this.itemsDOM.style.display = "none";
-		},
-		startschedule(entity){
-			if(!this.hasLoadedCharacterMenuUI){
-				this.jobTableDOM = document.createElement("section");
-				//this.jobTableDOM.classList.add('flat');
-				const dayThings = ["dawn", "early morning", "morning", "day", "noon", "afternoon", "evening", "night", "midnight"];
-				const week = ['week', 'sun', "mon", "tue", "wed", 'thu', 'fri', 'sat'];
-				const table = document.createElement('table');
-				table.classList.add('schedule');
-				
-				for(let i = 0; i < dayThings.length; i++){
-					const tr = document.createElement("tr");
-					for(let j = 0; j < week.length; j++){
-						const td = document.createElement('td');
-						if(j == 0)
-							td.innerHTML = dayThings[i];
-						if(i == 0)
-							td.innerHTML = week[j];
-						tr.appendChild(td);
-					}
-					table.appendChild(tr);
-				}
-				this.jobTableDOM.appendChild(table);
-				const toolBar = document.createElement('div');
-				toolBar.classList.add('flex-row');
-				toolBar.classList.add('absolute');
-				toolBar.classList.add('bottom');
-				let option = [];
-				for(let i = 0; i < 3; i++){
-					option.push(document.createElement('div'));
-					option[i].classList.add('schedule_option');
-					option[i].innerHTML = UI.jobTable.options[i];
-					if(i == 0){
-						option[i].classList.add('selected');
-					}
-					toolBar.appendChild(option[i]);
-				}
-				UI.jobTable.optionsDOM = option;
-				this.jobTableDOM.appendChild(toolBar);
-				UI.inGameUI.appendChild(this.jobTableDOM);
-				this.hasLoadedCharacterMenuUI = true;
-			}
-		},
-		"starttalk to": function(entity){
-			return;
-		},
-		"dismisstalk to": function(entity){
-			return;
-		},
-		hasLoadedCharacterMenuUI: false,
-		"startstats": function (entity){
-			if(!this.hasLoadedCharacterMenuUI){
-				this.statsDOM = document.createElement('section');
-				this.statsDOM.classList.add('flat');
-				this.statsDOM.classList.add('statusWindow');
-				this.statsDOM.classList.add('flex-row');
-				this.statsDOM.classList.add('absolute');
-				const dynnyImage = document.createElement('img');
-				dynnyImage.src = "src/imgs/dynnyImage.png";
-				const status = document.createElement('div');
-				let finalStr = "<h2>"+entity.name+" status</h2><ul>"
-				const info = ["hp: ", "hunger: ", "jobs: ", "stamina: "]
-				for(let i = 0; i < info.length; i++){
-					finalStr += "<li>"+info[i] + entity[info[i]] + "</li>"
-				}
-				finalStr += "</ul>"
-				status.innerHTML = finalStr;
-				this.statsDOM.appendChild(dynnyImage);
-				this.statsDOM.appendChild(status);
-				UI.inGameUI.appendChild(this.statsDOM);
-				this.hasLoadedCharacterMenuUI = true;
-			}
-		},
-		"dismissstats": function(entity){
-			if(this.statsDOM)
-				this.statsDOM.remove();
-			this.statsDOM = null;
-			this.hasLoadedCharacterMenuUI = false;
-			return;
-		},
-		dismissschedule(entity){
-			if(this.jobTableDOM)
-				this.jobTableDOM.remove();
-			this.jobTableDOM = null;
-			this.hasLoadedCharacterMenuUI = false;
-		}
-	},
-	pauseDOM: document.querySelector(".pause"),
-	jobTable:
-	{
-		layer: 0, //define if you're controlling the toolbar, or the schedule table
-		selectedOption: 0,
-		options: ["add job", "remove job", "go with figurines"],
-		selectedJobIndex: 0,
+	jobTableJobList: {
+		listIndex: 0,
+		name: "scheduleList",
 		optionsDOM: null,
 		jobListDOM: null,
 		isListHere: false,
-		openAvailableJobsList(){
+		start(){
 			if(!this.isListHere){
 				const jobDOM = document.createElement('section');
 				jobDOM.classList.add('flex-column');
@@ -255,6 +297,7 @@ const UI = {
 				for(let i = 0; i < Schedule.availableJobs.length; i++){
 					const newElement = document.createElement('section');
 					newElement.classList.add('job');
+					newElement.innerHTML = Schedule.availableJobs[i].name;
 					listDOM.push(newElement);
 					jobDOM.appendChild(listDOM[i]);
 				}
@@ -265,34 +308,22 @@ const UI = {
 				UI.inGameUI.appendChild(this.jobListDOM);
 				this.isListHere = true;
 			}
-			
 		},
-		closeAvailableJobsList(){
+		end(){
 			if(this.isListHere){
 				this.jobListDOM.remove();
 				this.jobListDOM = null;
 				this.isListHere = false;
 			}
-		},
-		optionsFunctions: {
-			0: function(){
-				UI.jobTable.openAvailableJobsList();
-			},
-			1: function(){
-				
-			}
-		},
-		removalDOM: {
-			0: function(){
-				UI.jobTable.closeAvailableJobsList();
-			},
-			1: function(){
-				
-			}
 		}
-		//layer = 0 -> the cursor is in the bottom menu 
-		//layer = 1 -> the cursor controling the schedule
 	},
+	jobTableAdd: {
+		
+	},
+	jobTableDelete: {
+		
+	},
+	
 	dialogDOM: document.querySelector("#dialogs"),
 	dialogItems: {
 		stackPair: 0,
@@ -341,10 +372,6 @@ const UI = {
 			UI.dialogDOM.style.height = heightSplice;
 		}
 	},
-	waiterHud: 0,
-	charWindowDOM: document.querySelector(".charWin"),
-	milionaire: 0,
-	wallCleanerHud: 0,
 	title: {
 		DOM: document.createElement('div'),
 		selectedOption: 0,
@@ -464,10 +491,6 @@ const UI = {
 			}
 		}
 	},
-	loadCookiesStart(str){
-		let save = this.loadCookies.DOM.createElement("div");
-		save.innerHTML = str;
-	},
 	dialogStart(){
 		this.dialogDOM.style.display = "block"
 		setTimeout(()=>{this.dialogDOM.style.transform = "scale(1)"}, 304)
@@ -484,7 +507,7 @@ const UI = {
 	warningScreen: {
 		isHere: false,
 		message: "<h1>WARNING!</h1>",
-		text: "<p>This game is still unfinished! Reach the landing page for more information</p>",
+		text: "<p>this game is still unfinished reach for landing page for more information</p>",
 		command: "<h2 class = 'blink-anim'>press any BUTTON to continue</h2>",
 		element: null,
 		start(){
@@ -503,5 +526,4 @@ const UI = {
 			this.isHere = false;
 		}
 	}
-
 }

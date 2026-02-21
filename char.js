@@ -63,15 +63,7 @@ class Being{
 	
 	walk(axis){
 		this.isWalking[axis] = true;
-		if(this.velocity[axis] >= this.VMAX){
-			this.velocity[axis] = Math.floor(this.VMAX *deltaTime * this.pol);
-		}
-		else if(this.velocity[axis] <= (this.VMAX *-1)){
-			this.velocity[axis] = Math.floor(this.VMAX *deltaTime * this.pol);
-		}
-		else{
-			this.velocity[axis] += Math.floor(this.ACL * deltaTime* this.pol);
-		}
+		this.velocity[axis] = Number.parseInt(this.VMAX * this.pol);
 	}
 	run(axis){
 		this.isWalking[axis] = true;
@@ -106,6 +98,11 @@ class Being{
 		this.boxCol.y = this.OriginPos.y + this.boxCol.h;
 		this.boxCol.z = this.OriginPos.z - this.boxCol.p*0.5;
 	}
+	
+	setDoing(doing){
+		this.doing = doing;
+	}
+	
 	setTop(z){
 		this.boxCol.z = z
 	}
@@ -180,9 +177,9 @@ class Protagonist extends Being{
 			this.frameX*this.sprite.w,
 			this.frameY*this.sprite.h,
 			this.sprite.w, this.sprite.h,
-			this.centralPoint[0]-this.boxCol.h*0.5,
-			this.centralPoint[1]-this.boxCol.h+this.boxCol.p,
-			this.boxCol.h, this.boxCol.h
+			this.centralPoint[0]-this.boxCol.h*1.5*0.5,
+			this.centralPoint[1]-this.boxCol.h*1.5+this.boxCol.p*1.5,
+			this.boxCol.h*1.5, this.boxCol.h*1.5
 		);
 		/*
 		Game.ctx.fillRect(
@@ -286,18 +283,20 @@ const skillSet = {
 			entity.hand.isCollected = false;
 			entity.hand.boxCol.x = box[0]+TILE_SIZE*0.5-entity.hand.boxCol.w*0.5;
 			entity.hand.boxCol.z = box[1]+TILE_SIZE*0.5-entity.hand.boxCol.p*0.5;
-			entity.hand.boxCol.y = Game.currentMap.bounds[WorldToGrid(box[1], TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)].y
-			Game.currentMap.items.push(entity.hand);
+			entity.hand.boxCol.y = Game.currentMap.bounds[WorldToGrid(box[1], TILE_SIZE)][WorldToGrid(box[0], TILE_SIZE)].y +entity.hand.boxCol.h
+			
 			entity.hand = 0;
 		}
 	},
 	dashDive: function(entity){
+		entity.currentSkill = "diving";
 		if(!entity.onGround){
 			directions.frontDash[entity.dir](entity, 20);
 		}
 	},
 	eatAnything: function(entity){
-		//entity.belly.push(entity.hand); //vore flerting 
+		entity.currentSkill = "eating"
+		//entity.belly.push(entity.hand);
 		entity.hunger = limitateDown(entity.hunger-25, 0);
 		entity.holdingObject = false;
 		entity.hand = 0;

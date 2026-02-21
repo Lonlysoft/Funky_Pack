@@ -2,8 +2,8 @@
 let timerplay = 0;
 let timeGame = 0;
 let GameMoment = 0;
-let GameMomentSav = 'warningScreen';
-//let GameMomentSav = "mainWorld";
+//let GameMomentSav = 'warningScreen';
+let GameMomentSav = "mainWorld";
 let frame = 0
 let frameaux = 0
 let fps = 30, timeFrequency = 1000/fps;
@@ -16,6 +16,7 @@ const Game = {
 	audio: Music,
 	currentMap: null,
 	levelName: "testRoom",
+	//Story: new Story(),
 	LocationsProps: [],
 	CurrentCharacter: null,
 	ItemArr: [],
@@ -60,16 +61,7 @@ const Game = {
 			GameMoment = GameMomentSav;
 		},
 		characterMenu: function(){
-			//Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
-			switch(UI.characterMenu.layer){
-				case 0: Ctrl.action(Game.CurrentCharacter, "characterMenu");
-				UI.characterMenuSubmenus["dismiss" + UI.characterMenu.optionList[UI.characterMenu.selected] + ""](Game.CurrentCharacter);
-					break;
-				case 1:
-					Ctrl.action(Game.CurrentCharacter, UI.characterMenu.optionList[UI.characterMenu.selected]);
-					UI.characterMenuSubmenus["start" + UI.characterMenu.optionList[UI.characterMenu.selected] + ""](Game.CurrentCharacter);
-				break;
-			}
+			Ctrl.action(Game.CurrentCharacter, UI.charMenuManager.currentName);
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Ctrl.stateSave();
 			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
@@ -115,9 +107,9 @@ const Game = {
 					//Game.audio.play("ident", false);
 				}
 			}
+			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			ctx.fillStyle = "#000000"
 			ctx.fillRect(0,0,Game.canvas.width, Game.canvas.height)
-			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			ctx.drawImage(lonlysoft, 0, 0, canvas.width, canvas.height)
 			if(timeCounter >= 5000){
 				Game.requestTransition = true;
@@ -141,7 +133,7 @@ const Game = {
 					if(Game.audio.currentMusic !== "title"){
 						Game.audio.play('title');
 					}
-					//Ctrl.canvas.classList.add('notHere');
+					
 					BG.canvas.classList.add('notHere');
 					
 				}
@@ -150,7 +142,7 @@ const Game = {
 			Game.ctx.fillStyle = "#000"
 			Game.ctx.fillRect(0,0,Game.canvas.width, Game.canvas.height);
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
-			Ctrl.action(null, "start");
+			Ctrl.action(null, "startMenu");
 			Ctrl.stateSave();
 			if(Game.requestTransition && Game.appearScreen){
 				BG.canvas.classList.remove('notHere');
@@ -161,7 +153,6 @@ const Game = {
 					GameMoment = Game.buffer;
 					Game.appearScreen = false;
 					UI.title.end();
-					//Ctrl.canvas.classList.remove('notHere');
 				}
 			}
 		},
@@ -248,6 +239,13 @@ const Game = {
 			UI.characterHUD.end();
 			Waiter.gamePlay(Game.CurrentCharacter);
 		},
+		boxPusher(){
+			if(Game.CurrentCharacter == null){
+				Game.CurrentCharacter = new Protagonist(Characters.Dynny);
+			}
+			UI.characterHUD.end();
+			BoxPusher.gamePlay(Game.CurrentCharacter);
+		},
 		dialog: function(){
 			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
 			Ctrl.action(Game.dialogBox, "dialogs");
@@ -325,8 +323,8 @@ const SideBar = {
 	sfxVolume: document.querySelector("#sfx-volume"),
 	bringSideBar: document.getElementById("bring-sidebar"),
 	blankSpace: document.querySelector(".sidebar-blank-space"),
-	musicMeter: document.querySelector(".music-slider .meter"),
-	sfxMeter: document.querySelector(".sfx-slider .meter")
+	musicSlider: document.querySelector(".music-slider"),
+	sfxSlider: document.querySelector(".sfx-slider")
 }
 
 function GameBonanza(){
@@ -393,6 +391,31 @@ function GameBonanza(){
 			SideBar.DOM.style.opacity = "0%";
 			SideBar.isHere = false;
 			setTimeout(()=>{ SideBar.fullDOM.classList.add("notHere") },10);
+		}
+	);
+	
+	let num = Number(SideBar.musicSlider.value)
+	Game.audio.setMusicVolume(num/100);
+	let perc = (num - SideBar.musicSlider.min)/(SideBar.musicSlider.max - SideBar.musicSlider.min) * 100;
+	SideBar.musicSlider.style.background = "linear-gradient(to right, var(--bg-color) " + perc + "%, var(--font-color)" + perc + "%)";
+	num = Number(SideBar.sfxSlider.value)
+	perc = (num - SideBar.sfxSlider.min)/(SideBar.sfxSlider.max - SideBar.sfxSlider.min) * 100;
+	SideBar.sfxSlider.style.background = "linear-gradient(to right, var(--bg-color) " + perc + "%, var(--font-color)" + perc + "%)";
+	
+	SideBar.musicSlider.addEventListener("input", 
+		event => {
+			const val = event.target.value
+			Game.audio.setMusicVolume(val/100);
+			const percent = (val - SideBar.musicSlider.min)/(SideBar.musicSlider.max - SideBar.musicSlider.min) * 100;
+			SideBar.musicSlider.style.background = "linear-gradient(to right, var(--bg-color) " + percent + "%, var(--font-color)" + percent + "%)";
+		}
+	);
+	SideBar.sfxSlider.addEventListener("input", 
+		event => {
+			const val = event.target.value
+			Game.audio.setSfxVolume(val/100);
+			const percent = (val - SideBar.sfxSlider.min)/(SideBar.sfxSlider.max - SideBar.sfxSlider.min) * 100;
+			SideBar.sfxSlider.style.background = "linear-gradient(to right, var(--bg-color) " + percent + "%, var(--font-color)" + percent + "%)";
 		}
 	);
 	

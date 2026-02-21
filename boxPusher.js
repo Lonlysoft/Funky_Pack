@@ -1,15 +1,6 @@
-
-class BoxPusherBox{
-	constructor(x, y, w, h, p, dir) {
-		this.x = x;
-		this.y = y;
-		this.p = p;
-		this.w = w;
-		this.h = h;
-		this.dir = dir;
-	}
-}
-
+const BoxPusherBox = {
+	
+};
 const BoxPusher = {
 	boxArr: [],
 	currentMap: null,
@@ -39,11 +30,16 @@ const BoxPusher = {
 			}
 		}
 	},
+	gamePlay(){
+		this.start();
+		Col.main();
+		Scenery.draw();
+	},
 	start(){
 		if(!Scenery.hasDeclaired || !this.hasDeclaired){
 			Scenery.declair(BoxPusher, BoxPusher.levelName, MAPS);
-			Game.CurrentCharacter = Characters[0];
 			Scenery.hasDeclair = true;
+			this.player = 
 			this.hasDeclaired = true;
 		} else {
 			if(!this.hasBoxesPushed){
