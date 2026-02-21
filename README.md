@@ -5,6 +5,19 @@ It's a personal project made for:
 - Testing my English skills by writing documentation and dialogs
 - ...and lastly, to put this thing on my portfolio, it might be good, I don't know...
 
+# Technologies and languages Used
+
+![HTML](https://img.shields.io/badge/HTML-B60?style=for-the-badge)
+![CSS](https://img.shields.io/badge/CSS-9900CC?style=for-the-badge)
+![JS](https://img.shields.io/badge/JS-FFFF00?style=for-the-badge)
+
+# Libraries Used
+
+- Cripto JS
+- FileSaver
+
+Both are used to make the game save system
+
 # Playtest
 
 <a href = "https://lonlysoft.github.io/Funky_Pack"> Test my game here!</a> <br><br> Please bear in mind that it's not finished yet, it's still in its early stages, but you can test the controls performance on mobile or PC. It's pretty important because I don't have a keyboard, so I can't test it. And also, a gamepad option is available for testing.
@@ -83,6 +96,7 @@ A close thought in here is: disabling the NPC grid in the map and writing a syst
 
 - The animation system structure has been rewritten;
 - Dynny's spritesheet was updated again, but unfortunately, it still has incomplete animations;
+- Dynny's sprite sizing within the game is now realigned to 1.5 TILE_SIZE. It results in him being bigger in screen, but that's not a problem tho...
 - New systems were added on the Waiter mini-game, for now still inaccessible, but for the better I guess...
 - New music system added, but currently just in the title screen. Soundtrack and sound effects are still in production;
 
