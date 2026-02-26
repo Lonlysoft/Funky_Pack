@@ -17,6 +17,7 @@ It's a personal project made for:
 - FileSaver
 
 Both are used to make the game save system
+<!--those will be enabled when the saving system is complete-->
 
 # Playtest
 
