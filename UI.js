@@ -61,6 +61,8 @@ const UI = {
 			this.clockDOM[0].innerHTML = `${clock.monthList[clock.month]}, ${clock.day}`;
 			this.clockDOM[1].innerHTML = `${(clockHourFormat.hour >= 10) ? clockHourFormat.hour : "0" + (clockHourFormat.hour +"")}:${(clockHourFormat.minute >= 10) ? clockHourFormat.minute : "0" + (clockHourFormat.minute +" ")}`;
 			this.weatherDOM.src = "src/imgs/WeatherIcon__" + clock.currentWeather + clock.getBinaryLateness().charAt(0).toUpperCase() + clock.getBinaryLateness().slice(1) + ".png";
+			if(clock.currentWeather == "rain")
+				this.weatherDOM.src = "src/imgs/WeatherIcon__raining.png";
 			this.moneyDOM.innerHTML = "US$" + entity.money.unit + "." + ((entity.money.cents>= 10)? entity.money.cents : "0" + (entity.money.cents + ""));
 		},
 		end(){

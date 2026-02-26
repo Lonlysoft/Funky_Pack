@@ -290,7 +290,7 @@
 	color: var(--bg-color);
 	font-size: 2em;
 }
-.money, .GameDate, .GameHour{
+.money, .gameDate, .gameHour{
 	font-weight: 1000;
 	color: var(--bg-color);
 	font-size: 65%;

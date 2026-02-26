@@ -26,5 +26,7 @@ const Scenery = {
 			if(i < layers.length-1)
 				currentMap.objectGridDraw(i);
 		}
+		BG.weather[Clock.currentWeather](10, 120);
+		BG.dayAndNightFilter(Clock.hour);
 	}
 }

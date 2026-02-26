@@ -292,6 +292,47 @@ const directions = {
 			entity.pol = -MAGIC_NORMALIZER;
 			entity[entity.movementFlag]("z");
 		}
+	},
+	setParticleVector: {
+		S: function(particle, axis){
+			const currDir = {
+				x: 0,
+				y: 0,
+				z: 10
+			}
+			return currDir[axis];
+		},
+		E: function(particle, axis){
+			const currDir = {
+				x: 10,
+				y: 0,
+				z: 0
+			}
+			return currDir[axis];
+		},
+		N: function(particle, axis){
+			const currDir = {
+				x: 0,
+				y: 0,
+				z: 10
+			}
+			return currDir[axis];
+		},
+		W: function(particle, axis){
+			
+		},
+		SE: function(particle, axis){
+			
+		},
+		NE: function(particle, axis){
+			
+		},
+		SW: function(particle, axis){
+			
+		},
+		NW: function(particle, axis){
+			
+		}
 	}
 }
 
@@ -357,6 +398,37 @@ function drawShadow(context, entity, map, oppacity){
 	context.stroke();
 	context.closePath();
 	context.globalAlpha = 1;
+}
+
+const MOVEMENT_PARTICLES = 5
+function setMovementParticles(entity){
+	entity.particles = []
+	for(let i = 0; i < MOVEMENT_PARTICLES; i++){
+		entity.particles.push(
+			{
+				x: entity.WorldPos.x,
+				y: entity.WorldPos.y,
+				z: entity.WorldPos.z,
+				length: 20,
+				velocity: {
+					x: 10,
+					y: 10,
+					z: 10,
+				}
+			}
+		);
+	}
+}
+
+function drawMovementParticles(context, entity){
+	for(let i = 0; i < MOVEMENT_PARTICLES; i++){
+		entity.particles.x += directions.setParticleVector[entity.dir](particle, "x");
+		entity.particles.y += directions.setParticleVector[entity.dir](particle, "y");
+		entity.particles.z += directions.setParticleVector[entity.dir](particle, "z");
+	}
+	let particlesCentralPoint = [
+		
+	]
 }
 
 class Money{

@@ -1,3 +1,5 @@
+const MAX_DROPLET_RAIN = 500;
+
 const BG = {
 	canvas: BG__canvas,
 	ctx: BG__ctx,
@@ -29,6 +31,55 @@ const BG = {
 			22: "#160D30df",
 			23: "#0D0A26df",
 		}
+	},
+	weather: {
+		dropletArray: [],
+		windVelocity: 0,
+		rainStrength: 12,
+		initParticles: function(amount = MAX_DROPLET_RAIN){
+			//be careful here. this game already consumes lots of ram, we don't want to leak memory.
+			this.dropletArray = [];
+			for(let i = 0; i < amount; i++){
+				this.dropletArray.push(this.createDrop(random(0, Game.canvas.height)));
+			}
+		},
+		createDrop(y){
+			return {
+				x: random(0, Game.canvas.width),
+				y: y,
+				velocity: {x: this.windVelocity + (Math.random() * 1 - 0.5) , y: this.rainStrength + Math.random() * 5},
+				length: 10 + random(0, 10)
+			};
+		},
+		clear: function(){
+			return;
+		},
+		rain: function(windSpeed, strength, intensity = MAX_DROPLET_RAIN){
+			intensity = limitateUp(intensity, MAX_DROPLET_RAIN);
+			
+			Game.ctx.strokeStyle = 'rgba(174, 194, 224, 0.6)';
+			Game.ctx.lineWidth = 1;
+			//Game.ctx.beginPath();
+			for(let i = 0; i < intensity; i++){
+				let drop = this.dropletArray[i];
+				//Game.ctx.moveTo(drop.x, drop.y);
+				//Game.ctx.lineTo(drop.x + drop.velocity.x, drop.y + length);
+				Game.ctx.fillRect(drop.x, drop.y, 1, 10);
+				drop.velocity.x = windSpeed + (Math.random() * 1 - 0.5);
+				drop.velocity.y = strength + random(0, 5);
+				drop.x += drop.velocity.x;
+				drop.y += drop.velocity.y;
+				if(drop.x > Game.canvas.width || drop.y > Game.canvas. height || drop.x < 0){
+					const newDrop = this.createDrop(random(0, Game.canvas.height));
+					this.dropletArray[i] = newDrop;
+					drop = newDrop;
+				}
+			}
+			//Game.ctx.stroke();
+		},
+		snow: function(windSpeed, strength, intensity = MAX_DROPLET_RAIN){
+			
+		},
 	},
 	transition: function(al, type, frameSpeed){
 		switch(type){
@@ -68,7 +119,7 @@ const BG = {
 		Game.ctx.globalAlpha = 0.25;
 		Game.ctx.fillStyle = "#000";
 		for(let i = 0; i < BG.canvas.height; i+=4){
-			Game.ctx.fillRect(0, i, canvas.width, 2);
+			Game.ctx.fillRect(0, i, canvas.width, 1);
 		}
 		Game.ctx.globalAlpha = 1;
 	},

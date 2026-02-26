@@ -3,7 +3,12 @@ const Clock = {
 	year: 1, day: 28, month: 1,
 	monthList: ["yearMonth", "spring", "summer", "autumn", "winter"],
 	secondSav: 0,
-	currentWeather: "clear",
+	currentWeather: "rain",
+	weatherInfo: {
+		wind: 0,
+		intensity: 256,
+		strength: 12,
+	},
 	weatherList: ["clear", "rain", "storm", "snow", "snowstorm", "fog", "special_weather_statement_statement"],
 	upcomingWeather: "rain",
 	passTime: function(){

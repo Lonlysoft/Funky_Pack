@@ -195,6 +195,7 @@ const Game = {
 			if(!Game.CurrentCharacter.isSpawn && Scenery.hasDeclaired){
 				Game.CurrentCharacter.isSpawn = Game.CurrentCharacter.spawn(Game.currentMap);
 				Game.CurrentCharacter.update();
+				BG.weather.initParticles();
 			}
 			if(Game.ischaracterMenud){
 				GameMomentSav = GameMoment;
@@ -219,7 +220,6 @@ const Game = {
 				Clock.passTime();
 				timeCounter = 0;
 			}
-			BG.dayAndNightFilter(Clock.hour);
 			debug();
 		},
 		cooking(){
