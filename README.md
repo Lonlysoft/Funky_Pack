@@ -1,9 +1,8 @@
-# FUNKY PACK #
-It's a personal project made for:
-- Enhancing my skills with frontend and gaming development
-- Giving to my characters of the Funky Pack series an interactive environment
+# Funky Pack #
+It's a browser game, a personal project made to:
+- Enhancing my skills with frontend and game development
+- Give my characters of the Funky Pack series an interactive environment with a canonical story and such
 - Testing my English skills by writing documentation and dialogs
-- ...and lastly, to put this thing on my portfolio, it might be good, I don't know...
 
 # Technologies and languages Used
 
@@ -41,7 +40,7 @@ The player needs to watch for those 5.
 
 Life: It's commonly referred to as HP. Dynny has 200 HP. If he reaches 0 HP, it's game over. You'll need to go to a hospital and your debt will increase.<br>
 Hunger: Dynny gotta eat. If he doesn't, he might faint and eat the holding object to satisfy his hunger. <br>
-Joy: How Dynny feels. Joy is given by spending time with Nukko, playing games or doing relaxing activities. <br>
+Joy: How Dynny feels. Joy is given by spending time with Nukko, playing games or doing leisure activities. <br>
 Solitude: a special bar that decreases by the years you're away from Nukko. Dynny doesn't understand that, but Nukko is important to him. And not having him around for too long might get his life empty. If this bar goes to 0, objects like trees and stores might disappear. And Dynny might presence allucinations and weird effercts might appear randomly.
 
 Jobs
@@ -50,7 +49,7 @@ Dynny needs to work to pay his debt. The work is done via mini games. At the end
 
 The planned mini-games are in the list below:
 - Box pusher: morning till afternoon;<br>
-A puzzle grid type mini-game where the player needs to push a box into a bigger box and ship it into the right spots.
+A puzzle grid type mini-game where the player needs to push targeted boxes to a container on a certain order.
 
 - Office guy: morning, afternoon or night;
 A dungeon crawler mini-game where Dynny is in a office and you need to defeat coffee machines and distractions in order to build a report of whatever his boss wants.
@@ -58,23 +57,23 @@ A dungeon crawler mini-game where Dynny is in a office and you need to defeat co
 - I.T. tester
 Time to be recursive, it's a 5 level mini-game where you need to test a bunch of games of different genres in a test room and to look for errors in the game.
 
-- Cake baker: morning till afternoon
+- Cake baker: morning till afternoon a puzzle game for building cakes
 
 - Who wants to be a milionaire?
 A quiz about the game with the most specific questions. If you give the correct answers to all the questions, you'll win $1M. But be careful, if one answer is wrong, you lose it all.
 
 - Soldier: all time; Inspired from topdown shooters, you'll be sent to a war on a unknown country and you'll battle against some foes that aren't actually evil, but it's your duty to eliminate them. Winning or losing makes you get a different game ending. 
-*in this mode Dynny won't be able to go back to the American City or add other jobs on the schedule.
+*in this mode Dynny won't be able to go back to American City or add other jobs on the schedule.
+
+- strategy master: all time; inspired by war strategy games, Dynny is responsible to command a whole army to attack a given country. (good and bad ending expected here)
 
 Average game moment covers, but the triggers are different
-- Informant: when requested, paid by work with a minimum of $500
-
 - Pizza delivery guy
 
 Our wealthy badger - he's important for story
 - Limousine driver: when requested; mostly night or morning
 
-Drive the limousine of the wealthy badger into different requested places.
+Drive the limousine of the wealthy badger into different requested places. the limousine is long so it works like a snake game, pick up the best road to win bonuses and please don't crash!
 
 - Personal assistant
 
@@ -86,7 +85,7 @@ My main focus is currently on:
 
 The mini games:
 These are a huge part of the game. They actually are the reason why this game is called Funky Pack.
-I'm starting by the Wall Cleaner mini-game. It's pretty easy because it uses the same engine of the main world.
+I'm starting by the fast food waiter mini-game. It's pretty easy because it uses the same engine of the main world.
 
 NPC behavior system:
 They have lots of behaviors, but most of them are spawning, moving, waiting and arriving at certain locations.
@@ -99,5 +98,7 @@ A close thought in here is: disabling the NPC grid in the map and writing a syst
 - Dynny's spritesheet was updated again, but unfortunately, it still has incomplete animations;
 - Dynny's sprite sizing within the game is now realigned to 1.5 TILE_SIZE. It results in him being bigger in screen, but that's not a problem tho...
 - New systems were added on the Waiter mini-game, for now still inaccessible, but for the better I guess...
+- Rain weather added, utilizes a particle system. still a filter, but completely procedural;
 - New music system added, but currently just in the title screen. Soundtrack and sound effects are still in production;
+
 
