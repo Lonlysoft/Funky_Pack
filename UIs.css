@@ -246,7 +246,8 @@
 	content: "";
 	width: 0.5em;
 	height: 0.5em;
-	background: url("data:image/svg+xml;utf-8,<svg viewbox='0 0 100 100' fill=var(--font-color)><path d = 'M0 0 h 100 l -50 100z'/></svg>"); /*TODO: add Dynny/Protagonist cursor here*/
+	background: url("data:image/svg+xml;utf-8,<svg viewbox='0 0 100 100' fill=var(--font-color)><path d = 'M0 0 h 100 l -50 100z'/></svg>");
+	/*TODO: add Dynny/Protagonist cursor here*/
 	background-size: 100px 100px;
 	position: absolute;
 	top: 0.25em;

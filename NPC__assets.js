@@ -35,7 +35,8 @@ var NPCS = [
 ];
 
 const IMPORTANTS = {
-	1: {
+	1: Characters.Nukko,
+	2: {
 		name: "JSON FOLF",
 		ID: 1,
 		age: 18,
@@ -53,7 +54,7 @@ const IMPORTANTS = {
 			],
 			sundays: []
 		},
-		HTMLsrc: "#ultraNPC",
+		htmlSrc: "#ultraNPC",
 		animations: {
 			still: ["infinite", 0],
 			walk: ["infinite", 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0]

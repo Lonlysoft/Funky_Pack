@@ -6,32 +6,55 @@
 	<meta name = "viewport" content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<title> Funky Pack - Browser Game starring Dynny! </title>
 	<link rel = "icon" type = "image/x-icon" href = "src/favicon/favicon.png">
-	<link rel = "stylesheet" href = "index.css">
+	<link rel = "manifest" href = "src/manifest.json">
+	<link rel = "stylesheet" href = "src/landing-page/index.css">
 	<!--<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	-->
 		
 </head>
 <body>
-	<h1>Funky Pack</h1>
-	<header>
-		<nav>
+	
+	<header class = "fixed">
+		<nav class = "navigation">
 			<button>home</button>
 			<button>how to play</button>
 			<button>settings</button>
 		</nav>
 	</header>
 	<section class = "intro">
+		<h1>Funky Pack</h1>
+		<h2>Dynny is in debt!</h2>
+		<p>Dynny ClownClaws is a very strange guy</p>
+		<h2></h2>
 		<a href = "FunkyPack.html">
-			<button>Play!</button>
+			<button class = "play-button">Play!</button>
 		</a>
 	</section>
-	<section class = "config">
-		<div>
-			
+	<section class = "config ">
+		<div class = "page">
+			<div class = "flex-row">
+				<h2>framerate</h2>
+				<p>change the framerate of the game options are in a fixed range from 30 to 120</p>
+				<input class = "fps-slider" type = "range" min = 1 value = 1 max = 3>
+			</div>
+			<div class = "flex-row">
+				<h2>SideBar</h2>
+				<p>Turn off sidebar from appearing in the game screen (sidebar will still be summonable if the Ctrl key is pressed)</p>
+				<button class = "toggler">
+					<div></div>
+				</button>
+			</div>
+			<div class = "flex-row">
+				<h2>music loading type</h2>
+				<p>default: synchronous, game takes more time to load, but musics play with no delay.</p>
+				<button class = "toggler">
+					<div></div>
+				</button>
+			</div>
 		</div>
 	</section>
-	<section class = "controls">
+	<section class = "controls hidden">
 		<h2>Controls</h2>
 		<table>
 			<tr>

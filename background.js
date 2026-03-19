@@ -57,25 +57,27 @@ const BG = {
 		rain: function(windSpeed, strength, intensity = MAX_DROPLET_RAIN){
 			intensity = limitateUp(intensity, MAX_DROPLET_RAIN);
 			
-			Game.ctx.strokeStyle = 'rgba(174, 194, 224, 0.6)';
+			Game.ctx.strokeStyle = 'rgba(174, 194, 224, 1.0)';
 			Game.ctx.lineWidth = 1;
-			//Game.ctx.beginPath();
+			Game.ctx.beginPath();
 			for(let i = 0; i < intensity; i++){
+				
 				let drop = this.dropletArray[i];
-				//Game.ctx.moveTo(drop.x, drop.y);
-				//Game.ctx.lineTo(drop.x + drop.velocity.x, drop.y + length);
-				Game.ctx.fillRect(drop.x, drop.y, 1, 10);
 				drop.velocity.x = windSpeed + (Math.random() * 1 - 0.5);
 				drop.velocity.y = strength + random(0, 5);
 				drop.x += drop.velocity.x;
 				drop.y += drop.velocity.y;
+				Game.ctx.moveTo(drop.x, drop.y);
+				Game.ctx.lineTo(drop.x + drop.velocity.x, drop.y + drop.velocity.y+length);
+				//Game.ctx.fillRect(drop.x, drop.y, 1, 10);
+				
 				if(drop.x > Game.canvas.width || drop.y > Game.canvas. height || drop.x < 0){
-					const newDrop = this.createDrop(random(0, Game.canvas.height));
+					const newDrop = this.createDrop(random(-200, Game.canvas.height));
 					this.dropletArray[i] = newDrop;
 					drop = newDrop;
 				}
 			}
-			//Game.ctx.stroke();
+			Game.ctx.stroke();
 		},
 		snow: function(windSpeed, strength, intensity = MAX_DROPLET_RAIN){
 			
@@ -125,13 +127,9 @@ const BG = {
 	},
 	dayAndNightFilter(hoursRightNow){
 		Game.ctx.save();
-		
 		Game.ctx.globalCompositeOperation = "multiply";
-		
 		Game.ctx.fillStyle = this.dayAndNight.colors[hoursRightNow];
 		Game.ctx.fillRect(0, 0, Game.canvas.width, Game.canvas.height);
-		
-		
 		Game.ctx.restore();
 	}
 }

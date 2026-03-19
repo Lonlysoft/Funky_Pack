@@ -1,4 +1,5 @@
 function debug(){
+	ctx.save();
 	ctx.fillStyle = "#fff";
 	ctx.font = "20px sans-serif"
 	
@@ -24,6 +25,7 @@ function debug(){
 	}
 	*/
 	ctx.fillText(Clock.currentWeather, 200, 162);
+	ctx.restore();
 	
 }
 

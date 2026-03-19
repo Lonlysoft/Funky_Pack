@@ -67,7 +67,7 @@ class Level{
 		this.grass = [];
 	}
 	
-	initialize(){
+	initialize(itemAssets, entityAssets){
 		this.setBoundaries();
 		this.setNPCs(NPCS);
 		this.setWater();

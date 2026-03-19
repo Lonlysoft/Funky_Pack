@@ -35,8 +35,6 @@ class Being{
 		this.boxCol = new Box(undefined, undefined, undefined, width/2, height, dept*0.5);
 		this.velocity = {x: 0, y: 0, z: 0};
 		this.friction = 0.6;
-		
-		
 		this.dir = "S";
 		this.doing = "still";
 		this.oldDoing = "still";
@@ -142,6 +140,7 @@ class Protagonist extends Being{
 		this.section = 0;
 		this.ID = 0;
 		this.holdingObject = false;
+		setMovementParticles(this);
 	}
 	update(){
 		this.centralPoint[0] = WorldToScreen1D(this.WorldPos.x, Camera.x
@@ -170,6 +169,7 @@ class Protagonist extends Being{
 	}
 	draw(currentMap = Game.currentMap){
 		//drawShadow(ctx, this, currentMap, 0.5);
+		drawMovementParticles(Game.ctx, this);
 		this.frameY = directions.setFrameY[this.dir](this);
 		this.frameX = displayAnim(this);
 		

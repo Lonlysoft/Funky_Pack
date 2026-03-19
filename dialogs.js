@@ -10,7 +10,7 @@ function chooseDialog(npc, currentCondition){
 			if(localCondition.time != undefined && currentCondition.time != localCondition.time){
 				isAttending = true;
 			}
-			if(localCondition.relationship != undefined && currentCondition.relationship > localCondition.relationship){
+			if(localCondition.relationship && currentCondition.relationship > localCondition.relationship){
 				isAttending = true;
 			}
 			if (isAttending) {
@@ -143,10 +143,13 @@ const Dialogs = {
 			options: [
 				{text: "rest", next: "rest"},
 				{text: "I want to play some games", next: "playGames"},
-				{text: "wanna go outside?", next: "answerOutside"}
+				{text: "wanna go outside?", next: "answerOutsideRaining"}
 			]
 		},
-		
+		answerOutsideRaining: {
+			name: "Nukko",
+			text: "Oh well, if you really need to go... let's go then."
+		},
 	},
 	Emily: {
 		greetings: {

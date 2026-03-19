@@ -1,12 +1,3 @@
-class Table {
-	constructor(x, y){
-		this.x = x; this.y = y;
-		this.isRequested = false;
-		this.request = 0;
-		this.food = null;
-	}
-}
-
 const Waiter = {
 	info: {
 		salary: 357500,
@@ -35,16 +26,63 @@ const Waiter = {
 	},
 	salary: 357500,
 	timerConfig: {max: 200, extra: 100, acrescim: 65},
-	timer: 200,
-	tablesCoords: [],
+	timer: 400,
 	currentMap: null,
 	levelNumber: "lv1",
 	orders: [],
-	FOODS: ["small meal", "large meal", "water", "large water", "fish meal", "barbecue", "salt"],
-	balcons: [],
+	ITEM_ASSETS: {
+		1: {
+			name: "hamburger Balcon",
+			timer: 0,
+			timerMax: 8,
+			value: function(entity){
+				if(this.holds.length > 0){
+					entity.hand = this.holds.pop();
+				}
+				if(entity.hand.name == "patatoSack"){
+					this.holds = entity.hand;
+					entity.hand = 0;
+				}
+			},
+			timerFunction(){
+				this.holds = 0;
+			}
+		},
+		2: {
+			name: "fryier",
+			timer: 0,
+			timerMax: 4,
+			value: function(entity){
+				if(this.holds.length > 0){
+					entity.hand = this.holds.pop();
+				}
+				if(entity.hand.name == "patatoSack"){
+					this.holds = entity.hand;
+					entity.hand = 0;
+				}
+			},
+		},
+		3: {
+			name: "burger stove",
+			timer: 0,
+			timerMax: 4,
+			value: function(entity){
+				if(this.holds.length > 0){
+					entity.hand = this.holds.pop();
+				}
+				if(entity.hand.name == "burger"){
+					entity.hand = 0;
+				}
+			}
+		}
+	},
+	FOODS: ["burger", "fries", "meal level 1", "mealLevel2", "meal level 3"],
+	recipeOrder: [
+		["bread", "lettuce", "burger meat", "cheese", "tomato", "pickle", "bread"],
+	],
 	presentNPCs: [],
 	presentNPCsHavePendingRequests: [],
-	plates: [],
+	items: [],
 	UI: {
 		inGameUI: document.querySelector("#dynamicPlacement"),
 		here: false,
@@ -82,20 +120,18 @@ const Waiter = {
 			}
 		},
 	},
-	requestTable: function(){
-		let tableId = random(0, this.tablesCoords.length-1);
-		if(!this.tablesCoords[tableId].isRequested){
-			this.tablesCoords[tableId].isRequested = true;
-			let food = random(0, this.FOODS.length-1);
-			this.tablesCoords[tableId].food = food;
-			this.orders.push({id: tableId, food: food, tolerance: random(32, 512)});
+	npcRequest: function(){
+		for(let i = 0; this.presentNPCs[i].length; i++){
+			if(!this.presentNPCs[i].request){
+				this.presentNPCs[i].request = random(0, this.FOODS.length);
+			}
 		}
 	},
 	setAndUpdateItems(){
-		this.plates = this.currentMap.updateVisibleItems(Camera, this.plates);
-		this.plates = this.currentMap.cleanupItems(Camera, this.plates);
-		for(let i = 0; i < this.plates.length; i++){
-			this.plates[i].update();
+		this.items = this.currentMap.updateVisibleItems(Camera, this.items);
+		this.items = this.currentMap.cleanupItems(Camera, this.items);
+		for(let i = 0; i < this.items.length; i++){
+			this.items[i].update();
 		}
 	},
 	setAndUpdateNPCs(){
@@ -124,29 +160,20 @@ const Waiter = {
 		this.UI.end();
 		GameMoment = "mainWorld"
 	},
-	locateBalcons(map){
-		for(let i = 0; i < map.height; i++){
-			for(let j = 0; j < map.width; j++){
-				if(map.itemGrid[i][j] == 49){
-					this.balcons = map.items.filter(item => item.ID == 49);
-					this.balcons[this.balcons.length-1].hold = this.FOODS;
-				}
-			}
-		}
+	buildBurger(){
+		
 	},
 	gamePlay(entity){
 		if(!Scenery.hasDeclaired){
 			Scenery.declair(this, this.levelNumber, WAITER_MAPS);
-			this.locateBalcons(this.currentMap);
 			this.start(entity);
 			this.UI.start();
 		}
 		if(!this.player.isSpawn && Scenery.hasDeclaired){
 			this.player.isSpawn = this.player.spawn(this.currentMap);
-			this.setTableID();
 			this.player.update();
 		}
-		Scenery.draw(this.currentMap, this.player, this.presentNPCs, this.plates);
+		Scenery.draw(this.currentMap, this.player, this.presentNPCs, this.items);
 		if(this.getWinningCondition()){
 			this.end();
 		}
@@ -154,20 +181,10 @@ const Waiter = {
 		this.setAndUpdateItems();
 		this.events();
 		this.player.update();
-		Col.main(this.player, this.currentMap, this.plates, this.presentNPCs);
+		Col.main(this.player, this.currentMap, this.items, this.presentNPCs);
 		
 		this.UI.update();
-		this.requestTable();
 		this.debug();
-	},
-	setTableID(){
-		for(let i = 0; i < this.currentMap.itemGrid.length; i++){
-			for(let j = 0; j < this.currentMap.itemGrid[i].length; j++){
-				if(this.currentMap.itemGrid[i][j] == 44){
-					this.tablesCoords.push(new Table(i, j));
-				}
-			}
-		}
 	},
 	getWinningCondition: function(){
 		if(this.timer <= 0){
@@ -175,6 +192,9 @@ const Waiter = {
 			return true;
 		}
 		return false;
+	},
+	end(){
+		GameMoment = "MainWorld";
 	},
 	debug(){
 		for(let i = 0; i < this.orders.length; i++){

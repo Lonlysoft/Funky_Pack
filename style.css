@@ -212,13 +212,18 @@ input[type="range"]{
 
 .sliders{
 	width: 6em;
-	height: 2em;
-	background: linear-gradient(to right, var(--bg-color) 50%, var(--font-color)50%);
+	background: linear-gradient(to right, var(--bg-color) 50%, var(--font-color) 50%);
 	border-radius: .5rem;
 	overflow: hidden;
 	box-shadow: 4px 4px 0 #000;
-	appearance: none;
 	-webkit-appearance: none;
+	apearance: none;
+}
+
+.sliders::-webkit-slider-runnable-track{
+	-webkit-appearance: none;
+	apearance: none;
+	height: 5em;
 }
 
 .sliders::-webkit-slider-thumb{
@@ -286,13 +291,6 @@ input[type="range"]{
 }
 .dialogs{
 	z-index: 6;
-}
-
-.warning{
-	display: none;
-}
-#error{
-	display: none;
 }
 
 @media only screen and (orientation: landscape){

@@ -1,8 +1,8 @@
 const Scenery = {
 	hasDeclaired: false,
-	declair: function(nowMoment, LevelNumber, map){
+	declair: function(nowMoment, LevelNumber, map, itemAssets = ITEMS, entityAssets = NPCS){
 		nowMoment.currentMap = new Level(map[LevelNumber]);
-		nowMoment.currentMap.initialize();
+		nowMoment.currentMap.initialize(itemAssets, entityAssets);
 		this.hasDeclaired = true;
 	},
 	draw: function(currentMap, currChar, items, NPCs){
@@ -26,7 +26,7 @@ const Scenery = {
 			if(i < layers.length-1)
 				currentMap.objectGridDraw(i);
 		}
-		BG.weather[Clock.currentWeather](10, 120);
+		BG.weather[Clock.currentWeather](0, 20);
 		BG.dayAndNightFilter(Clock.hour);
 	}
 }

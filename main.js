@@ -2,8 +2,8 @@
 let timerplay = 0;
 let timeGame = 0;
 let GameMoment = 0;
-//let GameMomentSav = 'warningScreen';
-let GameMomentSav = "mainWorld";
+let GameMomentSav = 'warningScreen';
+//let GameMomentSav = "mainWorld";
 let frame = 0
 let frameaux = 0
 let fps = 30, timeFrequency = 1000/fps;
@@ -220,7 +220,7 @@ const Game = {
 				Clock.passTime();
 				timeCounter = 0;
 			}
-			debug();
+			//debug();
 		},
 		cooking(){
 			UI.cookingStart();

@@ -36,6 +36,14 @@ function createMatrixWithSomething(width, height, arg){
 	return matrix;
 }
 
+function lerp(){
+	
+}
+
+function prel(){
+	
+}
+
 function preventStacking(arr){
 	arr = [];
 }
@@ -293,47 +301,6 @@ const directions = {
 			entity[entity.movementFlag]("z");
 		}
 	},
-	setParticleVector: {
-		S: function(particle, axis){
-			const currDir = {
-				x: 0,
-				y: 0,
-				z: 10
-			}
-			return currDir[axis];
-		},
-		E: function(particle, axis){
-			const currDir = {
-				x: 10,
-				y: 0,
-				z: 0
-			}
-			return currDir[axis];
-		},
-		N: function(particle, axis){
-			const currDir = {
-				x: 0,
-				y: 0,
-				z: 10
-			}
-			return currDir[axis];
-		},
-		W: function(particle, axis){
-			
-		},
-		SE: function(particle, axis){
-			
-		},
-		NE: function(particle, axis){
-			
-		},
-		SW: function(particle, axis){
-			
-		},
-		NW: function(particle, axis){
-			
-		}
-	}
 }
 
 function limitateUp(variable, limit){
@@ -414,7 +381,9 @@ function setMovementParticles(entity){
 					x: 10,
 					y: 10,
 					z: 10,
-				}
+				},
+				timer: 0,
+				timerMax: (i+6)
 			}
 		);
 	}
@@ -422,13 +391,24 @@ function setMovementParticles(entity){
 
 function drawMovementParticles(context, entity){
 	for(let i = 0; i < MOVEMENT_PARTICLES; i++){
-		entity.particles.x += directions.setParticleVector[entity.dir](particle, "x");
-		entity.particles.y += directions.setParticleVector[entity.dir](particle, "y");
-		entity.particles.z += directions.setParticleVector[entity.dir](particle, "z");
+		if(entity.particles[i].timer > entity.particles[i].timerMax){
+			entity.particles[i].x = entity.WorldPos.x;
+			entity.particles[i].y = entity.WorldPos.y;
+			entity.particles[i].z = entity.WorldPos.z;
+			entity.particles[i].timer = 0;
+		}
+		entity.particles[i].timer++;
+		if(entity.particles[i].x == entity.WorldPos.x && entity.particles[i].z == entity.WorldPos.z){
+			continue;
+		}
+		let particlesCentralPoint = [
+			WorldToScreen1D(entity.particles[i].x, Camera.x
+	, Camera.w*0.5 - Game.SCREEN_CENTER[0]),
+			WorldToScreen1D(entity.particles[i].z - entity.particles[i].y, Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1])
+		];
+		ctx.fillRect(particlesCentralPoint[0], particlesCentralPoint[1], 10, 10);
 	}
-	let particlesCentralPoint = [
-		
-	]
+	
 }
 
 class Money{

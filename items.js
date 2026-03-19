@@ -12,6 +12,7 @@ class Item{
 		this.centralPoint = new Array(2)
 		this.velocity = {x: 0, y: 0, z: 0};
 		this.friction = 0.9;
+		this.dir = itemSourceConstructor.dir ? itemSourceConstructor.dir : "S";
 		this.usage = itemSourceConstructor.usage;
 		this.ColType = itemSourceConstructor.ColType;
 		this.layer = 0;
@@ -43,8 +44,8 @@ class Item{
 		itemCategories[this.type](entity, this);
 	}
 	draw(){
-		let renderPosX = this.spriteOriginX*this.sprite.gridLen % this.spritesheet.width;
-		let renderPosY = Number.parseInt(this.spriteOriginX/WorldToGrid(this.spritesheet.width, this.sprite.gridLen))* this.sprite.gridLen;
+		let renderPosX = 0 // for a while...
+		let renderPosY = this.spriteOriginX*(this.sprite.h+this.sprite.p);
 		
 		ctx.drawImage(this.spritesheet,
 			renderPosX, renderPosY,
@@ -70,6 +71,14 @@ class Item{
 		this.velocity.x *= this.friction;
 		this.centralPoint[0] = WorldToScreen1D(this.WorldPos.x, Camera.x, Camera.w/2 - Game.SCREEN_CENTER[0]);
 		this.centralPoint[1] = WorldToScreen1D(this.WorldPos.z - this.boxCol.y + this.boxCol.h, Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]);
+		
+		if(this.timer && this.timerMax){
+			this.timer++;
+			if(this.timer > timerMax){
+				this.timerFunction();
+				this.timer = 0;
+			}
+		}
 	}
 	setLayer(map){
 		Col.handleShadowCoords(this, map);

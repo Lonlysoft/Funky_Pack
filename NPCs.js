@@ -2,7 +2,7 @@
 
 class NonPlayableChar extends Being{
 	constructor(arg, coords){ 
-		super(arg.name, arg.age, 4, 8, arg.height, arg.width, arg.dept, arg.HTMLsrc, arg.animations);
+		super(arg.name, arg.age, 4, 8, arg.height, arg.width, arg.dept, arg.htmlSrc, arg.animations);
 		this.dialog = arg.dialogs;
 		this.dimen = {w: arg.width, h: arg.height, p: arg.dept};
 		this.visible = true;
@@ -13,6 +13,32 @@ class NonPlayableChar extends Being{
 		this.ID = arg.ID;
 	}
 	draw(map){
+		if(this.grapho){
+			this.frameY = directions.setFrameY[this.dir](this);
+			this.frameX = displayAnim(this);
+			
+			Game.ctx.drawImage(this.grapho,
+				this.frameX*this.sprite.w,
+				this.frameY*this.sprite.h,
+				this.sprite.w, this.sprite.h,
+				this.centralPoint[0]-this.boxCol.h*1.5*0.5,
+				this.centralPoint[1]-this.boxCol.h*1.5+this.boxCol.p*1.5,
+				this.boxCol.h*1.5, this.boxCol.h*1.5
+			);
+			/*
+			Game.ctx.fillRect(
+				this.centralPoint[0]-this.boxCol.h*0.5,
+				this.centralPoint[1]-this.boxCol.h+this.boxCol.p,
+				this.boxCol.h, this.boxCol.h
+			);
+			*/
+			if(this.isMirrored){//get back to normal state
+				mirrorateToAPoint(Game.ctx, this.centralPoint[0], this.centralPoint[1]);
+				//mirrorate(Game.ctx)
+				this.isMirrored = false;
+			}
+			return;
+		}
 		ctx.fillRect(this.centralPoint[0], this.centralPoint[1], this.boxCol.w , this.boxCol.h);
 	}
 	update(){
@@ -39,58 +65,10 @@ class NonPlayableChar extends Being{
 	}
 }
 
-const BehaviorList = {
-	linearX: function(entity){
-		entity.walk("x");
-		entity.rayCast = (entity.pol == -1) ? entity.boxCol.x : entity.boxCol.x + entity.boxCol.w;
-		if(Game.currentMap.relevoGrid[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.rayCast, TILE_SIZE)] != Game.currentMap.relevoGrid[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.WorldPos.x, TILE_SIZE)]){
-			entity.pol *= -1;
-		}
-	},
-	linearZ: function(entity){
-		entity.walk("z");
-		entity.rayCast = (entity.pol == 1) ? entity.boxCol.z : entity.boxCol.z+entity.boxCol.p;
-		if(Game.currentMap.relevoGrid[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.rayCast, TILE_SIZE)] != Game.currentMap.relevoGrid[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.WorldPos.x, TILE_SIZE)]){
-			entity.pol *= -1;
-		}
-	},
-	nothing: function(){},
-	goToX: function(entity){
-		entity.walk("x");
-	},
-	goToZ: function(entity){
-		entity.walk("Z");
-	}
-	
-}
-
-//ele pega um array e checa se ele chegou. s
-function scriptedBehavior(entity, objectBehav){
-	switch(objectBehav.arr[objectBehav.index][0]){
-		case "goToX": case "goToY":
-			if(objectBehav.arr[objectBehav.index][1] < entity.WorldPos.x){
-				entity.pol = 1;
-				BehaviorList[objectBehav.arr[objectBehav.index][0]](entity);
-			} else if(objectBehav.arr[objectBehav.index][1] > entity.WorldPos.x){
-				entity.pol = -1;
-				BehaviorList[objectBehav.arr[objectBehav.index][0]](entity);
-			}
-			if(objectBehav.arr[objectBehav.index][1] >= entity.WorldPos.x + 10 && objectBehav.arr[objectBehav.index][1] <= entity.WorldPos.x - 10){
-				objectBehav.index++;
-			}
-		break;
-		case "stopAndWait":
-			entity.stop();
-			if(Relogio.hour == Relogio.convertToHourAndMinute(objectBehav.arr[objectBehav.index][1]).hour){
-				objectBehav.index++;
-			}
-		break;
-		case "talk":
-			UI.dialogo(objectBehav.arr[objectBehav.index][1]);
-			if(UI.isDialogoDismissed){
-				objectBehav.index++;
-			}
-		break;
-		default: break;
+//basically we pick the graph that comes with the map, apply that to the movement using lerps and objects we set the NPCs' points of localization, if no graph, NPCs must do regular state machine code or do nothing actually
+function Behavior(entity, graph){
+	if(graph){
+		if(!entity.definedPath)
+			Dijkstra(graph);
 	}
 }

@@ -32,7 +32,7 @@ const Col = {
 	
 	teleportTo: function(entity, placeName){
 		//trigger transition
-		preventStacking(Game.NPCarr);
+		Game.NPCarr = [];
 		Scenery.hasDeclaired = false;
 		Game.levelName = placeName;
 		Game.requestTransition = true;
@@ -187,7 +187,7 @@ const Col = {
 	},
 	
 	teleport: function(entity, cube){
-		if(isOnGround(entity.WorldPos.y, cube.y) && cube.conditionals()){
+		if(isOnGround(entity.WorldPos.y, cube.y) && cube.conditionals && cube.conditionals()){
 			//cube.conditionals() are a function that means the stuff the player need to do or must have in order to activate them. (like... what a literal trigger works)...
 			Scenery.hasDeclaired = false;
 			mapGrid = cube.to;
@@ -196,16 +196,17 @@ const Col = {
 	
 	left: function(entity, cube){
 		if(entity.boxCol.x + entity.boxCol.w > cube.x && entity.boxCol.oldX + entity.boxCol.w <= cube.x){
+			entity.boxCol.x -= entity.velocity.x;
 			entity.velocity.x = 0;
-			entity.boxCol.x = cube.x - entity.boxCol.w - MAGIC_OFFSET;
 			return true;
 		}
 		return false;
 	},
 	right: function(entity, cube){
 		if(entity.boxCol.x < cube.x+cube.w && entity.boxCol.oldX >= cube.x+cube.w){
+			entity.boxCol.x -= entity.velocity.x;
 			entity.velocity.x = 0;
-			entity.boxCol.x = cube.x + cube.w + MAGIC_OFFSET;
+			
 			return true;
 		}
 		return false;
@@ -213,17 +214,17 @@ const Col = {
 	top: function(entity, cube){
 		if(entity.boxCol.z + entity.boxCol.p > cube.z && entity.boxCol.oldZ + entity.boxCol.p <= cube.z){
 			entity.onGround = true;
+			entity.boxCol.z -= entity.velocity.z;
 			entity.velocity.z = 0;
-			entity.boxCol.z = cube.z - entity.boxCol.p - MAGIC_OFFSET;
 			return true;
 		}
 		return false;
 	},
 	
 	bottom: function(entity, cube){
-		if(entity.boxCol.z < cube.z+cube.p && entity.boxCol.oldZ >= cube.z+ cube.p){
+		if(entity.boxCol.z < cube.z+cube.p && entity.boxCol.oldZ >= cube.z + cube.p){
+			entity.boxCol.z -= entity.velocity.z;
 			entity.velocity.z = 0;
-			entity.boxCol.z = cube.z + cube.p + MAGIC_OFFSET;
 			return true;
 		}
 		return false;
@@ -259,10 +260,8 @@ const Col = {
 		let top = current_x;
 
 		if (current_x > cube[dimen] && current_x > 0) {
-
-			
+			object.WorldPos.y -= object.velocity.y;
 			object.velocity.y = 0;
-			object.WorldPos.y = cube.y;
 			return cube.y;
 
 		} else if (object.boxCol.y + object.boxCol.h > top && current_x > 0) {
@@ -280,8 +279,8 @@ const Col = {
 		let top = current_x*-1+cube.h;
 
 		if (current_x > cube[dimen] && current_x > 0) {
+			object.WorldPos.y -= object.velocity.y;
 			object.velocity.y = 0;
-			object.WorldPos.y = (cube.y - cube.h);
 			return cube.y - cube.h;
 
 		} else if (object.boxCol.y + object.boxCol.h > top && current_x > 0) {

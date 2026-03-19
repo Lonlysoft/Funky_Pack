@@ -50,7 +50,6 @@ const UI = {
 				this.isHere = true;
 				return;
 			}
-			
 		},
 		update(clock, entity){
 			if(!this.isHere){
@@ -386,7 +385,7 @@ const UI = {
 			if(!this.optionDOMhere){
 				this.titleImagery = document.createElement('img');
 				this.titleImagery.alt = "title_screen_image";
-				this.titleImagery.src = "src/imgs/TitleLogo.png";
+				this.titleImagery.src = "src/imgs/TitleLogoBlocks.png";
 				for(let i = 0; i < this.options.length; i++){
 					this.optionDOM.push(document.createElement('button'));
 					this.optionDOM[i].innerHTML = this.optionsText[i];
@@ -492,6 +491,21 @@ const UI = {
 				
 			}
 		}
+	},
+	dialogs: {
+		here: false,
+		DOM: null,
+		start(){
+			if(!this.DOM){
+				this.DOM = document.createElement("div");
+				this.DOM.classList.add("dialogs");
+				UI.inGameUI.appendChild(this.DOM);
+				setTimeout(()=>{this.DOM.style.transform = "scale(1)"}, 304)
+			}
+		},
+		end(){
+			this.DOM = null;
+		},
 	},
 	dialogStart(){
 		this.dialogDOM.style.display = "block"
