@@ -204,7 +204,12 @@ class Protagonist extends Being{
 		for(let i = 0; i < NPC__arr.length; i++){
 			let this__box = [NPC__arr[i].boxCol.x, NPC__arr[i].boxCol.z, NPC__arr[i].boxCol.w, NPC__arr[i].boxCol.p];
 			if(isOnGround(this.WorldPos.y, NPC__arr[i].boxCol.y) && Col.AABB(box, this__box)){
-				const conditionalDto = {time: Clock.getDayLateness(), story: Game.storyMoment, relationship: this.relationships[NPC__arr[i].ID]};
+				const conditionalDto = {
+					time: Clock.getDayLateness(),
+					story: Game.storyMoment,
+					relationship: this.relationships[NPC__arr[i].ID]
+				};
+				NPC__arr[i].dir = directions.grabAttention[this.dir]();
 				Game.onDialog = true;
 				UI.dialogItems.object = chooseDialog(NPC__arr[i].dialog, conditionalDto);
 				UI.dialogItems.bufferAnimation = 0;

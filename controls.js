@@ -167,6 +167,7 @@ const Ctrl = {
 		character: {
 			props: ["eastWest", "upDown", "diagonals", "B", "A", "Y", "X", "crouch", "run", "select", "start", "zed"],
 			eastWest(entity){
+				
 				if(Ctrl.Btns.west.active){//⬅
 					entity.dir = "W";
 					directions.walk[entity.dir](entity);
@@ -180,6 +181,7 @@ const Ctrl = {
 				}
 			},
 			upDown: function(entity){
+				
 				if(Ctrl.Btns.up.active){//⬆
 					entity.dir = "N";
 					directions.walk[entity.dir](entity);
@@ -193,6 +195,7 @@ const Ctrl = {
 				}
 			},
 			diagonals(entity){
+				
 				if((Ctrl.Btns.west.active && Ctrl.Btns.down.active) || Ctrl.Btns.southwest.active){ //↙
 					Ctrl.Btns.west.active = Ctrl.Btns.down.active = true;
 					entity.dir = "SW";
@@ -229,7 +232,7 @@ const Ctrl = {
 			},
 			A(entity){
 				if(Ctrl.Btns.A.active && Ctrl.state.A == false){
-					entity.interact(Game.NPCarr, Game.ItemArr);
+					entity.interact([...Game.NPCarr, ...Game.ImportantNPCsOnScreenArr], Game.ItemArr);
 				}
 			},
 			zed(entity){

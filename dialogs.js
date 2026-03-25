@@ -112,11 +112,13 @@ const Dialogs = {
 	Nukko: {
 		greetings: {
 			name: "Nukko",
+			ID: "Nukko",
 			text: "Hi Dynny! It's so good to see you!",
 			next: "askingForRest"
 		},
 		askingForRest: {
 			name: "Nukko",
+			ID: "Nukko",
 			text: "So. You're in need of what? Rest? some fun activity? I'm free, so I'm up for anything you want, friend.",
 			options: [
 				{text: "rest", next: "rest"},
@@ -126,18 +128,22 @@ const Dialogs = {
 		},
 		rest: {
 			name: "Nukko",
+			ID: "Nukko",
 			text: "so, have a good rest inside my belly button."
 		},
 		playGames: {
 			name: "Nukko",
+			ID: "Nukko",
 			text: "So let's play some games"
 		},
 		answerOutside: {
 			name: "Nukko",
+			ID: "Nukko",
 			text: "well let's go then."
 		},
 		greetingsRainy: {
 			name: "Nukko",
+			ID: "Nukko",
 			condition: {weather: "rain"},
 			text: "So. it's rainy and all, you're in need of what? A rest? Some fun activity? As long as we're not going outside. I'm up for it.",
 			options: [
@@ -148,6 +154,7 @@ const Dialogs = {
 		},
 		answerOutsideRaining: {
 			name: "Nukko",
+			ID: "Nukko",
 			text: "Oh well, if you really need to go... let's go then."
 		},
 	},

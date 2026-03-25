@@ -301,6 +301,32 @@ const directions = {
 			entity[entity.movementFlag]("z");
 		}
 	},
+	grabAttention: {
+		S: function(){
+			return "N";
+		},
+		N: function(entity){
+			return "S";
+		},
+		E: function(entity){
+			return "W";
+		},
+		W: function(entity){
+			return "E";
+		},
+		NE: function(entity){
+			return "SW";
+		},
+		NW: function(entity){
+			return "SE";
+		},
+		SE: function(entity){
+			return "NW";
+		},
+		SW: function(entity){
+			return "NE";
+		}
+	}
 }
 
 function limitateUp(variable, limit){
@@ -383,12 +409,14 @@ function setMovementParticles(entity){
 					z: 10,
 				},
 				timer: 0,
-				timerMax: (i+6)
+				timerMax: (i+10)
 			}
 		);
 	}
 }
 
+
+const smokeParticle = document.querySelector("#smoke");
 function drawMovementParticles(context, entity){
 	for(let i = 0; i < MOVEMENT_PARTICLES; i++){
 		if(entity.particles[i].timer > entity.particles[i].timerMax){
@@ -398,7 +426,7 @@ function drawMovementParticles(context, entity){
 			entity.particles[i].timer = 0;
 		}
 		entity.particles[i].timer++;
-		if(entity.particles[i].x == entity.WorldPos.x && entity.particles[i].z == entity.WorldPos.z){
+		if((entity.particles[i].x == entity.WorldPos.x && entity.particles[i].z == entity.WorldPos.z) || entity.particles[i].timer >= entity.particles[i].timerMax){
 			continue;
 		}
 		let particlesCentralPoint = [
@@ -406,7 +434,11 @@ function drawMovementParticles(context, entity){
 	, Camera.w*0.5 - Game.SCREEN_CENTER[0]),
 			WorldToScreen1D(entity.particles[i].z - entity.particles[i].y, Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1])
 		];
+		ctx.save();
+		ctx.globalAlpha = (entity.particles[i].timerMax - entity.particles[i].timer)/10;
+		ctx.fillStyle = "#ffffff"
 		ctx.fillRect(particlesCentralPoint[0], particlesCentralPoint[1], 10, 10);
+		ctx.restore();
 	}
 	
 }

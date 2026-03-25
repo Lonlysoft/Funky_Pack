@@ -42,15 +42,14 @@ class NonPlayableChar extends Being{
 		ctx.fillRect(this.centralPoint[0], this.centralPoint[1], this.boxCol.w , this.boxCol.h);
 	}
 	update(){
-		scriptedBehavior(this, this.behaviorArr);
+		//scriptedBehavior(this, this.behaviorArr);
+		
 		this.boxCol.x += this.velocity.x;
 		this.boxCol.z += this.velocity.z;
 		this.WorldPos.y += this.velocity.y;
 		this.WorldPos.x = this.boxCol.x + this.boxCol.w*0.5;
 		this.WorldPos.z = this.boxCol.z + this.boxCol.p*0.5;
 		this.boxCol.y = this.WorldPos.y + this.boxCol.h;
-		this.shadow.x = this.boxCol.x;
-		this.shadow.y = this.boxCol.z + this.boxCol.y;
 		this.centralPoint[0] = WorldToScreen1D(this.WorldPos.x, Camera.x, Camera.w/2 - Game.SCREEN_CENTER[0]);
 		this.centralPoint[1] = WorldToScreen1D(this.WorldPos.z-this.WorldPos.y, Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]);
 	}

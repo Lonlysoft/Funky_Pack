@@ -179,7 +179,7 @@ class Level{
 	}
 	
 	updateNPCs(camera){
-		if(this.npcGrid == undefined){
+		if(!this.npcGrid){
 			return;
 		}
 		const newArr = [];

@@ -232,15 +232,21 @@
 }
 .whoTalks{
 	font-weight: 900;
+	transform: translate(-1rem, 0);
+	min-width: 2em;
+	background: #fff;
 }
 .speaking{
 	margin: 0;
 	padding: 1em;
 	color: #000;
+	font-size: 0.5em;
 }
 .dialog-option{
 	padding-left: 1em;
 	position: relative;
+	margin: .5rem;
+	background: #ffb;
 }
 .dialog-option.selected::before{
 	content: "";

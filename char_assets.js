@@ -89,9 +89,11 @@ const Characters = {
 		jump_power: TILE_SIZE*0.5,
 		inventory: 20,
 		height: TILE_SIZE*2,
-		width: TILE_SIZE*2,
+		ID: 1,
+		width: TILE_SIZE*1.5,
 		dept: TILE_SIZE,
 		skills: ["hold", "release", "eatAnything", "putAway", "bellyPound"],
+		dialogs: Dialogs["Nukko"],
 		htmlSrc: "#nukkoSpriteSheet",
 		animations: {
 			walk: {

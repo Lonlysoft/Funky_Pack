@@ -2,8 +2,8 @@
 let timerplay = 0;
 let timeGame = 0;
 let GameMoment = 0;
-let GameMomentSav = 'warningScreen';
-//let GameMomentSav = "mainWorld";
+//let GameMomentSav = 'warningScreen';
+let GameMomentSav = "mainWorld";
 let frame = 0
 let frameaux = 0
 let fps = 30, timeFrequency = 1000/fps;
@@ -22,6 +22,8 @@ const Game = {
 	ItemArr: [],
 	NPCarr: [],
 	TrigArr: [],
+	ImportantNPCsOnScreenArr: [],
+	importantNPCs: [],
 	hasLoadedITEMs: false,
 	hasLoadedNPCs: false,
 	tileSetGraphics: document.getElementById("tilemap"),
@@ -34,12 +36,6 @@ const Game = {
 	requestTransition: true,
 	appearScreen: false,
 	alpha: 1,
-	setAndUpdateTriggers(){
-		if(!this.hasLoadedTriggers){
-			Col.loadEntities("triggers", this.TrigArr);
-		}
-		Col.checkEntities(this.TrigArr);
-	},
 	setAndUpdateItems(){
 		this.ItemArr = this.currentMap.cleanupItems(Camera, this.ItemArr);
 		this.ItemArr = this.currentMap.updateVisibleItems(Camera, this.ItemArr);
@@ -47,13 +43,44 @@ const Game = {
 			this.ItemArr[i].update();
 			this.ItemArr[i].setLayer(Game.currentMap);
 		}
-		this.GrassArr = this.currentMap.updateGrass(Camera, this.GrassArr);
+	},
+	loadImportantNPCs(){
+		for(let i = 1; i < 2; i++){
+			this.importantNPCs.push(new NonPlayableChar(IMPORTANTS[i], {x: TILE_SIZE ,y: TILE_SIZE,z: TILE_SIZE}));
+		}
+	},
+	setAndUpdateImportantNPCs(camera){
+		let newArr = this.importantNPCs.filter(
+			i => {
+				if(!i.isAlive) return false;
+				const cameraBox = [camera.x, camera.y, camera.w, camera.h];
+				const iBox = [i.boxCol.x, i.boxCol.z-i.boxCol.y, i.boxCol.w, i.boxCol.p+ i.boxCol.h];
+				i.isSpawn = i.spawn();
+				i.update();
+				return (Col.AABB(cameraBox, iBox));
+			}
+		);
+		this.ImportantNPCsOnScreenArr = newArr;
+	},
+	cleanupImportantsNPCs(camera){
+		this.ImportantNPCsOnScreenArr = this.ImportantNPCsOnScreenArr.filter(
+			i => {
+				if(!i.isAlive) return false;
+				const cameraBox = [camera.x, camera.y, camera.w, camera.h];
+				const iBox = [i.boxCol.x, i.boxCol.z-i.boxCol.y, i.boxCol.w, i.boxCol.p+ i.boxCol.h];
+				return (Col.AABB(cameraBox, iBox));
+			}
+		);
 	},
 	setAndUpdateNPCs(){
 		this.currentMap.cleanupNPCs(Camera, this.NPCarr);
 		this.currentMap.updateNPCs(Camera);
+		this.cleanupImportantsNPCs(Camera);
+		this.setAndUpdateImportantNPCs(Camera);
+		
 		for(let i = 0; i < this.NPCarr.length; i++){
 			this.NPCarr[i].update();
+			this.ImportantNPCsOnScreenArr[i].update();
 		}
 	},
 	moment: {
@@ -64,7 +91,7 @@ const Game = {
 			Ctrl.action(Game.CurrentCharacter, UI.charMenuManager.currentName);
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Ctrl.stateSave();
-			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, [...Game.NPCarr, ...Game.ImportantNPCsOnScreenArr]);
 			
 			Game.ctx.globalAlpha = 0.5;
 			Game.ctx.fillStyle = "#000000"
@@ -158,7 +185,7 @@ const Game = {
 		},
 		pause: function(){
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
-			Scenery.draw(Game.CurrentCharacter, Game.currentMap, Game.ItemArr, Game.NPCarr, Game.GrassArr)
+			Scenery.draw(Game.CurrentCharacter, Game.currentMap, Game.ItemArr, [...Game.NPCarr, ...Game.ImportantNPCsOnScreenArr])
 			Ctrl.action(null, "pause");
 			Ctrl.stateSave();
 			Game.ctx.globalAlpha = 0.3;
@@ -183,7 +210,7 @@ const Game = {
 					Game.audio.stop();
 					Game.requestTransition = false;
 					Game.appearScreen = true;
-					
+					Game.loadImportantNPCs();
 				}
 			}
 			UI.characterHUD.start();
@@ -203,7 +230,7 @@ const Game = {
 			}
 			Game.setAndUpdateNPCs();
 			Game.setAndUpdateItems();
-			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr, Game.GrassArr);
+			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, [...Game.NPCarr, ...Game.ImportantNPCsOnScreenArr]);
 			if(Game.onDialog){
 				GameMomentSav = GameMoment;
 				GameMoment = "dialog"
@@ -213,14 +240,14 @@ const Game = {
 			Ctrl.stateSave();
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Game.CurrentCharacter.update();
-			Col.main(Game.CurrentCharacter, Game.currentMap, Game.ItemArr, Game.NPCarr -1);
+			Col.main(Game.CurrentCharacter, Game.currentMap, Game.ItemArr, [...Game.NPCarr, ...Game.ImportantNPCsOnScreenArr], -1);
 			
 			UI.characterHUD.update(Clock, Game.CurrentCharacter);
 			if(timeCounter>=2000){
 				Clock.passTime();
 				timeCounter = 0;
 			}
-			//debug();
+			debug();
 		},
 		cooking(){
 			UI.cookingStart();
@@ -247,7 +274,7 @@ const Game = {
 			BoxPusher.gamePlay(Game.CurrentCharacter);
 		},
 		dialog: function(){
-			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, Game.NPCarr);
+			Scenery.draw(Game.currentMap, Game.CurrentCharacter, Game.ItemArr, [...Game.NPCarr, ...Game.ImportantNPCsOnScreenArr]);
 			Ctrl.action(Game.dialogBox, "dialogs");
 			Ctrl.stateSave();
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);

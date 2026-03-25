@@ -339,14 +339,14 @@ const UI = {
 			if(this.bufferAnimation < this.object.text.length){
 				this.bufferAnimation++;
 			}
-			let stringSplice = "<div class = 'whoTalks comic'>"+this.object.name+"</div><div class = 'speaking comic'>";
+			let stringSplice = "<div class = 'whoTalks'>"+this.object.name+"</div><div class = 'speaking comic'>";
 			let heightSplice = 0;
 			for(let i = 0; i < this.bufferAnimation; i++){
 				stringSplice += this.object.text[i];
 			}
 			UI.dialogDOM.style.width = "70%";
 			heightSplice = Math.ceil(this.object.text.length/25) + 3;
-			UI.dialogDOM.style.top = "5%";
+			UI.dialogDOM.style.bottom = "5%";
 			UI.dialogDOM.style.right = "5%";
 			stringSplice += "</div>"
 			UI.dialogDOM.innerHTML = stringSplice;
@@ -503,12 +503,15 @@ const UI = {
 				setTimeout(()=>{this.DOM.style.transform = "scale(1)"}, 304)
 			}
 		},
+		update(){
+			//write the text
+		},
 		end(){
 			this.DOM = null;
 		},
 	},
 	dialogStart(){
-		this.dialogDOM.style.display = "block"
+		this.dialogDOM.style.display = "flex"
 		setTimeout(()=>{this.dialogDOM.style.transform = "scale(1)"}, 304)
 	},
 	dialogDismiss(){

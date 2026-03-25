@@ -230,24 +230,6 @@ const Col = {
 		return false;
 	},
 	
-	up: function(entity, cube){
-		//raramente isso vai acontecer no mapa. quer dizer.. não deve acontecer in anyway...
-		if(entity.boxCol.y < cube.y && entity.boxCol.oldY >= cube.y){
-			entity.velocity.y = 0;
-			entity.boxCol.y = cube.y + cube.h + MAGIC_OFFSET;
-			entity.onGround = true;
-			return true;
-		}
-	},
-	
-	down: function(entity, cube){
-		if(entity.boxCol.y > cube.y && entity.boxCol.oldY <= cube.y){
-			entity.velocity.y = 0;
-			entity.boxCol.y = cube.y - entity.boxCol.h - MAGIC_OFFSET;
-			
-			return true;
-		}
-	},
 	ladder: function(){
 		
 	},
@@ -432,6 +414,16 @@ const Col = {
 				itensBox = [itemArr[i].boxCol.x, itemArr[i].boxCol.z, itemArr[i].boxCol.w, itemArr[i].boxCol.p];
 				if(Col.AABB(playerBoxCol, itensBox) && isOnGround(entity.WorldPos.y, itemArr[i].boxCol.y)){
 					Col[itemArr[i].ColType](entity, itemArr[i].boxCol);
+				}
+			}
+		}
+		
+		if(num == -1){
+			let npcBox;
+			for(let i = 0; i < npcArr.length; i++){
+				npcBox = [npcArr[i].boxCol.x, npcArr[i].boxCol.z, npcArr[i].boxCol.w, npcArr[i].boxCol.p];
+				if(Col.AABB(playerBoxCol, npcBox) && isOnGround(entity.WorldPos.y, npcArr[i].boxCol.y)){
+					Col["solidObject"](entity, npcArr[i].boxCol);
 				}
 			}
 		}

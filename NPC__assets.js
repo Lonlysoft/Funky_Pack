@@ -38,7 +38,7 @@ const IMPORTANTS = {
 	1: Characters.Nukko,
 	2: {
 		name: "JSON FOLF",
-		ID: 1,
+		ID: 2,
 		age: 18,
 		height: TILE_SIZE,
 		width: TILE_SIZE,
