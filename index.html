@@ -7,11 +7,12 @@
 	<meta name = "description" content = "a browser game"/>
 	<title> Funky Pack </title>
 	<link rel = "icon" type = "image/x-icon" href = "src/favicon/favicon.png">
+	<link rel = "manifest" href = "src/manifest.json">
 	<link rel = "stylesheet" href = "UIs.css"/>
 	<link rel = "stylesheet" href = "style.css"/>
 	<link rel = "stylesheet" href = "UI__scheduleTable.css"/>
 </head>
-<body onload = "GameBonanza()">
+<body>
 	<canvas class = "gameScreen" id= "scenery"></canvas>
 	<canvas class= "gameScreen" id = "mainCanvas">canvas not supported</canvas>
 	<div class = "assets">
@@ -25,7 +26,6 @@
 		<img id = "lonlysoft-logo" src = "src/imgs/LonlysoftLogotype.png"/>
 	</div>
 	<div class = "inGameUI">
-		<section class = "dialogs flex-column notHere" id = "dialogs"></section>
 		<section class = "notHere bags flat"></section>
 	</div>
 	<div class = "inGameUI" id = "dynamicPlacement"></div>
