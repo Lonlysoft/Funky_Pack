@@ -1,0 +1,19 @@
+{
+	"short_name": "Funky Pack",
+	"name": "Funky Pack",
+	"background_color": "#430C00",
+	"icons": [
+		{
+			"src": "src/favicon/funkyPackIcon.png",
+			"sizes": "512x512",
+			"type": "png"
+		},
+		{
+			"src": "src/favicon/favicon-192.png",
+			"sizes": "192x192",
+			"type": "png"
+		}
+	],
+	"display": "fullscreen",
+	"orientation": "landscape"
+}
