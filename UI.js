@@ -324,55 +324,6 @@ const UI = {
 	jobTableDelete: {
 		
 	},
-	
-	dialogDOM: document.querySelector("#dialogs"),
-	dialogItems: {
-		stackPair: 0,
-		bufferAnimation: NaN,
-		object: null,
-		position: {x: undefined, y: undefined},
-		selectedOption: 0,
-		optionsDOM: [],
-		hasOption: false,
-		hasOptionsLoaded: false,
-		writeText(){
-			if(this.bufferAnimation < this.object.text.length){
-				this.bufferAnimation++;
-			}
-			let stringSplice = "<div class = 'whoTalks'>"+this.object.name+"</div><div class = 'speaking comic'>";
-			let heightSplice = 0;
-			for(let i = 0; i < this.bufferAnimation; i++){
-				stringSplice += this.object.text[i];
-			}
-			UI.dialogDOM.style.width = "70%";
-			heightSplice = Math.ceil(this.object.text.length/25) + 3;
-			UI.dialogDOM.style.bottom = "5%";
-			UI.dialogDOM.style.right = "5%";
-			stringSplice += "</div>"
-			UI.dialogDOM.innerHTML = stringSplice;
-			if(this.object.options && this.bufferAnimation >= this.object.text.length-1 && !this.hasOptionsLoaded){
-				this.hasOption = true;
-				for(let i = 0; i < this.object.options.length; i++){
-					this.optionsDOM.push(document.createElement("div"));
-					this.optionsDOM[i].textContent = this.object.options[i].text;
-					this.optionsDOM[i].setAttribute("class", "dialog-option");
-					if(i === 0){
-						this.optionsDOM[i].classList.add("selected");
-					}
-					UI.dialogDOM.insertBefore(this.optionsDOM[i], null);
-				}
-				this.hasOptionsLoaded = true;
-			}
-			if(this.object.options && this.bufferAnimation >= this.object.text.length-1){
-				for(let i = 0; i < this.object.options.length; i++){
-					heightSplice += Math.ceil(this.object.options[i].text.length/25)+1;
-					UI.dialogDOM.insertBefore(this.optionsDOM[i], null);
-				}
-			}
-			heightSplice += "em"
-			UI.dialogDOM.style.height = heightSplice;
-		}
-	},
 	title: {
 		DOM: document.createElement('div'),
 		selectedOption: 0,
@@ -495,34 +446,81 @@ const UI = {
 	dialogs: {
 		here: false,
 		DOM: null,
-		start(){
+		bufferAnimation: NaN,
+		object: null,
+		selectedOption: 0,
+		optionsDOM: [],
+		optionContainer: document.createElement("div"),
+		hasOption: false,
+		start(dialog){
 			if(!this.DOM){
 				this.DOM = document.createElement("div");
 				this.DOM.classList.add("dialogs");
+				this.DOM.classList.add("comic");
+				this.object = dialog;
+				if(dialog.options){
+					this.hasOption = true;
+					this.optionsDOM = [];
+					for(let i = 0; i < dialog.options.length; i++){
+						this.optionsDOM.push(document.createElement("button"));
+						this.optionsDOM[i].textContent = dialog.options[i].text;
+					}
+					
+				}
+				
 				UI.inGameUI.appendChild(this.DOM);
-				setTimeout(()=>{this.DOM.style.transform = "scale(1)"}, 304)
+				setTimeout(()=>{this.DOM.style.transform = "translate(-50%, 0) scale(1)"}, 10);
 			}
 		},
 		update(){
-			//write the text
+			if(!this.DOM){
+				return;
+			}
+			if(this.bufferAnimation < this.object.text.length){
+				this.bufferAnimation++;
+			}
+			let stringSplice = "<div class = 'whoTalks'>"+this.object.name+"</div><div class = 'speaking'>";
+			let heightSplice = 0;
+			for(let i = 0; i < this.bufferAnimation; i++){
+				stringSplice += this.object.text[i];
+			}
+			heightSplice = Math.ceil(this.object.text.length/25) + 3;
+			stringSplice += "</div>"
+			this.DOM.innerHTML = stringSplice;
+			if(this.object.options && this.bufferAnimation >= this.object.text.length-1 && !this.hasOptionsLoaded){
+				this.optionContainer = document.createElement("div");
+				this.hasOption = true;
+				this.optionContainer.classList.add("flex-column");
+				this.optionsDOM =[];
+				for(let i = 0; i < this.object.options.length; i++){
+					this.optionsDOM.push(document.createElement("button"));
+					this.optionsDOM[i].textContent = this.object.options[i].text;
+					this.optionsDOM[i].setAttribute("class", "dialog-option");
+					if(i === 0){
+						this.optionsDOM[i].classList.add("selected");
+					}
+					this.optionContainer.appendChild(this.optionsDOM[i]);
+				}
+				this.hasOptionsLoaded = true;
+			}
+			if(this.object.options && this.bufferAnimation >= this.object.text.length-1){
+				for(let i = 0; i < this.object.options.length; i++){
+					heightSplice += Math.ceil(this.object.options[i].text.length/25)+1;
+				}
+				this.DOM.appendChild(this.optionContainer);
+			}
+			heightSplice += "em"
+			//this.DOM.style.height = heightSplice;
 		},
 		end(){
+			this.DOM.remove();
+			this.optionContainer.remove();
+			this.optionContainer = null;
 			this.DOM = null;
+			this.here = false;
 		},
 	},
-	dialogStart(){
-		this.dialogDOM.style.display = "flex"
-		setTimeout(()=>{this.dialogDOM.style.transform = "scale(1)"}, 304)
-	},
-	dialogDismiss(){
-		this.dialogDOM.style.transform = "scale(0)"
-		setTimeout(()=>{
-			this.dialogDOM.style.display = "none";
-			this.dialogItems.optionsDOM = [];
-			this.dialogItems.hasOption = false;
-			this.dialogItems.hasOptionsLoaded = false;
-		}, 304)
-	},
+	
 	warningScreen: {
 		isHere: false,
 		message: "<h1>WARNING!</h1>",

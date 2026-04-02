@@ -278,7 +278,7 @@ const Game = {
 			Ctrl.action(Game.dialogBox, "dialogs");
 			Ctrl.stateSave();
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
-			UI.dialogItems.writeText();
+			UI.dialogs.update();
 		},
 		continueGame: function(){
 			if(Game.requestTransition && !Game.appearScreen){
@@ -357,6 +357,12 @@ const SideBar = {
 function GameBonanza(){
 	TouchEvent();
 	GamePadEvent();
+	if("serviceWorker" in navigator){
+		window.addEventListener("load", ()=>{
+			navigator.serviceWorker.register("sw.js").then(reg => console.log(reg)).catch(err => console.log(err));
+			
+		});
+	}
 	const fullScreenBtn = document.getElementById("fullscreen");
 	const fullScreenBtnIcon = fullScreenBtn.querySelector("svg");
 	SideBar.bringSideBar.addEventListener("click",
@@ -507,3 +513,5 @@ function GamePlayLoop(timestamp){
 		
 	}
 }
+
+GameBonanza();

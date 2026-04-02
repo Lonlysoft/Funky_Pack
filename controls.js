@@ -509,45 +509,45 @@ const Ctrl = {
 			props: ["directionals", "confirm"],
 			//no cancel because there's no right answer here
 			directionals(){
-				if(Ctrl.Btns.up.active && !Ctrl.state.up && UI.dialogItems.hasOption){
-					UI.dialogItems.optionsDOM[UI.dialogItems.selectedOption].classList.toggle("selected");
-					UI.dialogItems.selectedOption--;
-					if(UI.dialogItems.selectedOption < 0){
-						UI.dialogItems.selectedOption = UI.dialogItems.optionsDOM.length - 1;
+				if(Ctrl.Btns.up.active && !Ctrl.state.up && UI.dialogs.hasOption){
+					UI.dialogs.optionsDOM[UI.dialogs.selectedOption].classList.toggle("selected");
+					UI.dialogs.selectedOption--;
+					if(UI.dialogs.selectedOption < 0){
+						UI.dialogs.selectedOption = UI.dialogs.optionsDOM.length - 1;
 					}
-					UI.dialogItems.optionsDOM[UI.dialogItems.selectedOption].classList.toggle("selected");
+					UI.dialogs.optionsDOM[UI.dialogs.selectedOption].classList.toggle("selected");
 				}
-				if(Ctrl.Btns.down.active && !Ctrl.state.down && UI.dialogItems.hasOption){
-					UI.dialogItems.optionsDOM[UI.dialogItems.selectedOption].classList.toggle("selected");
-					UI.dialogItems.selectedOption++;
-					if(UI.dialogItems.selectedOption > UI.dialogItems.optionsDOM.length-1){
-						UI.dialogItems.selectedOption = 0;
+				if(Ctrl.Btns.down.active && !Ctrl.state.down && UI.dialogs.hasOption){
+					UI.dialogs.optionsDOM[UI.dialogs.selectedOption].classList.toggle("selected");
+					UI.dialogs.selectedOption++;
+					if(UI.dialogs.selectedOption > UI.dialogs.optionsDOM.length-1){
+						UI.dialogs.selectedOption = 0;
 					}
-					UI.dialogItems.optionsDOM[UI.dialogItems.selectedOption].classList.toggle("selected");
+					UI.dialogs.optionsDOM[UI.dialogs.selectedOption].classList.toggle("selected");
 				}
 			},
 			confirm(){
 				if(Ctrl.Btns.A.active && Ctrl.state.A == false){
-					if(UI.dialogItems.bufferAnimation < UI.dialogItems.object.text.length-1){
-						UI.dialogItems.bufferAnimation = UI.dialogItems.object.text.length-1;
+					if(UI.dialogs.bufferAnimation < UI.dialogs.object.text.length-1){
+						UI.dialogs.bufferAnimation = UI.dialogs.object.text.length-1;
 					}
 					else{
-						if(UI.dialogItems.object.next == undefined && !UI.dialogItems.hasOption){
-							UI.dialogDismiss();
+						if(UI.dialogs.object.next == undefined && !UI.dialogs.hasOption){
+							UI.dialogs.end();
 							Game.onDialog = false;
-							UI.dialogItems.bufferAnimation = NaN;
+							UI.dialogs.bufferAnimation = 0;
 							GameMoment = GameMomentSav;
 						}
-						else if(UI.dialogItems.object.next == undefined && UI.dialogItems.hasOption){
-							UI.dialogItems.bufferAnimation = 0;
-							UI.dialogItems.object = Dialogs[UI.dialogItems.object.ID][UI.dialogItems.object.options[UI.dialogItems.selectedOption].next];
-							UI.dialogItems.selectedOption = 0;
-							UI.dialogItems.hasOption = false;
-							UI.dialogItems.hasOptionsLoaded = false;
+						else if(UI.dialogs.object.next == undefined && UI.dialogs.hasOption){
+							UI.dialogs.bufferAnimation = 0;
+							UI.dialogs.object = Dialogs[UI.dialogs.object.ID][UI.dialogs.object.options[UI.dialogs.selectedOption].next];
+							UI.dialogs.selectedOption = 0;
+							UI.dialogs.hasOption = false;
+							UI.dialogs.hasOptionsLoaded = false;
 						}
 						else{
-							UI.dialogItems.bufferAnimation = 0;
-							UI.dialogItems.object = Dialogs[UI.dialogItems.object.ID][UI.dialogItems.object.next];
+							UI.dialogs.bufferAnimation = 0;
+							UI.dialogs.object = Dialogs[UI.dialogs.object.ID][UI.dialogs.object.next];
 						}
 					}
 				}

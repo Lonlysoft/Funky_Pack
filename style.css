@@ -177,6 +177,13 @@ input[type="range"]{
 	justify-content: center;
 	align-items: center;
 }
+
+.flex-row-center{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .flex-row-bottom{
 	display: flex;
 	gap: 2em;

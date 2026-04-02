@@ -211,9 +211,8 @@ class Protagonist extends Being{
 				};
 				NPC__arr[i].dir = directions.grabAttention[this.dir]();
 				Game.onDialog = true;
-				UI.dialogItems.object = chooseDialog(NPC__arr[i].dialog, conditionalDto);
-				UI.dialogItems.bufferAnimation = 0;
-				UI.dialogStart();
+				UI.dialogs.bufferAnimation = 0;
+				UI.dialogs.start(chooseDialog(NPC__arr[i].dialog, conditionalDto));
 			}
 		}
 		
