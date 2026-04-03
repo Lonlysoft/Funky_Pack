@@ -1,8 +1,8 @@
 
 let timerplay = 0;
 let timeGame = 0;
-let GameMoment = 0;
-//let GameMomentSav = 'warningScreen';
+//let GameMoment = 0;
+let GameMomentSav = 'warningScreen';
 let GameMomentSav = "mainWorld";
 let frame = 0
 let frameaux = 0
