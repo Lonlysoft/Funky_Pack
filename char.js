@@ -62,6 +62,7 @@ class Being{
 	walk(axis){
 		this.isWalking[axis] = true;
 		this.velocity[axis] = Number.parseInt(this.VMAX * this.pol);
+		this.doing = (this.dir == "N" || this.dir == "S") ? "walk": "walkDifferent";
 	}
 	run(axis){
 		this.isWalking[axis] = true;
@@ -81,6 +82,10 @@ class Being{
 			this.velocity[axis] *= this.friction;
 			this.velocity[axis] = Number.parseInt(this.velocity[axis]);
 		}
+		if(this.onGround)
+			this.doing = "still";
+		else
+			this.doing = "jump"
 	}
 	stopAbsolute(axis){
 		this.isWalking[axis] = false;
@@ -124,7 +129,6 @@ class Protagonist extends Being{
 		this.jobs = [];
 		this.STR = arg.min_speed;
 		this.JPOW = arg.jump_power;
-		this.isSwimming = false;
 		this.isSpecialSkilling = false;
 		this.isCrouching = false;
 		this.canTakeDamage = true;
@@ -133,7 +137,6 @@ class Protagonist extends Being{
 		this.tailMaxLength = arg.inventory;
 		this.money = new Money(0);
 		this.xp = 0;
-		this.invensibility = false;
 		this.relationships = arg.relationships;
 		this.ATKbox = {x: undefined, y: undefined, z: undefined, w: arg.width, h: arg.height, p: arg.dept, type: "punch"};
 		this.skillList = arg.skills;
@@ -213,6 +216,7 @@ class Protagonist extends Being{
 				Game.onDialog = true;
 				UI.dialogs.bufferAnimation = 0;
 				UI.dialogs.start(chooseDialog(NPC__arr[i].dialog, conditionalDto));
+				this.doing = "still";
 			}
 		}
 		
@@ -233,23 +237,18 @@ class Protagonist extends Being{
 		return map.grndElGrid[y][x]*TILE_SIZE;
 	}
 	spawn(map){
-		if(map.beingGrid == undefined){
+		if(!map.playerSpawnPos){
 			this.boxCol.x = 5*TILE_SIZE;
 			this.boxCol.z = 5*TILE_SIZE;
 			this.WorldPos.y = this.spawnInY(map,5,5);
 			return true;
 		}
-		for(let i = 0; i < map.height; i++){
-			for(let j = 0; j < map.width; j++){
-				if(map.beingGrid[i][j] == "p1"){
-					this.boxCol.x = j*TILE_SIZE;
-					this.boxCol.z = i*TILE_SIZE;
-					this.WorldPos.y = this.spawnInY(map,j,i);
-					return true;
-				}
-			}
-		}
-		
+		let x = map.playerSpawnPos.x
+		let z = map.playerSpawnPos.z
+		this.boxCol.x = x*TILE_SIZE;
+		this.boxCol.z = z*TILE_SIZE;
+		this.WorldPos.y = this.spawnInY(map,x,z);
+		return true;
 	}
 	learnSkill(skillName){
 		if(!this.skillList.includes(skillName))this.skillList.push(skillName);

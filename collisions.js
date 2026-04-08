@@ -40,10 +40,10 @@ const Col = {
 	},
 	
 	handleExitsAndTeleporters(entity, mapGrid){
-		let topLeft = mapGrid.beingGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)];
-		let topRight = mapGrid.beingGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w, TILE_SIZE)];
-		let bottomLeft = mapGrid.beingGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.velocity.x, TILE_SIZE)];
-		let bottomRight = mapGrid.beingGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w+entity.velocity.x, TILE_SIZE)];
+		let topLeft = mapGrid.itemGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)];
+		let topRight = mapGrid.itemGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w, TILE_SIZE)];
+		let bottomLeft = mapGrid.itemGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.velocity.x, TILE_SIZE)];
+		let bottomRight = mapGrid.itemGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w+entity.velocity.x, TILE_SIZE)];
 		let maxValue = maxVal([topLeft, topRight, bottomLeft, bottomRight])
 		if(maxValue > 1){
 			this.teleportTo(entity, Game.LocationsProps[maxValue]);
@@ -454,7 +454,6 @@ const Col = {
 		entity.boxCol.y = entity.WorldPos.y + entity.boxCol.h;
 		this.handleShadowCoords(entity, mapGrid, num)
 		this.handleYcoords(entity, mapGrid, itemArr, npcArr);
-		this.handleExitsAndTeleporters(entity, mapGrid);
 	}
 }
 

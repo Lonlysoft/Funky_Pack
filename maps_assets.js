@@ -13,25 +13,3 @@ async function loadMap(mapName){
 		//console.error('Erro ao carregar JSON:', error);
 	}
 }
-
-const MAPS = {
-	testRoom: {},
-	testRoom2: {},
-	testRoom3: {}
-}
-
-const WAITER_MAPS = {
-	lv1: {}
-}
-
-loadMap("TestRoom").then(
-	mapData => {
-		MAPS.testRoom = mapData;
-	}
-);
-
-loadMap("WaiterLevel").then(
-	mapData => {
-		WAITER_MAPS.lv1 = mapData;
-	}
-);

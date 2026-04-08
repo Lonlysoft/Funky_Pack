@@ -40,6 +40,24 @@ function tipify(num){
 	}
 }
 
+class SuperMap{
+	constructor(mapChunkWidth, maps){
+		this.chunkWidth = mapChunkWidth;
+		this.pieces = maps;
+		this.initialize();
+	}
+	initialize(){
+		for(let i = 0; i < this.pieces.length; i++){
+			//replaces the dto with a level class object before initiating
+			this.pieces[i] = new Level(this.pieces[i]);
+			this.pieces[i].initialize();
+		}
+	}
+	update(){
+		
+	}
+	
+}
 
 //pessoas e NPCS
 class Level{
@@ -55,7 +73,6 @@ class Level{
 		this.width = mapObject.width;
 		this.height = mapObject.height;
 		this.Name = mapObject.name;
-		this.grafus = mapObject.grafus;
 		this.triggerList = [];
 		this.bounds = [];
 		this.npcs = [];
@@ -63,8 +80,6 @@ class Level{
 		this.items = [];
 		this.hasWater = mapObject.hasWater;
 		this.waterGrid = mapObject.grids.water;
-		this.waterBounds = [];
-		this.grass = [];
 	}
 	
 	initialize(itemAssets, entityAssets){
@@ -239,7 +254,7 @@ class Level{
 	}
 	//set as a chance of spawning new NPCs
 	setNPCs(nonPlayableCharacterList){
-		if(this.npcGrid == undefined){
+		if(!this.npcGrid){
 			return;
 		}
 		for(let i = 0; i < this.height; i++){

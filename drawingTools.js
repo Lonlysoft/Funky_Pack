@@ -63,7 +63,7 @@ const setUsingTools = {
 
 
 function displayAnim(Character){
-	
+	/*
 	if(Character.onGround){
 		Character.doing = "still";
 		if(Character.isWalking.x || Character.isWalking.z){
@@ -77,10 +77,6 @@ function displayAnim(Character){
 		Character.doing = "jump";
 	}
 	
-	if(Character.isUsingTools){
-		Character.doing = setUsingTools[GameMoment];
-	}
-	
 	if(Character.holdingObject){
 		Character.doing += "Hold"
 	}
@@ -92,7 +88,7 @@ function displayAnim(Character){
 	if(Character.isCrouching && !Character.holdingObject){
 		Character.doing = "crouch"
 	}
-	
+	*/
 	if(Character.animationIndex < Character.anim[Character.doing].imageX.length-1){
 		Character.animTimer++;
 		if(Character.animTimer >= Character.anim[Character.doing].timing[Character.animationIndex]){

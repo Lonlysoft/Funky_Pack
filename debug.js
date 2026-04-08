@@ -14,18 +14,18 @@ function debug(){
 	ctx.fillText("imgY "+Game.CurrentCharacter.centralPoint[1], 100, 240);
 	ctx.fillText("dir "+Game.CurrentCharacter.dir, 100, 200);
 	*/
-	
+	/*
 	for(let i = 0; i < Game.ImportantNPCsOnScreenArr.length; i++){
 		let npc = Game.ImportantNPCsOnScreenArr[i];
 		ctx.fillText(npc.name + " x" + npc.centralPoint[0] + " y" + npc.centralPoint[0], 100, 162+(32*i));
 	}
-	/*
+	*/
 	let entity = Game.CurrentCharacter;
-	ctx.fillText(transformIntoBar(entity.hunger, entity.maxHunger) , 360, 162);
+	ctx.fillText(entity.doing, 100, 100);
 	for(let i = 0; i < Game.CurrentCharacter.tail.length; i++){
 		ctx.fillText(Game.CurrentCharacter.tail[i].name, 200, 162+(32*i));
 	}
-	*/
+	
 	
 	ctx.restore();
 	
