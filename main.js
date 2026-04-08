@@ -1,8 +1,8 @@
 
 let timerplay = 0;
 let timeGame = 0;
-//let GameMoment = 0;
-let GameMomentSav = 'warningScreen';
+let GameMoment = 0;
+//let GameMomentSav = 'warningScreen';
 let GameMomentSav = "mainWorld";
 let frame = 0
 let frameaux = 0
@@ -15,7 +15,7 @@ const Game = {
 	SCREEN_CENTER: [canvas.width*0.5, canvas.height*0.5],
 	audio: Music,
 	currentMap: null,
-	levelName: "testRoom",
+	levelName: "TestRoom",
 	//Story: new Story(),
 	LocationsProps: [],
 	CurrentCharacter: null,
@@ -203,7 +203,7 @@ const Game = {
 			UI.results[GameMomentSav].start();
 			Ctrl.action(Null, "accept");
 		},
-		mainWorld: function(){
+		mainWorld: async function(){
 			if(Game.requestTransition && !Game.appearScreen){
 				Game.alpha = BG.transition(Game.alpha, "coming", 0.1);
 				if(Game.alpha < 0){
@@ -215,7 +215,7 @@ const Game = {
 			}
 			UI.characterHUD.start();
 			if(!Scenery.hasDeclaired){
-				Scenery.declair(Game, Game.levelName, MAPS);
+				await Scenery.declair(Game, Game.levelName);
 				Game.CurrentCharacter = new Protagonist(Characters.Dynny);
 				Scenery.hasDeclaired = true;
 			}
@@ -357,12 +357,13 @@ const SideBar = {
 function GameBonanza(){
 	TouchEvent();
 	GamePadEvent();
+	/*
 	if("serviceWorker" in navigator){
 		window.addEventListener("load", ()=>{
 			navigator.serviceWorker.register("sw.js").then(reg => console.log(reg)).catch(err => console.log(err));
 			
 		});
-	}
+	}*/
 	const fullScreenBtn = document.getElementById("fullscreen");
 	const fullScreenBtnIcon = fullScreenBtn.querySelector("svg");
 	SideBar.bringSideBar.addEventListener("click",
@@ -483,7 +484,7 @@ function GamePlay(){
 	}
 }
 
-function GamePlayLoop(timestamp){
+async function GamePlayLoop(timestamp){
 	try{
 		deltaTime = timestamp - timerplay;
 		timerplay = timestamp
@@ -494,7 +495,7 @@ function GamePlayLoop(timestamp){
 			timeGame = 0;
 			GamePlay();
 		}
-		window.requestAnimationFrame(GamePlayLoop)
+		window.requestAnimationFrame(GamePlayLoop);
 	} catch (error){
 		Game.audio.stop();
 		console.log(error);

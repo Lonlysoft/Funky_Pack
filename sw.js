@@ -27,11 +27,16 @@ const ASSETS = [
 	"/Waiter.js",
 	"/inGameClock.js",
 	"/jobs.js",
-	"/main.js"
+	"/main.js",
+	"/src/assets/americanCity.json",
+	"/src/assets/TestRoom.json",
+	"/src/imgs/DynnySpriteSheet.png"
 ];
 
 self.addEventListener("install", event=>{
-	event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));
+	event.waitUntil(
+		caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+	);
 });
 
 self.addEventListener('fetch', event => {
