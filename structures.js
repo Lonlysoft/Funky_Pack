@@ -1,0 +1,8 @@
+class Building{
+	constructor(){
+		
+	}
+	draw(){
+		
+	}
+}
