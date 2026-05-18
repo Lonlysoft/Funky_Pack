@@ -27,6 +27,20 @@ const Soldier = {
 			width: TILE_SIZE*0.5,
 			height: TILE_SIZE*1.65,
 			dept: TILE_SIZE*0.5
+		},
+		2: {
+			name: 'guard03',
+			HP: 300,
+			width: TILE_SIZE*0.5,
+			height: TILE_SIZE*1.7,
+			dept: TILE_SIZE*0.5
+		},
+		3: {
+			name: 'guard04',
+			HP: 350,
+			width: TILE_SIZE*0.5,
+			height: TILE_SIZE*1.8,
+			dept: TILE_SIZE*0.5
 		}
 	},
 	UI: {
@@ -43,7 +57,7 @@ const Soldier = {
 			}
 		},
 		update(){
-			
+			this.hpBar.value = player.hp + "";
 		},
 		end(){
 			if(this.isHere){

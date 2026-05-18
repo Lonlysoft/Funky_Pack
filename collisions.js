@@ -6,7 +6,6 @@ function saveCoords(entityBoxCol){
 	entityBoxCol.oldZ = entityBoxCol.z;
 }
 
-
 const Col = {
 	AABB: function(rect1, rect2){
 		return rect1[0] + rect1[2] >= rect2[0] &&
@@ -20,13 +19,13 @@ const Col = {
 				rect1.z + rect1.p >= rect2.z &&
 				rect1.z <= rect2.z + rect2.p;
 	},
-	
 	handleShadowCoords(entity, mapGrid = Game.currentMap){
-		let topLeft = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)];
-		let topRight = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w, TILE_SIZE)];
-		let bottomLeft = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.velocity.x, TILE_SIZE)];
-		let bottomRight = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w+entity.velocity.x, TILE_SIZE)];
-		let maxValue = maxVal([topLeft, topRight, bottomLeft, bottomRight]);
+		let topLeft = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)%mapGrid.bounds.length][WorldToGrid(entity.boxCol.x, TILE_SIZE)%mapGrid.bounds[0].length];
+		let topRight = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)%mapGrid.bounds.length][WorldToGrid(entity.boxCol.x+entity.boxCol.w, TILE_SIZE)%mapGrid.bounds[0].length];
+		let bottomLeft = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)%mapGrid.bounds.length][WorldToGrid(entity.boxCol.x+entity.velocity.x, TILE_SIZE)%mapGrid.bounds[0].length];
+		let bottomRight = mapGrid.shadowGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)%mapGrid.bounds.length][WorldToGrid(entity.boxCol.x+entity.boxCol.w+entity.velocity.x, TILE_SIZE)%mapGrid.bounds[0].length];
+		let maxValue = maxVal([topLeft, topRight, bottomLeft, bottomRight])
+		
 		entity.layer = maxValue;
 	},
 	
@@ -38,43 +37,20 @@ const Col = {
 		Game.requestTransition = true;
 		entity.isSpawn = false;
 	},
-	
 	handleExitsAndTeleporters(entity, mapGrid){
-		let topLeft = mapGrid.itemGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)];
-		let topRight = mapGrid.itemGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w, TILE_SIZE)];
-		let bottomLeft = mapGrid.itemGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.velocity.x, TILE_SIZE)];
-		let bottomRight = mapGrid.itemGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x+entity.boxCol.w+entity.velocity.x, TILE_SIZE)];
+		let topLeft = mapGrid.itemGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)%mapGrid.bounds.length][WorldToGrid(entity.boxCol.x, TILE_SIZE)%mapGrid.bounds[0].length];
+		let topRight = mapGrid.itemGrid[WorldToGrid(entity.boxCol.z, TILE_SIZE)%mapGrid.bounds.length][WorldToGrid(entity.boxCol.x+entity.boxCol.w, TILE_SIZE)%mapGrid.bounds[0].length];
+		let bottomLeft = mapGrid.itemGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)%mapGrid.bounds.length][WorldToGrid(entity.boxCol.x+entity.velocity.x, TILE_SIZE)%mapGrid.bounds[0].length];
+		let bottomRight = mapGrid.itemGrid[WorldToGrid(entity.boxCol.z+entity.boxCol.p-entity.velocity.z, TILE_SIZE)%mapGrid.bounds.length][WorldToGrid(entity.boxCol.x+entity.boxCol.w+entity.velocity.x, TILE_SIZE)%mapGrid.bounds[0].length];
 		let maxValue = maxVal([topLeft, topRight, bottomLeft, bottomRight])
 		if(maxValue > 1){
 			this.teleportTo(entity, Game.LocationsProps[maxValue]);
 		}
 	},
 	
-	loadEntities(whatIs, arr, mapGrid = Game.currentMap){
-		let x_grid = Math.floor((Camera.x)/TILE_SIZE);
-		let x_endGrid = Math.floor((Camera.x+Camera.w)/TILE_SIZE);
-		let y_grid = Math.floor((Camera.y)/TILE_SIZE)-Math.floor((Camera.y)/TILE_SIZE);
-		let y_endGrid = Math.floor((Camera.y+Camera.h)/TILE_SIZE)-Math.floor((Camera.y)/TILE_SIZE);
-		
-		if(x_grid < 0) x_grid = 0;
-		if(y_grid < 0) y_grid = 0;
-		if(x_endGrid > mapGrid.width) x_endGrid = mapGrid.width;
-		if(y_endGrid > mapGrid.height) y_endGrid = mapGrid.height;
-		
-		for(let i = y_grid; i < y_endGrid; i++){
-			for(let j = x_grid; j < x_endGrid; j++){
-				if(mapGrid[whatIs][i][j] != 0 && !mapGrid[whatIs][i][j].isSpawn){
-					arr.push(mapGrid[whatIs][i][j]);
-					mapGrid[whatIs][i][j].isSpawn = arr[arr.length-1].spawn();
-				}
-			}
-		}
-	},
-	
 	createAtkBox: function(boxCol, atkBox, direction){
 		directions.setCube[direction](boxCol, atkBox);
 	},
-	
 	receiveItem(entity, itemArr){
 		let arrayCol = directions.setBox[entity.dir](entity);
 		let switcher;
@@ -122,7 +98,6 @@ const Col = {
 	solidObject: function(entity, cube){
 		this.solid(entity, cube);
 	},
-	
 	slopeNorth: function(entity, cube){
 		this.top(entity, cube)
 		this.left(entity, cube)
@@ -138,36 +113,15 @@ const Col = {
 	slopeNorth(entity, cube){
 		return this.slopeTop(entity, cube, "z");
 	},
-	
-	solid3D:function(entity, cube){
-		if(this.top(entity, cube))return;
-		if(this.left(entity, cube))return;
-		if(this.right(entity, cube))return;
-		if(this.up(entity, cube))return;
-		if(this.down(entity, cube))return;
-		this.bottom(entity, cube);
-	},
-	
-	bedness3D: function(entity, cube){
-		if(this.top(entity, cube))return;
-		if(this.left(entity, cube))return;
-		if(this.right(entity, cube))return;
-		if(this.elasticUp(entity, cube))return;
-		if(this.down(entity, cube))return;
-		this.bottom(entity, cube);
-	},
-	
 	elasticUp: function(entity, cube){
 		if(entity.boxCol.y < cube.y && entity.boxCol.oldY >= cube.y){
 			entity.velocity.y *= -1;
 			return true;
 		}
 	},
-	
 	use: function(entity, item){
 		itemCategories[item.type](entity, item);
 	},
-	
 	uppingBottom: function(entity, cube){
 		if(entity.boxCol.z < cube.z+cube.p && entity.boxCol.oldZ >= cube.z+ cube.p){
 			entity.velocity.z = 0;
@@ -177,7 +131,6 @@ const Col = {
 		}
 		return false;
 	},
-	
 	water: function(entity, cube){
 		if(entity.boxCol.y < cube.y && entity.boxCol.oldY >= cube.y){
 			entity.velocity.y = 0;
@@ -185,7 +138,6 @@ const Col = {
 			return true;
 		}
 	},
-	
 	teleport: function(entity, cube){
 		if(isOnGround(entity.WorldPos.y, cube.y) && cube.conditionals && cube.conditionals()){
 			//cube.conditionals() are a function that means the stuff the player need to do or must have in order to activate them. (like... what a literal trigger works)...
@@ -193,7 +145,6 @@ const Col = {
 			mapGrid = cube.to;
 		}
 	},
-	
 	left: function(entity, cube){
 		if(entity.boxCol.x + entity.boxCol.w > cube.x && entity.boxCol.oldX + entity.boxCol.w <= cube.x){
 			entity.boxCol.x -= entity.velocity.x;
@@ -220,7 +171,6 @@ const Col = {
 		}
 		return false;
 	},
-	
 	bottom: function(entity, cube){
 		if(entity.boxCol.z < cube.z+cube.p && entity.boxCol.oldZ >= cube.z + cube.p){
 			entity.boxCol.z -= entity.velocity.z;
@@ -229,24 +179,22 @@ const Col = {
 		}
 		return false;
 	},
-	
 	ladder: function(){
 		
 	},
 	//isdo aqui é relativo ao Colisionador de slope
 	slopeTop: function(object, cube, axis){
 		let dimen = (axis == "x")? "w" : "p"
-		let originX = cube[axis];
 		
 		let current_x = object.WorldPos[axis] - cube[axis];
 		let top = current_x;
 
-		if (current_x > cube[dimen] && current_x > 0) {
+		if (current_x > cube[dimen] && current_x > 0){
 			object.WorldPos.y -= object.velocity.y;
 			object.velocity.y = 0;
 			return cube.y;
 
-		} else if (object.boxCol.y + object.boxCol.h > top && current_x > 0) {
+		} else if (object.boxCol.y + object.boxCol.h > top && current_x > 0){
 			object.onGround = true;
 			object.velocity.y = 0;
 			object.WorldPos.y = top + (cube.y - cube.h);
@@ -254,25 +202,23 @@ const Col = {
 		}
 	},
 	slopeTopWest: function(object, cube, axis){
-		let dimen = (axis == "x")? "w" : "p"
-		let originX = cube[axis];
+		let dimen = (axis == "x")? "w" : "p";
 		
 		let current_x = object.WorldPos[axis] - cube[axis];
 		let top = current_x*-1+cube.h;
 
-		if (current_x > cube[dimen] && current_x > 0) {
+		if (current_x > cube[dimen] && current_x > 0){
 			object.WorldPos.y -= object.velocity.y;
 			object.velocity.y = 0;
 			return cube.y - cube.h;
 
-		} else if (object.boxCol.y + object.boxCol.h > top && current_x > 0) {
+		} else if (object.boxCol.y + object.boxCol.h > top && current_x > 0){
 			object.onGround = true;
 			object.velocity.y = 0;
 			object.WorldPos.y = top + (cube.y - cube.h);
 			return top + (cube.y - cube.h);
 		}
 	},
-	
 	testCol(entity, colArr){
 		let yesArr = [];
 		let playerBoxCol = [entity.boxCol.x, entity.boxCol.z, entity.boxCol.w, entity.boxCol.p];
@@ -287,29 +233,33 @@ const Col = {
 		}
 		return yesArr;
 	},
-	
-	
 	handleYcoords(entity, mapGrid, items, npcs){
-		
 		// no idea what's the responsibility here
 		if(entity.velocity.y < 0){
 			entity.gravity = GRAVITY_EARTH_FALLING;
 		} else {
 			entity.gravity = GRAVITY_EARTH;
 		}
+		let top = mapGrid.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)%mapGrid.bounds.length][WorldToGrid(entity.boxCol.x, TILE_SIZE)%mapGrid.bounds[0].length].y
 		
-		//entity.pontoCentral[1] -= entity.velocity.y;
-		let top = mapGrid.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)].y
-		let bottom = mapGrid.bounds[WorldToGrid(entity.boxCol.z + entity.boxCol.p, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y;
-		let left = mapGrid.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)].y;
-		let right = mapGrid.bounds[WorldToGrid(entity.boxCol.z+entity.boxCol.p, TILE_SIZE)][WorldToGrid(entity.boxCol.x, TILE_SIZE)].y;;
-		let currLim = mapGrid.bounds[WorldToGrid(entity.WorldPos.z, TILE_SIZE)][WorldToGrid(entity.WorldPos.x, TILE_SIZE)].y;
+		let bottom = mapGrid.bounds[WorldToGrid(entity.boxCol.z + entity.boxCol.p, TILE_SIZE)%mapGrid.bounds.length][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)%mapGrid.bounds[0].length].y;
+		
+		let left = mapGrid.bounds[WorldToGrid(entity.boxCol.z, TILE_SIZE)%mapGrid.bounds.length][WorldToGrid(entity.boxCol.x + entity.boxCol.w, TILE_SIZE)%mapGrid.bounds[0].length].y;
+		
+		let right = mapGrid.bounds[WorldToGrid(entity.boxCol.z+entity.boxCol.p, TILE_SIZE)%mapGrid.bounds.length][WorldToGrid(entity.boxCol.x, TILE_SIZE)%mapGrid.bounds[0].length].y;
+		
+		let currLim = mapGrid.bounds[WorldToGrid(entity.WorldPos.z, TILE_SIZE)%mapGrid.bounds.length][WorldToGrid(entity.WorldPos.x, TILE_SIZE)%mapGrid.bounds[0].length].y;
 		
 		const solidObjectArray = [];
 		const slopeObjectArray = [];
 		for(let i = 0; i < items.length; i++){
 			if(items[i].ColType == "solidObject"){
 				solidObjectArray.push(items[i].boxCol);
+			}
+		}
+		for(let i = 0; i < npcs.length; i++){
+			if(npcs[i].ColType == "solidObject"){
+				solidObjectArray.push(npcs[i].boxCol);
 			}
 		}
 		const direction = [];
@@ -322,7 +272,7 @@ const Col = {
 				direction.push("West");
 			}
 		}
-		let filterCollidings = this.testCol(entity, solidObjectArray);
+		this.testCol(entity, solidObjectArray);
 		if((!isOnGround(entity.WorldPos.y, top) && !isOnGround(entity.WorldPos.y, left) && !isOnGround(entity.WorldPos.y, right) && !isOnGround(entity.WorldPos.y, bottom))){
 			entity.velocity.y -= entity.gravity /*/1000*/ *deltaTime;
 			entity.onGround = false;
@@ -334,9 +284,7 @@ const Col = {
 		}
 		for(let i = 0; i < solidObjectArray.length; i++){
 			if(this.AABB_JSON(entity.boxCol, solidObjectArray[i])){
-				
 				if(isOnGround(entity.WorldPos.y, solidObjectArray[i].y)){
-					
 					entity.velocity.y = 0;
 					entity.onGround = true;
 					entity.jumping = false;
@@ -356,20 +304,7 @@ const Col = {
 			entity.WorldPos.y = currLim;
 		}
 	},
-	
-	main(entity, mapGrid, itemArr, npcArr, num = -1){
-		
-		if(entity.WorldPos.x<entity.boxCol.w*0.5){
-			entity.WorldPos.x = 30;
-			entity.boxCol.x = 0;
-			entity.velocity.x = 0;
-		}
-		if(entity.WorldPos.z<entity.boxCol.p*0.5){
-			entity.WorldPos.z = 30;
-			entity.boxCol.z = 0;
-			entity.velocity.z = 0;
-		}
-		
+	handleMap(entity, mapGrid){
 		if(entity.WorldPos.x>=((mapGrid.width)*TILE_SIZE)-entity.boxCol.w/2){
 			entity.WorldPos.x = ((mapGrid.width)*TILE_SIZE)-entity.boxCol.w*0.5;
 			entity.boxCol.x = mapGrid.width*TILE_SIZE-entity.boxCol.w-MAGIC_OFFSET;
@@ -382,29 +317,88 @@ const Col = {
 			entity.velocity.z = 0;
 		}
 		
-		
-		entity.isSwimming = false;
-		entity.gravity = GRAVITY_EARTH;
-		
-		let curLimStartZ = WorldToGrid(entity.WorldPos.z - entity.boxCol.p*0.5, TILE_SIZE);
-		let curLimEndZ = WorldToGrid(entity.WorldPos.z + entity.boxCol.p*0.5, TILE_SIZE);
-		let curLimStartX = WorldToGrid(entity.WorldPos.x - entity.boxCol.w/2, TILE_SIZE);
-		let curLimEndX = WorldToGrid(entity.WorldPos.x + entity.boxCol.w/2, TILE_SIZE);
-		let curLimStartY = WorldToGrid(entity.WorldPos.y, TILE_SIZE);
-		let curLimEndY = WorldToGrid(entity.WorldPos.y - entity.boxCol.h, TILE_SIZE);
-		
-		let playerCubeCol = [entity.boxCol.x, entity.boxCol.z, entity.boxCol.w, entity.boxCol.p, entity.boxCol.y, entity.boxCol.h]
-		
-		//começou as Colisões em relação ao tileset
 		let x_intro = Math.floor(Camera.x/TILE_SIZE);
 		let x_end = Math.floor((Camera.x+Camera.w)/TILE_SIZE);
-		let y_intro = Math.floor(Camera.y/TILE_SIZE);
-		let y_end = Math.floor((Camera.y+Camera.h)/TILE_SIZE);
+		//focus the camera downwards to check collisions when they're not in there
+		let y_intro = Math.floor((Camera.y+entity.WorldPos.y)/TILE_SIZE);
+		let y_end = Math.floor((Camera.y+Camera.h+entity.WorldPos.y)/TILE_SIZE);
 		
 		if(x_intro < 0) x_intro = 0;
 		if(y_intro < 0) y_intro = 0;
 		if(x_end > mapGrid.width) x_end = mapGrid.width;
 		if(y_end > mapGrid.height) y_end = mapGrid.height;
+		
+		let playerBoxCol = [entity.boxCol.x, entity.boxCol.z, entity.boxCol.w, entity.boxCol.p, entity.boxCol.y, entity.boxCol.h]
+		
+		for(let j = x_intro; j < x_end; j++){
+			for(let i = y_intro; i < y_end; i++){
+				if(entity.WorldPos.y < mapGrid.bounds[i][j].y){
+					mapBoxCol = [mapGrid.bounds[i][j].x, mapGrid.bounds[i][j].z, TILE_SIZE, TILE_SIZE];
+					if(Col.AABB(playerBoxCol, mapBoxCol)){
+						Col[mapGrid.bounds[i][j].tipo](entity, mapGrid.bounds[i][j]);
+					}
+				}
+				if(mapGrid.hasWater && entity.WorldPos.y < mapGrid.waterBounds[i][j].y){
+					waterBoxCol = [mapGrid.waterBounds[i][j].x, mapGrid.waterBounds[i][j].z, TILE_SIZE, TILE_SIZE];
+					if(Col.AABB(playerBoxCol, waterBoxCol)){
+						entity.isSwimming = true;
+						Col[mapGrid.waterBounds[i][j].tipo](entity, mapGrid.waterBounds[i][j]);
+					}
+				}
+			}//fim for
+		}//fim for
+	},
+	
+	handleChunkedMap(entity, pieces, itemArr, npcArr, num = -1){
+		const chunkPixelSize = TILE_SIZE * CHUNK_SIZE;
+		const cam = Camera;
+		let startCX = Math.floor(cam.x / chunkPixelSize);
+		let endCX   = Math.ceil((cam.x + cam.w) / chunkPixelSize);
+		let startCY = Math.floor((cam.y + entity.WorldPos.y)/ chunkPixelSize);
+		let endCY   = Math.ceil((cam.y + cam.h + entity.WorldPos.y) / chunkPixelSize);
+		let playerBoxCol = [entity.boxCol.x, entity.boxCol.z, entity.boxCol.w, entity.boxCol.p]
+		for (let cx = startCX; cx < endCX; cx++){
+			for (let cy = startCY; cy < endCY; cy++){
+				const idChunk = `${cx}_${cy}`;
+				let chunkAtual = pieces[idChunk];
+				if (chunkAtual){
+					chunkAtual = pieces[idChunk].bounds;
+					for (let i = 0; i < CHUNK_SIZE; i++){
+						for (let j = 0; j < CHUNK_SIZE; j++){
+							if(entity.WorldPos.y < chunkAtual[i][j].y){
+								mapBoxCol = [chunkAtual[i][j].x, chunkAtual[i][j].z, TILE_SIZE, TILE_SIZE];
+								if(Col.AABB(playerBoxCol, mapBoxCol)){
+									Col[chunkAtual[i][j].tipo](entity, chunkAtual[i][j]);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		entity.WorldPos.x = entity.boxCol.x + entity.boxCol.w*0.5;
+		entity.WorldPos.z = entity.boxCol.z + entity.boxCol.p*0.5;
+		entity.boxCol.y = entity.WorldPos.y + entity.boxCol.h;
+		const chunkCoords = `${WorldToChunk(entity.WorldPos.x)}_${WorldToChunk(entity.WorldPos.z)}`;
+		this.handleShadowCoords(entity, pieces[chunkCoords], num);
+		this.handleYcoords(entity, pieces[chunkCoords], itemArr, npcArr);
+	},
+	
+	main(entity, mapGrid, itemArr, npcArr, num = -1){
+		if(entity.WorldPos.x<entity.boxCol.w*0.5){
+			entity.WorldPos.x = 30;
+			entity.boxCol.x = 0;
+			entity.velocity.x = 0;
+		}
+		if(entity.WorldPos.z<entity.boxCol.p*0.5){
+			entity.WorldPos.z = 30;
+			entity.boxCol.z = 0;
+			entity.velocity.z = 0;
+		}
+		
+		entity.isSwimming = false;
+		entity.gravity = GRAVITY_EARTH;
 		
 		let playerBoxCol = [entity.boxCol.x, entity.boxCol.z, entity.boxCol.w, entity.boxCol.p, entity.boxCol.y, entity.boxCol.h]
 		//comparar Colisoes com os itens presentes
@@ -428,26 +422,13 @@ const Col = {
 			}
 		}
 		
-		let mapBoxCol;
-		let waterBoxCol;
 		
-		for(let j = x_intro; j < x_end; j++){
-			for(let i = y_intro; i < y_end; i++){
-				if(entity.WorldPos.y < mapGrid.bounds[i][j].y){
-					mapBoxCol = [mapGrid.bounds[i][j].x, mapGrid.bounds[i][j].z, TILE_SIZE, TILE_SIZE];
-					if(Col.AABB(playerBoxCol, mapBoxCol)){
-						Col[mapGrid.bounds[i][j].tipo](entity, mapGrid.bounds[i][j]);
-					}
-				}
-				if(mapGrid.hasWater && entity.WorldPos.y < mapGrid.waterBounds[i][j].y){
-					waterBoxCol = [mapGrid.waterBounds[i][j].x, mapGrid.waterBounds[i][j].z, TILE_SIZE, TILE_SIZE];
-					if(Col.AABB(playerBoxCol, waterBoxCol)){
-						entity.isSwimming = true;
-						Col[mapGrid.waterBounds[i][j].tipo](entity, mapGrid.waterBounds[i][j]);
-					}
-				}
-			}//fim for
-		}//fim for
+		if(mapGrid.isChunkedMap){
+			this.handleChunkedMap(entity, mapGrid.pieces, itemArr, npcArr, num);
+			return;
+		} else {
+			this.handleMap(entity, mapGrid);
+		}
 		
 		entity.WorldPos.x = entity.boxCol.x + entity.boxCol.w*0.5;
 		entity.WorldPos.z = entity.boxCol.z + entity.boxCol.p*0.5;

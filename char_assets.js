@@ -98,13 +98,13 @@ const Characters = {
 		animations: {
 			walk: {
 				type: "infinite",
-				imageX: [0, 1, 2, 1, 0, 1, 2, 1],
+				imageX: [1, 2, 1, 0, 1, 2, 1, 0],
 				timing: [3, 3, 3, 3, 3, 3, 3, 3],
 				isMirrored: [0, 0, 0, 0, 1, 1, 1, 1]
 			},
 			walkDifferent: {
 				type: "infinite",
-				imageX: [0, 1, 2, 1, 0, 3, 4, 3],
+				imageX: [1, 2, 1, 0, 3, 4, 3, 0],
 				timing: [3, 3, 3, 3, 3, 3, 3, 3],
 				isMirrored: null
 			},
@@ -114,9 +114,15 @@ const Characters = {
 				timing: [3],
 				isMirrored: null
 			},
+			jumpLanding: {
+				type: "linear",
+				imageX: [10, 11, 10],
+				timing: [2, 4, 4],
+				isMirrored: null
+			},
 			jump: {
 				type: "linear",
-				imageX: [3, 4],
+				imageX: [1, 2],
 				timing: [2, 4],
 				isMirrored: null
 			},
@@ -146,16 +152,16 @@ const Characters = {
 			},
 			crouch: {
 				type: "linear",
-				imageX: [10],
-				timing: [12],
+				imageX: [10, 11, 12, 13, 14, 15],
+				timing: [2, 2, 2, 2, 2, 12],
 				isMirrored: null
 			},
 			diving: {
 				type: "linear",
-				imageX: [10],
-				timing: [12],
+				imageX: [12, 13, 15],
+				timing: [4, 4, 4],
 				isMirrored: null
 			}
-		}
+		},
 	}
 }

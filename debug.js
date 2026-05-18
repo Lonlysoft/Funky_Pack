@@ -21,9 +21,12 @@ function debug(){
 	}
 	*/
 	let entity = Game.CurrentCharacter;
+	ctx.fillText("x "+WorldToGrid(Game.CurrentCharacter.WorldPos.x, TILE_SIZE), 100, 140);
+	ctx.fillText("y "+WorldToGrid(Game.CurrentCharacter.WorldPos.z, TILE_SIZE), 100, 160);
 	ctx.fillText(entity.doing, 100, 100);
+	ctx.fillText(entity.isSpecialSkilling, 100, 162)
 	for(let i = 0; i < Game.CurrentCharacter.tail.length; i++){
-		ctx.fillText(Game.CurrentCharacter.tail[i].name, 200, 162+(32*i));
+		ctx.fillText(entity.isSpecialSkilling, 100, 162+(32*i));
 	}
 	
 	
@@ -34,5 +37,5 @@ function debug(){
 function debugCollision(varName, text, num = 0){
 	ctx.fillStyle = "#fff";
 	ctx.font = "20px sans-serif"
-	ctx.fillText(varName + " " + text, 100, 260 + 20*num);
+	ctx.fillText(varName + " " + text, 100, 160 + 20*num);
 }

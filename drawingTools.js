@@ -42,6 +42,52 @@ function DRAW__Grid(context, cam, grid2Draw, gridImage, tileSize, tileImageSize 
 		}
 	}
 }
+function DRAW__chunkedGrid(context, cam, type, pieces, gridImage, tileSize, tileImageSize = tileSize, layer = -1){
+	const chunkPixelSize = tileSize * CHUNK_SIZE;
+	let startCX = Math.floor(cam.x / chunkPixelSize);
+	let endCX   = Math.ceil((cam.x + cam.w) / chunkPixelSize);
+	let startCY = Math.floor(cam.y / chunkPixelSize);
+	let endCY   = Math.ceil((cam.y + cam.h) / chunkPixelSize);
+	for (let cx = startCX; cx < endCX; cx++) {
+		for (let cy = startCY; cy < endCY; cy++) {
+			const idChunk = `${cx}_${cy}`;
+			let chunkAtual = pieces[idChunk];
+			
+			if (chunkAtual) {
+				//made to handle objGrid;
+				if(layer < 0)
+					chunkAtual = pieces[idChunk][type]
+				else
+					chunkAtual = pieces[idChunk][type][layer]
+					
+				if(chunkAtual.length <= 0) return;
+				
+				for (let ty = 0; ty < CHUNK_SIZE; ty++) {
+					for (let tx = 0; tx < CHUNK_SIZE; tx++) {
+						const tileID = chunkAtual[ty][tx];
+						if (tileID < 0) continue; 
+						let worldX = (cx * CHUNK_SIZE + tx) * tileSize;
+						let worldY = (cy * CHUNK_SIZE + ty) * tileSize;
+						let renderX = worldX - cam.x + Game.canvas.width * 0.5 - cam.w * 0.5;
+						let renderY = worldY - cam.y + Game.canvas.height * 0.5 - cam.h * 0.5;
+
+				   
+						if (renderX + tileSize > 0 && renderX < Game.canvas.width &&
+							renderY + tileSize > 0 && renderY < Game.canvas.height) {
+							context.drawImage(gridImage,
+								(tileID * tileImageSize) % gridImage.width,
+								Math.floor((tileID * tileImageSize) / gridImage.width) * tileImageSize,
+								tileImageSize, tileImageSize,
+								renderX, renderY,
+								tileSize, tileSize
+							);
+						}
+					}
+				}
+			}
+		}
+	}
+}
 
 function clear(screen, context){
 	context.clearRect(0, 0, screen.width, screen.height)
@@ -63,10 +109,9 @@ const setUsingTools = {
 
 
 function displayAnim(Character){
-	/*
 	if(Character.onGround){
 		Character.doing = "still";
-		if(Character.isWalking.x || Character.isWalking.z){
+		if(Character.velocity.x !== 0 || Character.velocity.z !== 0){
 			Character.doing = "walkDifferent";
 			if(Character.dir == "S" || Character.dir == "N"){
 				Character.doing = "walk"
@@ -76,19 +121,19 @@ function displayAnim(Character){
 	else{
 		Character.doing = "jump";
 	}
-	
+	if(Character.isUsingTools){
+		Character.doing = setUsingTools[GameMoment];
+
+	}
 	if(Character.holdingObject){
+
 		Character.doing += "Hold"
+
 	}
-	
 	if(Character.isSpecialSkilling){
-		Character.doing = Character.currentSkill;
+		Character.doing = "diving"
 	}
 	
-	if(Character.isCrouching && !Character.holdingObject){
-		Character.doing = "crouch"
-	}
-	*/
 	if(Character.animationIndex < Character.anim[Character.doing].imageX.length-1){
 		Character.animTimer++;
 		if(Character.animTimer >= Character.anim[Character.doing].timing[Character.animationIndex]){
@@ -108,5 +153,6 @@ function displayAnim(Character){
 		Character.isMirrored = true;
 		mirrorateToAPoint(Game.ctx, Character.centralPoint[0], Character.centralPoint[1]);
 	}
+		
 	return Character.anim[Character.doing].imageX[Character.animationIndex];
 }

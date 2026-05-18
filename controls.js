@@ -167,7 +167,6 @@ const Ctrl = {
 		character: {
 			props: ["eastWest", "upDown", "diagonals", "B", "A", "Y", "X", "crouch", "run", "select", "start", "zed"],
 			eastWest(entity){
-				
 				if(Ctrl.Btns.west.active){//⬅
 					entity.dir = "W";
 					directions.walk[entity.dir](entity);
@@ -214,13 +213,13 @@ const Ctrl = {
 				else if((Ctrl.Btns.up.active && Ctrl.Btns.west.active) || Ctrl.Btns.northwest.active){ //↖
 					Ctrl.Btns.up.active = Ctrl.Btns.west.active = true;
 					entity.dir = "NW"
-					
 					directions.walk[entity.dir](entity);
 				}
 			},
 			B(entity){
 				if(Ctrl.Btns.B.active && entity.onGround == true && Ctrl.state.B == false /*&& !entity.isSwimming*/){//jumping 
 					entity.velocity.y += entity.JPOW;
+					
 				}
 				else if(!Ctrl.Btns.B.active && !entity.onGround && !entity.jumping && Ctrl.state.B && entity.velocity.y > 0){//jump velocity basics
 					entity.velocity.y = 0;
@@ -244,7 +243,6 @@ const Ctrl = {
 				} else{
 					entity.movementFlag = "walk";
 				}
-					
 			},
 			Y(entity){
 				if(Ctrl.Btns.Y.active && !Ctrl.state.Y){ //Y
@@ -288,8 +286,9 @@ const Ctrl = {
 				}
 				if(Ctrl.Btns.look.active){
 					if(entity.onGround && entity.skillList.includes("feralMode")){
-						entity.feralMode = true;
+						entity.state = "feral";
 					}
+					entity.state = ""
 				}
 			},
 			select(entity){

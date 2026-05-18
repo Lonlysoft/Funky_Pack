@@ -29,6 +29,9 @@ class Being{
 		this.constHP = AGE*10;
 		this.isSpawn = false;
 		this.isAlive = true;
+		this.skillTimer = {
+			current: 0, max: 10
+		}
 		this.WorldPos = {x: undefined, y: undefined, z: undefined};
 		this.OriginPos = {x: undefined, y: undefined, z: undefined};
 		this.Dimensions = {w: width, h: height, p: dept};
@@ -37,8 +40,6 @@ class Being{
 		this.friction = 0.6;
 		this.dir = "S";
 		this.doing = "still";
-		this.oldDoing = "still";
-		this.isWalking = {x: false, z: false};
 		this.onGround = true;
 		this.animationIndex = 0;
 		this.anim = animations;
@@ -60,12 +61,9 @@ class Being{
 	}
 	
 	walk(axis){
-		this.isWalking[axis] = true;
 		this.velocity[axis] = Number.parseInt(this.VMAX * this.pol);
-		this.doing = (this.dir == "N" || this.dir == "S") ? "walk": "walkDifferent";
 	}
 	run(axis){
-		this.isWalking[axis] = true;
 		if(this.velocity[axis] >= this.VMAX*2){
 			this.velocity[axis] = this.VMAX *2 * deltaTime * this.pol;
 		}
@@ -77,18 +75,12 @@ class Being{
 		}
 	}
 	stop(axis){
-		this.isWalking[axis] = false;
 		if(this.onGround){
 			this.velocity[axis] *= this.friction;
 			this.velocity[axis] = Number.parseInt(this.velocity[axis]);
 		}
-		if(this.onGround)
-			this.doing = "still";
-		else
-			this.doing = "jump"
 	}
 	stopAbsolute(axis){
-		this.isWalking[axis] = false;
 		this.velocity[axis] *= this.friction;
 		this.velocity[axis] = Number.parseInt(this.velocity[axis]);
 	}
@@ -101,11 +93,6 @@ class Being{
 		this.boxCol.y = this.OriginPos.y + this.boxCol.h;
 		this.boxCol.z = this.OriginPos.z - this.boxCol.p*0.5;
 	}
-	
-	setDoing(doing){
-		this.doing = doing;
-	}
-	
 	setTop(z){
 		this.boxCol.z = z
 	}
@@ -118,8 +105,6 @@ class Being{
 	setWest(x){
 		this.boxCol.x = x - this.boxCol.w - MAGIC_OFFSET;
 	}
-	
-	
 }
 
 class Protagonist extends Being{
@@ -150,11 +135,11 @@ class Protagonist extends Being{
 , Camera.w/2 - Game.SCREEN_CENTER[0]);
 		this.centralPoint[1] = WorldToScreen1D(this.WorldPos.z-this.WorldPos.y, Camera.y, Camera.h/2 - Game.SCREEN_CENTER[1]);
 		saveCoords(this.boxCol);
-		if(this.onGround && this.isSpecialSkilling){
+		if(this.onGround && this.isSpecialSkilling && this.skillTimer > this.skillTimerMax){
 			this.isSpecialSkilling = false;
 		}
-		
 		this.onGround = false;
+		
 		this.boxCol.x += this.velocity.x;
 		this.boxCol.z += this.velocity.z;
 		this.WorldPos.y += this.velocity.y;
@@ -172,6 +157,7 @@ class Protagonist extends Being{
 	}
 	draw(currentMap = Game.currentMap){
 		//drawShadow(ctx, this, currentMap, 0.5);
+		
 		drawMovementParticles(Game.ctx, this);
 		this.frameY = directions.setFrameY[this.dir](this);
 		this.frameX = displayAnim(this);
@@ -237,17 +223,20 @@ class Protagonist extends Being{
 		return map.grndElGrid[y][x]*TILE_SIZE;
 	}
 	spawn(map){
+		
 		if(!map.playerSpawnPos){
+			const trueMap = (map.isChunkedMap)? map.pieces[`${GridToChunk(5, 32)}_${GridToChunk(5, 32)}`] : map;
 			this.boxCol.x = 5*TILE_SIZE;
 			this.boxCol.z = 5*TILE_SIZE;
-			this.WorldPos.y = this.spawnInY(map,5,5);
+			this.WorldPos.y = this.spawnInY(trueMap,5,5);
 			return true;
 		}
+		const trueMap = (map.isChunkedMap)? map.pieces[`${GridToChunk(map.playerSpawnPos.z, 32)}_${GridToChunk(map.playerSpawnPos.x, 32)}`] : map;
 		let x = map.playerSpawnPos.x
 		let z = map.playerSpawnPos.z
 		this.boxCol.x = x*TILE_SIZE;
 		this.boxCol.z = z*TILE_SIZE;
-		this.WorldPos.y = this.spawnInY(map,x,z);
+		this.WorldPos.y = this.spawnInY(trueMap,x,z);
 		return true;
 	}
 	learnSkill(skillName){

@@ -28,9 +28,13 @@ const ASSETS = [
 	"/inGameClock.js",
 	"/jobs.js",
 	"/main.js",
-	"/src/assets/americanCity.json",
+	"/src/assets/americanCity/0_0.json",
 	"/src/assets/TestRoom.json",
-	"/src/imgs/DynnySpriteSheet.png"
+	"/src/imgs/tileset.png",
+	"/src/imgs/DynnySpriteSheet.png",
+	"/src/imgs/CharacterMenuIcon_check.png",
+	"/src/imgs/CharacterMenuIcon_item.png",
+	"/src/imgs/CharacterMenuIcon_stats.png",
 ];
 
 self.addEventListener("install", event=>{

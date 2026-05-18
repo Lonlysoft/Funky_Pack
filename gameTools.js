@@ -1,4 +1,5 @@
 const TILE_SIZE = 48;
+const CHUNK_SIZE = 16;
 const MAGIC_OFFSET = 0.01;
 const MAGIC_NORMALIZER = 0.7
 const GRAVITY_EARTH = 6, GRAVITY_EARTH_FALLING = 8;
@@ -10,6 +11,14 @@ function WorldToGrid(axis, tileSize){
 
 function GridToWorld(gridAx, tileSize){
 	return gridAx*tileSize;
+}
+
+function GridToChunk(gridAx, chunkSize = CHUNK_SIZE){
+	return Math.floor(gridAx/chunkSize);
+}
+
+function WorldToChunk(gridAx){
+	return Math.floor(WorldToGrid(gridAx, TILE_SIZE)/CHUNK_SIZE);
 }
 
 function maxVal(arr){

@@ -23,7 +23,6 @@ class Boundary{
 	}
 }
 
-
 //isso vai ser pra tipificar o terreno das tiles
 function tipify(num){
 	switch(num){
@@ -41,22 +40,92 @@ function tipify(num){
 }
 
 class SuperMap{
-	constructor(mapChunkWidth, maps){
-		this.chunkWidth = mapChunkWidth;
-		this.pieces = maps;
-		this.initialize();
+	constructor(mapName){
+		this.isChunkedMap = true;
+		this.pieces = {};
+		this.initialize(mapName);
+		this.mapName = mapName;
 	}
-	initialize(){
-		for(let i = 0; i < this.pieces.length; i++){
-			//replaces the dto with a level class object before initiating
-			this.pieces[i] = new Level(this.pieces[i]);
-			this.pieces[i].initialize();
+	async initialize(mapName){
+		for(let cx = 0; cx < 3; cx++){
+			for(let cy = 0; cy < 3; cy++){
+				await loadMap(mapName + "/" + cx + "_" + cy).then(
+					mapData => {
+						this.pieces[`${cx}_${cy}`] = new Level(mapData);
+						this.pieces[`${cx}_${cy}`].initialize();
+						Scenery.hasDeclaired = true;
+					}
+				);
+			}
 		}
-	}
-	update(){
 		
 	}
-	
+	update(entityWorldPos){
+		let coords = {
+			cx: WorldToChunk(entityWorldPos.x),
+			cy: WorldToChunk(entityWorldPos.z-entityWorldPos.y),
+		};
+		let necessaryChunks = [];
+		for(let i = -1; i <= 1; i++){
+			for(let j = -1; j <= 1; j++){
+				let nx = coords.cx+i;
+				let ny = coords.cy+j;
+				if(nx < 0){
+					nx = 0;
+				}
+				if(ny < 0){
+					ny = 0;
+				}
+				let chunkId = `${nx}_${ny}`
+				necessaryChunks.push(chunkId);
+				if(!this.pieces[chunkId]){
+					this.loadChunk(chunkId);
+				}
+			}
+		}
+		coords.cy = WorldToChunk(entityWorldPos.z);
+		let chunkId = `${coords.cx}_${coords.cy}`
+		if(!necessaryChunks.includes(chunkId)){
+			necessaryChunks.push(chunkId);
+			if(!this.pieces[chunkId]){
+				this.loadChunk(chunkId);
+			}
+		}
+		for(let c in this.pieces){
+			if(!necessaryChunks.includes(c)){
+				this.unloadChunk(c);
+			}
+		}
+	}
+	async loadChunk(id){
+		await loadMap(this.mapName+"/"+id).then(
+			mapData =>{
+				this.pieces[id] = new Level(mapData);
+				this.pieces[id].initialize();
+			}
+		)
+	}
+	unloadChunk(id){
+		delete this.pieces[id];
+	}
+	drawFloor(tileGraphics = Game.tileSetGraphics){
+		DRAW__chunkedGrid(ctx, Camera, 'groundTileSet', this.pieces, tileGraphics, TILE_SIZE, 48);
+	}
+	objectGridDraw(layer, tileGraphics = Game.tileSetGraphics){
+		let chunkX = WorldToChunk(Game.CurrentCharacter.WorldPos.x);
+		let chunkY = WorldToChunk(Game.CurrentCharacter.WorldPos.z);
+		debugCollision("map", this.pieces[`${chunkX}_${chunkY}`].objectGrid[layer].length, layer);
+		DRAW__chunkedGrid(ctx, Camera, 'objectGrid', this.pieces, tileGraphics, TILE_SIZE, 48, layer);
+	}
+	cleanupItems(){
+		return []
+	}
+	cleanupNPCs(){
+		return []
+	}
+	updateVisibleItems(){
+		return []
+	}
 }
 
 //pessoas e NPCS
@@ -69,7 +138,6 @@ class Level{
 		this.ang = mapObject.grids.ang;
 		this.npcGrid = mapObject.grids.npcs;
 		this.grndElGrid = mapObject.grids.ground;
-		this.beingGrid = mapObject.grids.beings;
 		this.width = mapObject.width;
 		this.height = mapObject.height;
 		this.Name = mapObject.name;
@@ -81,14 +149,11 @@ class Level{
 		this.hasWater = mapObject.hasWater;
 		this.waterGrid = mapObject.grids.water;
 	}
-	
-	initialize(itemAssets, entityAssets){
+	initialize(itemAssets = ITEMS, entityAssets = NPCS){
 		this.setBoundaries();
-		this.setNPCs(NPCS);
-		this.setWater();
-		this.setItems(ITEMS);
+		this.setNPCs(entityAssets);
+		this.setItems(itemAssets);
 	}
-	
 	setBoundaries(){
 		for(let i = 0; i < this.height; i++){
 			this.bounds.push(new Array());
@@ -98,46 +163,6 @@ class Level{
 			}
 		}
 	}
-	setGrass(){
-		for(let i = 0; i < this.height; i++){
-			for(let j = 0; j < this.width; j++){
-				if(this.groundTileSet[i][j] >= 0 && this.groundTileSet[i][j] < 16){
-					for(let k = 0; k < 10; k++){
-						this.grass.push(new Grass(j*TILE_SIZE+k*(TILE_SIZE*0.1), this.grndElGrid[i][j]*TILE_SIZE, i*TILE_SIZE +random(0, TILE_SIZE)));
-					}
-				}
-			}
-		}
-	}
-	updateGrass(camera, arr){
-		arr = [];
-		
-		const cameraCoords = [camera.x, camera.y, camera.w, camera.h]
-		
-		for (let i = 0; i < this.grass.length; i++) {
-			const itemShadow = [
-				this.grass[i].WorldPos.x,
-				this.grass[i].WorldPos.z - this.grass[i].WorldPos.y,
-				this.grass[i].w,
-				this.grass[i].p + this.grass[i].h
-			];
-			if(Col.AABB(cameraCoords, itemShadow)){
-				arr.push(this.grass[i]);
-			}
-		}
-		return arr;
-	}
-	setWater(){
-		if(this.hasWater){
-			for(let i = 0; i < this.height; i++){
-				this.waterBounds.push(new Array());
-				for(let j = 0; j < this.width; j++){
-					this.waterBounds[i].push(new Boundary(j * TILE_SIZE, this.waterGrid[i][j] * TILE_SIZE, i * TILE_SIZE, "water"));
-				}
-			}
-		}
-	}
-	
 	setItems(itemSource){
 		if(this.itemGrid == undefined){
 			return;
@@ -154,14 +179,10 @@ class Level{
 			}
 		}
 	}
-	
 	updateVisibleItems(camera, arr) {
 		//cleans the array and restart you got it.
-		
 		arr = [];
-		
 		const cameraCoords = [camera.x, camera.y, camera.w, camera.h]
-		
 		for (let i = 0; i < this.items.length; i++) {
 			const itemShadow = [
 				this.items[i].boxCol.x,
@@ -176,7 +197,9 @@ class Level{
 		}
 		return arr;
 	}
-	
+	update(){
+		return;
+	}
 	cleanupItems(camera, arr) {
 		return arr.filter(item => {
 			if (item.isCollected) return false;
@@ -192,7 +215,6 @@ class Level{
 			);
 		});
 	}
-	
 	updateNPCs(camera){
 		if(!this.npcGrid){
 			return;
@@ -216,7 +238,6 @@ class Level{
 		
 		Game.NPCarr = newArr;
 	}
-	
 	cleanupNPCs(camera, arr){
 		arr = arr.filter( i => {
 			if(!i.isAlive) return false;
@@ -227,7 +248,6 @@ class Level{
 			return (Col.AABB(cameraBox, iBox));
 		});
 	}
-	
 	drawFloor(tileGraphics = Game.tileSetGraphics){
 		DRAW__Grid(ctx, Camera, this.groundTileSet, tileGraphics, TILE_SIZE, 48);
 	}

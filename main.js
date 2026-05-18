@@ -1,11 +1,10 @@
-
 let timerplay = 0;
 let timeGame = 0;
 let GameMoment = 0;
 //let GameMomentSav = 'warningScreen';
 let GameMomentSav = "mainWorld";
-let frame = 0
-let frameaux = 0
+let frame = 0;
+let frameaux = 0;
 let fps = 30, timeFrequency = 1000/fps;
 let timeCounter = 0, deltaTime = 0;
 
@@ -15,7 +14,7 @@ const Game = {
 	SCREEN_CENTER: [canvas.width*0.5, canvas.height*0.5],
 	audio: Music,
 	currentMap: null,
-	levelName: "TestRoom",
+	levelName: "AmericanCity",
 	//Story: new Story(),
 	LocationsProps: [],
 	CurrentCharacter: null,
@@ -73,8 +72,6 @@ const Game = {
 		);
 	},
 	setAndUpdateNPCs(){
-		this.currentMap.cleanupNPCs(Camera, this.NPCarr);
-		this.currentMap.updateNPCs(Camera);
 		this.cleanupImportantsNPCs(Camera);
 		this.setAndUpdateImportantNPCs(Camera);
 		
@@ -214,15 +211,16 @@ const Game = {
 				}
 			}
 			UI.characterHUD.start();
+			if(Game.CurrentCharacter && !Game.CurrentCharacter.isSpawn && Scenery.hasDeclaired){
+				Game.CurrentCharacter.isSpawn = Game.CurrentCharacter.spawn(Game.currentMap);
+				Game.CurrentCharacter.update();
+				BG.weather.initParticles();
+			}
 			if(!Scenery.hasDeclaired){
 				await Scenery.declair(Game, Game.levelName);
 				Game.CurrentCharacter = new Protagonist(Characters.Dynny);
 				Scenery.hasDeclaired = true;
-			}
-			if(!Game.CurrentCharacter.isSpawn && Scenery.hasDeclaired){
-				Game.CurrentCharacter.isSpawn = Game.CurrentCharacter.spawn(Game.currentMap);
-				Game.CurrentCharacter.update();
-				BG.weather.initParticles();
+				return;
 			}
 			if(Game.ischaracterMenud){
 				GameMomentSav = GameMoment;
@@ -240,8 +238,8 @@ const Game = {
 			Ctrl.stateSave();
 			Ctrl.draw(Ctrl.ListProps, Ctrl.Btns, Ctrl.graph);
 			Game.CurrentCharacter.update();
+			Game.currentMap.update(Game.CurrentCharacter.WorldPos);
 			Col.main(Game.CurrentCharacter, Game.currentMap, Game.ItemArr, [...Game.NPCarr, ...Game.ImportantNPCsOnScreenArr], -1);
-			
 			UI.characterHUD.update(Clock, Game.CurrentCharacter);
 			if(timeCounter>=2000){
 				Clock.passTime();
@@ -363,11 +361,12 @@ function GameBonanza(){
 			navigator.serviceWorker.register("sw.js").then(reg => console.log(reg)).catch(err => console.log(err));
 			
 		});
-	}*/
+	}
+	*/
 	const fullScreenBtn = document.getElementById("fullscreen");
 	const fullScreenBtnIcon = fullScreenBtn.querySelector("svg");
 	SideBar.bringSideBar.addEventListener("click",
-		(event)=>{
+		()=>{
 			SideBar.isHere = !SideBar.isHere;
 			if(SideBar.isHere){
 				SideBar.fullDOM.classList.remove("notHere");
@@ -380,7 +379,7 @@ function GameBonanza(){
 		}
 	);
 	SideBar.fullScreenBtn.addEventListener("click",
-		(event)=>{
+		()=>{
 			SideBar.fullScreenBtn.classList.toggle("active");
 			if(DeviceInfo.fullScreen){
 				fullScreenBtnIcon.viewBox.baseVal.x = 0;
@@ -408,7 +407,7 @@ function GameBonanza(){
 	);
 	const musicIcon = SideBar.musicBtn.querySelector("svg");
 	SideBar.musicBtn.addEventListener("click",
-		event => {
+		() => {
 			if(!SideBar.musicMuted){
 				musicIcon.viewBox.baseVal.x = 100;
 				Game.audio.setVolume(0);
@@ -421,7 +420,7 @@ function GameBonanza(){
 		}
 	);
 	SideBar.blankSpace.addEventListener("click",
-		event => {
+		() => {
 			SideBar.DOM.style.opacity = "0%";
 			SideBar.isHere = false;
 			setTimeout(()=>{ SideBar.fullDOM.classList.add("notHere") },10);
@@ -484,7 +483,7 @@ function GamePlay(){
 	}
 }
 
-async function GamePlayLoop(timestamp){
+function GamePlayLoop(timestamp){
 	try{
 		deltaTime = timestamp - timerplay;
 		timerplay = timestamp
