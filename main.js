@@ -14,7 +14,7 @@ const Game = {
 	SCREEN_CENTER: [canvas.width*0.5, canvas.height*0.5],
 	audio: Music,
 	currentMap: null,
-	levelName: "AmericanCity",
+	levelName: "TestRoom",
 	//Story: new Story(),
 	LocationsProps: [],
 	CurrentCharacter: null,
